@@ -6,7 +6,6 @@
 AEntityBase::AEntityBase()
 {
 	PrimaryActorTick.bCanEverTick = true;
-
 }
 
 void AEntityBase::BeginPlay()
