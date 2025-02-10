@@ -19,6 +19,9 @@ class DDS_API APlayerBase : public AEntityBase
 public:
 	APlayerBase();
 
+	virtual UAbilitySystemComponent* GetAbilitySystemComponent() const override;
+	virtual void PossessedBy(AController* NewController) override;
+	virtual void OnRep_PlayerState() override;
 protected:
 	virtual void Tick(float DeltaSeconds) override;
 	virtual void BeginPlay() override;
@@ -31,4 +34,7 @@ protected:
 
 public:
 	FORCEINLINE USpringArmComponent* GetSpringArmComponent() { return SpringArm; }
+
+private:
+	void InitAbilityActorInfo();
 };

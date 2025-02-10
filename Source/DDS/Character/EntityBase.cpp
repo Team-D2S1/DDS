@@ -8,6 +8,11 @@ AEntityBase::AEntityBase()
 	PrimaryActorTick.bCanEverTick = true;
 }
 
+UAbilitySystemComponent* AEntityBase::GetAbilitySystemComponent() const
+{
+	return AbilitySystemComponent;
+}
+
 void AEntityBase::BeginPlay()
 {
 	Super::BeginPlay();

@@ -13,5 +13,9 @@ UCLASS()
 class DDS_API AMonsterBase : public AEntityBase
 {
 	GENERATED_BODY()
-	
+public:
+	AMonsterBase();
+
+protected:
+	virtual void BeginPlay() override;
 };
