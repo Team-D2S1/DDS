@@ -8,17 +8,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="c9c5f200-35e8-49aa-a71a-5167c57f4736" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/.idea.DDS.dir/.idea/encodings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.DDS.dir/.idea/encodings.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.DDS.dir/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.DDS.dir/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/DDS/Character/EntityBase.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/DDS/Character/EntityBase.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/DDS/Character/EntityBase.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/DDS/Character/EntityBase.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/DDS/Character/Monster/MonsterBase.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/DDS/Character/Monster/MonsterBase.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/DDS/Character/Monster/MonsterBase.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/DDS/Character/Monster/MonsterBase.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/DDS/Character/Player/DDSPlayerState.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/DDS/Character/Player/DDSPlayerState.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/DDS/Character/Player/DDSPlayerState.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/DDS/Character/Player/DDSPlayerState.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/DDS/Character/Player/PlayerBase.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/DDS/Character/Player/PlayerBase.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/DDS/Character/Player/PlayerBase.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/DDS/Character/Player/PlayerBase.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/DDS/DDS.Build.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Source/DDS/DDS.Build.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/DDS/GameAbilitySystem/DDSAttributeSet.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/DDS/GameAbilitySystem/DDSAttributeSet.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/DDS/GameAbilitySystem/DDSAttributeSet.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/DDS/GameAbilitySystem/DDSAttributeSet.h" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -44,19 +36,19 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.git.unshallow": "true",
-    "git-widget-placeholder": "main",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RunManager">
     <configuration name="DDS" type="Uproject" factoryName="rider.uproject">
       <configuration_1 setup="1">
@@ -142,6 +134,7 @@
       <updated>1739145463358</updated>
       <workItem from="1739145470129" duration="144000" />
       <workItem from="1739145668603" duration="5687000" />
+      <workItem from="1740311019202" duration="3589000" />
     </task>
     <servers />
   </component>

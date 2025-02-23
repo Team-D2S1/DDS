@@ -7,11 +7,43 @@
 #include "DDSAttributeSet.generated.h"
 
 /**
- * 
- */
+ * 기본 어트리부트 세트.
+ * 강의대로 만드는 중
+ *
+ * TODO : Health는 전용 AttributeSet 로 분리해도 될듯
+ * https://dev.epicgames.com/community/learning/tutorials/DPpd/unreal-engine-gameplay-ability-system-best-practices-for-setup#howdoilettheplayeractivateabilities?
+ */ 
 UCLASS()
 class DDS_API UDDSAttributeSet : public UAttributeSet
 {
 	GENERATED_BODY()
+public:
+	UDDSAttributeSet();
+	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
+
+	UPROPERTY(ReplicatedUsing = OnRep_Health, BlueprintReadOnly, Category = "Vital Attributes")
+	FGameplayAttributeData Health;
+
+	UPROPERTY(ReplicatedUsing = OnRep_MaxHealth, BlueprintReadOnly, Category = "Vital Attributes")
+	FGameplayAttributeData MaxHealth;
+
+	UPROPERTY(ReplicatedUsing = OnRep_Stamina, BlueprintReadOnly, Category = "Vital Attributes")
+	FGameplayAttributeData Stamina;
+
+	UPROPERTY(ReplicatedUsing= OnRep_MaxStamina, BlueprintReadOnly, Category = "Vital Attributes")
+	FGameplayAttributeData MaxStamina;
 	
+	UFUNCTION()
+	void OnRep_Health(const FGameplayAttributeData& OldHealth) const;
+
+	UFUNCTION()
+	void OnRep_MaxHealth(const FGameplayAttributeData& OldMaxHealth) const;
+
+	UFUNCTION()
+	void OnRep_Stamina(const FGameplayAttributeData& OldStamina) const;
+
+	UFUNCTION()
+	void OnRep_MaxStamina(const FGameplayAttributeData& OldMaxStamina) const;
 };
+
+
