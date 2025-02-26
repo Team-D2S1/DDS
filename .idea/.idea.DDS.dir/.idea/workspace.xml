@@ -7,15 +7,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="c9c5f200-35e8-49aa-a71a-5167c57f4736" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/.idea.DDS.dir/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.DDS.dir/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Blueprints/Player/BP_DDSPlayerState.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Blueprints/Player/BP_DDSPlayerState.uasset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/DDS/Character/Player/PlayerBase.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/DDS/Character/Player/PlayerBase.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/DDS/Character/Player/PlayerBase.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/DDS/Character/Player/PlayerBase.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/DDS/GameAbilitySystem/DDSAttributeSet.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/DDS/GameAbilitySystem/DDSAttributeSet.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/DDS/GameAbilitySystem/DDSAttributeSet.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/DDS/GameAbilitySystem/DDSAttributeSet.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/DDS/PlayerController/InGamePlayerController.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/DDS/PlayerController/InGamePlayerController.cpp" afterDir="false" />
-    </list>
+    <list default="true" id="c9c5f200-35e8-49aa-a71a-5167c57f4736" name="Changes" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -145,7 +137,7 @@
       <workItem from="1739145668603" duration="5687000" />
       <workItem from="1740311019202" duration="8227000" />
       <workItem from="1740549666409" duration="3473000" />
-      <workItem from="1740566507913" duration="2202000" />
+      <workItem from="1740566507913" duration="2797000" />
     </task>
     <servers />
   </component>
