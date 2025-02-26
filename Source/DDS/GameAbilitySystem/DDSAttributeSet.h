@@ -3,8 +3,16 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "AbilitySystemComponent.h"
 #include "AttributeSet.h"
 #include "DDSAttributeSet.generated.h"
+
+
+#define ATTRIBUTE_ACCESSORS(ClassName, PropertyName) \
+	GAMEPLAYATTRIBUTE_PROPERTY_GETTER(ClassName, PropertyName) \
+	GAMEPLAYATTRIBUTE_VALUE_GETTER(PropertyName) \
+	GAMEPLAYATTRIBUTE_VALUE_SETTER(PropertyName) \
+	GAMEPLAYATTRIBUTE_VALUE_INITTER(PropertyName)
 
 /**
  * 기본 어트리부트 세트.
@@ -23,15 +31,19 @@ public:
 
 	UPROPERTY(ReplicatedUsing = OnRep_Health, BlueprintReadOnly, Category = "Vital Attributes")
 	FGameplayAttributeData Health;
+	ATTRIBUTE_ACCESSORS(UDDSAttributeSet, Health);
 
 	UPROPERTY(ReplicatedUsing = OnRep_MaxHealth, BlueprintReadOnly, Category = "Vital Attributes")
 	FGameplayAttributeData MaxHealth;
-
+	ATTRIBUTE_ACCESSORS(UDDSAttributeSet, MaxHealth);
+	
 	UPROPERTY(ReplicatedUsing = OnRep_Stamina, BlueprintReadOnly, Category = "Vital Attributes")
 	FGameplayAttributeData Stamina;
+	ATTRIBUTE_ACCESSORS(UDDSAttributeSet, Stamina);
 
 	UPROPERTY(ReplicatedUsing= OnRep_MaxStamina, BlueprintReadOnly, Category = "Vital Attributes")
 	FGameplayAttributeData MaxStamina;
+	ATTRIBUTE_ACCESSORS(UDDSAttributeSet, MaxStamina);
 	
 	UFUNCTION()
 	void OnRep_Health(const FGameplayAttributeData& OldHealth) const;

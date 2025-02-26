@@ -8,6 +8,12 @@
 
 UDDSAttributeSet::UDDSAttributeSet()
 {
+	InitHealth(50.f);
+	InitMaxHealth(100.f);
+
+	InitStamina(50.f);
+	InitMaxStamina(100.f);
+	
 }
 
 void UDDSAttributeSet::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const

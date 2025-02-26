@@ -19,10 +19,10 @@ APlayerBase::APlayerBase()
 
 }
 
-UAbilitySystemComponent* APlayerBase::GetAbilitySystemComponent() const
-{
-	return Super::GetAbilitySystemComponent();
-}
+// UAbilitySystemComponent* APlayerBase::GetAbilitySystemComponent() const
+// {
+// 	return Super::GetAbilitySystemComponent();
+// }
 
 void APlayerBase::PossessedBy(AController* NewController)
 {

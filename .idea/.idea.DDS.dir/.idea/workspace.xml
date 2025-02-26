@@ -9,8 +9,12 @@
   <component name="ChangeListManager">
     <list default="true" id="c9c5f200-35e8-49aa-a71a-5167c57f4736" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.DDS.dir/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.DDS.dir/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/Blueprints/Player/BP_DDSPlayerState.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Blueprints/Player/BP_DDSPlayerState.uasset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/DDS/Character/Player/PlayerBase.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/DDS/Character/Player/PlayerBase.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/DDS/Character/Player/PlayerBase.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/DDS/Character/Player/PlayerBase.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Source/DDS/GameAbilitySystem/DDSAttributeSet.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/DDS/GameAbilitySystem/DDSAttributeSet.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Source/DDS/GameAbilitySystem/DDSAttributeSet.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/DDS/GameAbilitySystem/DDSAttributeSet.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/DDS/PlayerController/InGamePlayerController.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/DDS/PlayerController/InGamePlayerController.cpp" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -21,8 +25,13 @@
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="HighlightingSettingsPerFile">
+    <setting file="file://$PROJECT_DIR$/../../../../../Program Files/Epic Games/UE_5.5/Engine/Source/Runtime/CoreUObject/Public/Templates/Casts.h" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/../../../../../Program Files/Epic Games/UE_5.5/Engine/Source/Runtime/CoreUObject/Public/UObject/ObjectPtr.h" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/../../../../../Program Files/Epic Games/UE_5.5/Engine/Source/Runtime/Engine/Classes/Components/ActorComponent.h" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/../../../../../Program Files/Epic Games/UE_5.5/Engine/Source/Runtime/Engine/Classes/GameFramework/Controller.h" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/../../../../../Program Files/Epic Games/UE_5.5/Engine/Source/Runtime/Engine/Classes/GameFramework/Pawn.h" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/../../../../../Program Files/Epic Games/UE_5.5/Engine/Source/Runtime/Engine/Private/Pawn.cpp" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Intermediate/Build/Win64/UnrealEditor/Inc/DDS/UHT/DDSPlayerState.generated.h" root0="SKIP_HIGHLIGHTING" />
   </component>
   <component name="ProblemsViewState">
     <option name="selectedTabId" value="Toolset" />
@@ -56,7 +65,7 @@
         <option name="PLATFORM" value="Win64" />
         <option name="CURRENT_LAUNCH_PROFILE" value="Local" />
         <option name="EXECUTABLE_PATH" value="C:\Program Files\Epic Games\UE_5.5\Engine\Binaries\Win64\UnrealEditor-Win64-DebugGame.exe" />
-        <option name="MANDATORY_PROGRAM_PARAMETERS" value=" &quot;C:\Users\macham\Documents\GitHub\DDS\DDS.uproject&quot;" />
+        <option name="MANDATORY_PROGRAM_PARAMETERS" value=" &quot;C:\Users\macham\Documents\Unreal Projects\DDS\DDS.uproject&quot;" />
         <option name="CUSTOM_PROGRAM_PARAMETERS" value="" />
         <option name="WORKING_DIRECTORY" value="C:\Program Files\Epic Games\UE_5.5" />
         <option name="PASS_PARENT_ENVS" value="1" />
@@ -68,7 +77,7 @@
         <option name="CONFIGURATION" value="DebugGame" />
         <option name="PLATFORM" value="Win64" />
         <option name="CURRENT_LAUNCH_PROFILE" value="Local" />
-        <option name="EXECUTABLE_PATH" value="C:\Users\macham\Documents\GitHub\DDS\Binaries\Win64\DDS-Win64-DebugGame.exe" />
+        <option name="EXECUTABLE_PATH" value="C:\Users\macham\Documents\Unreal Projects\DDS\Binaries\Win64\DDS-Win64-DebugGame.exe" />
         <option name="MANDATORY_PROGRAM_PARAMETERS" value="" />
         <option name="CUSTOM_PROGRAM_PARAMETERS" value="" />
         <option name="WORKING_DIRECTORY" value="C:\Program Files\Epic Games\UE_5.5" />
@@ -82,7 +91,7 @@
         <option name="PLATFORM" value="Win64" />
         <option name="CURRENT_LAUNCH_PROFILE" value="Local" />
         <option name="EXECUTABLE_PATH" value="C:\Program Files\Epic Games\UE_5.5\Engine\Binaries\Win64\UnrealEditor.exe" />
-        <option name="MANDATORY_PROGRAM_PARAMETERS" value=" &quot;C:\Users\macham\Documents\GitHub\DDS\DDS.uproject&quot;" />
+        <option name="MANDATORY_PROGRAM_PARAMETERS" value=" &quot;C:\Users\macham\Documents\Unreal Projects\DDS\DDS.uproject&quot;" />
         <option name="CUSTOM_PROGRAM_PARAMETERS" value="" />
         <option name="WORKING_DIRECTORY" value="C:\Program Files\Epic Games\UE_5.5" />
         <option name="PASS_PARENT_ENVS" value="1" />
@@ -94,7 +103,7 @@
         <option name="CONFIGURATION" value="Development" />
         <option name="PLATFORM" value="Win64" />
         <option name="CURRENT_LAUNCH_PROFILE" value="Local" />
-        <option name="EXECUTABLE_PATH" value="C:\Users\macham\Documents\GitHub\DDS\Binaries\Win64\DDS.exe" />
+        <option name="EXECUTABLE_PATH" value="C:\Users\macham\Documents\Unreal Projects\DDS\Binaries\Win64\DDS.exe" />
         <option name="MANDATORY_PROGRAM_PARAMETERS" value="" />
         <option name="CUSTOM_PROGRAM_PARAMETERS" value="" />
         <option name="WORKING_DIRECTORY" value="C:\Program Files\Epic Games\UE_5.5" />
@@ -107,7 +116,7 @@
         <option name="CONFIGURATION" value="Shipping" />
         <option name="PLATFORM" value="Win64" />
         <option name="CURRENT_LAUNCH_PROFILE" value="Local" />
-        <option name="EXECUTABLE_PATH" value="C:\Users\macham\Documents\GitHub\DDS\Binaries\Win64\DDS-Win64-Shipping.exe" />
+        <option name="EXECUTABLE_PATH" value="C:\Users\macham\Documents\Unreal Projects\DDS\Binaries\Win64\DDS-Win64-Shipping.exe" />
         <option name="MANDATORY_PROGRAM_PARAMETERS" value="" />
         <option name="CUSTOM_PROGRAM_PARAMETERS" value="" />
         <option name="WORKING_DIRECTORY" value="C:\Program Files\Epic Games\UE_5.5" />
@@ -134,7 +143,9 @@
       <updated>1739145463358</updated>
       <workItem from="1739145470129" duration="144000" />
       <workItem from="1739145668603" duration="5687000" />
-      <workItem from="1740311019202" duration="3589000" />
+      <workItem from="1740311019202" duration="8227000" />
+      <workItem from="1740549666409" duration="3473000" />
+      <workItem from="1740566507913" duration="2202000" />
     </task>
     <servers />
   </component>

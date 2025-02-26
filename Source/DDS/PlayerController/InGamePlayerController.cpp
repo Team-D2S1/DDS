@@ -65,6 +65,7 @@ void AInGamePlayerController::Jump()
 	MY_LOG(LogTemp, Log, TEXT("Character Jump"));
 
 	ACharacter* MyCharacter = GetCharacter();
+
 	if(!MyCharacter) return;
 
 	MyCharacter->Jump();
