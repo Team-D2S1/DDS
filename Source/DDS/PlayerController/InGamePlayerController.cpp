@@ -6,8 +6,10 @@
 #include "EnhancedInputSubsystems.h"
 #include "DDS/Character/CombatComponent/CombatComponent.h"
 #include "DDS/Character/Player/PlayerBase.h"
+#include "DDS/DataAsset/Input/DataAsset_InputConfig.h"
 #include "DDS/ETC/CustomLog.h"
-#include "GameFramework/CharacterMovementComponent.h"
+#include "DDS/DDSGameplayTags.h"
+#include "DDS/Components/Input/DDSInputComponent.h"
 #include "GameFramework/SpringArmComponent.h"
 
 AInGamePlayerController::AInGamePlayerController()
@@ -24,29 +26,44 @@ void AInGamePlayerController::BeginPlay()
 {
 	Super::BeginPlay();
 
-	UEnhancedInputLocalPlayerSubsystem* Subsystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(GetLocalPlayer());
-	if(!Subsystem) return;
-
-	Subsystem->AddMappingContext(InputMappingContext, 0);
+	// 강의에선 Setup에서만 했는데 여기서 해야할 이유가 있음?
+	// UEnhancedInputLocalPlayerSubsystem* Subsystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(GetLocalPlayer());
+	// if(!Subsystem) return;
+	//
+	// Subsystem->AddMappingContext(InputMappingContext, 0);
 }
 
 void AInGamePlayerController::SetupInputComponent()
 {
+	checkf(InputConfigDataAsset, TEXT("Input Config Data Asset is null, cannot setup input"));
 	Super::SetupInputComponent();
 
-	UEnhancedInputComponent* EnhancedInputComponent = Cast<UEnhancedInputComponent>(InputComponent);
-	if(!EnhancedInputComponent) return;
+	UEnhancedInputLocalPlayerSubsystem* Subsystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(GetLocalPlayer());
+	if(!Subsystem) return;
 
-	EnhancedInputComponent->BindAction(MoveAction, ETriggerEvent::Triggered, this, &ThisClass::Move);
-	EnhancedInputComponent->BindAction(JumpAction, ETriggerEvent::Started, this, &ThisClass::Jump);
-	EnhancedInputComponent->BindAction(AttackAction, ETriggerEvent::Triggered, this, &ThisClass::Attack);
-	EnhancedInputComponent->BindAction(DashAction, ETriggerEvent::Triggered, this, &ThisClass::Dash);
-	EnhancedInputComponent->BindAction(LookAction, ETriggerEvent::Triggered, this, &ThisClass::Look);
+	Subsystem->AddMappingContext(InputConfigDataAsset->DefaultMappingContext, 0);
 
+	UDDSInputComponent* DDSInputComponent = CastChecked<UDDSInputComponent>(InputComponent);
+	DDSInputComponent->BindAction(InputConfigDataAsset, DDSGameplayTags::InputTag_Move, ETriggerEvent::Triggered, this, &ThisClass::Input_Move);
+	DDSInputComponent->BindAction(InputConfigDataAsset, DDSGameplayTags::InputTag_Jump, ETriggerEvent::Started, this, &ThisClass::Input_Jump);
+	DDSInputComponent->BindAction(InputConfigDataAsset, DDSGameplayTags::InputTag_Look, ETriggerEvent::Triggered, this, &ThisClass::Input_Look);
+
+#pragma region Legacy Input Binding
+	// UEnhancedInputComponent* EnhancedInputComponent = Cast<UEnhancedInputComponent>(InputComponent);
+	// if(!EnhancedInputComponent) return;
+
+	// EnhancedInputComponent->BindAction(MoveAction, ETriggerEvent::Triggered, this, &ThisClass::Move);
+	// EnhancedInputComponent->BindAction(JumpAction, ETriggerEvent::Started, this, &ThisClass::Jump);
+	// EnhancedInputComponent->BindAction(AttackAction, ETriggerEvent::Triggered, this, &ThisClass::Attack);
+	// EnhancedInputComponent->BindAction(DashAction, ETriggerEvent::Triggered, this, &ThisClass::Dash);
+	// EnhancedInputComponent->BindAction(LookAction, ETriggerEvent::Triggered, this, &ThisClass::Look);
+#pragma endregion
+
+	
 	MY_LOG(LogTemp, Log, TEXT("Setup Input Complete"));
 }
 
-void AInGamePlayerController::Move(const FInputActionValue& Value)
+void AInGamePlayerController::Input_Move(const FInputActionValue& Value)
 {
 	FVector2D MoveVector = Value.Get<FVector2D>();
 	FRotator YawRotator(0.f, GetControlRotation().Yaw, 0.f);
@@ -55,12 +72,14 @@ void AInGamePlayerController::Move(const FInputActionValue& Value)
 
 	APawn* MyPawn = GetPawn();
 	if(!MyPawn) return;
-
+	
 	MyPawn->AddMovementInput(ForwardVector, MoveVector.Y);
 	MyPawn->AddMovementInput(RightVector, MoveVector.X);
+	// MyPawn->AddControllerYawInput(MoveVector.X);
+	// MyPawn->AddControllerPitchInput(MoveVector.Y);
 }
 
-void AInGamePlayerController::Jump()
+void AInGamePlayerController::Input_Jump()
 {
 	MY_LOG(LogTemp, Log, TEXT("Character Jump"));
 
@@ -71,20 +90,20 @@ void AInGamePlayerController::Jump()
 	MyCharacter->Jump();
 }
 
-void AInGamePlayerController::Attack()
-{
-	MY_LOG(LogTemp, Log, TEXT("Character Attack"));
-}
+// void AInGamePlayerController::Attack()
+// {
+// 	MY_LOG(LogTemp, Log, TEXT("Character Attack"));
+// }
+//
+// void AInGamePlayerController::Dash()
+// {
+// 	MY_LOG(LogTemp, Log, TEXT("Character Dash"));
+// }
 
-void AInGamePlayerController::Dash()
-{
-	MY_LOG(LogTemp, Log, TEXT("Character Dash"));
-}
-
-void AInGamePlayerController::Look(const FInputActionValue& Value)
+void AInGamePlayerController::Input_Look(const FInputActionValue& Value)
 {
 	MY_LOG(LogTemp, Log, TEXT("Character Look"));
-
+	
 	FVector2D LookVector = Value.Get<FVector2D>();
 
 	ACharacter* MyCharacter = GetCharacter();
