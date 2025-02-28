@@ -69,12 +69,20 @@ void AInGamePlayerController::Input_Move(const FInputActionValue& Value)
 	FRotator YawRotator(0.f, GetControlRotation().Yaw, 0.f);
 	FVector ForwardVector = FRotationMatrix(YawRotator).GetUnitAxis(EAxis::X);
 	FVector RightVector = FRotationMatrix(YawRotator).GetUnitAxis(EAxis::Y);
-
+	// FVector ForwardVector = YawRotator.RotateVector(FVector::ForwardVector);
+	// FVector RightVector = YawRotator.RotateVector(FVector::RightVector);
 	APawn* MyPawn = GetPawn();
 	if(!MyPawn) return;
-	
-	MyPawn->AddMovementInput(ForwardVector, MoveVector.Y);
-	MyPawn->AddMovementInput(RightVector, MoveVector.X);
+	if (MoveVector.Y != 0.f)
+	{
+		MyPawn->AddMovementInput(ForwardVector, MoveVector.Y);
+	}
+	if (MoveVector.X != 0.f)
+	{
+		MyPawn->AddMovementInput(RightVector, MoveVector.X);
+	}
+	// MyPawn->AddMovementInput(ForwardVector, MoveVector.Y);
+	// MyPawn->AddMovementInput(RightVector, MoveVector.X);
 	// MyPawn->AddControllerYawInput(MoveVector.X);
 	// MyPawn->AddControllerPitchInput(MoveVector.Y);
 }
@@ -105,18 +113,27 @@ void AInGamePlayerController::Input_Look(const FInputActionValue& Value)
 	MY_LOG(LogTemp, Log, TEXT("Character Look"));
 	
 	FVector2D LookVector = Value.Get<FVector2D>();
-
-	ACharacter* MyCharacter = GetCharacter();
-	if(!MyCharacter) return;
-
-	APlayerBase* MyPlayer = Cast<APlayerBase>(MyCharacter);
-	if(!MyPlayer) return;
-
-	FRotator CurrentRotation = MyPlayer->GetSpringArmComponent()->GetRelativeRotation();
-
-	CurrentRotation.Yaw += LookVector.X;
-	CurrentRotation.Pitch = CurrentRotation.Pitch + LookVector.Y;
-
-	MyPlayer->GetSpringArmComponent()->SetRelativeRotation(CurrentRotation);
+	// APawn* MyPawn = GetPawn();
+	// if(!MyPawn) return;
+	if (LookVector.X != 0.f)
+	{
+		AddYawInput(LookVector.X);
+	}
+	if (LookVector.Y != 0.f)
+	{
+		AddPitchInput(LookVector.Y);
+	}
+	// ACharacter* MyCharacter = GetCharacter();
+	// if(!MyCharacter) return;
+	//
+	// APlayerBase* MyPlayer = Cast<APlayerBase>(MyCharacter);
+	// if(!MyPlayer) return;
+	//
+	// FRotator CurrentRotation = MyPlayer->GetSpringArmComponent()->GetRelativeRotation();
+	//
+	// CurrentRotation.Yaw += LookVector.X;
+	// CurrentRotation.Pitch = CurrentRotation.Pitch + LookVector.Y;
+	//
+	// MyPlayer->GetSpringArmComponent()->SetRelativeRotation(CurrentRotation);
 	
 }

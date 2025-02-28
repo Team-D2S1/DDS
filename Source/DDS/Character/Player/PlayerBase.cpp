@@ -7,16 +7,26 @@
 #include "Camera/CameraComponent.h"
 #include "DDS/ETC/CustomLog.h"
 #include "DDS/GameAbilitySystem/DDSAbilitySystemComponent.h"
+#include "GameFramework/CharacterMovementComponent.h"
 #include "GameFramework/SpringArmComponent.h"
 
 APlayerBase::APlayerBase()
 {
+	bUseControllerRotationPitch = false;
+	bUseControllerRotationYaw = false;
+	bUseControllerRotationRoll = false;
+	
 	SpringArm = CreateDefaultSubobject<USpringArmComponent>(TEXT("Spring Arm"));
-	Camera = CreateDefaultSubobject<UCameraComponent>(TEXT("Camera"));
 	SpringArm->SetupAttachment(GetMesh());
+	SpringArm->bUsePawnControlRotation = true;
+	
+	Camera = CreateDefaultSubobject<UCameraComponent>(TEXT("Camera"));
 	Camera->SetupAttachment(SpringArm, USpringArmComponent::SocketName);
+	Camera->bUsePawnControlRotation = false;
 
-
+	GetCharacterMovement()->bOrientRotationToMovement = true;
+	// GetCharacterMovement()->bUseControllerDesiredRotation = false; // 강의엔 없는데 넣어봄
+	GetCharacterMovement()->RotationRate = FRotator(0.f, 540.f, 0.f);
 }
 
 // UAbilitySystemComponent* APlayerBase::GetAbilitySystemComponent() const
