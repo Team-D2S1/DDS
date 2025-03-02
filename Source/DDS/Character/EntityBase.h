@@ -41,9 +41,6 @@ protected:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Character Data", meta = (AllowPrivateAccess = "true"))
 	TSoftObjectPtr<UDataAsset_StartUpDataBase> EntityStartUpDataBase;
 
-
-	UFUNCTION()
-	void OnRep_CharacterData();
 public:	
 	virtual void Tick(float DeltaTime) override;
 	FORCEINLINE UDDSAbilitySystemComponent* GetWarriorAbilitySystemComponent() const {return AbilitySystemComponent;}
