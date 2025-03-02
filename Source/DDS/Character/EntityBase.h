@@ -38,19 +38,15 @@ protected:
 	UPROPERTY(EditDefaultsOnly,BlueprintReadOnly,Category="AbilitySystem")
 	TObjectPtr<UDDSAttributeSet> AttributeSet;
 	
-	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Character Data", meta = (AllowPrivateAccess = "true"),ReplicatedUsing=OnRep_CharacterData)
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Character Data", meta = (AllowPrivateAccess = "true"))
 	TSoftObjectPtr<UDataAsset_StartUpDataBase> EntityStartUpDataBase;
 
 
-	UFUNCTION()
-	void OnRep_CharacterData();
+	// UFUNCTION()
+	// void OnRep_CharacterData();
 public:	
 	virtual void Tick(float DeltaTime) override;
 	FORCEINLINE UDDSAbilitySystemComponent* GetWarriorAbilitySystemComponent() const {return AbilitySystemComponent;}
 	FORCEINLINE UDDSAttributeSet* GetWarriorAttributeSet() const {return AttributeSet;}
 	
 };
-
-inline void AEntityBase::OnRep_CharacterData()
-{
-}
