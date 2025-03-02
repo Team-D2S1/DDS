@@ -35,8 +35,8 @@ protected:
 	UPROPERTY(EditDefaultsOnly,BlueprintReadOnly,Category="AbilitySystem")
 	TObjectPtr<UDDSAbilitySystemComponent> AbilitySystemComponent;
 
-	UPROPERTY(VisibleAnywhere,BlueprintReadOnly,Category="AbilitySystem")
-	TObjectPtr<EditDefaultsOnly> AttributeSet;
+	UPROPERTY(EditDefaultsOnly,BlueprintReadOnly,Category="AbilitySystem")
+	TObjectPtr<UDDSAttributeSet> AttributeSet;
 	
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Character Data", meta = (AllowPrivateAccess = "true"),ReplicatedUsing=OnRep_CharacterData)
 	TSoftObjectPtr<UDataAsset_StartUpDataBase> EntityStartUpDataBase;
