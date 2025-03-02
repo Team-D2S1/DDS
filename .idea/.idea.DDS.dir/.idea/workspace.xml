@@ -8,9 +8,14 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="c9c5f200-35e8-49aa-a71a-5167c57f4736" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/.idea.DDS.dir/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.DDS.dir/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Config/DefaultEngine.ini" beforeDir="false" afterPath="$PROJECT_DIR$/Config/DefaultEngine.ini" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Blueprints/Player/BP_TPlayer.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Blueprints/Player/BP_TPlayer.uasset" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Content/Blueprints/Player/DA_Player.uasset" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Content/Blueprints/Player/GameplayAbility/GA_Player_Spawn_TestSword.uasset" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Content/Blueprints/Player/Weapon/BP_PlayerTestWeapon.uasset" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Content/Blueprints/Shared/GameplayAbility/GA_Shared_SpawnWeapon.uasset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/Assets/ARPG_Warrior/Demo/Mannequin/Character/Mesh/SK_Mannequin.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Assets/ARPG_Warrior/Demo/Mannequin/Character/Mesh/SK_Mannequin.uasset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/Assets/ARPG_Warrior/Demo/Mannequin/Character/Mesh/UE4_Mannequin_Skeleton.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Assets/ARPG_Warrior/Demo/Mannequin/Character/Mesh/UE4_Mannequin_Skeleton.uasset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/DDS/Character/Player/DDSPlayerState.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/DDS/Character/Player/DDSPlayerState.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/DDS/Character/Player/DDSPlayerState.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/DDS/Character/Player/DDSPlayerState.h" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
