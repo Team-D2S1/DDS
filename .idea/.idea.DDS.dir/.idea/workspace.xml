@@ -9,12 +9,12 @@
   <component name="ChangeListManager">
     <list default="true" id="c9c5f200-35e8-49aa-a71a-5167c57f4736" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.DDS.dir/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.DDS.dir/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/Assets/ARPG_Warrior/Demo/Mannequin/Character/Mesh/UE4_Mannequin_Skeleton.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Assets/ARPG_Warrior/Demo/Mannequin/Character/Mesh/UE4_Mannequin_Skeleton.uasset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/Blueprints/Player/DA_Player.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Blueprints/Player/DA_Player.uasset" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Content/Blueprints/Player/GameplayAbility/GA_Player_Spawn_TestSword.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Blueprints/Player/GameplayAbility/GA_Player_Spawn_TestSword.uasset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/DDS/Character/EntityBase.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/DDS/Character/EntityBase.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/DDS/Character/Player/DDSPlayerState.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/DDS/Character/Player/DDSPlayerState.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/DDS/Character/Player/PlayerBase.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/DDS/Character/Player/PlayerBase.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/DDS/DataAsset/StartUpData/DataAsset_StartUpDataBase.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/DDS/DataAsset/StartUpData/DataAsset_StartUpDataBase.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/DDS/GameAbilitySystem/Abilities/DDSGameplayAbility.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/DDS/GameAbilitySystem/Abilities/DDSGameplayAbility.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/Blueprints/Player/Weapon/BP_PlayerTestWeapon.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Blueprints/Player/Weapon/BP_PlayerTestWeapon.uasset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/Blueprints/Shared/GameplayAbility/GA_Shared_SpawnWeapon.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Blueprints/Shared/GameplayAbility/GA_Shared_SpawnWeapon.uasset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/DDS/Items/Weapons/DDSWeaponBase.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/DDS/Items/Weapons/DDSWeaponBase.cpp" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -73,6 +73,7 @@
     <setting file="file://$PROJECT_DIR$/Source/DDS/GameAbilitySystem/DDSAbilitySystemComponent.h" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Source/DDS/GameAbilitySystem/DDSAttributeSet.h" root0="FORCE_HIGHLIGHTING" />
   </component>
+  <component name="MetaFilesCheckinStateConfiguration" checkMetaFiles="true" />
   <component name="ProblemsViewState">
     <option name="selectedTabId" value="CurrentFile" />
   </component>
@@ -208,6 +209,7 @@
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
   </component>
+  <component name="UnityCheckinConfiguration" checkUnsavedScenes="true" />
   <component name="UnityProjectConfiguration" hasMinimizedUI="false" />
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
