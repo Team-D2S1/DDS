@@ -91,6 +91,8 @@ void AInGamePlayerController::Input_Jump()
 
 void AInGamePlayerController::Input_Look(const FInputActionValue& Value)
 {
+	// MY_LOG(LogTemp, Log, TEXT("Character Look"));
+	
 	FVector2D LookVector = Value.Get<FVector2D>();
 	// APawn* MyPawn = GetPawn();
 	// if(!MyPawn) return;

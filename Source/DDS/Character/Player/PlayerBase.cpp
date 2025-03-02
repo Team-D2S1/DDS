@@ -5,6 +5,7 @@
 
 #include "DDSPlayerState.h"
 #include "Camera/CameraComponent.h"
+#include "DataAsset/StartUpData/DataAsset_StartUpDataBase.h"
 #include "DDS/ETC/CustomLog.h"
 #include "DDS/GameAbilitySystem/DDSAbilitySystemComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
@@ -38,8 +39,19 @@ void APlayerBase::PossessedBy(AController* NewController)
 {
 	Super::PossessedBy(NewController);
 
+	
 	// 서버에서 actor info 초기화
 	InitAbilityActorInfo();
+	if (!EntityStartUpDataBase.IsNull())
+	{
+		// MY_LOG(LogTemp,Log,TEXT("EntityStartUpDataBase not null"))
+		UDataAsset_StartUpDataBase* LoadedData = EntityStartUpDataBase.LoadSynchronous();
+		if (LoadedData)
+		{
+			// MY_LOG(LogTemp,Log,TEXT("LoadedData not null"))
+			LoadedData->GiveToAbilitySystemComponent(AbilitySystemComponent);
+		}
+	}
 }
 
 void APlayerBase::OnRep_PlayerState()
@@ -48,11 +60,14 @@ void APlayerBase::OnRep_PlayerState()
 
 	// 클라이언트에서 actor info 초기화
 	InitAbilityActorInfo();
+	
+
 }
 
 void APlayerBase::Tick(float DeltaSeconds)
 {
 	Super::Tick(DeltaSeconds);
+
 }
 
 void APlayerBase::BeginPlay()
@@ -63,13 +78,14 @@ void APlayerBase::BeginPlay()
 void APlayerBase::InitAbilityActorInfo()
 {
 	ADDSPlayerState* DDSPlayerState = GetPlayerState<ADDSPlayerState>();
-	
+	// MY_LOG(LogTemp,Log,TEXT("InitAbilityActorInfo"))
 	if (!DDSPlayerState)
 	{
 		MY_LOG(LogTemp, Error, TEXT("PlayerState is nullptr"));
 		return;
 	}
 	DDSPlayerState->GetAbilitySystemComponent()->InitAbilityActorInfo(DDSPlayerState, this);
-	AbilitySystemComponent = DDSPlayerState->GetAbilitySystemComponent();
-	AttributeSet = DDSPlayerState->GetAttributeSet();
+	AbilitySystemComponent = DDSPlayerState->GetDDSAbilitySystemComponent();
+	AttributeSet = DDSPlayerState->GetDDSAttribueSet();
+
 }

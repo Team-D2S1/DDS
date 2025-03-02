@@ -4,9 +4,11 @@
 
 #include "CoreMinimal.h"
 #include "AbilitySystemInterface.h"
+#include "GameAbilitySystem/IDDSAbilitySystemInterface.h"
 #include "GameFramework/PlayerState.h"
 #include "DDSPlayerState.generated.h"
 
+class UDDSAttributeSet;
 class UAbilitySystemComponent;
 class UAttributeSet;
 
@@ -14,19 +16,25 @@ class UAttributeSet;
  * 
  */
 UCLASS()
-class DDS_API ADDSPlayerState : public APlayerState, public IAbilitySystemInterface
+class DDS_API ADDSPlayerState : public APlayerState, public IAbilitySystemInterface,public IIDDSAbilitySystemInterface
 {
 	GENERATED_BODY()
 
 public:
 	ADDSPlayerState();
 
-	virtual UAbilitySystemComponent* GetAbilitySystemComponent() const override;
-	UAttributeSet* GetAttributeSet() const { return AttributeSet; }
-protected:
-	UPROPERTY()
-	TObjectPtr<UAbilitySystemComponent> AbilitySystemComponent;
+	// UFUNCTION(Exec)
+	// void PrintAllAbilities() const;
 
-	UPROPERTY()
-	TObjectPtr<UAttributeSet> AttributeSet;
+
+	virtual UAbilitySystemComponent* GetAbilitySystemComponent() const override;
+	virtual UDDSAbilitySystemComponent* GetDDSAbilitySystemComponent() const override;
+	UAttributeSet* GetAttributeSet() const;
+	UDDSAttributeSet* GetDDSAttribueSet() const;
+protected:
+	UPROPERTY(VisibleAnywhere,BlueprintReadOnly,Category="AbilitySystem")
+	TObjectPtr<UDDSAbilitySystemComponent> AbilitySystemComponent;
+
+	UPROPERTY(VisibleAnywhere,BlueprintReadOnly,Category="AbilitySystem")
+	TObjectPtr<UDDSAttributeSet> AttributeSet;
 };

@@ -20,7 +20,36 @@ ADDSPlayerState::ADDSPlayerState()
 	AttributeSet = CreateDefaultSubobject<UDDSAttributeSet>(TEXT("AttributeSet"));
 }
 
+// void ADDSPlayerState::PrintAllAbilities() const
+// {	
+// 	if (AbilitySystemComponent)
+// 	{
+// 		for (const FGameplayAbilitySpec& AbilitySpec : AbilitySystemComponent->GetActivatableAbilities())
+// 		{
+// 			UE_LOG(LogTemp, Log, TEXT("Ability: %s, Level: %d"),
+// 				*AbilitySpec.Ability->GetClass()->GetName(), 
+// 				AbilitySpec.Level)s
+// 		}
+// 	}
+// }
+
 UAbilitySystemComponent* ADDSPlayerState::GetAbilitySystemComponent() const
 {
 	return AbilitySystemComponent;
 }
+
+UDDSAbilitySystemComponent* ADDSPlayerState::GetDDSAbilitySystemComponent() const
+{
+	return AbilitySystemComponent;
+}
+
+UAttributeSet* ADDSPlayerState::GetAttributeSet() const
+{
+	return AttributeSet;
+}
+
+UDDSAttributeSet* ADDSPlayerState::GetDDSAttribueSet() const
+{
+	return AttributeSet;
+}
+

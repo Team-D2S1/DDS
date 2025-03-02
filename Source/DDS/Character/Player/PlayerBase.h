@@ -32,6 +32,8 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Camera")
 	TObjectPtr<UCameraComponent> Camera;	
 
+
+
 public:
 	FORCEINLINE USpringArmComponent* GetSpringArmComponent() { return SpringArm; }
 
