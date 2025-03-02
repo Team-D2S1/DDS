@@ -38,7 +38,7 @@ protected:
 	UPROPERTY(VisibleAnywhere,BlueprintReadOnly,Category="AbilitySystem")
 	TObjectPtr<UDDSAttributeSet> AttributeSet;
 	
-	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Character Data", meta = (AllowPrivateAccess = "true"),ReplicatedUsing=OnRep_CharacterData)
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Character Data", meta = (AllowPrivateAccess = "true"))
 	TSoftObjectPtr<UDataAsset_StartUpDataBase> EntityStartUpDataBase;
 
 
@@ -50,7 +50,3 @@ public:
 	FORCEINLINE UDDSAttributeSet* GetWarriorAttributeSet() const {return AttributeSet;}
 	
 };
-
-inline void AEntityBase::OnRep_CharacterData()
-{
-}
