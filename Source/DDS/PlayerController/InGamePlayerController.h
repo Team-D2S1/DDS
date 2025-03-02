@@ -34,32 +34,19 @@ protected:
 	UFUNCTION(BlueprintCallable)
 	void Input_Jump();
 
-	// UFUNCTION(BlueprintCallable)
-	// void Attack();
-	//
-	// UFUNCTION(BlueprintCallable)
-	// void Dash();
-
 	UFUNCTION(BlueprintCallable)
 	void Input_Look(const FInputActionValue& Value);
+	
+	// UFUNCTION(BlueprintCallable)
+	// void Input_Attack();
+	//
+	// UFUNCTION(BlueprintCallable)
+	// void Input_Dash();
 	
 public:
 	UPROPERTY()
 	TObjectPtr<UCombatComponent> CombatComponent;
 
-protected:
-	// UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Input")
-	// TObjectPtr<UInputMappingContext> InputMappingContext;
-	// UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Input")
-	// TObjectPtr<UInputAction> MoveAction;
-	// UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Input")
-	// TObjectPtr<UInputAction> AttackAction;
-	// UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Input")
-	// TObjectPtr<UInputAction> JumpAction;
-	// UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Input")
-	// TObjectPtr<UInputAction> DashAction;
-	// UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Input")
-	// TObjectPtr<UInputAction> LookAction;
 private:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Character Data", meta = (AllowPrivateAccess = "true"))
 	UDataAsset_InputConfig* InputConfigDataAsset;

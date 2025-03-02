@@ -25,10 +25,10 @@ protected:
 	virtual void BeginPlay() override;
 
 
-	UPROPERTY()
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
 	TObjectPtr< UAbilitySystemComponent> AbilitySystemComponent;
 
-	UPROPERTY()
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
 	TObjectPtr<UAttributeSet> AttributeSet;
 public:	
 	virtual void Tick(float DeltaTime) override;

@@ -48,18 +48,6 @@ void AInGamePlayerController::SetupInputComponent()
 	DDSInputComponent->BindAction(InputConfigDataAsset, DDSGameplayTags::InputTag_Jump, ETriggerEvent::Started, this, &ThisClass::Input_Jump);
 	DDSInputComponent->BindAction(InputConfigDataAsset, DDSGameplayTags::InputTag_Look, ETriggerEvent::Triggered, this, &ThisClass::Input_Look);
 
-#pragma region Legacy Input Binding
-	// UEnhancedInputComponent* EnhancedInputComponent = Cast<UEnhancedInputComponent>(InputComponent);
-	// if(!EnhancedInputComponent) return;
-
-	// EnhancedInputComponent->BindAction(MoveAction, ETriggerEvent::Triggered, this, &ThisClass::Move);
-	// EnhancedInputComponent->BindAction(JumpAction, ETriggerEvent::Started, this, &ThisClass::Jump);
-	// EnhancedInputComponent->BindAction(AttackAction, ETriggerEvent::Triggered, this, &ThisClass::Attack);
-	// EnhancedInputComponent->BindAction(DashAction, ETriggerEvent::Triggered, this, &ThisClass::Dash);
-	// EnhancedInputComponent->BindAction(LookAction, ETriggerEvent::Triggered, this, &ThisClass::Look);
-#pragma endregion
-
-	
 	MY_LOG(LogTemp, Log, TEXT("Setup Input Complete"));
 }
 
@@ -69,8 +57,7 @@ void AInGamePlayerController::Input_Move(const FInputActionValue& Value)
 	FRotator YawRotator(0.f, GetControlRotation().Yaw, 0.f);
 	FVector ForwardVector = FRotationMatrix(YawRotator).GetUnitAxis(EAxis::X);
 	FVector RightVector = FRotationMatrix(YawRotator).GetUnitAxis(EAxis::Y);
-	// FVector ForwardVector = YawRotator.RotateVector(FVector::ForwardVector);
-	// FVector RightVector = YawRotator.RotateVector(FVector::RightVector);
+	
 	APawn* MyPawn = GetPawn();
 	if(!MyPawn) return;
 	if (MoveVector.Y != 0.f)
@@ -81,16 +68,10 @@ void AInGamePlayerController::Input_Move(const FInputActionValue& Value)
 	{
 		MyPawn->AddMovementInput(RightVector, MoveVector.X);
 	}
-	// MyPawn->AddMovementInput(ForwardVector, MoveVector.Y);
-	// MyPawn->AddMovementInput(RightVector, MoveVector.X);
-	// MyPawn->AddControllerYawInput(MoveVector.X);
-	// MyPawn->AddControllerPitchInput(MoveVector.Y);
 }
 
 void AInGamePlayerController::Input_Jump()
 {
-	MY_LOG(LogTemp, Log, TEXT("Character Jump"));
-
 	ACharacter* MyCharacter = GetCharacter();
 
 	if(!MyCharacter) return;
@@ -110,8 +91,6 @@ void AInGamePlayerController::Input_Jump()
 
 void AInGamePlayerController::Input_Look(const FInputActionValue& Value)
 {
-	MY_LOG(LogTemp, Log, TEXT("Character Look"));
-	
 	FVector2D LookVector = Value.Get<FVector2D>();
 	// APawn* MyPawn = GetPawn();
 	// if(!MyPawn) return;
@@ -121,19 +100,6 @@ void AInGamePlayerController::Input_Look(const FInputActionValue& Value)
 	}
 	if (LookVector.Y != 0.f)
 	{
-		AddPitchInput(LookVector.Y);
+		AddPitchInput(-LookVector.Y);
 	}
-	// ACharacter* MyCharacter = GetCharacter();
-	// if(!MyCharacter) return;
-	//
-	// APlayerBase* MyPlayer = Cast<APlayerBase>(MyCharacter);
-	// if(!MyPlayer) return;
-	//
-	// FRotator CurrentRotation = MyPlayer->GetSpringArmComponent()->GetRelativeRotation();
-	//
-	// CurrentRotation.Yaw += LookVector.X;
-	// CurrentRotation.Pitch = CurrentRotation.Pitch + LookVector.Y;
-	//
-	// MyPlayer->GetSpringArmComponent()->SetRelativeRotation(CurrentRotation);
-	
 }
