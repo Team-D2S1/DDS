@@ -15,7 +15,12 @@ AEntityBase::AEntityBase()
 void AEntityBase::PossessedBy(AController* NewController)
 {
 	Super::PossessedBy(NewController);
-	if (ensure(EntityStartUpDataBase.IsNull()))
+
+	// if (EntityStartUpDataBase.IsNull())
+	// {
+	// 	MY_LOG(LogTemp,Error,TEXT("Forgot to assign start up data to %s"),*GetName())
+	// }
+	if (!ensure(!EntityStartUpDataBase.IsNull()))
 	{
 		MY_LOG(LogTemp,Error,TEXT("Forgot to assign start up data to %s"),*GetName())
 	}
