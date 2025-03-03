@@ -5,6 +5,7 @@
     <file url="file://$PROJECT_DIR$/Source/DDS/AI/AIController/AIControllerBase.h" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/Source/DDS/Character/Player/DDSPlayerState.cpp" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/Source/DDS/Character/Player/DDSPlayerState.h" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/Source/DDS/Components/Combat/PawnCombatComponent.h" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/Source/DDS/GameAbilitySystem/DDSAttributeSet.cpp" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/Source/DDS/GameAbilitySystem/DDSAttributeSet.h" charset="UTF-8" />
   </component>

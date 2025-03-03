@@ -5,6 +5,7 @@
 
 #include "DDSPlayerState.h"
 #include "Camera/CameraComponent.h"
+#include "Components/Combat/PlayerCombatComponent.h"
 #include "DataAsset/StartUpData/DataAsset_StartUpDataBase.h"
 #include "DDS/ETC/CustomLog.h"
 #include "DDS/GameAbilitySystem/DDSAbilitySystemComponent.h"
@@ -28,6 +29,9 @@ APlayerBase::APlayerBase()
 	GetCharacterMovement()->bOrientRotationToMovement = true;
 	// GetCharacterMovement()->bUseControllerDesiredRotation = false; // 강의엔 없는데 넣어봄
 	GetCharacterMovement()->RotationRate = FRotator(0.f, 540.f, 0.f);
+
+
+	CreateDefaultSubobject<UPlayerCombatComponent>(TEXT("PlayerCombatComponent"));
 }
 
 // UAbilitySystemComponent* APlayerBase::GetAbilitySystemComponent() const

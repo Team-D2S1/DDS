@@ -4,11 +4,11 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/PlayerController.h"
-#include "InputMappingContext.h"
+// #include "InputMappingContext.h"
 #include "InGamePlayerController.generated.h"
 
 class UDataAsset_InputConfig;
-class UCombatComponent;
+// class UCombatComponent;
 /**
  * 
  */
@@ -44,8 +44,8 @@ protected:
 	// void Input_Dash();
 	
 public:
-	UPROPERTY()
-	TObjectPtr<UCombatComponent> CombatComponent;
+	// UPROPERTY()
+	// TObjectPtr<UCombatComponent> CombatComponent;
 
 private:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Character Data", meta = (AllowPrivateAccess = "true"))

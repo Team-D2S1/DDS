@@ -6,6 +6,7 @@
 #include "DDS/Character/EntityBase.h"
 #include "PlayerBase.generated.h"
 
+class UPlayerCombatComponent;
 class UCameraComponent;
 class USpringArmComponent;
 /**
@@ -26,17 +27,18 @@ protected:
 	virtual void Tick(float DeltaSeconds) override;
 	virtual void BeginPlay() override;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Camera")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Camera", meta = (AllowPrivateAccess = "true"))
 	TObjectPtr<USpringArmComponent> SpringArm;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Camera")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Camera", meta = (AllowPrivateAccess = "true"))
 	TObjectPtr<UCameraComponent> Camera;	
 
-
-
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Combat", meta = (AllowPrivateAccess = "true"))
+	TObjectPtr<UPlayerCombatComponent> CombatComponent;
 public:
 	FORCEINLINE USpringArmComponent* GetSpringArmComponent() { return SpringArm; }
 
+	FORCEINLINE UPlayerCombatComponent* GetCombatComponent() { return CombatComponent; }
 private:
 	void InitAbilityActorInfo();
 };

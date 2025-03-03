@@ -4,7 +4,7 @@
 #include "InGamePlayerController.h"
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
-#include "DDS/Character/CombatComponent/CombatComponent.h"
+// #include "DDS/Character/CombatComponent/CombatComponent.h"
 #include "DDS/Character/Player/PlayerBase.h"
 #include "DDS/DataAsset/Input/DataAsset_InputConfig.h"
 #include "DDS/ETC/CustomLog.h"
@@ -14,7 +14,7 @@
 
 AInGamePlayerController::AInGamePlayerController()
 {
-	CombatComponent = CreateDefaultSubobject<UCombatComponent>(TEXT("Combat Component"));
+	// CombatComponent = CreateDefaultSubobject<UCombatComponent>(TEXT("Combat Component"));
 }
 
 void AInGamePlayerController::Tick(float DeltaSeconds)
