@@ -31,7 +31,8 @@ APlayerBase::APlayerBase()
 	GetCharacterMovement()->RotationRate = FRotator(0.f, 540.f, 0.f);
 
 
-	CreateDefaultSubobject<UPlayerCombatComponent>(TEXT("PlayerCombatComponent"));
+	CombatComponent = CreateDefaultSubobject<UPlayerCombatComponent>(TEXT("PlayerCombatComponent"));
+	CombatComponent->SetIsReplicated(true);
 }
 
 // UAbilitySystemComponent* APlayerBase::GetAbilitySystemComponent() const
@@ -46,7 +47,16 @@ void APlayerBase::PossessedBy(AController* NewController)
 	
 	// 서버에서 actor info 초기화
 	InitAbilityActorInfo();
-
+	if (!EntityStartUpDataBase.IsNull())
+	{
+		MY_LOG(LogTemp,Log,TEXT("EntityStartUpDataBase not null"))
+		UDataAsset_StartUpDataBase* LoadedData = EntityStartUpDataBase.LoadSynchronous();
+		if (LoadedData)
+		{
+			MY_LOG(LogTemp,Log,TEXT("LoadedData not null"))
+			LoadedData->GiveToAbilitySystemComponent(AbilitySystemComponent);
+		}
+	}
 }
 
 void APlayerBase::OnRep_PlayerState()
@@ -81,17 +91,5 @@ void APlayerBase::InitAbilityActorInfo()
 	DDSPlayerState->GetAbilitySystemComponent()->InitAbilityActorInfo(DDSPlayerState, this);
 	AbilitySystemComponent = DDSPlayerState->GetDDSAbilitySystemComponent();
 	AttributeSet = DDSPlayerState->GetDDSAttribueSet();
-	if (HasAuthority())
-	{
-		if (!EntityStartUpDataBase.IsNull())
-		{
-			MY_LOG(LogTemp,Log,TEXT("EntityStartUpDataBase not null"))
-			UDataAsset_StartUpDataBase* LoadedData = EntityStartUpDataBase.LoadSynchronous();
-			if (LoadedData)
-			{
-				MY_LOG(LogTemp,Log,TEXT("LoadedData not null"))
-				LoadedData->GiveToAbilitySystemComponent(AbilitySystemComponent);
-			}
-		}
-	}
+
 }
