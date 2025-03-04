@@ -9,8 +9,6 @@
   <component name="ChangeListManager">
     <list default="true" id="c9c5f200-35e8-49aa-a71a-5167c57f4736" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.DDS.dir/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.DDS.dir/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Blueprints/Player/DA_Player.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Blueprints/Player/DA_Player.uasset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/DDS/Character/Player/PlayerBase.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/DDS/Character/Player/PlayerBase.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Source/DDS/GameAbilitySystem/Abilities/DDSGameplayAbility.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/DDS/GameAbilitySystem/Abilities/DDSGameplayAbility.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Source/DDS/GameAbilitySystem/Abilities/SpawnWeaponAbility.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/DDS/GameAbilitySystem/Abilities/SpawnWeaponAbility.cpp" afterDir="false" />
     </list>
@@ -213,7 +211,7 @@
       <workItem from="1740930229982" duration="368000" />
       <workItem from="1741001102813" duration="1225000" />
       <workItem from="1741003894857" duration="6010000" />
-      <workItem from="1741091657667" duration="4321000" />
+      <workItem from="1741091657667" duration="5347000" />
     </task>
     <servers />
   </component>
