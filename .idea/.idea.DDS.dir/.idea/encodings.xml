@@ -3,10 +3,43 @@
   <component name="Encoding" addBOMForNewFiles="with BOM under Windows, with no BOM otherwise">
     <file url="file://$PROJECT_DIR$/Source/DDS/AI/AIController/AIControllerBase.cpp" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/Source/DDS/AI/AIController/AIControllerBase.h" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/Source/DDS/Actor/DDSEffectActor.cpp" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/Source/DDS/Actor/DDSEffectActor.h" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/Source/DDS/AnimInstances/DDSBaseAnimInstance.cpp" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/Source/DDS/AnimInstances/DDSBaseAnimInstance.h" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/Source/DDS/AnimInstances/DDSCharacterAnimInstance.cpp" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/Source/DDS/AnimInstances/DDSCharacterAnimInstance.h" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/Source/DDS/AnimInstances/Player/DDSPlayerAnimInstance.cpp" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/Source/DDS/AnimInstances/Player/DDSPlayerAnimInstance.h" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/Source/DDS/AnimInstances/Player/DDSPlayerLinkedAnimLayer.cpp" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/Source/DDS/AnimInstances/Player/DDSPlayerLinkedAnimLayer.h" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/Source/DDS/Character/Player/DDSPlayerState.cpp" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/Source/DDS/Character/Player/DDSPlayerState.h" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/Source/DDS/Components/Combat/EnemyCombatComponent.cpp" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/Source/DDS/Components/Combat/EnemyCombatComponent.h" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/Source/DDS/Components/Combat/PawnCombatComponent.cpp" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/Source/DDS/Components/Combat/PawnCombatComponent.h" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/Source/DDS/Components/Combat/PlayerCombatComponent.cpp" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/Source/DDS/Components/Combat/PlayerCombatComponent.h" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/Source/DDS/Components/PawnExtensionComponentBase.cpp" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/Source/DDS/Components/PawnExtensionComponentBase.h" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/Source/DDS/DataAsset/Input/DataAsset_InputConfig.cpp" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/Source/DDS/DataAsset/Input/DataAsset_InputConfig.h" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/Source/DDS/DataAsset/StartUpData/DataAsset_PlayerStartUpData.cpp" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/Source/DDS/DataAsset/StartUpData/DataAsset_PlayerStartUpData.h" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/Source/DDS/DataAsset/StartUpData/DataAsset_StartUpDataBase.cpp" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/Source/DDS/DataAsset/StartUpData/DataAsset_StartUpDataBase.h" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/Source/DDS/GameAbilitySystem/Abilities/DDSGameplayAbility.cpp" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/Source/DDS/GameAbilitySystem/Abilities/DDSGameplayAbility.h" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/Source/DDS/GameAbilitySystem/Abilities/SpawnWeaponAbility.cpp" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/Source/DDS/GameAbilitySystem/Abilities/SpawnWeaponAbility.h" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/Source/DDS/GameAbilitySystem/DDSAttributeSet.cpp" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/Source/DDS/GameAbilitySystem/DDSAttributeSet.h" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/Source/DDS/GameAbilitySystem/IDDSAbilitySystemInterface.cpp" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/Source/DDS/GameAbilitySystem/IDDSAbilitySystemInterface.h" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/Source/DDS/Items/Weapons/DDSPlayerWeapon.cpp" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/Source/DDS/Items/Weapons/DDSPlayerWeapon.h" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/Source/DDS/Items/Weapons/DDSWeaponBase.cpp" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/Source/DDS/Items/Weapons/DDSWeaponBase.h" charset="UTF-8" />
   </component>
 </project>

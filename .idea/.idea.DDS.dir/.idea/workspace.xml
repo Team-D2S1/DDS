@@ -113,74 +113,62 @@
   </component>
   <component name="RunManager">
     <configuration name="DDS" type="Uproject" factoryName="rider.uproject">
-      <configuration_1 setup="1">
+      <option name="PROJECT_FILE_PATH" value="$PROJECT_DIR$/DDS.uproject" />
+      <configuration_2>
         <option name="CONFIGURATION" value="DebugGame Editor" />
         <option name="PLATFORM" value="Win64" />
-        <option name="CURRENT_LAUNCH_PROFILE" value="Local" />
-        <option name="EXECUTABLE_PATH" value="C:\Program Files\Epic Games\UE_5.5\Engine\Binaries\Win64\UnrealEditor-Win64-DebugGame.exe" />
-        <option name="MANDATORY_PROGRAM_PARAMETERS" value=" &quot;C:\Users\macham\Documents\Unreal Projects\DDS\DDS.uproject&quot;" />
+        <option name="EXECUTABLE_PATH" value="D:\Unreal\UE_5.5\Engine\Binaries\Win64\UnrealEditor-Win64-DebugGame.exe" />
+        <option name="WORKING_DIRECTORY" value="D:\Unreal\UE_5.5" />
+        <option name="MANDATORY_PROGRAM_PARAMETERS" value=" &quot;D:\Project\DDS\DDS.uproject&quot;" />
         <option name="CUSTOM_PROGRAM_PARAMETERS" value="" />
-        <option name="WORKING_DIRECTORY" value="C:\Program Files\Epic Games\UE_5.5" />
         <option name="PASS_PARENT_ENVS" value="1" />
         <option name="USE_EXTERNAL_CONSOLE" value="1" />
         <option name="TERMINAL_INTERACTION_BEHAVIOR" value="FORCE_CONSOLE" />
-        <option name="PROJECT_FILE_PATH" value="$PROJECT_DIR$/DDS.uproject" />
-      </configuration_1>
-      <configuration_2 setup="1">
+      </configuration_2>
+      <configuration_3>
         <option name="CONFIGURATION" value="DebugGame" />
         <option name="PLATFORM" value="Win64" />
-        <option name="CURRENT_LAUNCH_PROFILE" value="Local" />
-        <option name="EXECUTABLE_PATH" value="C:\Users\macham\Documents\Unreal Projects\DDS\Binaries\Win64\DDS-Win64-DebugGame.exe" />
+        <option name="EXECUTABLE_PATH" value="D:\Project\DDS\Binaries\Win64\DDS-Win64-DebugGame.exe" />
+        <option name="WORKING_DIRECTORY" value="D:\Unreal\UE_5.5" />
         <option name="MANDATORY_PROGRAM_PARAMETERS" value="" />
         <option name="CUSTOM_PROGRAM_PARAMETERS" value="" />
-        <option name="WORKING_DIRECTORY" value="C:\Program Files\Epic Games\UE_5.5" />
         <option name="PASS_PARENT_ENVS" value="1" />
         <option name="USE_EXTERNAL_CONSOLE" value="1" />
         <option name="TERMINAL_INTERACTION_BEHAVIOR" value="FORCE_CONSOLE" />
-        <option name="PROJECT_FILE_PATH" value="$PROJECT_DIR$/DDS.uproject" />
-      </configuration_2>
-      <configuration_3 setup="1">
+      </configuration_3>
+      <configuration_4>
         <option name="CONFIGURATION" value="Development Editor" />
         <option name="PLATFORM" value="Win64" />
-        <option name="CURRENT_LAUNCH_PROFILE" value="Local" />
-        <option name="EXECUTABLE_PATH" value="C:\Program Files\Epic Games\UE_5.5\Engine\Binaries\Win64\UnrealEditor.exe" />
-        <option name="MANDATORY_PROGRAM_PARAMETERS" value=" &quot;C:\Users\macham\Documents\Unreal Projects\DDS\DDS.uproject&quot;" />
+        <option name="EXECUTABLE_PATH" value="D:\Unreal\UE_5.5\Engine\Binaries\Win64\UnrealEditor.exe" />
+        <option name="WORKING_DIRECTORY" value="D:\Unreal\UE_5.5" />
+        <option name="MANDATORY_PROGRAM_PARAMETERS" value=" &quot;D:\Project\DDS\DDS.uproject&quot;" />
         <option name="CUSTOM_PROGRAM_PARAMETERS" value="" />
-        <option name="WORKING_DIRECTORY" value="C:\Program Files\Epic Games\UE_5.5" />
         <option name="PASS_PARENT_ENVS" value="1" />
         <option name="USE_EXTERNAL_CONSOLE" value="1" />
         <option name="TERMINAL_INTERACTION_BEHAVIOR" value="FORCE_CONSOLE" />
-        <option name="PROJECT_FILE_PATH" value="$PROJECT_DIR$/DDS.uproject" />
-      </configuration_3>
-      <configuration_4 setup="1">
+      </configuration_4>
+      <configuration_5>
         <option name="CONFIGURATION" value="Development" />
         <option name="PLATFORM" value="Win64" />
-        <option name="CURRENT_LAUNCH_PROFILE" value="Local" />
-        <option name="EXECUTABLE_PATH" value="C:\Users\macham\Documents\Unreal Projects\DDS\Binaries\Win64\DDS.exe" />
+        <option name="EXECUTABLE_PATH" value="D:\Project\DDS\Binaries\Win64\DDS.exe" />
+        <option name="WORKING_DIRECTORY" value="D:\Unreal\UE_5.5" />
         <option name="MANDATORY_PROGRAM_PARAMETERS" value="" />
         <option name="CUSTOM_PROGRAM_PARAMETERS" value="" />
-        <option name="WORKING_DIRECTORY" value="C:\Program Files\Epic Games\UE_5.5" />
         <option name="PASS_PARENT_ENVS" value="1" />
         <option name="USE_EXTERNAL_CONSOLE" value="1" />
         <option name="TERMINAL_INTERACTION_BEHAVIOR" value="FORCE_CONSOLE" />
-        <option name="PROJECT_FILE_PATH" value="$PROJECT_DIR$/DDS.uproject" />
-      </configuration_4>
-      <configuration_5 setup="1">
+      </configuration_5>
+      <configuration_6>
         <option name="CONFIGURATION" value="Shipping" />
         <option name="PLATFORM" value="Win64" />
-        <option name="CURRENT_LAUNCH_PROFILE" value="Local" />
-        <option name="EXECUTABLE_PATH" value="C:\Users\macham\Documents\Unreal Projects\DDS\Binaries\Win64\DDS-Win64-Shipping.exe" />
+        <option name="EXECUTABLE_PATH" value="D:\Project\DDS\Binaries\Win64\DDS-Win64-Shipping.exe" />
+        <option name="WORKING_DIRECTORY" value="D:\Unreal\UE_5.5" />
         <option name="MANDATORY_PROGRAM_PARAMETERS" value="" />
         <option name="CUSTOM_PROGRAM_PARAMETERS" value="" />
-        <option name="WORKING_DIRECTORY" value="C:\Program Files\Epic Games\UE_5.5" />
         <option name="PASS_PARENT_ENVS" value="1" />
         <option name="USE_EXTERNAL_CONSOLE" value="1" />
         <option name="TERMINAL_INTERACTION_BEHAVIOR" value="FORCE_CONSOLE" />
-        <option name="PROJECT_FILE_PATH" value="$PROJECT_DIR$/DDS.uproject" />
-      </configuration_5>
-      <option name="DEFAULT_PROJECT_PATH" value="$PROJECT_DIR$/DDS.uproject" />
-      <option name="PROJECT_FILE_PATH" value="$PROJECT_DIR$/DDS.uproject" />
-      <option name="AUTO_SELECT_PRIORITY" value="10010" />
+      </configuration_6>
       <method v="2">
         <option name="Build" />
       </method>
