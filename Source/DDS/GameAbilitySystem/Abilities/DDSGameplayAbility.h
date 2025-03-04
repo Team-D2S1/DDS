@@ -34,4 +34,7 @@ protected:
 
 	UFUNCTION(BlueprintPure, Category = "Warrior|Ability")
 	UPawnCombatComponent* GetPawnCombatComponent() const;
+public:
+	UFUNCTION(BlueprintPure, Category = "Warrior|Ability")
+	FORCEINLINE EDDSAbilityActivationPolicy GetAbilityActivationPolicy() const { return AbilityActivationPolicy; }
 };

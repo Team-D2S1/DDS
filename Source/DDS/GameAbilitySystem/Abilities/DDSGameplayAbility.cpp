@@ -11,6 +11,11 @@ void UDDSGameplayAbility::OnGiveAbility(const FGameplayAbilityActorInfo* ActorIn
 {
 	Super::OnGiveAbility(ActorInfo, Spec);
 
+	if (!ActorInfo->AvatarActor->HasAuthority())
+	{
+		return;
+	}
+	
 	MY_LOG(LogTemp,Log,TEXT("OnGiveAbility"))
 	if (AbilityActivationPolicy == EDDSAbilityActivationPolicy::OnGiven)
 	{

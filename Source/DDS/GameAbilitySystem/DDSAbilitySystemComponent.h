@@ -6,6 +6,7 @@
 #include "AbilitySystemComponent.h"
 #include "DDSAbilitySystemComponent.generated.h"
 
+class UDDSGameplayAbility;
 /**
  * 
  */
@@ -15,18 +16,15 @@ class DDS_API UDDSAbilitySystemComponent : public UAbilitySystemComponent
 	GENERATED_BODY()
 
 public:
+	void AbilityActorInfoSet();
+	
+	void AddCharacterAbilities(const TArray<TSubclassOf<UDDSGameplayAbility>>& StartupAbilities);
 
+	void AbilityInputTagHeld(const FGameplayTag& InputTag);
+	void AbilityInputTagReleased(const FGameplayTag& InputTag);
 protected:
 
-
-
-protected:
-	// Handles to abilities that had their input pressed this frame.
-	TArray<FGameplayAbilitySpecHandle> InputPressedSpecHandles;
-
-	// Handles to abilities that had their input released this frame.
-	TArray<FGameplayAbilitySpecHandle> InputReleasedSpecHandles;
-
-	// Handles to abilities that have their input held.
-	TArray<FGameplayAbilitySpecHandle> InputHeldSpecHandles;
+	// TODO 이펙트 적용시 클라이언트에게 알림
+	// UFUNCTION(Client, Reliable)
+	// void ClientEffectApplied(UAbilitySystemComponent* AbilitySystemComponent, const FGameplayEffectSpec& EffectSpec, FActiveGameplayEffectHandle ActiveEffectHandle);
 };

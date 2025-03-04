@@ -33,5 +33,5 @@ void USpawnWeaponAbility::ActivateAbility(const FGameplayAbilitySpecHandle Handl
 
 	GetPawnCombatComponent()->RegisterSpawnedWeapon(WeaponTag, Weapon, bRegisterAsEquippedWeapon);
 
-	EndAbility(Handle, ActorInfo, ActivationInfo, true, false);
+	// EndAbility(Handle, ActorInfo, ActivationInfo, true, false);
 }

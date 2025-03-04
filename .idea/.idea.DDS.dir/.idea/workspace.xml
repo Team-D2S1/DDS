@@ -8,9 +8,16 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="c9c5f200-35e8-49aa-a71a-5167c57f4736" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/DDS.uproject.DotSettings.user" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.DDS.dir/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.DDS.dir/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/Blueprints/Player/Weapon/BP_PlayerTestWeapon.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Blueprints/Player/Weapon/BP_PlayerTestWeapon.uasset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/DDS/Character/Player/PlayerBase.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/DDS/Character/Player/PlayerBase.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/DDS/DataAsset/StartUpData/DataAsset_StartUpDataBase.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/DDS/DataAsset/StartUpData/DataAsset_StartUpDataBase.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Source/DDS/GameAbilitySystem/Abilities/DDSGameplayAbility.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/DDS/GameAbilitySystem/Abilities/DDSGameplayAbility.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/DDS/GameAbilitySystem/Abilities/DDSGameplayAbility.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/DDS/GameAbilitySystem/Abilities/DDSGameplayAbility.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Source/DDS/GameAbilitySystem/Abilities/SpawnWeaponAbility.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/DDS/GameAbilitySystem/Abilities/SpawnWeaponAbility.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/DDS/GameAbilitySystem/DDSAbilitySystemComponent.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/DDS/GameAbilitySystem/DDSAbilitySystemComponent.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/DDS/GameAbilitySystem/DDSAbilitySystemComponent.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/DDS/GameAbilitySystem/DDSAbilitySystemComponent.h" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -26,19 +33,27 @@
   <component name="HighlightingSettingsPerFile">
     <setting file="file://$PROJECT_DIR$/../../../../../Program Files/Epic Games/UE_5.5/Engine/Source/Editor/ClassViewer/Private/SClassViewer.cpp" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/../../../../../Program Files/Epic Games/UE_5.5/Engine/Source/Editor/UnrealEd/Private/Kismet2/Kismet2.cpp" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/../../../../../Program Files/Epic Games/UE_5.5/Engine/Source/Runtime/AnimGraphRuntime/Private/AnimNodes/AnimNode_BlendListBase.cpp" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/../../../../../Program Files/Epic Games/UE_5.5/Engine/Source/Runtime/AnimGraphRuntime/Public/AnimCustomInstanceHelper.h" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/../../../../../Program Files/Epic Games/UE_5.5/Engine/Source/Runtime/AnimGraphRuntime/Public/AnimNodes/AnimNode_CallFunction.h" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/../../../../../Program Files/Epic Games/UE_5.5/Engine/Source/Runtime/AnimGraphRuntime/Public/AnimNodes/AnimNode_RotationOffsetBlendSpace.h" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/../../../../../Program Files/Epic Games/UE_5.5/Engine/Source/Runtime/ApplicationCore/Private/Android/AndroidInputInterface.cpp" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/../../../../../Program Files/Epic Games/UE_5.5/Engine/Source/Runtime/Core/Private/Math/UnrealMath.cpp" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/../../../../../Program Files/Epic Games/UE_5.5/Engine/Source/Runtime/Core/Public/Containers/Array.h" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/../../../../../Program Files/Epic Games/UE_5.5/Engine/Source/Runtime/Core/Public/HAL/Platform.h" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/../../../../../Program Files/Epic Games/UE_5.5/Engine/Source/Runtime/Core/Public/Math/Vector.h" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/../../../../../Program Files/Epic Games/UE_5.5/Engine/Source/Runtime/Core/Public/Misc/AssertionMacros.h" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/../../../../../Program Files/Epic Games/UE_5.5/Engine/Source/Runtime/Core/Public/Templates/PointerIsConvertibleFromTo.h" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/../../../../../Program Files/Epic Games/UE_5.5/Engine/Source/Runtime/CoreUObject/Public/Templates/Casts.h" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/../../../../../Program Files/Epic Games/UE_5.5/Engine/Source/Runtime/CoreUObject/Public/Templates/SubclassOf.h" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/../../../../../Program Files/Epic Games/UE_5.5/Engine/Source/Runtime/CoreUObject/Public/UObject/Class.h" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/../../../../../Program Files/Epic Games/UE_5.5/Engine/Source/Runtime/CoreUObject/Public/UObject/ObjectPtr.h" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/../../../../../Program Files/Epic Games/UE_5.5/Engine/Source/Runtime/Engine/Classes/Animation/AnimInstance.h" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/../../../../../Program Files/Epic Games/UE_5.5/Engine/Source/Runtime/Engine/Classes/Components/ActorComponent.h" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/../../../../../Program Files/Epic Games/UE_5.5/Engine/Source/Runtime/Engine/Classes/Components/BoxComponent.h" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/../../../../../Program Files/Epic Games/UE_5.5/Engine/Source/Runtime/Engine/Classes/Engine/EngineTypes.h" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/../../../../../Program Files/Epic Games/UE_5.5/Engine/Source/Runtime/Engine/Classes/Engine/LevelBounds.h" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/../../../../../Program Files/Epic Games/UE_5.5/Engine/Source/Runtime/Engine/Classes/GameFramework/Actor.h" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/../../../../../Program Files/Epic Games/UE_5.5/Engine/Source/Runtime/Engine/Classes/GameFramework/Character.h" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/../../../../../Program Files/Epic Games/UE_5.5/Engine/Source/Runtime/Engine/Classes/GameFramework/CharacterMovementComponent.h" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/../../../../../Program Files/Epic Games/UE_5.5/Engine/Source/Runtime/Engine/Classes/GameFramework/Controller.h" root0="FORCE_HIGHLIGHTING" />
@@ -72,7 +87,7 @@
     <setting file="file://$PROJECT_DIR$/Source/DDS/DDSGameplayTags.cpp" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Source/DDS/DDSGameplayTags.h" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Source/DDS/DataAsset/Input/DataAsset_InputConfig.cpp" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/Source/DDS/DataAsset/StartUpData/DataAsset_StartUpDataBase.cpp" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Source/DDS/DataAsset/StartUpData/DataAsset_StartUpDataBase.cpp" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Source/DDS/DataAsset/StartUpData/DataAsset_StartUpDataBase.h" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Source/DDS/GameAbilitySystem/DDSAbilitySystemComponent.cpp" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Source/DDS/GameAbilitySystem/DDSAbilitySystemComponent.h" root0="FORCE_HIGHLIGHTING" />
@@ -96,13 +111,14 @@
   &quot;keyToString&quot;: {
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
-    &quot;Uproject.DDS.executor&quot;: &quot;Run&quot;,
+    &quot;Uproject.DDS.executor&quot;: &quot;Debug&quot;,
     &quot;git-widget-placeholder&quot;: &quot;main&quot;,
     &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
     &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
     &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
     &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
     &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.toDoOptions&quot;,
     &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
 }</component>
@@ -113,62 +129,74 @@
   </component>
   <component name="RunManager">
     <configuration name="DDS" type="Uproject" factoryName="rider.uproject">
-      <option name="PROJECT_FILE_PATH" value="$PROJECT_DIR$/DDS.uproject" />
-      <configuration_2>
+      <configuration_1 setup="1">
         <option name="CONFIGURATION" value="DebugGame Editor" />
         <option name="PLATFORM" value="Win64" />
+        <option name="CURRENT_LAUNCH_PROFILE" value="Local" />
         <option name="EXECUTABLE_PATH" value="D:\Unreal\UE_5.5\Engine\Binaries\Win64\UnrealEditor-Win64-DebugGame.exe" />
-        <option name="WORKING_DIRECTORY" value="D:\Unreal\UE_5.5" />
         <option name="MANDATORY_PROGRAM_PARAMETERS" value=" &quot;D:\Project\DDS\DDS.uproject&quot;" />
         <option name="CUSTOM_PROGRAM_PARAMETERS" value="" />
+        <option name="WORKING_DIRECTORY" value="D:\Unreal\UE_5.5" />
         <option name="PASS_PARENT_ENVS" value="1" />
         <option name="USE_EXTERNAL_CONSOLE" value="1" />
         <option name="TERMINAL_INTERACTION_BEHAVIOR" value="FORCE_CONSOLE" />
-      </configuration_2>
-      <configuration_3>
+        <option name="PROJECT_FILE_PATH" value="$PROJECT_DIR$/DDS.uproject" />
+      </configuration_1>
+      <configuration_2 setup="1">
         <option name="CONFIGURATION" value="DebugGame" />
         <option name="PLATFORM" value="Win64" />
+        <option name="CURRENT_LAUNCH_PROFILE" value="Local" />
         <option name="EXECUTABLE_PATH" value="D:\Project\DDS\Binaries\Win64\DDS-Win64-DebugGame.exe" />
-        <option name="WORKING_DIRECTORY" value="D:\Unreal\UE_5.5" />
         <option name="MANDATORY_PROGRAM_PARAMETERS" value="" />
         <option name="CUSTOM_PROGRAM_PARAMETERS" value="" />
+        <option name="WORKING_DIRECTORY" value="D:\Unreal\UE_5.5" />
         <option name="PASS_PARENT_ENVS" value="1" />
         <option name="USE_EXTERNAL_CONSOLE" value="1" />
         <option name="TERMINAL_INTERACTION_BEHAVIOR" value="FORCE_CONSOLE" />
-      </configuration_3>
-      <configuration_4>
+        <option name="PROJECT_FILE_PATH" value="$PROJECT_DIR$/DDS.uproject" />
+      </configuration_2>
+      <configuration_3 setup="1">
         <option name="CONFIGURATION" value="Development Editor" />
         <option name="PLATFORM" value="Win64" />
+        <option name="CURRENT_LAUNCH_PROFILE" value="Local" />
         <option name="EXECUTABLE_PATH" value="D:\Unreal\UE_5.5\Engine\Binaries\Win64\UnrealEditor.exe" />
-        <option name="WORKING_DIRECTORY" value="D:\Unreal\UE_5.5" />
         <option name="MANDATORY_PROGRAM_PARAMETERS" value=" &quot;D:\Project\DDS\DDS.uproject&quot;" />
         <option name="CUSTOM_PROGRAM_PARAMETERS" value="" />
+        <option name="WORKING_DIRECTORY" value="D:\Unreal\UE_5.5" />
         <option name="PASS_PARENT_ENVS" value="1" />
         <option name="USE_EXTERNAL_CONSOLE" value="1" />
         <option name="TERMINAL_INTERACTION_BEHAVIOR" value="FORCE_CONSOLE" />
-      </configuration_4>
-      <configuration_5>
+        <option name="PROJECT_FILE_PATH" value="$PROJECT_DIR$/DDS.uproject" />
+      </configuration_3>
+      <configuration_4 setup="1">
         <option name="CONFIGURATION" value="Development" />
         <option name="PLATFORM" value="Win64" />
+        <option name="CURRENT_LAUNCH_PROFILE" value="Local" />
         <option name="EXECUTABLE_PATH" value="D:\Project\DDS\Binaries\Win64\DDS.exe" />
-        <option name="WORKING_DIRECTORY" value="D:\Unreal\UE_5.5" />
         <option name="MANDATORY_PROGRAM_PARAMETERS" value="" />
         <option name="CUSTOM_PROGRAM_PARAMETERS" value="" />
+        <option name="WORKING_DIRECTORY" value="D:\Unreal\UE_5.5" />
         <option name="PASS_PARENT_ENVS" value="1" />
         <option name="USE_EXTERNAL_CONSOLE" value="1" />
         <option name="TERMINAL_INTERACTION_BEHAVIOR" value="FORCE_CONSOLE" />
-      </configuration_5>
-      <configuration_6>
+        <option name="PROJECT_FILE_PATH" value="$PROJECT_DIR$/DDS.uproject" />
+      </configuration_4>
+      <configuration_5 setup="1">
         <option name="CONFIGURATION" value="Shipping" />
         <option name="PLATFORM" value="Win64" />
+        <option name="CURRENT_LAUNCH_PROFILE" value="Local" />
         <option name="EXECUTABLE_PATH" value="D:\Project\DDS\Binaries\Win64\DDS-Win64-Shipping.exe" />
-        <option name="WORKING_DIRECTORY" value="D:\Unreal\UE_5.5" />
         <option name="MANDATORY_PROGRAM_PARAMETERS" value="" />
         <option name="CUSTOM_PROGRAM_PARAMETERS" value="" />
+        <option name="WORKING_DIRECTORY" value="D:\Unreal\UE_5.5" />
         <option name="PASS_PARENT_ENVS" value="1" />
         <option name="USE_EXTERNAL_CONSOLE" value="1" />
         <option name="TERMINAL_INTERACTION_BEHAVIOR" value="FORCE_CONSOLE" />
-      </configuration_6>
+        <option name="PROJECT_FILE_PATH" value="$PROJECT_DIR$/DDS.uproject" />
+      </configuration_5>
+      <option name="DEFAULT_PROJECT_PATH" value="$PROJECT_DIR$/DDS.uproject" />
+      <option name="PROJECT_FILE_PATH" value="$PROJECT_DIR$/DDS.uproject" />
+      <option name="AUTO_SELECT_PRIORITY" value="0" />
       <method v="2">
         <option name="Build" />
       </method>
@@ -199,7 +227,8 @@
       <workItem from="1740930229982" duration="368000" />
       <workItem from="1741001102813" duration="1225000" />
       <workItem from="1741003894857" duration="6010000" />
-      <workItem from="1741091657667" duration="5347000" />
+      <workItem from="1741091657667" duration="11267000" />
+      <workItem from="1741125805649" duration="2572000" />
     </task>
     <servers />
   </component>
@@ -210,5 +239,9 @@
   <component name="UnityProjectConfiguration" hasMinimizedUI="false" />
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
+  </component>
+  <component name="XSLT-Support.FileAssociations.UIState">
+    <expand />
+    <select />
   </component>
 </project>
