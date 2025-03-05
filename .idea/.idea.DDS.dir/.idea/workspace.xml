@@ -9,25 +9,7 @@
   <component name="ChangeListManager">
     <list default="true" id="c9c5f200-35e8-49aa-a71a-5167c57f4736" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.DDS.dir/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.DDS.dir/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Config/DefaultEngine.ini" beforeDir="false" afterPath="$PROJECT_DIR$/Config/DefaultEngine.ini" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Blueprints/Player/DA_Player.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Blueprints/Player/DA_Player.uasset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Input/DA_InputConfig.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Input/DA_InputConfig.uasset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Input/DefaultInput/IMC_Default.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Input/DefaultInput/IMC_Default.uasset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/DDS/Character/EntityBase.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/DDS/Character/EntityBase.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/DDS/Components/Input/DDSInputComponent.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/DDS/Components/Input/DDSInputComponent.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/DDS/DDSGameplayTags.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/DDS/DDSGameplayTags.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/DDS/DDSGameplayTags.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/DDS/DDSGameplayTags.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/DDS/DataAsset/Input/DataAsset_InputConfig.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/DDS/DataAsset/Input/DataAsset_InputConfig.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/DDS/DataAsset/StartUpData/DataAsset_PlayerStartUpData.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/DDS/DataAsset/StartUpData/DataAsset_PlayerStartUpData.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/DDS/DataAsset/StartUpData/DataAsset_PlayerStartUpData.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/DDS/DataAsset/StartUpData/DataAsset_PlayerStartUpData.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/DDS/DataAsset/StartUpData/DataAsset_StartUpDataBase.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/DDS/DataAsset/StartUpData/DataAsset_StartUpDataBase.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/DDS/GameAbilitySystem/Abilities/DDSGameplayAbility.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/DDS/GameAbilitySystem/Abilities/DDSGameplayAbility.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/DDS/GameAbilitySystem/Abilities/DDSGameplayAbility.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/DDS/GameAbilitySystem/Abilities/DDSGameplayAbility.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/DDS/GameAbilitySystem/Abilities/SpawnWeaponAbility.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/DDS/GameAbilitySystem/Abilities/SpawnWeaponAbility.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/DDS/GameAbilitySystem/DDSAbilitySystemComponent.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/DDS/GameAbilitySystem/DDSAbilitySystemComponent.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/DDS/GameAbilitySystem/DDSAbilitySystemComponent.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/DDS/GameAbilitySystem/DDSAbilitySystemComponent.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Source/DDS/PlayerController/InGamePlayerController.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/DDS/PlayerController/InGamePlayerController.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/DDS/PlayerController/InGamePlayerController.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/DDS/PlayerController/InGamePlayerController.h" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -239,7 +221,7 @@
       <workItem from="1741001102813" duration="1225000" />
       <workItem from="1741003894857" duration="6010000" />
       <workItem from="1741091657667" duration="11267000" />
-      <workItem from="1741125805649" duration="11016000" />
+      <workItem from="1741125805649" duration="11743000" />
     </task>
     <servers />
   </component>

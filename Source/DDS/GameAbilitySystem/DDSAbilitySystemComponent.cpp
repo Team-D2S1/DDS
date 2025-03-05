@@ -40,6 +40,18 @@ void UDDSAbilitySystemComponent::AddCharacterAbilities(const TArray<TSubclassOf<
 
 void UDDSAbilitySystemComponent::AbilityInputTagPressed(const FGameplayTag& InputTag)
 {
+	if (!InputTag.IsValid())
+	{
+		return;
+	}
+
+	for (const FGameplayAbilitySpec& spec : GetActivatableAbilities())
+	{
+		if (spec.GetDynamicSpecSourceTags().HasTagExact(InputTag))
+		{
+			TryActivateAbility(spec.Handle);
+		}
+	}
 }
 
 
