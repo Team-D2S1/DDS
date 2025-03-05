@@ -6,6 +6,7 @@
 #include "AIController.h"
 #include "AIControllerBase.generated.h"
 
+class UDDSPerceptionComponent;
 class UAISenseConfig_Damage;
 class UAISenseConfig_Hearing;
 class UAISenseConfig_Sight;
@@ -22,10 +23,6 @@ public:
 	AAIControllerBase(FObjectInitializer const& ObjectInitializer);
 	
 	virtual void BeginPlay() override;
-
-	void SetupPerception();
-
-	virtual void InitPerception();
 	
 protected:
 	virtual void OnPossess(APawn* InPawn) override;
@@ -37,7 +34,7 @@ protected:
 	TObjectPtr<UBlackboardData> BlackBoardData;
 	
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "AI")
-	TObjectPtr<UAIPerceptionComponent> AIPerception;
+	TObjectPtr<UDDSPerceptionComponent> AIPerception;
 
 	UPROPERTY(VisibleAnywhere,Category = "Stat")
 	TObjectPtr<UAbilitySystemComponent> AbilityComponent;
@@ -47,22 +44,6 @@ protected:
 
 	// 어그로 관련.. 감지된 Actor와 어그로 순위 (높은 대상을 우선해서 쫓거나 공격)
 	TArray<TPair<AActor*, float>> DetectedActors; 
-	
-	UPROPERTY(EditDefaultsOnly, Category = "Agressive")
-	float FrontDetectionRange;
-	UPROPERTY(EditDefaultsOnly, Category = "Agressive")
-	float RearDetectionRange;
-	UPROPERTY(EditDefaultsOnly, Category = "Agressive")
-	float SoundDetectionRange;
-
-	UPROPERTY(EditDefaultsOnly, Category = "Agressive")
-	TObjectPtr<UAISenseConfig_Sight> Config_FrontSight;
-	UPROPERTY(EditDefaultsOnly, Category = "Agressive")
-	TObjectPtr<UAISenseConfig_Sight> Config_RearSight;
-	UPROPERTY(EditDefaultsOnly, Category = "Agressive")
-	TObjectPtr<UAISenseConfig_Hearing> Config_Hearing;
-	UPROPERTY(EditDefaultsOnly, Category = "Agressive")
-	TObjectPtr<UAISenseConfig_Damage> Config_Damage;
 	
 	// 이동 관련
 	UPROPERTY(VisibleAnywhere, Category = "AI Movement")

@@ -3,46 +3,22 @@
 
 #include "AIControllerBase.h"
 
+#include "AI/DDSPerceptionComponent.h"
 #include "BehaviorTree/BlackboardComponent.h"
 #include "Character/Monster/MonsterBase.h"
-#include "ETC/CustomLog.h"
 #include "Perception/AIPerceptionComponent.h"
 #include "Perception/AISenseConfig_Sight.h"
 
 AAIControllerBase::AAIControllerBase(FObjectInitializer const& ObjectInitializer)
 {
-	AIPerception = CreateDefaultSubobject<UAIPerceptionComponent>(TEXT("AI Perception"));
+	AIPerception = CreateDefaultSubobject<UDDSPerceptionComponent>(TEXT("AI Perception"));
 	SetPerceptionComponent(*AIPerception);
-	SetupPerception();
 }
 
 void AAIControllerBase::BeginPlay()
 {
 	Super::BeginPlay();
-
-	InitPerception();
-}
-
-void AAIControllerBase::SetupPerception()
-{
-	// 전방 시야 설정
-	Config_FrontSight = CreateDefaultSubobject<UAISenseConfig_Sight>(TEXT("Front Sight"));
-	Config_FrontSight->PeripheralVisionAngleDegrees  = 60.f;
-	Config_FrontSight->DetectionByAffiliation.bDetectEnemies = true;
-	Config_FrontSight->DetectionByAffiliation.bDetectFriendlies = true;
-	Config_FrontSight->DetectionByAffiliation.bDetectNeutrals = true;
-
-	AIPerception->ConfigureSense(*Config_FrontSight);
-	AIPerception->SetDominantSense(Config_FrontSight->GetSenseImplementation());
 	AIPerception->OnTargetPerceptionUpdated.AddDynamic(this, &ThisClass::OnTargetPerceptionUpdated);
-}
-
-void AAIControllerBase::InitPerception()
-{
-	Config_FrontSight->SightRadius = FrontDetectionRange;
-	Config_FrontSight->LoseSightRadius = FrontDetectionRange + 100.f;
-
-	AIPerception->ConfigureSense(*Config_FrontSight);
 }
 
 void AAIControllerBase::OnTargetPerceptionUpdated(AActor* Actor, FAIStimulus Stimulus)
