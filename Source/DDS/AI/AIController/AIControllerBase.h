@@ -45,7 +45,9 @@ protected:
 	UFUNCTION(BlueprintCallable)
 	void OnTargetPerceptionUpdated(AActor* Actor, FAIStimulus Stimulus);
 
-	// 어그로 관련
+	// 어그로 관련.. 감지된 Actor와 어그로 순위 (높은 대상을 우선해서 쫓거나 공격)
+	TArray<TPair<AActor*, float>> DetectedActors; 
+	
 	UPROPERTY(EditDefaultsOnly, Category = "Agressive")
 	float FrontDetectionRange;
 	UPROPERTY(EditDefaultsOnly, Category = "Agressive")

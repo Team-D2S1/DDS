@@ -3,6 +3,7 @@
 
 #include "AIControllerBase.h"
 
+#include "BehaviorTree/BlackboardComponent.h"
 #include "Character/Monster/MonsterBase.h"
 #include "ETC/CustomLog.h"
 #include "Perception/AIPerceptionComponent.h"
@@ -40,17 +41,19 @@ void AAIControllerBase::InitPerception()
 {
 	Config_FrontSight->SightRadius = FrontDetectionRange;
 	Config_FrontSight->LoseSightRadius = FrontDetectionRange + 100.f;
+
+	AIPerception->ConfigureSense(*Config_FrontSight);
 }
 
 void AAIControllerBase::OnTargetPerceptionUpdated(AActor* Actor, FAIStimulus Stimulus)
 {
 	if(Stimulus.WasSuccessfullySensed())
 	{
-		MY_LOG(LogTemp, Warning, TEXT("AI 감지 : %s"), *Actor->GetName());
+		GetBlackboardComponent()->SetValueAsObject("TargetActor", Actor);
 	}
 	else
 	{
-		MY_LOG(LogTemp, Warning, TEXT("AI 감지 상실 : %s"), *Actor->GetName());
+		GetBlackboardComponent()->SetValueAsObject("TargetActor", nullptr);
 	}
 }
 
