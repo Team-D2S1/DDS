@@ -7,6 +7,7 @@
 #include "DDSGameplayAbility.generated.h"
 
 class UPawnCombatComponent;
+class UDDSAbilitySystemComponent;
 
 UENUM(BlueprintType)
 enum class EDDSAbilityActivationPolicy : uint8
@@ -32,9 +33,12 @@ protected:
 	virtual void EndAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilityActivationInfo ActivationInfo, bool bReplicateEndAbility, bool bWasCancelled) override;
 	// ~ End UGameplayAbility
 
-	UFUNCTION(BlueprintPure, Category = "Warrior|Ability")
-	UPawnCombatComponent* GetPawnCombatComponent() const;
+	UFUNCTION(BlueprintPure, Category = "DDS|Ability")
+	UPawnCombatComponent* GetPawnCombatComponentFromActorInfo() const;
+
+	UFUNCTION(BlueprintPure, Category = "DDS|Ability")
+	UDDSAbilitySystemComponent* GetDDSAbilitySystemComponentFromActorInfo() const;	
 public:
-	UFUNCTION(BlueprintPure, Category = "Warrior|Ability")
+	UFUNCTION(BlueprintPure, Category = "DDS|Ability")
 	FORCEINLINE EDDSAbilityActivationPolicy GetAbilityActivationPolicy() const { return AbilityActivationPolicy; }
 };

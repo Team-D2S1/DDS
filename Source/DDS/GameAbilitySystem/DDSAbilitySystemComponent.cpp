@@ -23,13 +23,25 @@ void UDDSAbilitySystemComponent::AddCharacterAbilities(const TArray<TSubclassOf<
 		AbilitySpec.SourceObject = GetAvatarActor();
 		AbilitySpec.Level = 1;
 		MY_LOG(LogTemp,Type::Log,"Granting %s",*Ability->GetName());
-		GiveAbility(AbilitySpec);
+		// TSubclassOf에서 UDDSGameplayAbility 가져오기
+		// UDDSGameplayAbility* UDDSGameplayAbility = Ability.GetDefaultObject();
+		// // Ongiven처리
+		// if (UDDSGameplayAbility->GetAbilityActivationPolicy() == EDDSAbilityActivationPolicy::OnGiven)
+		// {
+		// 	
+		// 	GiveAbilityAndActivateOnce(AbilitySpec);
+		// }else
+		{
+			GiveAbility(AbilitySpec);
+		}
+
 	}
 }
 
-void UDDSAbilitySystemComponent::AbilityInputTagHeld(const FGameplayTag& InputTag)
+void UDDSAbilitySystemComponent::AbilityInputTagPressed(const FGameplayTag& InputTag)
 {
 }
+
 
 void UDDSAbilitySystemComponent::AbilityInputTagReleased(const FGameplayTag& InputTag)
 {

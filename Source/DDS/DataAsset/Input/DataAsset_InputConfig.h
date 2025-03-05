@@ -20,6 +20,11 @@ public:
 
 	UPROPERTY(EditDefaultsOnly,BlueprintReadOnly)
 	UInputAction* InputAction;
+
+	bool IsValid() const
+	{
+		return InputTag.IsValid() && InputAction;	
+	}
 };
 
 /**
@@ -37,5 +42,8 @@ public:
 	TArray<FDDSInputActionConfig> NativeInputActions;
 
 	UInputAction* FindInputActionByTag(const FGameplayTag& Tag) const;
-	
+
+
+	UPROPERTY(EditDefaultsOnly,BlueprintReadOnly,meta = (TitleProperty = "InputTag"))
+	TArray<FDDSInputActionConfig> AbilityInputActions;
 };

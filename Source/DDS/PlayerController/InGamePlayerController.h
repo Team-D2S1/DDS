@@ -3,10 +3,13 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "GameplayTagContainer.h"
 #include "GameFramework/PlayerController.h"
 // #include "InputMappingContext.h"
 #include "InGamePlayerController.generated.h"
 
+class APlayerBase;
+class UDDSAbilitySystemComponent;
 class UDataAsset_InputConfig;
 // class UCombatComponent;
 /**
@@ -36,6 +39,9 @@ protected:
 
 	UFUNCTION(BlueprintCallable)
 	void Input_Look(const FInputActionValue& Value);
+
+	void Input_AbilityInputPressed(FGameplayTag InputTag);
+	void Input_AbilityInputReleased(FGameplayTag InputTag);
 	
 	// UFUNCTION(BlueprintCallable)
 	// void Input_Attack();
@@ -47,7 +53,13 @@ public:
 	// UPROPERTY()
 	// TObjectPtr<UCombatComponent> CombatComponent;
 
+protected:
+	APlayerBase* GetPlayerBase();
+	UDDSAbilitySystemComponent* GetDDSAbilitySystemComponent();
+	
 private:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Character Data", meta = (AllowPrivateAccess = "true"))
 	UDataAsset_InputConfig* InputConfigDataAsset;
+
+	TWeakObjectPtr<APlayerBase> CachedPlayerBase;
 };
