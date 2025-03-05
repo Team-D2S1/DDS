@@ -2,15 +2,20 @@
 
 
 #include "GameAbilitySystem/Abilities/DDSGameplayAbility.h"
-
 #include "AbilitySystemComponent.h"
 #include "Components/Combat/PawnCombatComponent.h"
 #include "ETC/CustomLog.h"
+#include "GameAbilitySystem/DDSAbilitySystemComponent.h"
 
 void UDDSGameplayAbility::OnGiveAbility(const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilitySpec& Spec)
 {
 	Super::OnGiveAbility(ActorInfo, Spec);
 
+	if (!ActorInfo->AvatarActor->HasAuthority())
+	{
+		return;
+	}
+	
 	MY_LOG(LogTemp,Log,TEXT("OnGiveAbility"))
 	if (AbilityActivationPolicy == EDDSAbilityActivationPolicy::OnGiven)
 	{
@@ -38,7 +43,12 @@ void UDDSGameplayAbility::EndAbility(const FGameplayAbilitySpecHandle Handle,
 	}
 }
 
-UPawnCombatComponent* UDDSGameplayAbility::GetPawnCombatComponent() const
+UPawnCombatComponent* UDDSGameplayAbility::GetPawnCombatComponentFromActorInfo() const
 {
 	return GetAvatarActorFromActorInfo()->FindComponentByClass<UPawnCombatComponent>();
+}
+
+UDDSAbilitySystemComponent* UDDSGameplayAbility::GetDDSAbilitySystemComponentFromActorInfo() const
+{
+	return Cast<UDDSAbilitySystemComponent>(CurrentActorInfo->AbilitySystemComponent);
 }

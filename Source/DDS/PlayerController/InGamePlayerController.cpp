@@ -10,6 +10,7 @@
 #include "DDS/ETC/CustomLog.h"
 #include "DDS/DDSGameplayTags.h"
 #include "DDS/Components/Input/DDSInputComponent.h"
+#include "GameAbilitySystem/DDSAbilitySystemComponent.h"
 #include "GameFramework/SpringArmComponent.h"
 
 AInGamePlayerController::AInGamePlayerController()
@@ -44,10 +45,11 @@ void AInGamePlayerController::SetupInputComponent()
 	Subsystem->AddMappingContext(InputConfigDataAsset->DefaultMappingContext, 0);
 
 	UDDSInputComponent* DDSInputComponent = CastChecked<UDDSInputComponent>(InputComponent);
-	DDSInputComponent->BindAction(InputConfigDataAsset, DDSGameplayTags::InputTag_Move, ETriggerEvent::Triggered, this, &ThisClass::Input_Move);
-	DDSInputComponent->BindAction(InputConfigDataAsset, DDSGameplayTags::InputTag_Jump, ETriggerEvent::Started, this, &ThisClass::Input_Jump);
-	DDSInputComponent->BindAction(InputConfigDataAsset, DDSGameplayTags::InputTag_Look, ETriggerEvent::Triggered, this, &ThisClass::Input_Look);
+	DDSInputComponent->BindNativeAction(InputConfigDataAsset, DDSGameplayTags::InputTag_Move, ETriggerEvent::Triggered, this, &ThisClass::Input_Move);
+	DDSInputComponent->BindNativeAction(InputConfigDataAsset, DDSGameplayTags::InputTag_Jump, ETriggerEvent::Started, this, &ThisClass::Input_Jump);
+	DDSInputComponent->BindNativeAction(InputConfigDataAsset, DDSGameplayTags::InputTag_Look, ETriggerEvent::Triggered, this, &ThisClass::Input_Look);
 
+	DDSInputComponent->BindAbilityInputAction(InputConfigDataAsset,this, &ThisClass::Input_AbilityInputPressed, &ThisClass::Input_AbilityInputReleased);
 	MY_LOG(LogTemp, Log, TEXT("Setup Input Complete"));
 }
 
@@ -104,4 +106,30 @@ void AInGamePlayerController::Input_Look(const FInputActionValue& Value)
 	{
 		AddPitchInput(-LookVector.Y);
 	}
+}
+
+void AInGamePlayerController::Input_AbilityInputPressed(FGameplayTag InputTag)
+{
+	GetDDSAbilitySystemComponent()->AbilityInputTagPressed(InputTag);
+}
+
+void AInGamePlayerController::Input_AbilityInputReleased(FGameplayTag InputTag)
+{
+	GetDDSAbilitySystemComponent()->AbilityInputTagReleased(InputTag);
+}
+
+APlayerBase* AInGamePlayerController::GetPlayerBase()
+{
+	if (!CachedPlayerBase.IsValid())
+	{
+		CachedPlayerBase = Cast<APlayerBase>(GetPawn());
+	}
+	return CachedPlayerBase.IsValid() ? CachedPlayerBase.Get() : nullptr;
+}
+
+UDDSAbilitySystemComponent* AInGamePlayerController::GetDDSAbilitySystemComponent()
+{
+	APlayerBase* PlayerBase = GetPlayerBase();
+	if (!PlayerBase) return nullptr;
+	return PlayerBase->GetDDSAbilitySystemComponent();
 }

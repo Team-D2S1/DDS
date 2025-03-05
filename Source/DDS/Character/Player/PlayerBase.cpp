@@ -32,7 +32,8 @@ APlayerBase::APlayerBase()
 
 
 	CombatComponent = CreateDefaultSubobject<UPlayerCombatComponent>(TEXT("PlayerCombatComponent"));
-	CombatComponent->SetIsReplicated(true);
+	// CombatComponent->SetIsReplicated(true);
+	// Owner 설정
 }
 
 // UAbilitySystemComponent* APlayerBase::GetAbilitySystemComponent() const

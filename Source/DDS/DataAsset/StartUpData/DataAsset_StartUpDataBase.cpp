@@ -26,16 +26,5 @@ void UDataAsset_StartUpDataBase::GrantAbilities(const TArray<TSubclassOf<UDDSGam
 	{
 		return;
 	}
-	MY_LOG(LogTemp,Type::Log,"Granting abilities to %s",*InASCToGive->GetOwner()->GetName());
-	for (const TSubclassOf<UDDSGameplayAbility>& Ability : InAbilitiesToGive)
-	{
-		if (!Ability)
-			continue;
-		
-		FGameplayAbilitySpec AbilitySpec(Ability);
-		AbilitySpec.SourceObject = InASCToGive->GetAvatarActor();
-		AbilitySpec.Level = ApplyLevel;
-		MY_LOG(LogTemp,Type::Log,"Granting %s",*Ability->GetName());
-		InASCToGive->GiveAbility(AbilitySpec);
-	}
+	InASCToGive->AddCharacterAbilities(InAbilitiesToGive);
 }

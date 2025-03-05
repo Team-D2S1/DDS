@@ -43,7 +43,7 @@ protected:
 
 public:	
 	virtual void Tick(float DeltaTime) override;
-	FORCEINLINE UDDSAbilitySystemComponent* GetWarriorAbilitySystemComponent() const {return AbilitySystemComponent;}
-	FORCEINLINE UDDSAttributeSet* GetWarriorAttributeSet() const {return AttributeSet;}
+	FORCEINLINE UDDSAbilitySystemComponent* GetDDSAbilitySystemComponent() const {return AbilitySystemComponent;}
+	FORCEINLINE UDDSAttributeSet* GetDDSAttributeSet() const {return AttributeSet;}
 	
 };
