@@ -110,6 +110,7 @@ void AInGamePlayerController::Input_Look(const FInputActionValue& Value)
 
 void AInGamePlayerController::Input_AbilityInputPressed(FGameplayTag InputTag)
 {
+	MY_LOG( LogTemp, Log, TEXT("Ability Input Pressed %s"), *InputTag.ToString() );
 	GetDDSAbilitySystemComponent()->AbilityInputTagPressed(InputTag);
 }
 
