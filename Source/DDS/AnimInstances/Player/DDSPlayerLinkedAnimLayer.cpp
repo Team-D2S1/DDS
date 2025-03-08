@@ -3,3 +3,9 @@
 
 #include "AnimInstances/Player/DDSPlayerLinkedAnimLayer.h"
 
+#include "DDSPlayerAnimInstance.h"
+
+UDDSPlayerAnimInstance* UDDSPlayerLinkedAnimLayer::GetPlayerAnimInstance() const
+{
+	return Cast<UDDSPlayerAnimInstance>(GetOwningComponent()->GetAnimInstance());
+}
