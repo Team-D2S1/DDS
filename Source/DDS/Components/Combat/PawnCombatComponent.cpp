@@ -33,6 +33,7 @@ ADDSWeaponBase* UPawnCombatComponent::GetCharacterCarriedWeapon(FGameplayTag InW
 			return *res;
 		}
 	}
+	MY_LOG(LogTemp, Error, TEXT("Weapon Tag %s is not registered."), *InWeaponTag.ToString());
 	return nullptr;
 }
 
