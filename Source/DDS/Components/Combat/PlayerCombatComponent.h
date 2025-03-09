@@ -6,6 +6,7 @@
 #include "Components/Combat/PawnCombatComponent.h"
 #include "PlayerCombatComponent.generated.h"
 
+class ADDSPlayerWeapon;
 /**
  * 
  */
@@ -13,5 +14,7 @@ UCLASS()
 class DDS_API UPlayerCombatComponent : public UPawnCombatComponent
 {
 	GENERATED_BODY()
-	
+public:
+	UFUNCTION(BlueprintCallable, Category = "DDS|Combat")
+	ADDSPlayerWeapon* GetPlayerCarriedWeaponByTag(FGameplayTag InWeaponTag) const;
 };

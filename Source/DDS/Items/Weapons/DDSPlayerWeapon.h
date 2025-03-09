@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "DDSTypes/DDSStructTypes.h"
 #include "Items/Weapons/DDSWeaponBase.h"
 #include "DDSPlayerWeapon.generated.h"
 
@@ -13,5 +14,7 @@ UCLASS()
 class DDS_API ADDSPlayerWeapon : public ADDSWeaponBase
 {
 	GENERATED_BODY()
-	
+public:
+	UPROPERTY(EditDefaultsOnly,BlueprintReadOnly,Category="WeaponData")
+	FDDSPlayerWeaponData PlayerWeaponData;
 };

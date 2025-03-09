@@ -8,18 +8,19 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="c9c5f200-35e8-49aa-a71a-5167c57f4736" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/.idea.DDS.dir/.idea/projectSettingsUpdater.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.DDS.dir/.idea/projectSettingsUpdater.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.DDS.dir/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.DDS.dir/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Config/DefaultEngine.ini" beforeDir="false" afterPath="$PROJECT_DIR$/Config/DefaultEngine.ini" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Content/Assets/ARPG_Warrior/Demo/Mannequin/Character/Mesh/UE4_Mannequin_Skeleton.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Assets/ARPG_Warrior/Demo/Mannequin/Character/Mesh/UE4_Mannequin_Skeleton.uasset" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Content/Blueprints/Player/Anim/ABP_Player.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Blueprints/Player/Anim/ABP_Player.uasset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Blueprints/Player/Anim/BlendSpace/BS_UnarmedLocomotion.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Blueprints/Player/Anim/BlendSpace/BS_UnarmedLocomotion.uasset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Blueprints/Player/DA_Player.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Blueprints/Player/DA_Player.uasset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Blueprints/Player/GameplayAbility/GA_Player_Equip01.uasset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/__ExternalActors__/Maps/MainMap/6/D6/MB5C5WZRUPKVN70S0VLZTU.uasset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/DDS/AnimInstances/Player/DDSPlayerLinkedAnimLayer.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/DDS/AnimInstances/Player/DDSPlayerLinkedAnimLayer.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/DDS/AnimInstances/Player/DDSPlayerLinkedAnimLayer.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/DDS/AnimInstances/Player/DDSPlayerLinkedAnimLayer.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/Blueprints/Player/Anim/BlendSpace/BS_DefaultLonomotion_Armed.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Blueprints/Player/Anim/BlendSpace/BS_DefaultLonomotion_Armed.uasset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/Blueprints/Player/Anim/MasterAnimLayer_Player.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Blueprints/Player/Anim/MasterAnimLayer_Player.uasset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/Blueprints/Player/GameplayAbility/GA_Player_EquipSword.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Blueprints/Player/GameplayAbility/GA_Player_EquipSword.uasset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/Blueprints/Player/Weapon/BP_PlayerTestWeapon.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Blueprints/Player/Weapon/BP_PlayerTestWeapon.uasset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/DDS/Components/Combat/PlayerCombatComponent.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/DDS/Components/Combat/PlayerCombatComponent.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/DDS/Components/Combat/PlayerCombatComponent.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/DDS/Components/Combat/PlayerCombatComponent.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Source/DDS/DDSGameplayTags.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/DDS/DDSGameplayTags.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Source/DDS/DDSGameplayTags.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/DDS/DDSGameplayTags.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/DDS/Items/Weapons/DDSPlayerWeapon.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/DDS/Items/Weapons/DDSPlayerWeapon.h" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -69,6 +70,7 @@
     <setting file="file://$PROJECT_DIR$/../../../../../Program Files/Epic Games/UE_5.5/Engine/Source/Runtime/Engine/Private/Animation/AnimInstance.cpp" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/../../../../../Program Files/Epic Games/UE_5.5/Engine/Source/Runtime/Engine/Private/Character.cpp" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/../../../../../Program Files/Epic Games/UE_5.5/Engine/Source/Runtime/Engine/Private/Components/BoxComponent.cpp" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/../../../../../Program Files/Epic Games/UE_5.5/Engine/Source/Runtime/Engine/Private/Components/SkeletalMeshComponent.cpp" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/../../../../../Program Files/Epic Games/UE_5.5/Engine/Source/Runtime/Engine/Private/EngineTypes.cpp" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/../../../../../Program Files/Epic Games/UE_5.5/Engine/Source/Runtime/Engine/Private/Pawn.cpp" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/../../../../../Program Files/Epic Games/UE_5.5/Engine/Source/Runtime/Engine/Private/PlayerController.cpp" root0="FORCE_HIGHLIGHTING" />
@@ -111,21 +113,21 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
-    &quot;Uproject.DDS.executor&quot;: &quot;Debug&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;status&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.toDoOptions&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "Uproject.DDS.executor": "Debug",
+    "git-widget-placeholder": "main",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "settings.editor.selected.configurable": "preferences.toDoOptions",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="CidrLocalAttachDebugger.recentlyUsed">
       <recent name="com.jetbrains.rider.cpp.debugger.RiderCppLLDBDriverConfiguration" />
@@ -235,6 +237,7 @@
       <workItem from="1741125805649" duration="14317000" />
       <workItem from="1741348819313" duration="7221000" />
       <workItem from="1741452896469" duration="641000" />
+      <workItem from="1741507069880" duration="4867000" />
     </task>
     <servers />
   </component>
