@@ -75,3 +75,4 @@ Plugins/**/Intermediate/*
 # Cache files for the editor to use
 DerivedDataCache/*
 .idea/.idea.DDS/.idea/workspace.xml
+.idea/.idea.DDS.dir/.idea/workspace.xml
