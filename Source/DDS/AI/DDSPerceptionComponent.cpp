@@ -29,4 +29,3 @@ void UDDSPerceptionComponent::InitPerception()
 	ConfigureSense(*Config_FrontSight);
 	SetDominantSense(Config_FrontSight->GetSenseImplementation());
 }
-

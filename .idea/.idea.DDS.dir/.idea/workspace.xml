@@ -8,19 +8,14 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="c9c5f200-35e8-49aa-a71a-5167c57f4736" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.DDS.dir/.idea/encodings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.DDS.dir/.idea/encodings.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.DDS.dir/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.DDS.dir/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Config/DefaultEngine.ini" beforeDir="false" afterPath="$PROJECT_DIR$/Config/DefaultEngine.ini" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Assets/ARPG_Warrior/Demo/Mannequin/Character/Mesh/UE4_Mannequin_Skeleton.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Assets/ARPG_Warrior/Demo/Mannequin/Character/Mesh/UE4_Mannequin_Skeleton.uasset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Blueprints/Player/Anim/ABP_Player.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Blueprints/Player/Anim/ABP_Player.uasset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Blueprints/Player/Anim/BlendSpace/BS_DefaultLonomotion_Armed.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Blueprints/Player/Anim/BlendSpace/BS_DefaultLonomotion_Armed.uasset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Blueprints/Player/Anim/MasterAnimLayer_Player.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Blueprints/Player/Anim/MasterAnimLayer_Player.uasset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Blueprints/Player/GameplayAbility/GA_Player_EquipSword.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Blueprints/Player/GameplayAbility/GA_Player_EquipSword.uasset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Blueprints/Player/Weapon/BP_PlayerTestWeapon.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Blueprints/Player/Weapon/BP_PlayerTestWeapon.uasset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/DDS/Components/Combat/PlayerCombatComponent.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/DDS/Components/Combat/PlayerCombatComponent.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/DDS/Components/Combat/PlayerCombatComponent.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/DDS/Components/Combat/PlayerCombatComponent.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/DDS/DDSGameplayTags.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/DDS/DDSGameplayTags.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/DDS/DDSGameplayTags.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/DDS/DDSGameplayTags.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/DDS/Items/Weapons/DDSPlayerWeapon.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/DDS/Items/Weapons/DDSPlayerWeapon.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/Blueprints/Player/BP_IngamePlayerController.uasset" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/GameMode/BP_TestGameMode.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/GameMode/BP_TestGameMode.uasset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/DDS.uproject" beforeDir="false" afterPath="$PROJECT_DIR$/DDS.uproject" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/DDS/AI/DDSPerceptionComponent.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/DDS/AI/DDSPerceptionComponent.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/DDS/DDS.Build.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Source/DDS/DDS.Build.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -115,9 +110,10 @@
   </component>
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.git.unshallow": "true",
-    "Uproject.DDS.executor": "Debug",
+    "Uproject.DDS.executor": "Run",
     "git-widget-placeholder": "main",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
@@ -126,6 +122,13 @@
     "nodejs_package_manager_path": "npm",
     "settings.editor.selected.configurable": "preferences.toDoOptions",
     "vue.rearranger.settings.migration": "true"
+  },
+  "keyToStringList": {
+    "rider.external.source.directories": [
+      "C:\\Users\\dasan\\AppData\\Roaming\\JetBrains\\Rider2023.3\\resharper-host\\DecompilerCache",
+      "C:\\Users\\dasan\\AppData\\Roaming\\JetBrains\\Rider2023.3\\resharper-host\\SourcesCache",
+      "C:\\Users\\dasan\\AppData\\Local\\Symbols\\src"
+    ]
   }
 }]]></component>
   <component name="RecentsManager">
@@ -135,74 +138,62 @@
   </component>
   <component name="RunManager">
     <configuration name="DDS" type="Uproject" factoryName="rider.uproject">
-      <configuration_1 setup="1">
+      <option name="PROJECT_FILE_PATH" value="$PROJECT_DIR$/DDS.uproject" />
+      <configuration_2>
         <option name="CONFIGURATION" value="DebugGame Editor" />
         <option name="PLATFORM" value="Win64" />
-        <option name="CURRENT_LAUNCH_PROFILE" value="Local" />
-        <option name="EXECUTABLE_PATH" value="C:\Program Files\Epic Games\UE_5.5\Engine\Binaries\Win64\UnrealEditor-Win64-DebugGame.exe" />
-        <option name="MANDATORY_PROGRAM_PARAMETERS" value=" &quot;C:\Users\macham\Documents\Unreal Projects\DDS\DDS.uproject&quot;" />
+        <option name="EXECUTABLE_PATH" value="D:\Unreal\UE_5.5\Engine\Binaries\Win64\UnrealEditor-Win64-DebugGame.exe" />
+        <option name="WORKING_DIRECTORY" value="D:\Unreal\UE_5.5" />
+        <option name="MANDATORY_PROGRAM_PARAMETERS" value=" &quot;D:\Project\DDS\DDS.uproject&quot;" />
         <option name="CUSTOM_PROGRAM_PARAMETERS" value="" />
-        <option name="WORKING_DIRECTORY" value="C:\Program Files\Epic Games\UE_5.5" />
         <option name="PASS_PARENT_ENVS" value="1" />
         <option name="USE_EXTERNAL_CONSOLE" value="1" />
         <option name="TERMINAL_INTERACTION_BEHAVIOR" value="FORCE_CONSOLE" />
-        <option name="PROJECT_FILE_PATH" value="$PROJECT_DIR$/DDS.uproject" />
-      </configuration_1>
-      <configuration_2 setup="1">
+      </configuration_2>
+      <configuration_3>
         <option name="CONFIGURATION" value="DebugGame" />
         <option name="PLATFORM" value="Win64" />
-        <option name="CURRENT_LAUNCH_PROFILE" value="Local" />
-        <option name="EXECUTABLE_PATH" value="C:\Users\macham\Documents\Unreal Projects\DDS\Binaries\Win64\DDS-Win64-DebugGame.exe" />
+        <option name="EXECUTABLE_PATH" value="D:\Project\DDS\Binaries\Win64\DDS-Win64-DebugGame.exe" />
+        <option name="WORKING_DIRECTORY" value="D:\Unreal\UE_5.5" />
         <option name="MANDATORY_PROGRAM_PARAMETERS" value="" />
         <option name="CUSTOM_PROGRAM_PARAMETERS" value="" />
-        <option name="WORKING_DIRECTORY" value="C:\Program Files\Epic Games\UE_5.5" />
         <option name="PASS_PARENT_ENVS" value="1" />
         <option name="USE_EXTERNAL_CONSOLE" value="1" />
         <option name="TERMINAL_INTERACTION_BEHAVIOR" value="FORCE_CONSOLE" />
-        <option name="PROJECT_FILE_PATH" value="$PROJECT_DIR$/DDS.uproject" />
-      </configuration_2>
-      <configuration_3 setup="1">
+      </configuration_3>
+      <configuration_4>
         <option name="CONFIGURATION" value="Development Editor" />
         <option name="PLATFORM" value="Win64" />
-        <option name="CURRENT_LAUNCH_PROFILE" value="Local" />
-        <option name="EXECUTABLE_PATH" value="C:\Program Files\Epic Games\UE_5.5\Engine\Binaries\Win64\UnrealEditor.exe" />
-        <option name="MANDATORY_PROGRAM_PARAMETERS" value=" &quot;C:\Users\macham\Documents\Unreal Projects\DDS\DDS.uproject&quot;" />
+        <option name="EXECUTABLE_PATH" value="D:\Unreal\UE_5.5\Engine\Binaries\Win64\UnrealEditor.exe" />
+        <option name="WORKING_DIRECTORY" value="D:\Unreal\UE_5.5" />
+        <option name="MANDATORY_PROGRAM_PARAMETERS" value=" &quot;D:\Project\DDS\DDS.uproject&quot;" />
         <option name="CUSTOM_PROGRAM_PARAMETERS" value="" />
-        <option name="WORKING_DIRECTORY" value="C:\Program Files\Epic Games\UE_5.5" />
         <option name="PASS_PARENT_ENVS" value="1" />
         <option name="USE_EXTERNAL_CONSOLE" value="1" />
         <option name="TERMINAL_INTERACTION_BEHAVIOR" value="FORCE_CONSOLE" />
-        <option name="PROJECT_FILE_PATH" value="$PROJECT_DIR$/DDS.uproject" />
-      </configuration_3>
-      <configuration_4 setup="1">
+      </configuration_4>
+      <configuration_5>
         <option name="CONFIGURATION" value="Development" />
         <option name="PLATFORM" value="Win64" />
-        <option name="CURRENT_LAUNCH_PROFILE" value="Local" />
-        <option name="EXECUTABLE_PATH" value="C:\Users\macham\Documents\Unreal Projects\DDS\Binaries\Win64\DDS.exe" />
+        <option name="EXECUTABLE_PATH" value="D:\Project\DDS\Binaries\Win64\DDS.exe" />
+        <option name="WORKING_DIRECTORY" value="D:\Unreal\UE_5.5" />
         <option name="MANDATORY_PROGRAM_PARAMETERS" value="" />
         <option name="CUSTOM_PROGRAM_PARAMETERS" value="" />
-        <option name="WORKING_DIRECTORY" value="C:\Program Files\Epic Games\UE_5.5" />
         <option name="PASS_PARENT_ENVS" value="1" />
         <option name="USE_EXTERNAL_CONSOLE" value="1" />
         <option name="TERMINAL_INTERACTION_BEHAVIOR" value="FORCE_CONSOLE" />
-        <option name="PROJECT_FILE_PATH" value="$PROJECT_DIR$/DDS.uproject" />
-      </configuration_4>
-      <configuration_5 setup="1">
+      </configuration_5>
+      <configuration_6>
         <option name="CONFIGURATION" value="Shipping" />
         <option name="PLATFORM" value="Win64" />
-        <option name="CURRENT_LAUNCH_PROFILE" value="Local" />
-        <option name="EXECUTABLE_PATH" value="C:\Users\macham\Documents\Unreal Projects\DDS\Binaries\Win64\DDS-Win64-Shipping.exe" />
+        <option name="EXECUTABLE_PATH" value="D:\Project\DDS\Binaries\Win64\DDS-Win64-Shipping.exe" />
+        <option name="WORKING_DIRECTORY" value="D:\Unreal\UE_5.5" />
         <option name="MANDATORY_PROGRAM_PARAMETERS" value="" />
         <option name="CUSTOM_PROGRAM_PARAMETERS" value="" />
-        <option name="WORKING_DIRECTORY" value="C:\Program Files\Epic Games\UE_5.5" />
         <option name="PASS_PARENT_ENVS" value="1" />
         <option name="USE_EXTERNAL_CONSOLE" value="1" />
         <option name="TERMINAL_INTERACTION_BEHAVIOR" value="FORCE_CONSOLE" />
-        <option name="PROJECT_FILE_PATH" value="$PROJECT_DIR$/DDS.uproject" />
-      </configuration_5>
-      <option name="DEFAULT_PROJECT_PATH" value="$PROJECT_DIR$/DDS.uproject" />
-      <option name="PROJECT_FILE_PATH" value="$PROJECT_DIR$/DDS.uproject" />
-      <option name="AUTO_SELECT_PRIORITY" value="10010" />
+      </configuration_6>
       <method v="2">
         <option name="Build" />
       </method>

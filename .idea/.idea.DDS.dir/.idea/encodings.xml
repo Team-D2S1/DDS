@@ -43,5 +43,9 @@
     <file url="file://$PROJECT_DIR$/Source/DDS/Items/Weapons/DDSPlayerWeapon.h" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/Source/DDS/Items/Weapons/DDSWeaponBase.cpp" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/Source/DDS/Items/Weapons/DDSWeaponBase.h" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/Source/DDS/PlayerController/MainMenuPlayerController.cpp" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/Source/DDS/PlayerController/MainMenuPlayerController.h" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/Source/DDS/UI/MainMenuWidget.cpp" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/Source/DDS/UI/MainMenuWidget.h" charset="UTF-8" />
   </component>
 </project>

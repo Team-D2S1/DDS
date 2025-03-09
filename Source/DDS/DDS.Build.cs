@@ -8,7 +8,20 @@ public class DDS : ModuleRules
 	{
 		PCHUsage = PCHUsageMode.UseExplicitOrSharedPCHs;
 	
-		PublicDependencyModuleNames.AddRange(new string[] { "Core", "CoreUObject", "Engine", "InputCore", "EnhancedInput", "GameplayTags", "GameplayTasks","GameplayAbilities" });
+		PublicDependencyModuleNames.AddRange(new string[]
+		{
+			"Core", 
+			"CoreUObject", 
+			"Engine", 
+			"InputCore", 
+			"EnhancedInput", 
+			"GameplayTags", 
+			"GameplayTasks",
+			"GameplayAbilities", 
+			"UMG", 
+			"Slate", 
+			"SlateCore"
+		});
 
 		PrivateDependencyModuleNames.AddRange(new string[] {  });
 
