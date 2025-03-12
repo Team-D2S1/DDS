@@ -6,6 +6,7 @@
 #include "AbilitySystemComponent.h"
 #include "DDSAbilitySystemComponent.generated.h"
 
+struct FDDSPlayerAbilitySet;
 class UDDSGameplayAbility;
 /**
  * 
@@ -22,7 +23,11 @@ public:
 
 	void AbilityInputTagPressed(const FGameplayTag& InputTag);
 	void AbilityInputTagReleased(const FGameplayTag& InputTag);
-protected:
+
+	UFUNCTION(BlueprintCallable,Category="DDS|Ability",meta=(ApplyLevel=1))
+	void GrantPlayerWeaponAbilities(const TArray<FDDSPlayerAbilitySet>& InDefaultWeaponAbilities, int32 ApplyLevel,TArray<FGameplayAbilitySpecHandle>& OutHandles);
+	UFUNCTION(BlueprintCallable,Category="DDS|Ability")
+	void RemoveGrantedPlayerWeaponAbilities(UPARAM(ref) TArray<FGameplayAbilitySpecHandle>& InHandles);
 
 	// TODO 이펙트 적용시 클라이언트에게 알림
 	// UFUNCTION(Client, Reliable)

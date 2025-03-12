@@ -33,8 +33,8 @@
     <file url="file://$PROJECT_DIR$/Source/DDS/DataAsset/StartUpData/DataAsset_StartUpDataBase.h" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/Source/DDS/GameAbilitySystem/Abilities/DDSGameplayAbility.cpp" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/Source/DDS/GameAbilitySystem/Abilities/DDSGameplayAbility.h" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/Source/DDS/GameAbilitySystem/Abilities/SpawnWeaponAbility.cpp" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/Source/DDS/GameAbilitySystem/Abilities/SpawnWeaponAbility.h" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/Source/DDS/GameAbilitySystem/Abilities/PlayerAblities/SpawnWeaponAbility.cpp" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/Source/DDS/GameAbilitySystem/Abilities/PlayerAblities/SpawnWeaponAbility.h" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/Source/DDS/GameAbilitySystem/DDSAttributeSet.cpp" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/Source/DDS/GameAbilitySystem/DDSAttributeSet.h" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/Source/DDS/GameAbilitySystem/IDDSAbilitySystemInterface.cpp" charset="UTF-8" />

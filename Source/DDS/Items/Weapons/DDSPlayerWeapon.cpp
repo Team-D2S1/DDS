@@ -3,3 +3,13 @@
 
 #include "Items/Weapons/DDSPlayerWeapon.h"
 
+void ADDSPlayerWeapon::AssignGrantedAbilitySpecHandles(
+	const TArray<FGameplayAbilitySpecHandle>& InGrantedAbilitySpecHandles)
+{
+	GrantedAbilitySpecHandles = InGrantedAbilitySpecHandles;
+}
+
+TArray<FGameplayAbilitySpecHandle> ADDSPlayerWeapon::GetGrantedAbilitySpecHandles()
+{
+	return GrantedAbilitySpecHandles;
+}

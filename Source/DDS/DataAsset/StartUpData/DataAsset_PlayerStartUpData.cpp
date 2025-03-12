@@ -6,10 +6,7 @@
 #include "GameAbilitySystem/DDSAbilitySystemComponent.h"
 #include "GameAbilitySystem/Abilities/DDSGameplayAbility.h"
 
-bool FDDSPlayerAbilitySet::IsValid() const
-{
-   	return InputTag.IsValid() && AbilityToGrant;
-}
+
 
 void UDataAsset_PlayerStartUpData::GiveToAbilitySystemComponent(UDDSAbilitySystemComponent* InASCToGive,
 	int32 ApplyLevel)

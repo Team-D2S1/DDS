@@ -4,6 +4,7 @@
 #include "DDSAbilitySystemComponent.h"
 
 #include "Abilities/DDSGameplayAbility.h"
+#include "DDSTypes/DDSStructTypes.h"
 #include "ETC/CustomLog.h"
 
 void UDDSAbilitySystemComponent::AbilityActorInfoSet()
@@ -49,6 +50,9 @@ void UDDSAbilitySystemComponent::AbilityInputTagPressed(const FGameplayTag& Inpu
 	{
 		if (spec.GetDynamicSpecSourceTags().HasTagExact(InputTag))
 		{
+			// spec 이름 출력
+			FString ToPrint = FString::Printf(TEXT("Try to Activate Ability : %s "), *spec.Ability->GetName());
+			Debug::Log(ToPrint, FColor::Green);
 			TryActivateAbility(spec.Handle);
 		}
 	}
@@ -57,4 +61,37 @@ void UDDSAbilitySystemComponent::AbilityInputTagPressed(const FGameplayTag& Inpu
 
 void UDDSAbilitySystemComponent::AbilityInputTagReleased(const FGameplayTag& InputTag)
 {
+}
+
+void UDDSAbilitySystemComponent::GrantPlayerWeaponAbilities(const TArray<FDDSPlayerAbilitySet>& InDefaultWeaponAbilities,
+	int32 ApplyLevel, TArray<FGameplayAbilitySpecHandle>& OutHandles)
+{
+	if (InDefaultWeaponAbilities.IsEmpty())
+	{
+		Debug::Log("InDefaultWeaponAbilities is Empty", FColor::Red);
+		return;
+	}
+	for (const FDDSPlayerAbilitySet& AbilitySet : InDefaultWeaponAbilities)
+	{
+		if (!AbilitySet.IsValid())
+			continue;
+		FGameplayAbilitySpec AbilitySpec(AbilitySet.AbilityToGrant);
+		AbilitySpec.SourceObject = GetAvatarActor();
+		AbilitySpec.GetDynamicSpecSourceTags().AddTag(AbilitySet.InputTag);
+		AbilitySpec.Level = ApplyLevel;
+		OutHandles.AddUnique( GiveAbility(AbilitySpec) );
+		MY_LOG(LogTemp, Log, TEXT("Granting %s, tag: %s"), *AbilitySet.AbilityToGrant->GetName(), *AbilitySet.InputTag.ToString());
+	}
+}
+
+void UDDSAbilitySystemComponent::RemoveGrantedPlayerWeaponAbilities(TArray<FGameplayAbilitySpecHandle>& InHandles)
+{
+	for (const FGameplayAbilitySpecHandle& Handle : InHandles)
+		{
+			if (Handle.IsValid())
+			{
+				ClearAbility(Handle);
+			}
+		}
+	InHandles.Empty();
 }

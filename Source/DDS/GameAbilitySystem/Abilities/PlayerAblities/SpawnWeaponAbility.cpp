@@ -1,7 +1,7 @@
 // Copyright © Team DDS 2025. Project DDS™ is a trademark of Team DDS. All Rights Reserved.
 
 
-#include "GameAbilitySystem/Abilities/SpawnWeaponAbility.h"
+#include "SpawnWeaponAbility.h"
 
 #include "Components/Combat/PawnCombatComponent.h"
 #include "ETC/CustomLog.h"
@@ -28,6 +28,7 @@ void USpawnWeaponAbility::ActivateAbility(const FGameplayAbilitySpecHandle Handl
 		MY_LOG(LogTemp, Error, TEXT("Weapon is nullptr"));
 		return;
 	}
+	
 	USkeletalMeshComponent* Mesh = Owner->FindComponentByClass<USkeletalMeshComponent>();
 	Weapon->AttachToComponent(Mesh, FAttachmentTransformRules::SnapToTargetNotIncludingScale, SocketName);
 

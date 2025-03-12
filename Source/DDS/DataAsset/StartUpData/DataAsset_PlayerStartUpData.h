@@ -5,22 +5,12 @@
 #include "CoreMinimal.h"
 #include "GameplayTagContainer.h"
 #include "DataAsset/StartUpData/DataAsset_StartUpDataBase.h"
+#include "DDSTypes/DDSStructTypes.h"
 #include "DataAsset_PlayerStartUpData.generated.h"
 
 class UDDSPlayerGameplayAbility;
 // class UDDSGameplayAbility;
-USTRUCT(BlueprintType)
-struct FDDSPlayerAbilitySet
-{
-	GENERATED_BODY()
 
-	UPROPERTY(EditDefaultsOnly,BlueprintReadOnly,meta = (Categories = "Input Tag"))
-	FGameplayTag InputTag;
-	UPROPERTY(EditDefaultsOnly,BlueprintReadOnly)
-	TSubclassOf <UDDSGameplayAbility> AbilityToGrant;
-
-	bool IsValid() const;
-};
 
 /**
  * 
