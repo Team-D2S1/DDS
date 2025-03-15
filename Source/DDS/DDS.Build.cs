@@ -20,7 +20,9 @@ public class DDS : ModuleRules
 			"GameplayAbilities", 
 			"UMG", 
 			"Slate", 
-			"SlateCore"
+			"SlateCore",
+			"OnlineSubsystem",
+			"OnlineSubsystemSteam",
 		});
 
 		PrivateDependencyModuleNames.AddRange(new string[] {  });
