@@ -2,7 +2,11 @@
 
 
 #include "Items/Weapons/DDSWeaponBase.h"
+
+#include "Character/Player/PlayerBase.h"
 #include "Components/BoxComponent.h"
+#include "Components/Combat/PlayerCombatComponent.h"
+#include "Net/UnrealNetwork.h"
 
 // Sets default values
 ADDSWeaponBase::ADDSWeaponBase()
@@ -21,3 +25,37 @@ ADDSWeaponBase::ADDSWeaponBase()
 	WeaponCollisionBox->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 }
 
+void ADDSWeaponBase::GetLifetimeReplicatedProps(TArray<class FLifetimeProperty>& OutLifetimeProps) const
+{
+	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
+
+	
+	DOREPLIFETIME(ADDSWeaponBase, OwnerPawn);
+	DOREPLIFETIME(ADDSWeaponBase, WeaponTag);
+}
+
+void ADDSWeaponBase::SetOwnerPawn(APawn* InOwnerPawn)
+{
+	OwnerPawn = InOwnerPawn;
+}
+
+void ADDSWeaponBase::OnRep_OwnerPawn()
+{
+	if (OwnerPawn)
+	{
+		APlayerBase* Player = Cast<APlayerBase>(OwnerPawn);
+		if (Player)
+		{
+			Player->GetCombatComponent()->RegisterSpawnedWeapon(WeaponTag ,this);
+		}
+	}
+}
+
+void ADDSWeaponBase::SetWeaponTag(FGameplayTag InWeaponTag)
+{
+	WeaponTag = InWeaponTag;
+}
+
+void ADDSWeaponBase::OnRep_WeaponTag()
+{
+}

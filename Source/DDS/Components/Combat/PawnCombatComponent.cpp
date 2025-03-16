@@ -21,7 +21,15 @@ void UPawnCombatComponent::RegisterSpawnedWeapon(FGameplayTag InWeaponTag, ADDSW
 		CurrentEquippedWeaponTag = InWeaponTag;
 	}
 
-	MY_LOG(LogTemp, Log, TEXT("A Weapon %s (Tag: %s) is registered."), *InWeapon->GetName(), *InWeaponTag.ToString());
+	bool hasAuthority = GetOwningPawn()->HasAuthority();
+	if (hasAuthority)
+	{
+		//클라이언트도 RegisterSpawnedWeapon을 호출하게 하기 위해
+		InWeapon->SetOwnerPawn(GetOwningPawn());
+		InWeapon->SetWeaponTag(InWeaponTag);
+	}
+	FString msg = FString::Printf(TEXT("[%s]A Weapon %s (Tag: %s) is registered."),hasAuthority ? TEXT("Server"):TEXT("Client") ,*InWeapon->GetName(), *InWeaponTag.ToString());
+	Debug::Log(msg);
 }
 
 ADDSWeaponBase* UPawnCombatComponent::GetCharacterCarriedWeapon(FGameplayTag InWeaponTag) const
