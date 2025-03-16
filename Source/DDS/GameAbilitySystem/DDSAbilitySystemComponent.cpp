@@ -45,14 +45,13 @@ void UDDSAbilitySystemComponent::AbilityInputTagPressed(const FGameplayTag& Inpu
 	{
 		return;
 	}
-
 	for (const FGameplayAbilitySpec& spec : GetActivatableAbilities())
 	{
 		if (spec.GetDynamicSpecSourceTags().HasTagExact(InputTag))
 		{
 			// spec 이름 출력
-			FString ToPrint = FString::Printf(TEXT("Try to Activate Ability : %s "), *spec.Ability->GetName());
-			Debug::Log(ToPrint, FColor::Green);
+			bool isServer = GetOwner()->HasAuthority();
+			DEBUG_LOG_DISPLAY(TEXT("Try to Activate Ability : %s "),*spec.Ability->GetName());
 			TryActivateAbility(spec.Handle);
 		}
 	}
@@ -68,7 +67,7 @@ void UDDSAbilitySystemComponent::GrantPlayerWeaponAbilities(const TArray<FDDSPla
 {
 	if (InDefaultWeaponAbilities.IsEmpty())
 	{
-		Debug::Log("InDefaultWeaponAbilities is Empty", FColor::Red);
+		DEBUG_LOG_DISPLAY("InDefaultWeaponAbilities is Empty");
 		return;
 	}
 	for (const FDDSPlayerAbilitySet& AbilitySet : InDefaultWeaponAbilities)

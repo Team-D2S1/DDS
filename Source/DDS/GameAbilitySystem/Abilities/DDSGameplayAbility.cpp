@@ -52,3 +52,12 @@ UDDSAbilitySystemComponent* UDDSGameplayAbility::GetDDSAbilitySystemComponentFro
 {
 	return Cast<UDDSAbilitySystemComponent>(CurrentActorInfo->AbilitySystemComponent);
 }
+
+void UDDSGameplayAbility::PlayMontageAndWaitForEvent(UAnimMontage* Montage, FName SectionName, FGameplayTag EventTag,
+	float Rate, FName StartSection)
+{
+	// if (CurrentActorInfo->OwnerActor->HasAuthority() && Montage)
+	// {
+	// 	UAbilityTask *Task =
+	// }
+}
