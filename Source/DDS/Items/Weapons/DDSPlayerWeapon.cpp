@@ -3,6 +3,21 @@
 
 #include "Items/Weapons/DDSPlayerWeapon.h"
 
+#include "Net/UnrealNetwork.h"
+
+ADDSPlayerWeapon::ADDSPlayerWeapon()
+{
+	
+}
+
+void ADDSPlayerWeapon::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
+{
+	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
+
+	DOREPLIFETIME(ADDSPlayerWeapon, PlayerWeaponData);
+	DOREPLIFETIME(ADDSPlayerWeapon, GrantedAbilitySpecHandles);
+}
+
 void ADDSPlayerWeapon::AssignGrantedAbilitySpecHandles(
 	const TArray<FGameplayAbilitySpecHandle>& InGrantedAbilitySpecHandles)
 {
@@ -13,3 +28,9 @@ TArray<FGameplayAbilitySpecHandle> ADDSPlayerWeapon::GetGrantedAbilitySpecHandle
 {
 	return GrantedAbilitySpecHandles;
 }
+
+void ADDSPlayerWeapon::OnRep_PlayerWeaponData()
+{
+	
+}
+

@@ -16,7 +16,12 @@ class DDS_API ADDSPlayerWeapon : public ADDSWeaponBase
 {
 	GENERATED_BODY()
 public:
-	UPROPERTY(EditDefaultsOnly,BlueprintReadOnly,Category="WeaponData")
+	ADDSPlayerWeapon();
+
+
+	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
+	
+	UPROPERTY(EditDefaultsOnly,BlueprintReadOnly,Category="WeaponData", ReplicatedUsing=OnRep_PlayerWeaponData)
 	FDDSPlayerWeaponData PlayerWeaponData;
 
 	UFUNCTION(BlueprintCallable)
@@ -29,6 +34,12 @@ private:
 	 * 무기에 의해 부여된 능력 스펙 핸들.
 	 * 장착 해제시 부여 해제해야함
 	 */
+	UPROPERTY(VisibleAnywhere,BlueprintReadOnly,Category="WeaponData", Replicated, meta=(AllowPrivateAccess=true))
 	TArray<FGameplayAbilitySpecHandle> GrantedAbilitySpecHandles;
+	
+
+private:
+	UFUNCTION()
+	void OnRep_PlayerWeaponData();
 	
 };

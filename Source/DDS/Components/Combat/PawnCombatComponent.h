@@ -19,7 +19,7 @@ class DDS_API UPawnCombatComponent : public UPawnExtensionComponentBase
 
 public:
 	/**
-	 * 
+	 * 멀티 환경에서도 구현이 되어야함
 	 * @param InWeaponTag 
 	 * @param InWeapon 
 	 * @param bRegisterAsEquippedWeapon 등록 + 장착 여부
