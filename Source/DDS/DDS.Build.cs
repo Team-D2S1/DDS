@@ -23,6 +23,8 @@ public class DDS : ModuleRules
 			"SlateCore",
 			"OnlineSubsystem",
 			"OnlineSubsystemSteam",
+			"Sockets",
+			"Networking"
 		});
 
 		PrivateDependencyModuleNames.AddRange(new string[] {  });

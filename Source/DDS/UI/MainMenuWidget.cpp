@@ -6,6 +6,37 @@
 #include "Components/Button.h"
 #include "Kismet/KismetSystemLibrary.h"
 
+void UMainMenuWidget::OnCreateSession(bool bWasSuccessful)
+{
+	if(bWasSuccessful)
+	{
+		// TODO
+		// MainServer에 CreateSession 요청 보낸다
+		// MainServer가 포트 번호 보내준다면 해당 아이피:포트 로 이동한다
+	}
+}
+
+void UMainMenuWidget::OnFindSession(const TArray<FOnlineSessionSearchResult>& SessionResult, bool bWasSuccessful)
+{
+	
+}
+
+void UMainMenuWidget::OnJoinSession(EOnJoinSessionCompleteResult::Type Result)
+{
+	
+}
+
+void UMainMenuWidget::OnDestroySession(bool bWasSuccessful)
+{
+	if(bWasSuccessful)
+	{
+		// TODO
+		// MainServer에 DestroySession 요청 보낸다
+		// 종료 전 작업 수행하고 Dedicated Server 종료
+		// 이후 Port 반납
+	}
+}
+
 bool UMainMenuWidget::Initialize()
 {
 	if(!Super::Initialize()) return false;
