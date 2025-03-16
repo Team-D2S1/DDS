@@ -51,7 +51,7 @@ void UDDSAbilitySystemComponent::AbilityInputTagPressed(const FGameplayTag& Inpu
 		{
 			// spec 이름 출력
 			bool isServer = GetOwner()->HasAuthority();
-			DEBUG_LOG_DISPLAY(TEXT("Try to Activate Ability : %s "),*spec.Ability->GetName());
+			DEBUG_LOG_DISPLAY_NET(isServer,TEXT("Try to Activate Ability : %s "),*spec.Ability->GetName());
 			TryActivateAbility(spec.Handle);
 		}
 	}
@@ -79,7 +79,9 @@ void UDDSAbilitySystemComponent::GrantPlayerWeaponAbilities(const TArray<FDDSPla
 		AbilitySpec.GetDynamicSpecSourceTags().AddTag(AbilitySet.InputTag);
 		AbilitySpec.Level = ApplyLevel;
 		OutHandles.AddUnique( GiveAbility(AbilitySpec) );
-		MY_LOG(LogTemp, Log, TEXT("Granting %s, tag: %s"), *AbilitySet.AbilityToGrant->GetName(), *AbilitySet.InputTag.ToString());
+		// MY_LOG(LogTemp, Log, TEXT("Granting %s, tag: %s"), *AbilitySet.AbilityToGrant->GetName(), *AbilitySet.InputTag.ToString());
+		bool isServer = GetOwner()->HasAuthority();
+		DEBUG_LOG_DISPLAY_NET(isServer, TEXT("Granting %s, tag: %s"), *AbilitySet.AbilityToGrant->GetName(), *AbilitySet.InputTag.ToString());
 	}
 }
 
