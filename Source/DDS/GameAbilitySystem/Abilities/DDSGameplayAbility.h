@@ -41,4 +41,7 @@ protected:
 public:
 	UFUNCTION(BlueprintPure, Category = "DDS|Ability")
 	FORCEINLINE EDDSAbilityActivationPolicy GetAbilityActivationPolicy() const { return AbilityActivationPolicy; }
+protected:
+	void PlayMontageAndWaitForEvent(UAnimMontage* Montage, FName SectionName, FGameplayTag EventTag, float Rate = 1.f, FName StartSection = NAME_None);
+
 };

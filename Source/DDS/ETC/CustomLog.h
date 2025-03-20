@@ -8,24 +8,43 @@
 UE_LOG(Category, Verbosity, TEXT("[%s - %d] : ") Format, ANSI_TO_TCHAR(__FUNCTION__), __LINE__, ##__VA_ARGS__)
 
 
+#define DEBUG_LOG_DISPLAY(Format, ...) \
+Debug::Log(FString::Printf(TEXT("[%s - %d] : ") Format, ANSI_TO_TCHAR(__FUNCTION__), __LINE__, ##__VA_ARGS__))
+
+#define DEBUG_LOG_DISPLAY_NET(IS_SERVER,Format, ...) \
+Debug::LogWithNetInfo(FString::Printf(TEXT("[%s - %d] : ") Format, ANSI_TO_TCHAR(__FUNCTION__), __LINE__, ##__VA_ARGS__), IS_SERVER)
+
+
 namespace Debug
 {
 	// 로그 타입(ELogVerbosity)과 메시지, 색
 	static void Log(const FString& Message,const FColor& Color = FColor::MakeRandomColor())
 	{
-		MY_LOG(LogTemp, Type::Log, "%s", *Message);
+		UE_LOG(LogTemp, Type::Log, TEXT("%s"), *Message);
 		if (GEngine)
 		{
 			GEngine->AddOnScreenDebugMessage(-1, 5.f, Color, Message);
 		}
 	}
 
+	static void LogWithNetInfo(const FString& Message, bool isServer ,const FColor& Color = FColor::MakeRandomColor())
+	{
+		FString ToPrint = FString::Printf(TEXT("[%s] %s "), isServer ? TEXT("Server") : TEXT("Client"), *Message);
+		Log(ToPrint, Color);
+	}
+
 	static void LogError(const FString& Message,const FColor& Color = FColor::MakeRandomColor())
 	{
-		MY_LOG(LogTemp, Type::Error, "%s", *Message);
+		UE_LOG(LogTemp, Type::Error,TEXT("%s"), *Message);
 		if (GEngine)
 		{
 			GEngine->AddOnScreenDebugMessage(-1, 5.f, Color, Message);
 		}
+	}
+
+	static void LogErrorWithNetInfo(const FString& Message, bool isServer, const FColor& Color = FColor::MakeRandomColor())
+	{
+		FString ToPrint = FString::Printf(TEXT("[%s] %s "), isServer ? TEXT("Server") : TEXT("Client"), *Message);
+		LogError(ToPrint, Color);
 	}
 }
