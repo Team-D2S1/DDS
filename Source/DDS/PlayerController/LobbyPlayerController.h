@@ -6,6 +6,7 @@
 #include "GameFramework/PlayerController.h"
 #include "LobbyPlayerController.generated.h"
 
+class UMainMenuWidget;
 /**
  * 
  */
@@ -16,15 +17,30 @@ class DDS_API ALobbyPlayerController : public APlayerController
 	
 public:
 	ALobbyPlayerController();
+
+protected:
+	virtual void BeginPlay() override;
+
+	virtual void Tick(float DeltaSeconds) override;
+
+	void GameStart();
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "UI")
+	TSubclassOf<UUserWidget> MainMenuWidgetClass;
+	
+private:
+	UPROPERTY()
+	TObjectPtr<UMainMenuWidget> MainMenuWidget;
 	
 	UFUNCTION(Server, Reliable)
 	void Server_GameStart();
 
 protected:
-	// UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Widget")
-	// UUserWidget* LobbyWidget;
-
-	void GameStart();
+	// MainMenuWidget 생성 후 할당, InputMode 변경
+	void ShowMainMenuWidget();
+	
+public:
+	FORCEINLINE UMainMenuWidget* GetMainMenuWidget() { return MainMenuWidget; }
 
 	
 };

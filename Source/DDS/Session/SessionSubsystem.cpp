@@ -5,6 +5,7 @@
 #include "OnlineSubsystem.h"
 #include "Online/OnlineSessionNames.h"
 #include "OnlineSessionSettings.h"
+#include "ETC/CustomLog.h"
 
 USessionSubsystem::USessionSubsystem():
 	CreateSessionCompleteDelegate(FOnCreateSessionCompleteDelegate::CreateUObject(this, &ThisClass::OnCreateSessionComplete)),
@@ -48,8 +49,7 @@ void USessionSubsystem::CreateSession(int32 NumPublicConnections, FString Port)
 
 	LastSessionSettings->Set("PortNumber", Port, EOnlineDataAdvertisementType::ViaOnlineServiceAndPing);
 	
-	const ULocalPlayer* LocalPlayer = GetWorld()->GetFirstLocalPlayerFromController();
-	if(!SessionInterface->CreateSession(*LocalPlayer->GetPreferredUniqueNetId(), NAME_GameSession, *LastSessionSettings))
+	if(!SessionInterface->CreateSession(0, NAME_GameSession, *LastSessionSettings))
 	{
 		SessionInterface->ClearOnCreateSessionCompleteDelegate_Handle(CreateSessionCompleteDelegateHandle);
 
@@ -123,6 +123,10 @@ void USessionSubsystem::OnCreateSessionComplete(FName SessionName, bool bWasSucc
 {
 	if(SessionInterface.IsValid())
 	{
+		if(bWasSuccessful)
+		{
+			MY_LOG(LogTemp, Warning, TEXT("Create Session Success!!"));
+		}
 		SessionInterface->ClearOnCreateSessionCompleteDelegate_Handle(CreateSessionCompleteDelegateHandle);
 	}
 

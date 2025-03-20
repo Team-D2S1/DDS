@@ -48,11 +48,11 @@ void ALobbySession::UnregisterPlayer(const APlayerController* ExitingPlayer)
 		IOnlineSessionPtr Session = OnlineSubsystem->GetSessionInterface();
 		if(Session.IsValid())
 		{
-			for(int i = PCs.Num()-1; i <= 0; i--)
+			for(int i = PCs.Num()-1; i >= 0; i--)
 			{
 				if(PCs[i] == ExitingPlayer)
 				{
-					PCs.Remove(PCs[i]);
+					PCs.RemoveAt(i);
 				}
 			}
 
@@ -70,7 +70,6 @@ void ALobbySession::GameStart()
 void ALobbySession::BeginPlay()
 {
 	Super::BeginPlay();
-
 	if(IsRunningDedicatedServer())
 	{
 		FString PortNumber;

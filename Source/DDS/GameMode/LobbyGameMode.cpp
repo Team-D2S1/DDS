@@ -3,23 +3,23 @@
 
 #include "LobbyGameMode.h"
 
+#include "ETC/CustomLog.h"
+#include <iostream>
 #include "Session/LobbySession.h"
-
 
 ALobbyGameMode::ALobbyGameMode()
 {
 	GameSessionClass = ALobbySession::StaticClass();
+
+	bUseSeamlessTravel = true;
 }
 
 void ALobbyGameMode::BeginPlay()
 {
 	Super::BeginPlay();
-
-	if(IsRunningDedicatedServer())
+	
+	if(UGameInstance* GameInstance = GetGameInstance())
 	{
-		// TODO
-		// Dedicated Server 실행과 동시에 BeginPlay가 실행될거임
-		// 그럼 여기서 Session Setting 하고 온라인 서브시스템에 등록해야겠지
-		// SessionSubsystem에 구현 로직 다 있으니까 그거 사용하면 될듯
+		// 작업
 	}
 }

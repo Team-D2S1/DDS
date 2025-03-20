@@ -17,6 +17,7 @@ class DDS_API ALobbyGameMode : public AGameModeBase
 public:
 	ALobbyGameMode();
 
+protected:
 	virtual void BeginPlay() override;
 	
 };
