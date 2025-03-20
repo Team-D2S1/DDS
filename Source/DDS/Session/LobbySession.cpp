@@ -4,6 +4,7 @@
 #include "LobbySession.h"
 
 #include "OnlineSubsystem.h"
+#include "SessionSubsystem.h"
 #include "ETC/CustomLog.h"
 #include "Interfaces/OnlineSessionInterface.h"
 
@@ -64,6 +65,28 @@ void ALobbySession::UnregisterPlayer(const APlayerController* ExitingPlayer)
 void ALobbySession::GameStart()
 {
 	
+}
+
+void ALobbySession::BeginPlay()
+{
+	Super::BeginPlay();
+
+	if(IsRunningDedicatedServer())
+	{
+		FString PortNumber;
+		
+		if(UWorld* World = GetWorld())
+		{
+			PortNumber = FString::FromInt(World->URL.Port);
+		}
+
+		if(!PortNumber.IsEmpty())
+		{
+			MY_LOG(LogTemp, Log, TEXT("Lobby port : %s"), *PortNumber);
+			USessionSubsystem* SessionSubsystem = GetGameInstance()->GetSubsystem<USessionSubsystem>();
+			SessionSubsystem->CreateSession(4, PortNumber);
+		}
+	}
 }
 
 void ALobbySession::OnRegisterPlayerComplete(FName NameOfSession, const TArray<FUniqueNetIdRef>& PlayerIds,

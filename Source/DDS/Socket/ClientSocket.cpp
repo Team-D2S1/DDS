@@ -14,14 +14,14 @@ FSocketReceivedData UClientSocket::CreateSocket(const FString RequestMessage, co
 	FSocket* Socket;
 	Socket = ISocketSubsystem::Get(PLATFORM_SOCKETSUBSYSTEM)->
 		CreateSocket(NAME_Stream, "TCPSocket", false);
-
+	
 	// RAII 방식으로 소켓 종료
 	ON_SCOPE_EXIT
 	{
 		Socket->Close();
 		ISocketSubsystem::Get(PLATFORM_SOCKETSUBSYSTEM)->DestroySocket(Socket);
 	};
-	
+
 	// IP 연결
 	FIPv4Address IPv4;
 	if(!bIsLocal)
@@ -30,7 +30,7 @@ FSocketReceivedData UClientSocket::CreateSocket(const FString RequestMessage, co
 	}
 	else
 	{
-		FIPv4Address::Parse("127.0.0.10", IPv4);
+		FIPv4Address::Parse("127.0.0.1", IPv4);
 	}
 
 	// 요청을 날릴 IP와 Port 연결 (MainServer)
@@ -60,12 +60,12 @@ FSocketReceivedData UClientSocket::CreateSocket(const FString RequestMessage, co
 		uint8 ReceiveBuf[1000] = {0};
 		int32 BytesRead = 0;
 		Socket->Recv(ReceiveBuf, sizeof(ReceiveBuf), BytesRead);
-
+		
 		// 수신 성공했을경우
 		if(BytesRead > 0)
 		{
 			FString ReceivedMessage = UTF8_TO_TCHAR(reinterpret_cast<const char*>(ReceiveBuf));
-			UE_LOG(LogTemp, Log, TEXT("Recieved Message from MainServer : %s"), *ReceivedMessage);
+			MY_LOG(LogTemp, Log, TEXT("Recieved Message from MainServer : %s"), *ReceivedMessage);
 
 			if(RequestMessage != "")
 			{

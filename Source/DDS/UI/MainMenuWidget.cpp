@@ -3,8 +3,10 @@
 
 #include "MainMenuWidget.h"
 
+#include "OnlineSubsystem.h"
 #include "Components/Button.h"
 #include "Kismet/KismetSystemLibrary.h"
+#include "Socket/ClientSocket.h"
 
 void UMainMenuWidget::OnCreateSession(bool bWasSuccessful)
 {
@@ -59,6 +61,32 @@ void UMainMenuWidget::MultiplayButtonClicked()
 {
 	// TODO
 	// 멀티플레이 모드로 들어간다 방 만들고 찾고 하는 기능 필요함
+
+	MultiplayButton->SetIsEnabled(false);
+
+	const FString LobbyName = "DDS Room";
+	const FString IsPrivate = "false";
+	const FString Password = "";
+
+	FString ExtraInfo = LobbyName + "|" + IsPrivate + "|" + Password;
+	FSocketReceivedData ReceivedData;
+
+	UClientSocket* NewSocket = NewObject<UClientSocket>(this);
+	if(NewSocket)
+	{
+		bool bIsLocal = IOnlineSubsystem::Get()->GetSubsystemName() == "NULL" ? true : false;
+		// 소켓 통신
+		ReceivedData = NewSocket->CreateSocket("Client_CreateRoom", ExtraInfo, bIsLocal);
+		// 소켓 종료
+		NewSocket = nullptr;
+	}
+	
+	if(ReceivedData.bExist)
+	{
+		ReceivedLobbyPort = ReceivedData.ReceivedData[0];
+
+		
+	}
 }
 
 void UMainMenuWidget::OptionButtonClicked()

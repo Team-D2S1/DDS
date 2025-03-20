@@ -20,13 +20,13 @@ USessionSubsystem::USessionSubsystem():
 	}
 }
 
-void USessionSubsystem::CreateSession(int32 NumPublicConnections, bool bIsLan)
+void USessionSubsystem::CreateSession(int32 NumPublicConnections, FString Port)
 {
 	if(!SessionInterface.IsValid())
 	{
 		return;
 	}
-
+	
 	auto ExistingSession = SessionInterface->GetNamedSession(NAME_GameSession);
 	if(ExistingSession)
 	{
@@ -36,16 +36,18 @@ void USessionSubsystem::CreateSession(int32 NumPublicConnections, bool bIsLan)
 	// 델리게이트를 FDelegateHandle 안에 저장한다. 이후 삭제할 수 있도록..
 	CreateSessionCompleteDelegateHandle = SessionInterface->AddOnCreateSessionCompleteDelegate_Handle(CreateSessionCompleteDelegate);
 	
-
 	LastSessionSettings = MakeShareable(new FOnlineSessionSettings());
 	LastSessionSettings->bIsLANMatch = IOnlineSubsystem::Get()->GetSubsystemName() == "NULL" ? true : false;
+	LastSessionSettings->bIsDedicated = true;
 	LastSessionSettings->NumPublicConnections = NumPublicConnections;
 	LastSessionSettings->bAllowJoinInProgress = true;
 	LastSessionSettings->bAllowJoinViaPresence = true;
 	LastSessionSettings->bShouldAdvertise = true;
-	LastSessionSettings->bUsesPresence = true;
-	LastSessionSettings->bUseLobbiesIfAvailable = true;
+	LastSessionSettings->bUsesPresence = false;
+	LastSessionSettings->bUseLobbiesIfAvailable = false;
 
+	LastSessionSettings->Set("PortNumber", Port, EOnlineDataAdvertisementType::ViaOnlineServiceAndPing);
+	
 	const ULocalPlayer* LocalPlayer = GetWorld()->GetFirstLocalPlayerFromController();
 	if(!SessionInterface->CreateSession(*LocalPlayer->GetPreferredUniqueNetId(), NAME_GameSession, *LastSessionSettings))
 	{
@@ -161,8 +163,6 @@ void USessionSubsystem::OnStartSessionComplete(FName SessionName, bool bWasSucce
 	}
 	if(bWasSuccessful && bCreateSessionOnDestroy)
 	{
-		bCreateSessionOnDestroy = false;
-		CreateSession(LastNumPublicConnections, true);
 	}
 	MultiplayerOnDestroySessionComplete.Broadcast(true);
 }

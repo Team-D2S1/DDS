@@ -18,10 +18,12 @@ class DDS_API UMainMenuWidget : public UUserWidget
 
 protected:
 	void OnCreateSession(bool bWasSuccessful);
-	void OnFindSession(const TArray<FOnlineSessionSearchResult>& SessionResult, bool bWasSuccessful);
-	void OnJoinSession(EOnJoinSessionCompleteResult::Type Result);
-	void OnDestroySession(bool bWasSuccessful);
 	
+	void OnFindSession(const TArray<FOnlineSessionSearchResult>& SessionResult, bool bWasSuccessful);
+	
+	void OnJoinSession(EOnJoinSessionCompleteResult::Type Result);
+	
+	void OnDestroySession(bool bWasSuccessful);
 	
 	virtual bool Initialize() override;
 
@@ -40,12 +42,16 @@ protected:
 private:
 	UFUNCTION()
 	void SingleplayButtonClicked();
+	
 	UFUNCTION()
 	void MultiplayButtonClicked();
+	
 	UFUNCTION()
 	void OptionButtonClicked();
+	
 	UFUNCTION()
 	void ExitButtonClicked();
 
-	
+protected:
+	FString ReceivedLobbyPort;
 };

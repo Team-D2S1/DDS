@@ -23,6 +23,8 @@ public:
 	void GameStart();
 	
 protected:
+	virtual void BeginPlay() override;
+	
 	FDelegateHandle OnRegisterPlayerDelegateHandle;
 	FDelegateHandle OnUnregisterPlayerDelegateHandle;
 

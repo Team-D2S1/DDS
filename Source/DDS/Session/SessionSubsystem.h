@@ -26,7 +26,7 @@ public:
 	USessionSubsystem();
 
 	// 세션 기능을 처리하기 위해 메뉴 클래스가 호출하는 함수
-	void CreateSession(int32 NumPublicConnections, bool bIsLan);
+	void CreateSession(int32 NumPublicConnections, FString Port);
 	void FindSession(int32 MaxSearchResult);
 	void JoinSession(const FOnlineSessionSearchResult& SessionResult);
 	void DestroySession();

@@ -53,7 +53,8 @@ void ReleasePort(int port)
 // 입력된 port에서 Dedicated Server 실행한다
 bool StartDedicatedServer(int port)
 {
-	string command = "DDSServer.exe -port=" + to_string(port) + " -log";
+	// ****** Server.exe 경로 작성 ******
+	string command = "D:\\Project\\DDSBuild\\WindowsServer\\DDSServer.exe -port=" + to_string(port) + " -log";
 
 	STARTUPINFOA si = { sizeof(STARTUPINFOA) };
 	PROCESS_INFORMATION pi;
@@ -84,12 +85,14 @@ void HandleClient(SOCKET clientSocket)
 		// Request별 작업 수행
 
 		// 방 생성 요청
-		if (request == "CreateRoom")
+		if (request.find("Client_CreateRoom") == 0)
 		{
+			cout << "[MainServer] Client CreateRoom Accept" << endl;
 			int port = AllocatePort();
 			if (port == -1)
 			{
 				string response = "NoAvailablePort";
+				cout << "[MainServer] " << response << endl;
 				send(clientSocket, response.c_str(), response.size(), 0);
 			}
 			else
@@ -97,15 +100,21 @@ void HandleClient(SOCKET clientSocket)
 				if (StartDedicatedServer(port))
 				{
 					string response = "Port : " + to_string(port);
+					cout << "[MainServer] " << response << endl;
 					send(clientSocket, response.c_str(), response.size(), 0);
 				}
 				else
 				{
 					string response = "ServerStartFailed";
+					cout << "[MainServer] " << response << endl;
 					send(clientSocket, response.c_str(), response.size(), 0);
 					ReleasePort(port);
 				}
 			}
+		}
+		else
+		{
+			cout << "[MainServer] Unknown Request" << endl;
 		}
 	}
 }

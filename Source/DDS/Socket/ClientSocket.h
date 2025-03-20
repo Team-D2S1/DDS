@@ -31,5 +31,6 @@ public:
 	TArray<FString> StringTokenizer(FString String);
 
 private:
-	FString ServerIP = "118.32.109.67";
+	// ****** 자신(MainServer)의 주소 작성 ******
+	FString ServerIP = "118.32.109.110";
 };
