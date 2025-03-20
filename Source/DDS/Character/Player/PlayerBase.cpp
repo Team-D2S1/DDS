@@ -51,6 +51,7 @@ void APlayerBase::PossessedBy(AController* NewController)
 	if (!EntityStartUpDataBase.IsNull())
 	{
 		MY_LOG(LogTemp,Log,TEXT("EntityStartUpDataBase not null"))
+		// 플레이어는 그 수가 예측가능하므로, 동기 로딩 사용
 		UDataAsset_StartUpDataBase* LoadedData = EntityStartUpDataBase.LoadSynchronous();
 		if (LoadedData)
 		{

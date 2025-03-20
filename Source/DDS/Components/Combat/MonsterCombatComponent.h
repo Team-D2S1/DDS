@@ -3,15 +3,18 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "Components/Combat/PawnCombatComponent.h"
-#include "EnemyCombatComponent.generated.h"
+#include "Components/Combat/PlayerCombatComponent.h"
+#include "MonsterCombatComponent.generated.h"
 
 /**
  * 
  */
 UCLASS()
-class DDS_API UEnemyCombatComponent : public UPawnCombatComponent
+class DDS_API UMonsterCombatComponent : public UPlayerCombatComponent
 {
 	GENERATED_BODY()
+	
+	
+	
 	
 };
