@@ -6,6 +6,8 @@
 #include "DDS/Character/EntityBase.h"
 #include "MonsterBase.generated.h"
 
+class UMonsterCombatComponent;
+
 /**
  * 
  */
@@ -17,5 +19,13 @@ public:
 	AMonsterBase();
 
 protected:
+	virtual void PossessedBy(AController* NewController) override;
 	virtual void BeginPlay() override;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Combat")
+	TObjectPtr<UMonsterCombatComponent> MonsterCombatComponent;
+private:
+	void InitMonsterStartUpData();
+public:
+	FORCEINLINE UMonsterCombatComponent* GetMonsterCombatComponent() const { return MonsterCombatComponent; }
 };
