@@ -36,7 +36,9 @@ public:
 	FORCEINLINE UMonsterCombatComponent* GetMonsterCombatComponent() const { return MonsterCombatComponent; }
 
 	// IFocusable interface
+	UFUNCTION(BlueprintCallable, Category = "Focusable")
 	virtual void OnFocus() override;
+	UFUNCTION(BlueprintCallable, Category = "Focusable")
 	virtual void OnFocusLost() override;
 	// End of IFocusable interface
 };

@@ -17,4 +17,11 @@ class DDS_API UPlayerCombatComponent : public UPawnCombatComponent
 public:
 	UFUNCTION(BlueprintCallable, Category = "DDS|Combat")
 	ADDSPlayerWeapon* GetPlayerCarriedWeaponByTag(FGameplayTag InWeaponTag) const;
+
+protected:
+	void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
+
+
+private:
+	
 };

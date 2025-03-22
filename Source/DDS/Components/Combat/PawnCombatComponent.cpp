@@ -52,3 +52,13 @@ ADDSWeaponBase* UPawnCombatComponent::GetCurrentEquippedWeapon() const
 	}
 	return GetCharacterCarriedWeapon(CurrentEquippedWeaponTag);
 }
+
+void UPawnCombatComponent::SetFocusedObject(AActor* InFocusedObject)
+{
+	FocusedObject = InFocusedObject;
+}
+
+void UPawnCombatComponent::ClearFocusedObject()
+{
+	FocusedObject = nullptr;
+}

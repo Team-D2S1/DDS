@@ -4,10 +4,12 @@
 
 #include "CoreMinimal.h"
 #include "GameplayTagContainer.h"
+#include "InputActionValue.h"
 #include "GameFramework/PlayerController.h"
 // #include "InputMappingContext.h"
 #include "InGamePlayerController.generated.h"
 
+class IFocusable;
 class APlayerBase;
 class UDDSAbilitySystemComponent;
 class UDataAsset_InputConfig;
@@ -40,6 +42,9 @@ protected:
 	UFUNCTION(BlueprintCallable)
 	void Input_Look(const FInputActionValue& Value);
 
+	UFUNCTION(BlueprintCallable)
+	void Input_LockOn();
+
 	void Input_AbilityInputPressed(FGameplayTag InputTag);
 	void Input_AbilityInputReleased(FGameplayTag InputTag);
 	
@@ -56,10 +61,15 @@ public:
 protected:
 	APlayerBase* GetPlayerBase();
 	UDDSAbilitySystemComponent* GetDDSAbilitySystemComponent();
+
+
+	TArray<AActor*> GetFocusables() const;
+	// TArray<AActor*> GetFocusablesInSight() const;
 	
 private:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Character Data", meta = (AllowPrivateAccess = "true"))
 	UDataAsset_InputConfig* InputConfigDataAsset;
-
+	UPROPERTY()
+	AActor* focusedObject;
 	TWeakObjectPtr<APlayerBase> CachedPlayerBase;
 };

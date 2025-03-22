@@ -73,6 +73,27 @@ void APlayerBase::OnRep_PlayerState()
 void APlayerBase::Tick(float DeltaSeconds)
 {
 	Super::Tick(DeltaSeconds);
+	
+	if (CombatComponent)
+	{
+		AActor* Focused = CombatComponent->GetFocusedObject();
+		if(Focused)
+		   {
+		   	FVector ToTarget = Focused->GetActorLocation() - GetActorLocation();
+		   	FRotator LookRotation = ToTarget.Rotation();
+			
+		   	// 카메라 회전 (SpringArm이 따라감)
+		   	if (Controller)
+		   	{
+		   		LookRotation.Pitch = -30.f;
+		   		Controller->SetControlRotation(LookRotation);
+		   	}
+			if (Camera){
+			 	FRotator CamLookRotation = (Focused->GetActorLocation() - Camera->GetComponentLocation()).Rotation();
+				Camera -> SetWorldRotation(CamLookRotation);
+			}
+		}
+	}
 
 }
 

@@ -6,6 +6,7 @@
 #include "DDS/Character/EntityBase.h"
 #include "PlayerBase.generated.h"
 
+class IFocusable;
 class UPlayerCombatComponent;
 class UCameraComponent;
 class USpringArmComponent;
@@ -36,9 +37,11 @@ protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Combat", meta = (AllowPrivateAccess = "true"))
 	TObjectPtr<UPlayerCombatComponent> CombatComponent;
 public:
+	FORCEINLINE UCameraComponent* GetCameraComponent() { return Camera; }
 	FORCEINLINE USpringArmComponent* GetSpringArmComponent() { return SpringArm; }
-
 	FORCEINLINE UPlayerCombatComponent* GetCombatComponent() { return CombatComponent; }
 private:
 	void InitAbilityActorInfo();
+
+	
 };

@@ -13,7 +13,7 @@ class AMonsterBase;
  * 
  */
 UCLASS()
-class DDS_API UDDSMonsterGameplayAbility : public UDDSPlayerGameplayAbility
+class DDS_API UDDSMonsterGameplayAbility : public UDDSGameplayAbility
 {
 	GENERATED_BODY()
 

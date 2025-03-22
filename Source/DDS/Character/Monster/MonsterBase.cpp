@@ -70,6 +70,7 @@ void AMonsterBase::InitMonsterStartUpData()
 		return;
 	}
 
+	
 	// 몬스터는 그 수가 많아 게임을 멈출 수 있음. => 비동기 로딩 사용
 	UAssetManager::GetStreamableManager().RequestAsyncLoad(
 		EntityStartUpDataBase.ToSoftObjectPath(),
@@ -88,7 +89,7 @@ void AMonsterBase::InitMonsterStartUpData()
 void AMonsterBase::OnFocus()
 {
 	bIsFocused = true;
-	
+	DrawDebugSphere(GetWorld(), GetActorLocation(), 100.0f, 12, FColor::Red, false, 0.2f);
 }
 
 void AMonsterBase::OnFocusLost()
