@@ -51,7 +51,7 @@ void UDDSAbilitySystemComponent::AbilityInputTagPressed(const FGameplayTag& Inpu
 		{
 			// spec 이름 출력
 			bool isServer = GetOwner()->HasAuthority();
-			DEBUG_LOG_DISPLAY_NET(isServer,TEXT("Try to Activate Ability : %s "),*spec.Ability->GetName());
+			DEBUG_CLOG_DISPLAY_NET(FColor::Emerald,isServer,TEXT("Try to Activate Ability : %s "),*spec.Ability->GetName());
 			TryActivateAbility(spec.Handle);
 		}
 	}

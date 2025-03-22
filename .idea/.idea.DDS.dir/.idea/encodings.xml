@@ -19,20 +19,27 @@
     <file url="file://$PROJECT_DIR$/Source/DDS/Character/Player/DDSPlayerState.h" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/Source/DDS/Components/Combat/EnemyCombatComponent.cpp" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/Source/DDS/Components/Combat/EnemyCombatComponent.h" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/Source/DDS/Components/Combat/MonsterCombatComponent.cpp" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/Source/DDS/Components/Combat/MonsterCombatComponent.h" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/Source/DDS/Components/Combat/PawnCombatComponent.cpp" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/Source/DDS/Components/Combat/PawnCombatComponent.h" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/Source/DDS/Components/Combat/PlayerCombatComponent.cpp" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/Source/DDS/Components/Combat/PlayerCombatComponent.h" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/Source/DDS/Components/PawnExtensionComponentBase.cpp" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/Source/DDS/Components/PawnExtensionComponentBase.h" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/Source/DDS/DDSGameplayTags.h" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/Source/DDS/DataAsset/Input/DataAsset_InputConfig.cpp" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/Source/DDS/DataAsset/Input/DataAsset_InputConfig.h" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/Source/DDS/DataAsset/StartUpData/DataAsset_MonsterStartUpDataBase.cpp" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/Source/DDS/DataAsset/StartUpData/DataAsset_MonsterStartUpDataBase.h" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/Source/DDS/DataAsset/StartUpData/DataAsset_PlayerStartUpData.cpp" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/Source/DDS/DataAsset/StartUpData/DataAsset_PlayerStartUpData.h" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/Source/DDS/DataAsset/StartUpData/DataAsset_StartUpDataBase.cpp" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/Source/DDS/DataAsset/StartUpData/DataAsset_StartUpDataBase.h" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/Source/DDS/GameAbilitySystem/Abilities/DDSGameplayAbility.cpp" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/Source/DDS/GameAbilitySystem/Abilities/DDSGameplayAbility.h" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/Source/DDS/GameAbilitySystem/Abilities/DDSMonsterGameplayAbility.cpp" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/Source/DDS/GameAbilitySystem/Abilities/DDSMonsterGameplayAbility.h" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/Source/DDS/GameAbilitySystem/Abilities/PlayerAblities/SpawnWeaponAbility.cpp" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/Source/DDS/GameAbilitySystem/Abilities/PlayerAblities/SpawnWeaponAbility.h" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/Source/DDS/GameAbilitySystem/DDSAttributeSet.cpp" charset="UTF-8" />

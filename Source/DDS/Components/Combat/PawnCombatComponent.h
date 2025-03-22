@@ -43,4 +43,6 @@ public:
 
 private:
 	TMap<FGameplayTag, ADDSWeaponBase*> CharacterCarriedWeaponMap;
+
+	
 };

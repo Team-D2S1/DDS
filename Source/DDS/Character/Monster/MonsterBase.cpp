@@ -45,6 +45,18 @@ void AMonsterBase::BeginPlay()
 		return;
 	AbilitySystemComponent->InitAbilityActorInfo(this, this);
 }
+
+void AMonsterBase::Tick(float DeltaSeconds)
+{
+	Super::Tick(DeltaSeconds);
+	
+	// TODO 테스트용, 삭제해야함
+	if (bIsFocused)
+	{
+		DrawDebugSphere(GetWorld(), GetActorLocation(), 100.0f, 12, FColor::Red, false, 0.2f);
+	}
+}
+
 void AMonsterBase::PossessedBy(AController* NewController)
 {
 	Super::PossessedBy(NewController);
@@ -71,4 +83,15 @@ void AMonsterBase::InitMonsterStartUpData()
 			loadedData->GiveToAbilitySystemComponent(AbilitySystemComponent);
 		})
 	);
+}
+
+void AMonsterBase::OnFocus()
+{
+	bIsFocused = true;
+	
+}
+
+void AMonsterBase::OnFocusLost()
+{
+	bIsFocused = false;
 }
