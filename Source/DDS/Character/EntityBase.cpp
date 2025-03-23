@@ -63,7 +63,11 @@ void AEntityBase::Server_SetFocusedObject_Implementation(AActor* InFocusedObject
 
 	FocusedObject = InFocusedObject;
 	// GameplayTag 추가
-	GetDDSAbilitySystemComponent()->AddReplicatedLooseGameplayTag(DDSGameplayTags::Shared_State_LockedOn);
+	/*
+	* TODO: 왜인지 모르겠지만, AddReplicatedLooseGameplayTag는 작동을 잘 안함. -> Effect로 부여하자
+	*/ 
+	GetDDSAbilitySystemComponent()->Multicast_AddLooseGameplayTag(DDSGameplayTags::Shared_State_LockedOn);
+	// GetDDSAbilitySystemComponent()->ApplyGameplayEffectToSelf
 }
 
 void AEntityBase::Server_ClearFocusedObject_Implementation()
@@ -71,7 +75,7 @@ void AEntityBase::Server_ClearFocusedObject_Implementation()
 	GetCharacterMovement()->bOrientRotationToMovement = true;
 	FocusedObject = nullptr;
 
-	GetDDSAbilitySystemComponent()->RemoveReplicatedLooseGameplayTag(DDSGameplayTags::Shared_State_LockedOn);
+	GetDDSAbilitySystemComponent()->Multicast_RemoveLooseGameplayTag(DDSGameplayTags::Shared_State_LockedOn);
 }
 
 void AEntityBase::OnRep_FocusedObject()

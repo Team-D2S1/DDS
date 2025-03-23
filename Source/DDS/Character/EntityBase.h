@@ -53,6 +53,7 @@ protected:
 	UPROPERTY(ReplicatedUsing=OnRep_FocusedObject,BlueprintReadWrite)
 	TObjectPtr<AActor> FocusedObject = nullptr;
 
+	
 private:
 	UFUNCTION()
 	virtual void OnRep_FocusedObject();

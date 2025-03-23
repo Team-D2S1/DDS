@@ -11,6 +11,7 @@ void UDDSAbilitySystemComponent::AbilityActorInfoSet()
 {
 	// Effect 적용시 서버에서 호출되는 이벤트 델리게이트
 	// OnGameplayEffectAppliedDelegateToSelf.AddUObject(this, &UDDSAbilitySystemComponent::OnGameplayEffectAppliedToSelf);
+	// SetIsReplicated(true);
 }
 
 void UDDSAbilitySystemComponent::AddCharacterAbilities(const TArray<TSubclassOf<UDDSGameplayAbility>>& StartupAbilities)
@@ -95,4 +96,17 @@ void UDDSAbilitySystemComponent::RemoveGrantedPlayerWeaponAbilities(TArray<FGame
 			}
 		}
 	InHandles.Empty();
+}
+void UDDSAbilitySystemComponent::Multicast_AddLooseGameplayTag_Implementation(const FGameplayTag& InTag)
+{
+	bool isServer = GetOwner()->HasAuthority();
+	DEBUG_CLOG_DISPLAY_NET(FColor::White,isServer,TEXT("AddLooseGameplayTag : %s"),*InTag.ToString());
+	AddLooseGameplayTag(InTag);
+}
+
+void UDDSAbilitySystemComponent::Multicast_RemoveLooseGameplayTag_Implementation(const FGameplayTag& InTag)
+{
+	bool isServer = GetOwner()->HasAuthority();
+	DEBUG_CLOG_DISPLAY_NET(FColor::White,isServer,TEXT("RemoveLooseGameplayTag : %s"),*InTag.ToString());
+	RemoveLooseGameplayTag(InTag);
 }

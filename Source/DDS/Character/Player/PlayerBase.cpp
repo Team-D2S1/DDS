@@ -60,6 +60,7 @@ void APlayerBase::PossessedBy(AController* NewController)
 			LoadedData->GiveToAbilitySystemComponent(AbilitySystemComponent);
 		}
 	}
+	// AbilitySystemComponent->AddReplicatedLooseGameplayTag(DDSGameplayTags::Shared_State_LockedOn);
 }
 
 void APlayerBase::OnRep_PlayerState()
@@ -98,7 +99,11 @@ void APlayerBase::Tick(float DeltaSeconds)
 			}
 		}
 	}
-
+	// if (GetDDSAbilitySystemComponent()->HasMatchingGameplayTag(DDSGameplayTags::Shared_State_LockedOn))
+	// {
+	// 	//이름출력
+	// 	DEBUG_CLOG_DISPLAY_NET(FColor::Yellow, HasAuthority(),TEXT("%s is locked on"), *GetName());
+	// }
 }
 
 void APlayerBase::BeginPlay()
@@ -131,6 +136,8 @@ void APlayerBase::InitAbilityActorInfo()
 	DDSPlayerState->GetAbilitySystemComponent()->InitAbilityActorInfo(DDSPlayerState, this);
 	AbilitySystemComponent = DDSPlayerState->GetDDSAbilitySystemComponent();
 	AttributeSet = DDSPlayerState->GetDDSAttribueSet();
+
+	
 
 }
 

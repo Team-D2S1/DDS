@@ -29,7 +29,16 @@ public:
 	UFUNCTION(BlueprintCallable,Category="DDS|Ability")
 	void RemoveGrantedPlayerWeaponAbilities(UPARAM(ref) TArray<FGameplayAbilitySpecHandle>& InHandles);
 
+
+	UFUNCTION(NetMulticast,Reliable)
+	void Multicast_AddLooseGameplayTag(const FGameplayTag& InTag);
+
+	UFUNCTION(NetMulticast,Reliable)
+	void Multicast_RemoveLooseGameplayTag(const FGameplayTag& InTag);
 	// TODO 이펙트 적용시 클라이언트에게 알림
 	// UFUNCTION(Client, Reliable)
 	// void ClientEffectApplied(UAbilitySystemComponent* AbilitySystemComponent, const FGameplayEffectSpec& EffectSpec, FActiveGameplayEffectHandle ActiveEffectHandle);
+	
 };
+
+
