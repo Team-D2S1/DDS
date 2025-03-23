@@ -40,8 +40,12 @@ public:
 	FORCEINLINE UCameraComponent* GetCameraComponent() { return Camera; }
 	FORCEINLINE USpringArmComponent* GetSpringArmComponent() { return SpringArm; }
 	FORCEINLINE UPlayerCombatComponent* GetCombatComponent() { return CombatComponent; }
+
+
+	
+	virtual void Server_SetFocusedObject(AActor* InFocusedObject) override;
+	virtual void Server_ClearFocusedObject() override;
 private:
 	void InitAbilityActorInfo();
-
 	
 };

@@ -133,7 +133,7 @@ void AInGamePlayerController::Input_LockOn()
 	// 대상은 현재 플레이어 카메라 기준 가장 가운데에 가까운 적
 	// 대상이 없으면? 그냥 취소
 	// UCameraComponent* Cam = PlayerBase->GetCameraComponent();
-	UPlayerCombatComponent* CombatComponent = PlayerBase->GetCombatComponent();
+	// UPlayerCombatComponent* CombatComponent = PlayerBase->GetCombatComponent();
 	AActor* target = nullptr;
 	if (!focusedObject)
 	{
@@ -167,14 +167,13 @@ void AInGamePlayerController::Input_LockOn()
 		DEBUG_CLOG_DISPLAY_NET(FColor::White, HasAuthority(), TEXT("Lock On Target : %s"), *target->GetName());
 		// USpringArmComponent* SpringArm = PlayerBase->GetSpringArmComponent();
 		// SpringArm->bUsePawnControlRotation = false;
-		PlayerBase->GetCharacterMovement()->bOrientRotationToMovement = false;
+		
   
 		if (focusedObject && focusedObject != target)
 		{
 			Cast<IFocusable>(focusedObject)->OnFocusLost();
 		}
-		
-		CombatComponent->SetFocusedObject(target);
+		PlayerBase->Server_SetFocusedObject(target);
 		targetFocusable->OnFocus();
 		focusedObject = target;
 		
@@ -183,13 +182,14 @@ void AInGamePlayerController::Input_LockOn()
 	{
 		// USpringArmComponent* SpringArm = PlayerBase->GetSpringArmComponent();
 		// SpringArm->bUsePawnControlRotation = true;
-		PlayerBase->GetCharacterMovement()->bOrientRotationToMovement = true;
+		
 		
 		if (focusedObject)
 		{
-			CombatComponent -> ClearFocusedObject();
+	
 			Cast<IFocusable>(focusedObject)->OnFocusLost();
 			focusedObject = nullptr;
+			PlayerBase->Server_ClearFocusedObject();
 		}
 	}
 	

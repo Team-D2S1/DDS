@@ -28,9 +28,13 @@ public:
 	virtual UAbilitySystemComponent* GetAbilitySystemComponent() const override;
 	//~ End IAbilitySystemInterface Interface
 	UAttributeSet* GetAttributeSet() const;
+
+	UFUNCTION(BlueprintCallable,Category="DDS|Combat")
+	AActor* GetFocusedObject() const { return FocusedObject; }
 protected:
 	virtual void BeginPlay() override;
 
+	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
 
 	UPROPERTY(VisibleAnywhere,BlueprintReadOnly,Category="AbilitySystem")
 	TObjectPtr<UDDSAbilitySystemComponent> AbilitySystemComponent;
@@ -40,7 +44,18 @@ protected:
 	
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Character Data", meta = (AllowPrivateAccess = "true"))
 	TSoftObjectPtr<UDataAsset_StartUpDataBase> EntityStartUpDataBase;
+	UFUNCTION(Server,Reliable, Category = "DDS|Combat")
+	virtual void Server_SetFocusedObject(AActor* InFocusedObject);
+	UFUNCTION(Server,Reliable, Category = "DDS|Combat")
+	virtual void Server_ClearFocusedObject();
 
+protected:
+	UPROPERTY(ReplicatedUsing=OnRep_FocusedObject,BlueprintReadWrite)
+	TObjectPtr<AActor> FocusedObject = nullptr;
+
+private:
+	UFUNCTION()
+	virtual void OnRep_FocusedObject();
 public:	
 	virtual void Tick(float DeltaTime) override;
 	FORCEINLINE UDDSAbilitySystemComponent* GetDDSAbilitySystemComponent() const {return AbilitySystemComponent;}

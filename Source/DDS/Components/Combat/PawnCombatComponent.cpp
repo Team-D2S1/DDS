@@ -3,7 +3,9 @@
 
 #include "Components/Combat/PawnCombatComponent.h"
 
+#include "Character/EntityBase.h"
 #include "ETC/CustomLog.h"
+#include "GameFramework/CharacterMovementComponent.h"
 #include "Items/Weapons/DDSWeaponBase.h"
 
 void UPawnCombatComponent::RegisterSpawnedWeapon(FGameplayTag InWeaponTag, ADDSWeaponBase* InWeapon,
@@ -53,12 +55,5 @@ ADDSWeaponBase* UPawnCombatComponent::GetCurrentEquippedWeapon() const
 	return GetCharacterCarriedWeapon(CurrentEquippedWeaponTag);
 }
 
-void UPawnCombatComponent::SetFocusedObject(AActor* InFocusedObject)
-{
-	FocusedObject = InFocusedObject;
-}
 
-void UPawnCombatComponent::ClearFocusedObject()
-{
-	FocusedObject = nullptr;
-}
+

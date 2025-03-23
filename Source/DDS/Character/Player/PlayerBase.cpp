@@ -3,6 +3,7 @@
 
 #include "PlayerBase.h"
 
+#include "DDSGameplayTags.h"
 #include "DDSPlayerState.h"
 #include "Camera/CameraComponent.h"
 #include "Components/Combat/PlayerCombatComponent.h"
@@ -76,11 +77,14 @@ void APlayerBase::Tick(float DeltaSeconds)
 	
 	if (CombatComponent)
 	{
-		AActor* Focused = CombatComponent->GetFocusedObject();
+		AActor* Focused = FocusedObject;
 		if(Focused)
 		   {
 		   	FVector ToTarget = Focused->GetActorLocation() - GetActorLocation();
 		   	FRotator LookRotation = ToTarget.Rotation();
+
+			
+			SetActorRotation(LookRotation);
 			
 		   	// 카메라 회전 (SpringArm이 따라감)
 		   	if (Controller)
@@ -100,6 +104,19 @@ void APlayerBase::Tick(float DeltaSeconds)
 void APlayerBase::BeginPlay()
 {
 	Super::BeginPlay();
+	
+}
+
+void APlayerBase::Server_SetFocusedObject(AActor* InFocusedObject)
+{
+	Super::Server_SetFocusedObject(InFocusedObject);
+	GetCharacterMovement()->bOrientRotationToMovement = false;
+}
+
+void APlayerBase::Server_ClearFocusedObject()
+{
+	Super::Server_ClearFocusedObject();
+	GetCharacterMovement()->bOrientRotationToMovement = true;
 }
 
 void APlayerBase::InitAbilityActorInfo()
@@ -116,3 +133,4 @@ void APlayerBase::InitAbilityActorInfo()
 	AttributeSet = DDSPlayerState->GetDDSAttribueSet();
 
 }
+

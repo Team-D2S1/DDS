@@ -3,9 +3,12 @@
 
 #include "EntityBase.h"
 
+#include "DDSGameplayTags.h"
 #include "ETC/CustomLog.h"
 #include "GameAbilitySystem/DDSAbilitySystemComponent.h"
 #include "GameAbilitySystem/DDSAttributeSet.h"
+#include "GameFramework/CharacterMovementComponent.h"
+#include "Net/UnrealNetwork.h"
 
 AEntityBase::AEntityBase()
 {
@@ -42,9 +45,36 @@ void AEntityBase::BeginPlay()
 	
 }
 
+void AEntityBase::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
+{
+	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
+
+	DOREPLIFETIME(AEntityBase, FocusedObject);
+}
+
 void AEntityBase::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
 }
 
+void AEntityBase::Server_SetFocusedObject_Implementation(AActor* InFocusedObject)
+{
+
+	FocusedObject = InFocusedObject;
+	// GameplayTag 추가
+	GetDDSAbilitySystemComponent()->AddReplicatedLooseGameplayTag(DDSGameplayTags::Shared_State_LockedOn);
+}
+
+void AEntityBase::Server_ClearFocusedObject_Implementation()
+{
+	GetCharacterMovement()->bOrientRotationToMovement = true;
+	FocusedObject = nullptr;
+
+	GetDDSAbilitySystemComponent()->RemoveReplicatedLooseGameplayTag(DDSGameplayTags::Shared_State_LockedOn);
+}
+
+void AEntityBase::OnRep_FocusedObject()
+{
+	
+}

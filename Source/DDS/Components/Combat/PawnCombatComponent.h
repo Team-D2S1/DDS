@@ -41,18 +41,10 @@ public:
 	UFUNCTION(BlueprintCallable,Category="DDS|Combat")
 	ADDSWeaponBase* GetCurrentEquippedWeapon() const;
 
-	UFUNCTION(BlueprintCallable,Category="DDS|Combat")
-	AActor* GetFocusedObject() const { return FocusedObject; }
 
-	UFUNCTION(BlueprintCallable,Category="DDS|Combat")
-	void SetFocusedObject(AActor* InFocusedObject);
-
-	UFUNCTION(BlueprintCallable,Category="DDS|Combat")
-	void ClearFocusedObject();
 
 protected:
-	UPROPERTY()
-	TObjectPtr<AActor> FocusedObject = nullptr;
+
 private:
 	TMap<FGameplayTag, ADDSWeaponBase*> CharacterCarriedWeaponMap;
 
