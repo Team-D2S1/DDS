@@ -5,6 +5,7 @@
 
 #include "OnlineSubsystem.h"
 #include "Components/Button.h"
+#include "ETC/CustomLog.h"
 #include "Kismet/KismetSystemLibrary.h"
 #include "Socket/ClientSocket.h"
 
@@ -84,8 +85,6 @@ void UMainMenuWidget::MultiplayButtonClicked()
 	if(ReceivedData.bExist)
 	{
 		ReceivedLobbyPort = ReceivedData.ReceivedData[0];
-
-		
 	}
 }
 

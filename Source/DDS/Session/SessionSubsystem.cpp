@@ -6,6 +6,9 @@
 #include "Online/OnlineSessionNames.h"
 #include "OnlineSessionSettings.h"
 #include "ETC/CustomLog.h"
+#include "Socket/ClientSocket.h"
+
+class UClientSocket;
 
 USessionSubsystem::USessionSubsystem():
 	CreateSessionCompleteDelegate(FOnCreateSessionCompleteDelegate::CreateUObject(this, &ThisClass::OnCreateSessionComplete)),
@@ -125,7 +128,20 @@ void USessionSubsystem::OnCreateSessionComplete(FName SessionName, bool bWasSucc
 	{
 		if(bWasSuccessful)
 		{
-			MY_LOG(LogTemp, Warning, TEXT("Create Session Success!!"));
+			// Steam에 세션이 등록되었음
+			UClientSocket* NewSocket = NewObject<UClientSocket>(this);
+			if(NewSocket)
+			{
+				const FString Port = FString::FromInt(GetWorld()->URL.Port);
+
+				FString ExtraInfo = Port;
+				
+				bool bIsLocal = IOnlineSubsystem::Get()->GetSubsystemName() == "NULL" ? true : false;
+				FSocketReceivedData ReceivedData = NewSocket->CreateSocket("Dedicated_CreateRoomSuccess", ExtraInfo, bIsLocal);
+				NewSocket = nullptr;
+				
+				MY_LOG(LogTemp, Warning, TEXT("Create Session Success!! : %s"), *IOnlineSubsystem::Get()->GetSubsystemName().ToString());
+			}	
 		}
 		SessionInterface->ClearOnCreateSessionCompleteDelegate_Handle(CreateSessionCompleteDelegateHandle);
 	}

@@ -8,6 +8,7 @@
 #include <queue>
 #include <thread>
 #include <mutex>
+#include <map>
 
 #pragma comment(lib, "ws2_32.lib")
 
@@ -18,6 +19,10 @@
 
 using namespace std;
 
+
+// <port, socket>
+// 포트별 방장의 소켓을 저장한다
+map<int, SOCKET> ClientSockets;
 
 queue<int> availablePorts;
 mutex portMutex;
@@ -33,9 +38,9 @@ void InitializePorts()
 int AllocatePort()
 {
 	// 포트 관리 도중 같은 포트를 해제하거나 할당하면 안된다
-	// 
+	// @
 	// lock_guard : mutex 관리에 대한 실수 줄이도록 해줌
-	// 뮤텍스를 자동으로 잠그고 해당 범위를 벗어나면 lock_guard의 소멸자 호출되고 mutext 해제함
+	// 뮤텍스를 자동으로 잠그고 해당 범위를 벗어나면 lock_guard의 소멸자 호출되고 mutex 해제함
 	lock_guard<mutex> lock(portMutex);
 	if(availablePorts.empty()) return -1; 
 	int port = availablePorts.front();
@@ -72,6 +77,23 @@ bool StartDedicatedServer(int port)
 	return true;
 }
 
+vector<string> StringTokenizer(char* str)
+{
+	vector<string> tokens;
+	char* token;
+	char* context = NULL;
+
+	token = strtok_s(str, "|", &context);
+
+	while (token != NULL)
+	{
+		tokens.push_back(string(token));
+		token = strtok_s(NULL, "|", &context);
+	}
+
+	return tokens;
+}
+
 void HandleClient(SOCKET clientSocket)
 {
 	char buffer[MAX_BUFFER_SIZE] = { 0, };
@@ -80,12 +102,15 @@ void HandleClient(SOCKET clientSocket)
 	if (bytesReceived > 0)
 	{
 		string request(buffer, bytesReceived);
+
+		vector<string> tokens = StringTokenizer(buffer);
+
 		cout << "[MainServer] Received request : " << request << endl;
 
 		// Request별 작업 수행
 
 		// 방 생성 요청
-		if (request.find("Client_CreateRoom") == 0)
+		if (tokens[0] == "Client_CreateRoom")
 		{
 			cout << "[MainServer] Client CreateRoom Accept" << endl;
 			int port = AllocatePort();
@@ -99,9 +124,10 @@ void HandleClient(SOCKET clientSocket)
 			{
 				if (StartDedicatedServer(port))
 				{
+					ClientSockets[port] = clientSocket;
 					string response = "Port : " + to_string(port);
 					cout << "[MainServer] " << response << endl;
-					send(clientSocket, response.c_str(), response.size(), 0);
+					// send(clientPorts[port], response.c_str(), response.size(), 0);
 				}
 				else
 				{
@@ -112,6 +138,16 @@ void HandleClient(SOCKET clientSocket)
 				}
 			}
 		}
+		else if(tokens[0] == "Dedicated_CreateRoomSuccess")
+		{
+			string response = "[Dedicated] Create Room Success!";
+			cout << response << endl;
+			
+			int port = 0;
+			port = stoi(tokens[1]); 
+			send(ClientSockets[port], response.c_str(), response.size(), 0);
+		}
+
 		else
 		{
 			cout << "[MainServer] Unknown Request" << endl;

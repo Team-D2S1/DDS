@@ -24,14 +24,7 @@ FSocketReceivedData UClientSocket::CreateSocket(const FString RequestMessage, co
 
 	// IP 연결
 	FIPv4Address IPv4;
-	if(!bIsLocal)
-	{
-		FIPv4Address::Parse(ServerIP, IPv4);
-	}
-	else
-	{
-		FIPv4Address::Parse("127.0.0.1", IPv4);
-	}
+	FIPv4Address::Parse(ServerIP, IPv4);
 
 	// 요청을 날릴 IP와 Port 연결 (MainServer)
 	TSharedRef<FInternetAddr> Address = ISocketSubsystem::Get(PLATFORM_SOCKETSUBSYSTEM)->CreateInternetAddr();
