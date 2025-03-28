@@ -25,10 +25,15 @@ namespace DDSGameplayTags
 	DDS_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Ability_Equip_Sword)
 	DDS_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Ability_Unequip_Sword)
 	
+	DDS_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Ability_Attack_LightAttack_Sword)
+	DDS_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Ability_Attack_HeavyAttack_Sword)
+	
 	DDS_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Weapon_Sword)
 	
 	DDS_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Event_Equip_Sword)
 	DDS_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Event_Unequip_Sword)
+
+	\
 
 	/** Shared Tags */
 	DDS_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Shared_State_LockedOn)
