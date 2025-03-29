@@ -14,9 +14,20 @@ void UDataAsset_StartUpDataBase::GiveToAbilitySystemComponent(UDDSAbilitySystemC
 	{
 		MY_LOG(LogTemp,Type::Log,"InDdsASCToGive is nullptr");
 	}
-
+	// DEBUG_LOG_DISPLAY("StartUpData Loaded : %s",*GetName());
 	GrantAbilities(ActivateOnGivenAbilities,InASCToGive,ApplyLevel);
 	GrantAbilities(ReactiveAbilities,InASCToGive,ApplyLevel);
+
+	if (!StartUpGameplayEffects.IsEmpty())
+	{
+		for (const TSubclassOf<UGameplayEffect>& EffectClass : StartUpGameplayEffects)
+		{
+			if (!EffectClass)
+				continue;
+			UGameplayEffect* effect = EffectClass.GetDefaultObject();
+			InASCToGive->ApplyGameplayEffectToSelf(effect,ApplyLevel, InASCToGive->MakeEffectContext());
+		}
+	}
 }
 
 void UDataAsset_StartUpDataBase::GrantAbilities(const TArray<TSubclassOf<UDDSGameplayAbility>> InAbilitiesToGive,

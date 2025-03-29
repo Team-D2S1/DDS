@@ -16,6 +16,7 @@ void UDDSAbilitySystemComponent::AbilityActorInfoSet()
 
 void UDDSAbilitySystemComponent::AddCharacterAbilities(const TArray<TSubclassOf<UDDSGameplayAbility>>& StartupAbilities)
 {
+	DEBUG_LOG_DISPLAY("%s AddCharacterAbilities",*GetOwner()->GetName());
 	for (const TSubclassOf<UDDSGameplayAbility>& Ability : StartupAbilities)
 	{
 		if (!Ability)

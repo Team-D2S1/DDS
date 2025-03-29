@@ -33,7 +33,8 @@ namespace DDSGameplayTags
 	DDS_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Event_Equip_Sword)
 	DDS_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Event_Unequip_Sword)
 
-	\
+	/** Monster Tags */
+	DDS_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Monster_Weapon)
 
 	/** Shared Tags */
 	DDS_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Shared_State_LockedOn)

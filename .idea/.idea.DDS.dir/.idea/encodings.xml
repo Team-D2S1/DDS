@@ -40,8 +40,8 @@
     <file url="file://$PROJECT_DIR$/Source/DDS/GameAbilitySystem/Abilities/DDSGameplayAbility.h" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/Source/DDS/GameAbilitySystem/Abilities/DDSMonsterGameplayAbility.cpp" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/Source/DDS/GameAbilitySystem/Abilities/DDSMonsterGameplayAbility.h" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/Source/DDS/GameAbilitySystem/Abilities/PlayerAblities/SpawnWeaponAbility.cpp" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/Source/DDS/GameAbilitySystem/Abilities/PlayerAblities/SpawnWeaponAbility.h" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/Source/DDS/GameAbilitySystem/Abilities/Shared/SpawnWeaponAbility.cpp" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/Source/DDS/GameAbilitySystem/Abilities/Shared/SpawnWeaponAbility.h" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/Source/DDS/GameAbilitySystem/DDSAttributeSet.cpp" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/Source/DDS/GameAbilitySystem/DDSAttributeSet.h" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/Source/DDS/GameAbilitySystem/IDDSAbilitySystemInterface.cpp" charset="UTF-8" />

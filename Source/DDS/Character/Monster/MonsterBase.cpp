@@ -8,7 +8,9 @@
 #include "DDS/GameAbilitySystem/DDSAbilitySystemComponent.h"
 #include "DDS/GameAbilitySystem/DDSAttributeSet.h"
 #include "Engine/AssetManager.h"
+#include "ETC/CustomLog.h"
 #include "GameFramework/CharacterMovementComponent.h"
+#include "Net/UnrealNetwork.h"
 
 
 AMonsterBase::AMonsterBase()
@@ -28,6 +30,7 @@ AMonsterBase::AMonsterBase()
 
 	MonsterCombatComponent = CreateDefaultSubobject<UMonsterCombatComponent>(TEXT("MonsterCombatComponent"));
 	
+	
 	AbilitySystemComponent = CreateDefaultSubobject<UDDSAbilitySystemComponent>(TEXT("AbilitySystemComponent"));
 	AbilitySystemComponent->SetIsReplicated(true);//
 	AbilitySystemComponent->SetReplicationMode(EGameplayEffectReplicationMode::Minimal);
@@ -35,6 +38,12 @@ AMonsterBase::AMonsterBase()
 	AttributeSet = CreateDefaultSubobject<UDDSAttributeSet>(TEXT("AttributeSet"));
 }
 
+void AMonsterBase::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
+{
+	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
+
+	DOREPLIFETIME(AMonsterBase, MonsterCombatComponent);
+}
 
 
 void AMonsterBase::BeginPlay()
@@ -61,6 +70,7 @@ void AMonsterBase::PossessedBy(AController* NewController)
 {
 	Super::PossessedBy(NewController);
 
+	// Debug::Log(TEXT("AMonsterBase::PossessedBy"));
 	InitMonsterStartUpData();
 }
 void AMonsterBase::InitMonsterStartUpData()
@@ -70,17 +80,20 @@ void AMonsterBase::InitMonsterStartUpData()
 		return;
 	}
 
-	
+
+	// Debug::Log(TEXT("AMonsterBase::InitMonsterStartUpData"));
 	// 몬스터는 그 수가 많아 게임을 멈출 수 있음. => 비동기 로딩 사용
 	UAssetManager::GetStreamableManager().RequestAsyncLoad(
 		EntityStartUpDataBase.ToSoftObjectPath(),
 		FStreamableDelegate::CreateLambda([this]()
 		{
+			// Debug::Log(TEXT("AMonsterBase::InitMonsterStartUpData AsyncLoad"));
 			UDataAsset_StartUpDataBase* loadedData = EntityStartUpDataBase.Get();
 			if (!loadedData)
 			{
 				return;
 			}
+			// Debug::Log(TEXT("AMonsterBase::InitMonsterStartUpData loadedData"));
 			loadedData->GiveToAbilitySystemComponent(AbilitySystemComponent);
 		})
 	);

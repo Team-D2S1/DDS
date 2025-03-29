@@ -20,13 +20,17 @@ public:
 	AMonsterBase();
 
 protected:
+	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
 	virtual void PossessedBy(AController* NewController) override;
 	virtual void BeginPlay() override;
 
 	virtual void Tick(float DeltaSeconds) override;	
 
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Combat")
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, ReplicatedUsing= OnRep_MonsterCombatComponent, Category = "Combat")
 	TObjectPtr<UMonsterCombatComponent> MonsterCombatComponent;
+
+	UFUNCTION()
+	void OnRep_MonsterCombatComponent();
 
 	// 로컬 변수. 복제되면 안됨
 	bool bIsFocused = false;
@@ -42,3 +46,4 @@ public:
 	virtual void OnFocusLost() override;
 	// End of IFocusable interface
 };
+

@@ -13,7 +13,7 @@ void UDataAsset_MonsterStartUpDataBase::GiveToAbilitySystemComponent(UDDSAbility
                                                                      int32 ApplyLevel)
 {
 	Super::GiveToAbilitySystemComponent(InASCToGive, ApplyLevel);
-	
+	// MY_LOG( LogTemp, Type::Log, "Monster StartUpData Loaded : %s", *GetName());
 	if (!MonsterCombatAbilities.IsEmpty())
 	{
 		for (const TSubclassOf<UDDSMonsterGameplayAbility>& AbilityClass : MonsterCombatAbilities)

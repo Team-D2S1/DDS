@@ -6,6 +6,7 @@
 #include "Engine/DataAsset.h"
 #include "DataAsset_StartUpDataBase.generated.h"
 
+class UGameplayEffect;
 class UDDSAbilitySystemComponent;
 class UDDSGameplayAbility;
 /**
@@ -26,6 +27,9 @@ protected:
 	// 특정 조건시 반응하는 능력(피격, 사망 등)
 	UPROPERTY(EditDefaultsOnly,Category="StartUpData")
 	TArray<TSubclassOf<UDDSGameplayAbility>> ReactiveAbilities;
+
+	UPROPERTY(EditDefaultsOnly,Category="StartUpData")
+	TArray<TSubclassOf<UGameplayEffect>> StartUpGameplayEffects;
 
 	void GrantAbilities(const TArray<TSubclassOf<UDDSGameplayAbility>> InAbilitiesToGive,UDDSAbilitySystemComponent* InASCToGive,int32 ApplyLevel = 1);
 };
