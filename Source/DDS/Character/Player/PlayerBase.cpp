@@ -72,6 +72,11 @@ void APlayerBase::OnRep_PlayerState()
 
 }
 
+UPawnCombatComponent* APlayerBase::GetCombatComponent() const
+{
+	return CombatComponent;
+}
+
 void APlayerBase::Tick(float DeltaSeconds)
 {
 	Super::Tick(DeltaSeconds);
@@ -84,7 +89,6 @@ void APlayerBase::Tick(float DeltaSeconds)
 		   	FVector ToTarget = Focused->GetActorLocation() - GetActorLocation();
 		   	FRotator LookRotation = ToTarget.Rotation();
 
-			
 			SetActorRotation(LookRotation);
 			
 		   	// 카메라 회전 (SpringArm이 따라감)

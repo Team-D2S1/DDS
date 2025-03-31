@@ -4,6 +4,7 @@
 #include "Components/Combat/PawnCombatComponent.h"
 
 #include "Character/EntityBase.h"
+#include "Components/BoxComponent.h"
 #include "ETC/CustomLog.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "Items/Weapons/DDSWeaponBase.h"
@@ -57,3 +58,35 @@ ADDSWeaponBase* UPawnCombatComponent::GetCurrentEquippedWeapon() const
 
 
 
+void UPawnCombatComponent::ToggleWeaponCollision(bool bEnable, EToggleCollisionType InDamageType)
+{
+	//TODO : 무기가 없는 경우 처리
+	
+	switch (InDamageType)
+	{
+	case EToggleCollisionType::CurrentEquippedWeapon:
+		ADDSWeaponBase* CurrentWeapon = GetCurrentEquippedWeapon();
+		if (CurrentWeapon)
+		{
+			if (bEnable)
+			{
+				CurrentWeapon->GetWeaponCollsionBox()->SetCollisionEnabled(ECollisionEnabled::Type::QueryOnly);
+				DEBUG_CLOG_DISPLAY_NET(FColor::Green, GetOwningPawn()->HasAuthority(), TEXT("Current Weapon is equipped."));
+			}
+			else
+			{
+				CurrentWeapon->GetWeaponCollsionBox()->SetCollisionEnabled(ECollisionEnabled::Type::NoCollision);
+				DEBUG_CLOG_DISPLAY_NET(FColor::Red, GetOwningPawn()->HasAuthority(), TEXT("Current Weapon is not equipped."));
+			}
+			
+		}else
+		{
+			DEBUG_CLOG_DISPLAY_NET(FColor::Red, GetOwningPawn()->HasAuthority(), TEXT("Current Weapon is not equipped."));
+		}
+		break;
+	case EToggleCollisionType::LeftHand:
+		break;
+	case EToggleCollisionType::RightHand:
+		break;
+	}
+}

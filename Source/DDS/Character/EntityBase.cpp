@@ -34,6 +34,11 @@ UAbilitySystemComponent* AEntityBase::GetAbilitySystemComponent() const
 	return AbilitySystemComponent;
 }
 
+UPawnCombatComponent* AEntityBase::GetCombatComponent() const
+{
+	return nullptr;
+}
+
 UAttributeSet* AEntityBase::GetAttributeSet() const
 {
 	return AttributeSet;

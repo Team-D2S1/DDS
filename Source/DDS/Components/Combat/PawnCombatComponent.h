@@ -9,6 +9,16 @@
 
 // struct FGameplayTag;
 class ADDSWeaponBase;
+
+UENUM(BlueprintType)
+enum EToggleCollisionType
+{
+	CurrentEquippedWeapon,
+	LeftHand,  // 무기가 없는 경우
+	RightHand, // 무기가 없는 경우
+};
+
+
 /**
  * 
  */
@@ -41,7 +51,8 @@ public:
 	UFUNCTION(BlueprintCallable,Category="DDS|Combat")
 	ADDSWeaponBase* GetCurrentEquippedWeapon() const;
 
-
+	UFUNCTION(BlueprintCallable,Category="DDS|Combat")
+	void ToggleWeaponCollision(bool bEnable,EToggleCollisionType InDamageType = EToggleCollisionType::CurrentEquippedWeapon);
 
 protected:
 

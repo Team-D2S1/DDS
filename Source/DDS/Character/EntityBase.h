@@ -9,6 +9,7 @@
 #include "EntityBase.generated.h"
 
 
+class UPawnCombatComponent;
 class UDDSAttributeSet;
 class UAttributeSet;
 class UDDSAbilitySystemComponent;
@@ -27,6 +28,9 @@ public:
 	//~ Begin IAbilitySystemInterface Interface.
 	virtual UAbilitySystemComponent* GetAbilitySystemComponent() const override;
 	//~ End IAbilitySystemInterface Interface
+
+	virtual UPawnCombatComponent* GetCombatComponent() const;
+	
 	UAttributeSet* GetAttributeSet() const;
 
 	UFUNCTION(BlueprintCallable,Category="DDS|Combat")

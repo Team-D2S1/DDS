@@ -12,7 +12,9 @@ class UDDSAttributeSet;
 class UAbilitySystemComponent;
 class UAttributeSet;
 
-/**nnnnnnnnnnnnnn
+
+
+/**
  * 
  */
 UCLASS()
@@ -31,6 +33,9 @@ public:
 	virtual UDDSAbilitySystemComponent* GetDDSAbilitySystemComponent() const override;
 	UAttributeSet* GetAttributeSet() const;
 	UDDSAttributeSet* GetDDSAttribueSet() const;
+
+
+
 protected:
 	UPROPERTY(VisibleAnywhere,BlueprintReadOnly,Category="AbilitySystem")
 	TObjectPtr<UDDSAbilitySystemComponent> AbilitySystemComponent;
