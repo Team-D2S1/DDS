@@ -34,28 +34,6 @@ void UPawnCombatComponent::RegisterSpawnedWeapon(FGameplayTag InWeaponTag, ADDSW
 	DEBUG_LOG_DISPLAY_NET(hasAuthority, TEXT("A Weapon %s (Tag: %s) is registered."), *InWeapon->GetName(), *InWeaponTag.ToString());
 }
 
-ADDSWeaponBase* UPawnCombatComponent::GetCharacterCarriedWeapon(FGameplayTag InWeaponTag) const
-{
-	if (CharacterCarriedWeaponMap.Contains(InWeaponTag))
-	{
-		if (ADDSWeaponBase* const* res = CharacterCarriedWeaponMap.Find(InWeaponTag))
-		{
-			return *res;
-		}
-	}
-	MY_LOG(LogTemp, Error, TEXT("Weapon Tag %s is not registered."), *InWeaponTag.ToString());
-	return nullptr;
-}
-
-ADDSWeaponBase* UPawnCombatComponent::GetCurrentEquippedWeapon() const
-{
-	if (!CurrentEquippedWeaponTag.IsValid())
-	{
-		return nullptr;
-	}
-	return GetCharacterCarriedWeapon(CurrentEquippedWeaponTag);
-}
-
 
 
 void UPawnCombatComponent::ToggleWeaponCollision(bool bEnable, EToggleCollisionType InDamageType)
