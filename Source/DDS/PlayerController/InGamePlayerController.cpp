@@ -22,6 +22,18 @@
 AInGamePlayerController::AInGamePlayerController()
 {
 	// CombatComponent = CreateDefaultSubobject<UCombatComponent>(TEXT("Combat Component"));
+
+	SetGenericTeamId(FGenericTeamId(0));
+}
+
+FGenericTeamId AInGamePlayerController::GetGenericTeamId() const
+{
+	return PlayerTeamId;
+}
+
+void AInGamePlayerController::SetGenericTeamId(const FGenericTeamId& NewTeamID)
+{
+	PlayerTeamId = NewTeamID;
 }
 
 void AInGamePlayerController::Tick(float DeltaSeconds)

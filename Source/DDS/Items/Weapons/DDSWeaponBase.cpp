@@ -35,6 +35,8 @@ void ADDSWeaponBase::GetLifetimeReplicatedProps(TArray<class FLifetimeProperty>&
 	DOREPLIFETIME(ADDSWeaponBase, WeaponTag);
 }
 
+
+
 void ADDSWeaponBase::SetOwnerPawn(APawn* InOwnerPawn)
 {
 	OwnerPawn = InOwnerPawn;

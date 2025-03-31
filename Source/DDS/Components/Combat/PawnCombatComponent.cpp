@@ -38,11 +38,10 @@ void UPawnCombatComponent::RegisterSpawnedWeapon(FGameplayTag InWeaponTag, ADDSW
 
 void UPawnCombatComponent::ToggleWeaponCollision(bool bEnable, EToggleCollisionType InDamageType)
 {
-	//TODO : 무기가 없는 경우 처리
 	
-	switch (InDamageType)
+	
+	if (InDamageType == EToggleCollisionType::CurrentEquippedWeapon)
 	{
-	case EToggleCollisionType::CurrentEquippedWeapon:
 		ADDSWeaponBase* CurrentWeapon = GetCurrentEquippedWeapon();
 		if (CurrentWeapon)
 		{
@@ -61,10 +60,6 @@ void UPawnCombatComponent::ToggleWeaponCollision(bool bEnable, EToggleCollisionT
 		{
 			DEBUG_CLOG_DISPLAY_NET(FColor::Red, GetOwningPawn()->HasAuthority(), TEXT("Current Weapon is not equipped."));
 		}
-		break;
-	case EToggleCollisionType::LeftHand:
-		break;
-	case EToggleCollisionType::RightHand:
-		break;
 	}
+	//TODO : 무기가 없는 경우 처리
 }

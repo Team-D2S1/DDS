@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "AIController.h"
+#include "GenericTeamAgentInterface.h"
 #include "AIControllerBase.generated.h"
 
 class UDDSPerceptionComponent;
@@ -23,6 +24,10 @@ public:
 	AAIControllerBase(FObjectInitializer const& ObjectInitializer);
 	
 	virtual void BeginPlay() override;
+
+	// ~ Begin IGenericTeamAgentInterface interface
+	virtual ETeamAttitude::Type GetTeamAttitudeTowards(const AActor& Other) const override; // 다른 액터에 대한 적대 설정
+	// ~ End IGenericTeamAgentInterface interface
 	
 protected:
 	virtual void OnPossess(APawn* InPawn) override;
@@ -50,4 +55,7 @@ protected:
 	FVector OriginPosition;
 	UPROPERTY(EditDefaultsOnly, Category = "AI Movement")
 	float PatrolRadius;
+
+private:
+	FGenericTeamId TeamID;
 };

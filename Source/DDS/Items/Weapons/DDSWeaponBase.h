@@ -21,7 +21,7 @@ public:
 protected:
 
 	virtual void GetLifetimeReplicatedProps(TArray<class FLifetimeProperty>& OutLifetimeProps) const override;
-	void ToggleWeaponCollision(bool bEnable, EToggleCollisionType InDamageType);
+
 
 	UPROPERTY(VisibleAnywhere,BlueprintReadOnly,Category="DDS|Weapon")
 	TObjectPtr<UStaticMeshComponent> WeaponMesh;
