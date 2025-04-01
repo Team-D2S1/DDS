@@ -10,6 +10,7 @@ class IFocusable;
 class UPlayerCombatComponent;
 class UCameraComponent;
 class USpringArmComponent;
+class UPawnCombatComponent;
 /**
  * 
  */
@@ -23,7 +24,8 @@ public:
 
 	// virtual UAbilitySystemComponent* GetAbilitySystemComponent() const override;
 	virtual void PossessedBy(AController* NewController) override;
-	virtual void OnRep_PlayerState() override;
+	virtual void OnRep_PlayerState() override; 
+	virtual UPawnCombatComponent* GetCombatComponent() const override;
 protected:
 	virtual void Tick(float DeltaSeconds) override;
 	virtual void BeginPlay() override;

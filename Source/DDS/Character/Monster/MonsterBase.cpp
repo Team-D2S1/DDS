@@ -38,6 +38,11 @@ AMonsterBase::AMonsterBase()
 	AttributeSet = CreateDefaultSubobject<UDDSAttributeSet>(TEXT("AttributeSet"));
 }
 
+UPawnCombatComponent* AMonsterBase::GetCombatComponent() const
+{
+	return MonsterCombatComponent;
+}
+
 void AMonsterBase::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
 {
 	Super::GetLifetimeReplicatedProps(OutLifetimeProps);

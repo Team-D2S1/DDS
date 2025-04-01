@@ -5,6 +5,7 @@
 
 #include "DDS/GameAbilitySystem/DDSAbilitySystemComponent.h"
 #include "DDS/GameAbilitySystem/DDSAttributeSet.h"
+#include "Items/Weapons/DDSWeaponBase.h"
 
 
 ADDSPlayerState::ADDSPlayerState()
@@ -52,4 +53,5 @@ UDDSAttributeSet* ADDSPlayerState::GetDDSAttribueSet() const
 {
 	return AttributeSet;
 }
+
 

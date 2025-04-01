@@ -13,10 +13,18 @@ enum class EMonsterType : uint8
 	Boss,
 };
 
+
 UENUM(BlueprintType)
 enum class EPlayerType : uint8
 {
 	None,
 	Warrior,
 	
+};
+
+UENUM()
+enum class EDDSValidType : uint8
+{
+	Invalid,
+	Valid,
 };

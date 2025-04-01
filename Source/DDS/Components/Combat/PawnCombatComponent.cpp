@@ -4,6 +4,7 @@
 #include "Components/Combat/PawnCombatComponent.h"
 
 #include "Character/EntityBase.h"
+#include "Components/BoxComponent.h"
 #include "ETC/CustomLog.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "Items/Weapons/DDSWeaponBase.h"
@@ -33,27 +34,32 @@ void UPawnCombatComponent::RegisterSpawnedWeapon(FGameplayTag InWeaponTag, ADDSW
 	DEBUG_LOG_DISPLAY_NET(hasAuthority, TEXT("A Weapon %s (Tag: %s) is registered."), *InWeapon->GetName(), *InWeaponTag.ToString());
 }
 
-ADDSWeaponBase* UPawnCombatComponent::GetCharacterCarriedWeapon(FGameplayTag InWeaponTag) const
+
+
+void UPawnCombatComponent::ToggleWeaponCollision(bool bEnable, EToggleCollisionType InDamageType)
 {
-	if (CharacterCarriedWeaponMap.Contains(InWeaponTag))
+	
+	
+	if (InDamageType == EToggleCollisionType::CurrentEquippedWeapon)
 	{
-		if (ADDSWeaponBase* const* res = CharacterCarriedWeaponMap.Find(InWeaponTag))
+		ADDSWeaponBase* CurrentWeapon = GetCurrentEquippedWeapon();
+		if (CurrentWeapon)
 		{
-			return *res;
+			if (bEnable)
+			{
+				CurrentWeapon->GetWeaponCollsionBox()->SetCollisionEnabled(ECollisionEnabled::Type::QueryOnly);
+				DEBUG_CLOG_DISPLAY_NET(FColor::Green, GetOwningPawn()->HasAuthority(), TEXT("Current Weapon is equipped."));
+			}
+			else
+			{
+				CurrentWeapon->GetWeaponCollsionBox()->SetCollisionEnabled(ECollisionEnabled::Type::NoCollision);
+				DEBUG_CLOG_DISPLAY_NET(FColor::Red, GetOwningPawn()->HasAuthority(), TEXT("Current Weapon is not equipped."));
+			}
+			
+		}else
+		{
+			DEBUG_CLOG_DISPLAY_NET(FColor::Red, GetOwningPawn()->HasAuthority(), TEXT("Current Weapon is not equipped."));
 		}
 	}
-	MY_LOG(LogTemp, Error, TEXT("Weapon Tag %s is not registered."), *InWeaponTag.ToString());
-	return nullptr;
+	//TODO : 무기가 없는 경우 처리
 }
-
-ADDSWeaponBase* UPawnCombatComponent::GetCurrentEquippedWeapon() const
-{
-	if (!CurrentEquippedWeaponTag.IsValid())
-	{
-		return nullptr;
-	}
-	return GetCharacterCarriedWeapon(CurrentEquippedWeaponTag);
-}
-
-
-

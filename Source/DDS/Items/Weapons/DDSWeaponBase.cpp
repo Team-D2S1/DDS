@@ -6,6 +6,7 @@
 #include "Character/Player/PlayerBase.h"
 #include "Components/BoxComponent.h"
 #include "Components/Combat/PlayerCombatComponent.h"
+#include "ETC/CustomLog.h"
 #include "Net/UnrealNetwork.h"
 
 // Sets default values
@@ -34,6 +35,8 @@ void ADDSWeaponBase::GetLifetimeReplicatedProps(TArray<class FLifetimeProperty>&
 	DOREPLIFETIME(ADDSWeaponBase, WeaponTag);
 }
 
+
+
 void ADDSWeaponBase::SetOwnerPawn(APawn* InOwnerPawn)
 {
 	OwnerPawn = InOwnerPawn;
@@ -59,3 +62,25 @@ void ADDSWeaponBase::SetWeaponTag(FGameplayTag InWeaponTag)
 void ADDSWeaponBase::OnRep_WeaponTag()
 {
 }
+ADDSWeaponBase* UPawnCombatComponent::GetCharacterCarriedWeapon(FGameplayTag InWeaponTag) const
+{
+	if (CharacterCarriedWeaponMap.Contains(InWeaponTag))
+	{
+		if (ADDSWeaponBase* const* res = CharacterCarriedWeaponMap.Find(InWeaponTag))
+		{
+			return *res;
+		}
+	}
+	MY_LOG(LogTemp, Error, TEXT("Weapon Tag %s is not registered."), *InWeaponTag.ToString());
+	return nullptr;
+}
+
+ADDSWeaponBase* UPawnCombatComponent::GetCurrentEquippedWeapon() const
+{
+	if (!CurrentEquippedWeaponTag.IsValid())
+	{
+		return nullptr;
+	}
+	return GetCharacterCarriedWeapon(CurrentEquippedWeaponTag);
+}
+

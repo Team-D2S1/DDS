@@ -21,7 +21,8 @@ public:
 protected:
 
 	virtual void GetLifetimeReplicatedProps(TArray<class FLifetimeProperty>& OutLifetimeProps) const override;
-	
+
+
 	UPROPERTY(VisibleAnywhere,BlueprintReadOnly,Category="DDS|Weapon")
 	TObjectPtr<UStaticMeshComponent> WeaponMesh;
 

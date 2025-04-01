@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameplayTagContainer.h"
+#include "GenericTeamAgentInterface.h"
 #include "InputActionValue.h"
 #include "GameFramework/PlayerController.h"
 // #include "InputMappingContext.h"
@@ -18,13 +19,17 @@ class UDataAsset_InputConfig;
  * 
  */
 UCLASS()
-class DDS_API AInGamePlayerController : public APlayerController
+class DDS_API AInGamePlayerController : public APlayerController, public IGenericTeamAgentInterface
 {
 	GENERATED_BODY()
 
 public:
 	AInGamePlayerController();
 
+	// ~ Begin IGenericTeamAgentInterface Interface
+   	virtual FGenericTeamId GetGenericTeamId() const override;
+	virtual void SetGenericTeamId(const FGenericTeamId& NewTeamID) override;
+	// ~ End IGenericTeamAgentInterface Interface
 protected:
 	virtual void Tick(float DeltaSeconds) override;
 	
@@ -72,4 +77,6 @@ private:
 	UPROPERTY()
 	AActor* focusedObject;
 	TWeakObjectPtr<APlayerBase> CachedPlayerBase;
+
+	FGenericTeamId PlayerTeamId;
 };

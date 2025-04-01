@@ -8,6 +8,7 @@
 #include "MonsterBase.generated.h"
 
 class UMonsterCombatComponent;
+class UPawnCombatComponent;
 
 /**
  * 
@@ -19,6 +20,7 @@ class DDS_API AMonsterBase : public AEntityBase, public IFocusable
 public:
 	AMonsterBase();
 
+	virtual UPawnCombatComponent* GetCombatComponent() const override;
 protected:
 	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
 	virtual void PossessedBy(AController* NewController) override;

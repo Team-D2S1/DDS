@@ -13,12 +13,25 @@ AAIControllerBase::AAIControllerBase(FObjectInitializer const& ObjectInitializer
 {
 	AIPerception = CreateDefaultSubobject<UDDSPerceptionComponent>(TEXT("AI Perception"));
 	SetPerceptionComponent(*AIPerception);
+
+	SetGenericTeamId(FGenericTeamId(1));
 }
 
 void AAIControllerBase::BeginPlay()
 {
 	Super::BeginPlay();
 	AIPerception->OnTargetPerceptionUpdated.AddDynamic(this, &ThisClass::OnTargetPerceptionUpdated);
+}
+
+ETeamAttitude::Type AAIControllerBase::GetTeamAttitudeTowards(const AActor& Other) const
+{
+	const APawn* OtherPawn = Cast<APawn>(&Other);
+	const IGenericTeamAgentInterface* OtherTeamAgent = Cast<IGenericTeamAgentInterface>(OtherPawn);
+	if (OtherTeamAgent && OtherTeamAgent->GetGenericTeamId().GetId() != GetGenericTeamId().GetId())
+	{
+		return ETeamAttitude::Hostile;
+	}
+	return ETeamAttitude::Friendly;
 }
 
 void AAIControllerBase::OnTargetPerceptionUpdated(AActor* Actor, FAIStimulus Stimulus)
