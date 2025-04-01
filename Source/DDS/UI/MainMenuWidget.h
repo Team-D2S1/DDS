@@ -7,6 +7,7 @@
 #include "Interfaces/OnlineSessionInterface.h"
 #include "MainMenuWidget.generated.h"
 
+class USessionSubsystem;
 class UButton;
 /**
  * 
@@ -15,7 +16,7 @@ UCLASS()
 class DDS_API UMainMenuWidget : public UUserWidget
 {
 	GENERATED_BODY()
-
+	
 protected:
 	void OnCreateSession(bool bWasSuccessful);
 	
@@ -40,6 +41,9 @@ protected:
 	TObjectPtr<UButton> ExitButton;
 
 private:
+	UPROPERTY()
+	USessionSubsystem* SessionSubsystem;
+	
 	UFUNCTION()
 	void SingleplayButtonClicked();
 	

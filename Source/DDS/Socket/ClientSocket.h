@@ -24,13 +24,10 @@ class DDS_API UClientSocket : public UObject
 	GENERATED_BODY()
 
 public:
+	inline static FString ServerIP = "125.128.198.93";
 	// 소켓 생성 후 통신작업 수행
 	FSocketReceivedData CreateSocket(const FString RequestMessage, const FString& ExtraInfo, bool bIsLocal);
 	
 	// 스트링을 받아와 | 기준으로 나눈다
 	TArray<FString> StringTokenizer(FString String);
-
-private:
-	// ****** 자신(MainServer)의 주소 작성 ******
-	FString ServerIP = "118.32.109.110";
 };

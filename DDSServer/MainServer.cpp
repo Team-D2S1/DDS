@@ -59,7 +59,8 @@ void ReleasePort(int port)
 bool StartDedicatedServer(int port)
 {
 	// ****** Server.exe 경로 작성 ******
-	string command = "D:\\Project\\DDSBuild\\WindowsServer\\DDSServer.exe -port=" + to_string(port) + " -log";
+	string command = "D:\\Project\\DDSBuild\\WindowsServer\\DDSServer.exe -port=" + to_string(port) + 
+					 " -QueryPort=" + to_string(port+19238) + " -log";
 
 	STARTUPINFOA si = { sizeof(STARTUPINFOA) };
 	PROCESS_INFORMATION pi;
@@ -140,12 +141,14 @@ void HandleClient(SOCKET clientSocket)
 		}
 		else if(tokens[0] == "Dedicated_CreateRoomSuccess")
 		{
-			string response = "[Dedicated] Create Room Success!";
-			cout << response << endl;
+			string DedicatedResponse = "[Dedicated] Create Room Success!";
+			string ClientResponse = tokens[1];
+			cout << DedicatedResponse << endl;
 			
 			int port = 0;
 			port = stoi(tokens[1]); 
-			send(ClientSockets[port], response.c_str(), response.size(), 0);
+			send(clientSocket, DedicatedResponse.c_str(), DedicatedResponse.size(), 0);
+			send(ClientSockets[port], ClientResponse.c_str(), ClientResponse.size(), 0);
 		}
 
 		else

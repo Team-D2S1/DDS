@@ -18,6 +18,8 @@ void ALobbySession::RegisterPlayer(APlayerController* NewPlayer, const FUniqueNe
 {
 	Super::RegisterPlayer(NewPlayer, UniqueId, bWasFromInvite);
 
+	MY_LOG(LogTemp, Error, TEXT("Player Login"));
+	
 	IOnlineSubsystem* OnlineSubsystem = IOnlineSubsystem::Get();
 	if(OnlineSubsystem)
 	{

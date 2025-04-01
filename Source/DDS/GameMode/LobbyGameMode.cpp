@@ -5,6 +5,8 @@
 
 #include "ETC/CustomLog.h"
 #include <iostream>
+
+#include "GameFramework/PlayerState.h"
 #include "Session/LobbySession.h"
 
 ALobbyGameMode::ALobbyGameMode()
@@ -22,4 +24,17 @@ void ALobbyGameMode::BeginPlay()
 	{
 		// 작업
 	}
+}
+
+void ALobbyGameMode::StartPlay()
+{
+	Super::StartPlay();
+}
+
+void ALobbyGameMode::PostLogin(APlayerController* NewPlayer)
+{
+	Super::PostLogin(NewPlayer);
+
+	FString PlayerName = NewPlayer->GetPawn()->GetPlayerState()->GetPlayerName();
+	MY_LOG(LogTemp, Error, TEXT("Player \"%s\" Login!"), *PlayerName);
 }
