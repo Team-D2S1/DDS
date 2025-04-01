@@ -14,10 +14,18 @@
 void UMainMenuWidget::OnFindSession(const TArray<FOnlineSessionSearchResult>& SessionResult, bool bWasSuccessful)
 {
 	if(!SessionSubsystem) return;
+	MY_LOG(LogTemp, Error, TEXT("%d, %s"), SessionResult.Num(), bWasSuccessful ? *FString("Success") : *FString("Fail"));
 	for(auto Result : SessionResult)
 	{
-		SessionSubsystem->JoinSession(Result);
-		return;
+		FString Value;
+		if(Result.Session.SessionSettings.Get(FName("ProjectName"), Value))
+		{
+			if(Value == "DDS")
+			{
+				SessionSubsystem->JoinSession(Result);
+				return;				
+			}
+		}
 	}
 
 	if(!bWasSuccessful || SessionResult.Num() == 0)
@@ -105,7 +113,7 @@ void UMainMenuWidget::MultiplayButtonClicked()
 		// 방금 만든 세션을 찾아야 한다
 		if(SessionSubsystem)
 		{
-			SessionSubsystem->FindSession(1, ReceivedLobbyPort);
+			SessionSubsystem->FindSession(4, ReceivedLobbyPort);
 		}
 	}
 }

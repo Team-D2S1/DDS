@@ -50,8 +50,8 @@ void USessionSubsystem::CreateSession(int32 NumPublicConnections, FString Port)
 	LastSessionSettings->bUsesPresence = false;
 	LastSessionSettings->bUseLobbiesIfAvailable = false;
 
-	LastSessionSettings->Set("PortNumber", Port, EOnlineDataAdvertisementType::ViaOnlineServiceAndPing);
-	LastSessionSettings->Set("NameOfGame", FString("DDS"), EOnlineDataAdvertisementType::ViaOnlineServiceAndPing);
+	LastSessionSettings->Set(FName("PortNumber"), Port, EOnlineDataAdvertisementType::ViaOnlineServiceAndPing);
+	LastSessionSettings->Set(FName("ProjectName"), FString("DDS"), EOnlineDataAdvertisementType::ViaOnlineServiceAndPing);
 	
 	if(!SessionInterface->CreateSession(0, NAME_GameSession, *LastSessionSettings))
 	{
@@ -74,7 +74,7 @@ void USessionSubsystem::FindSession(int32 MaxSearchResult, FString Port)
 	LastSessionSearch->MaxSearchResults = MaxSearchResult;
 	LastSessionSearch->bIsLanQuery = IOnlineSubsystem::Get()->GetSubsystemName() == "NULL" ? true : false;
 	LastSessionSearch->QuerySettings.Set(FName("PortNumber"), Port, EOnlineComparisonOp::Equals);
-	LastSessionSearch->QuerySettings.Set(FName("NameOfGame"), FString("DDS"), EOnlineComparisonOp::Equals);
+	LastSessionSearch->QuerySettings.Set(FName("ProjectName"), FString("DDS"), EOnlineComparisonOp::Equals);
 
 	const ULocalPlayer* LocalPlayer = GetWorld()->GetFirstLocalPlayerFromController();
 	if(!SessionInterface->FindSessions(*LocalPlayer->GetPreferredUniqueNetId(), LastSessionSearch.ToSharedRef()))
@@ -95,7 +95,7 @@ void USessionSubsystem::JoinSession(const FOnlineSessionSearchResult& SessionRes
 	JoinSessionCompleteDelegateHandle = SessionInterface->AddOnJoinSessionCompleteDelegate_Handle(JoinSessionCompleteDelegate);
 
 	const ULocalPlayer* LocalPlayer = GetWorld()->GetFirstLocalPlayerFromController();
-	if(SessionInterface->JoinSession(*LocalPlayer->GetPreferredUniqueNetId(), NAME_GameSession, SessionResult))
+	if(!SessionInterface->JoinSession(*LocalPlayer->GetPreferredUniqueNetId(), NAME_GameSession, SessionResult))
 	{
 		SessionInterface->ClearOnJoinSessionCompleteDelegate_Handle(JoinSessionCompleteDelegateHandle);
 
@@ -153,6 +153,7 @@ void USessionSubsystem::OnCreateSessionComplete(FName SessionName, bool bWasSucc
 
 void USessionSubsystem::OnFindSessionComplete(bool bWasSuccessful)
 {
+	MY_LOG(LogTemp, Error, TEXT("%d"), LastSessionSearch->SearchResults.Num());
 	if(SessionInterface.IsValid())
 	{
 		SessionInterface->ClearOnFindSessionsCompleteDelegate_Handle(FindSessionCompleteDelegateHandle);
@@ -164,7 +165,7 @@ void USessionSubsystem::OnFindSessionComplete(bool bWasSuccessful)
 		return;
 	}
 
-	MultiplayerOnFindSessionsComplete.Broadcast(TArray<FOnlineSessionSearchResult>(), true);
+	MultiplayerOnFindSessionsComplete.Broadcast(LastSessionSearch->SearchResults, true);
 }
 
 void USessionSubsystem::OnJoinSessionComplete(FName SessionName, EOnJoinSessionCompleteResult::Type Result)
