@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "AbilitySystemInterface.h"
+#include "GenericTeamAgentInterface.h"
 #include "GameAbilitySystem/IDDSAbilitySystemInterface.h"
 #include "GameFramework/PlayerState.h"
 #include "DDSPlayerState.generated.h"
@@ -18,7 +19,7 @@ class UAttributeSet;
  * 
  */
 UCLASS()
-class DDS_API ADDSPlayerState : public APlayerState, public IAbilitySystemInterface,public IIDDSAbilitySystemInterface
+class DDS_API ADDSPlayerState : public APlayerState, public IAbilitySystemInterface,public IIDDSAbilitySystemInterface, public IGenericTeamAgentInterface
 {
 	GENERATED_BODY()
 
@@ -35,11 +36,17 @@ public:
 	UDDSAttributeSet* GetDDSAttribueSet() const;
 
 
-
+	// ~ Begin IGenericTeamAgentInterface Interface
+	virtual FGenericTeamId GetGenericTeamId() const override;
+	virtual void SetGenericTeamId(const FGenericTeamId& NewTeamID) override;
+	// ~ End IGenericTeamAgentInterface Interface
 protected:
 	UPROPERTY(VisibleAnywhere,BlueprintReadOnly,Category="AbilitySystem")
 	TObjectPtr<UDDSAbilitySystemComponent> AbilitySystemComponent;
 
 	UPROPERTY(VisibleAnywhere,BlueprintReadOnly,Category="AbilitySystem")
 	TObjectPtr<UDDSAttributeSet> AttributeSet;
+	
+	
+	FGenericTeamId PlayerTeamId;
 };

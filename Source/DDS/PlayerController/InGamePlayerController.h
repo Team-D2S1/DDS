@@ -19,17 +19,14 @@ class UDataAsset_InputConfig;
  * 
  */
 UCLASS()
-class DDS_API AInGamePlayerController : public APlayerController, public IGenericTeamAgentInterface
+class DDS_API AInGamePlayerController : public APlayerController
 {
 	GENERATED_BODY()
 
 public:
 	AInGamePlayerController();
 
-	// ~ Begin IGenericTeamAgentInterface Interface
-   	virtual FGenericTeamId GetGenericTeamId() const override;
-	virtual void SetGenericTeamId(const FGenericTeamId& NewTeamID) override;
-	// ~ End IGenericTeamAgentInterface Interface
+
 protected:
 	virtual void Tick(float DeltaSeconds) override;
 	
@@ -75,8 +72,8 @@ private:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Character Data", meta = (AllowPrivateAccess = "true"))
 	UDataAsset_InputConfig* InputConfigDataAsset;
 	UPROPERTY()
-	AActor* focusedObject;
+	AActor* focusedObject; // TODO: PlayerState로 이관
 	TWeakObjectPtr<APlayerBase> CachedPlayerBase;
 
-	FGenericTeamId PlayerTeamId;
+
 };

@@ -19,6 +19,8 @@ ADDSPlayerState::ADDSPlayerState()
 	AbilitySystemComponent->SetReplicationMode(EGameplayEffectReplicationMode::Mixed);
 
 	AttributeSet = CreateDefaultSubobject<UDDSAttributeSet>(TEXT("AttributeSet"));
+
+	SetGenericTeamId(FGenericTeamId(0));
 }
 
 // void ADDSPlayerState::PrintAllAbilities() const
@@ -55,3 +57,12 @@ UDDSAttributeSet* ADDSPlayerState::GetDDSAttribueSet() const
 }
 
 
+FGenericTeamId ADDSPlayerState::GetGenericTeamId() const
+{
+	return PlayerTeamId;
+}
+
+void ADDSPlayerState::SetGenericTeamId(const FGenericTeamId& NewTeamID)
+{
+	PlayerTeamId = NewTeamID;
+}

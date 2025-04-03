@@ -36,13 +36,16 @@ ETeamAttitude::Type AAIControllerBase::GetTeamAttitudeTowards(const AActor& Othe
 
 void AAIControllerBase::OnTargetPerceptionUpdated(AActor* Actor, FAIStimulus Stimulus)
 {
-	if(Stimulus.WasSuccessfullySensed())
+	if (UBlackboardComponent* BlackboardComponent = GetBlackboardComponent())
 	{
-		GetBlackboardComponent()->SetValueAsObject("TargetActor", Actor);
-	}
-	else
-	{
-		GetBlackboardComponent()->SetValueAsObject("TargetActor", nullptr);
+		if(Stimulus.WasSuccessfullySensed())
+		{
+			BlackboardComponent->SetValueAsObject("TargetActor", Actor);
+		}
+		else
+		{
+			BlackboardComponent->SetValueAsObject("TargetActor", nullptr);
+		}
 	}
 }
 
