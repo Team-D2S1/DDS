@@ -7,6 +7,7 @@
 #include "Components/BoxComponent.h"
 #include "Components/Combat/PlayerCombatComponent.h"
 #include "ETC/CustomLog.h"
+#include "ETC/DDSFunctionLibrary.h"
 #include "Net/UnrealNetwork.h"
 
 // Sets default values
@@ -31,13 +32,40 @@ ADDSWeaponBase::ADDSWeaponBase()
 void ADDSWeaponBase::OnBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
 	UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
-	DEBUG_CLOG_DISPLAY_NET(FColor::Silver, HasAuthority(), TEXT("Weapon %s Begin Overlap with %s"), *GetName(), *OtherActor->GetName());
+	APawn* OwingPawn = GetInstigator();
+	if (OwingPawn == nullptr)
+	{
+		DEBUG_CLOG_DISPLAY_NET( FColor::Red, HasAuthority(), TEXT("Weapon %s OwingPawn is nullptr"), *GetName());
+		return;
+	}
+	APawn* OtherPawn = Cast<APawn>(OtherActor);
+	if (OtherPawn == nullptr)
+	{
+		DEBUG_CLOG_DISPLAY_NET( FColor::Red, HasAuthority(), TEXT("Weapon %s OtherPawn is nullptr"), *GetName());
+		return;
+	}
+	if (OtherPawn != OwingPawn)
+	{
+		if (UDDSFunctionLibrary::IsTargetHostile(OwingPawn,OtherPawn))
+		{
+			DEBUG_CLOG_DISPLAY_NET( FColor::Silver, HasAuthority(), TEXT("Weapon %s Begin Overlap with %s"), *GetName(), *OtherActor->GetName());
+		}
+	}
 }
 
 void ADDSWeaponBase::OnEndOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
 	UPrimitiveComponent* OtherComp, int32 OtherBodyIndex)
 {
-	DEBUG_CLOG_DISPLAY_NET(FColor::Silver, HasAuthority(), TEXT("Weapon %s End Overlap with %s"), *GetName(), *OtherActor->GetName());
+	APawn* OwingPawn = GetInstigator();
+	if (OwingPawn == nullptr)
+		return;
+	APawn* OtherPawn = Cast<APawn>(OtherActor);
+	if (OtherPawn == nullptr)
+		return;
+	if (OtherPawn != OwingPawn)
+	{
+		DEBUG_CLOG_DISPLAY_NET( FColor::Silver, HasAuthority(), TEXT("Weapon %s End Overlap with %s"), *GetName(), *OtherActor->GetName());
+	}
 }
 void ADDSWeaponBase::GetLifetimeReplicatedProps(TArray<class FLifetimeProperty>& OutLifetimeProps) const
 {

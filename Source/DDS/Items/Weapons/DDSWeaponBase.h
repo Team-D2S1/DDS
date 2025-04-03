@@ -34,6 +34,7 @@ protected:
 	UPROPERTY(VisibleAnywhere,BlueprintReadOnly,Category="DDS|Weapon")
 	TObjectPtr<UBoxComponent> WeaponCollisionBox;
 
+	// OnRep 용으로 존재함. 해당문제 해결되면 삭제해도됨
 	UPROPERTY(VisibleAnywhere,BlueprintReadOnly,Category="DDS|Weapon",ReplicatedUsing= OnRep_OwnerPawn)
 	TObjectPtr<APawn> OwnerPawn;
 
@@ -42,6 +43,7 @@ protected:
 public:
 	FORCEINLINE UBoxComponent* GetWeaponCollsionBox() const {return WeaponCollisionBox;};
 
+	
 	UFUNCTION(BlueprintCallable,Category="DDS|Weapon")
 	void SetOwnerPawn(APawn* InOwnerPawn);
 

@@ -31,7 +31,7 @@ void USpawnWeaponAbility::ActivateAbility(const FGameplayAbilitySpecHandle Handl
 	
 	USkeletalMeshComponent* Mesh = Owner->FindComponentByClass<USkeletalMeshComponent>();
 	Weapon->AttachToComponent(Mesh, FAttachmentTransformRules::SnapToTargetNotIncludingScale, SocketName);
-
+	Weapon->SetInstigator(Cast<APawn>(Owner));
 	GetPawnCombatComponentFromActorInfo()->RegisterSpawnedWeapon(WeaponTag, Weapon, bRegisterAsEquippedWeapon);
 
 	//클라레플리케이션
