@@ -3,40 +3,54 @@
 
 #include "MainMenuWidget.h"
 
+#include "OnlineSessionSettings.h"
 #include "OnlineSubsystem.h"
 #include "Components/Button.h"
 #include "ETC/CustomLog.h"
 #include "Kismet/KismetSystemLibrary.h"
+#include "Session/SessionSubsystem.h"
 #include "Socket/ClientSocket.h"
-
-void UMainMenuWidget::OnCreateSession(bool bWasSuccessful)
-{
-	if(bWasSuccessful)
-	{
-		// TODO
-		// MainServer에 CreateSession 요청 보낸다
-		// MainServer가 포트 번호 보내준다면 해당 아이피:포트 로 이동한다
-	}
-}
 
 void UMainMenuWidget::OnFindSession(const TArray<FOnlineSessionSearchResult>& SessionResult, bool bWasSuccessful)
 {
-	
+	if(!SessionSubsystem) return;
+	MY_LOG(LogTemp, Error, TEXT("%d, %s"), SessionResult.Num(), bWasSuccessful ? *FString("Success") : *FString("Fail"));
+	for(auto Result : SessionResult)
+	{
+		FString ProjectName;
+		bool bProjectNameEquals = Result.Session.SessionSettings.Get(FName("ProjectName"), ProjectName);
+
+		if(bProjectNameEquals)
+		{
+			SessionSubsystem->JoinSession(Result);
+			return;
+		}
+	}
+
+	if(!bWasSuccessful || SessionResult.Num() == 0)
+	{
+		MultiplayButton->SetIsEnabled(true);
+	}
 }
 
 void UMainMenuWidget::OnJoinSession(EOnJoinSessionCompleteResult::Type Result)
 {
-	
-}
-
-void UMainMenuWidget::OnDestroySession(bool bWasSuccessful)
-{
-	if(bWasSuccessful)
+	IOnlineSubsystem* OnlineSubsystem = IOnlineSubsystem::Get();
+	if(OnlineSubsystem)
 	{
-		// TODO
-		// MainServer에 DestroySession 요청 보낸다
-		// 종료 전 작업 수행하고 Dedicated Server 종료
-		// 이후 Port 반납
+		IOnlineSessionPtr SessionInterface = OnlineSubsystem->GetSessionInterface();
+		if(SessionInterface.IsValid())
+		{
+			FString Address;
+			SessionInterface->GetResolvedConnectString(NAME_GameSession, Address);
+
+			APlayerController* PlayerController = GetGameInstance()->GetFirstLocalPlayerController();
+			if(PlayerController)
+			{
+				MY_LOG(LogTemp, Error, TEXT("Address : %s"), *Address);
+				PlayerController->ClientTravel(Address, TRAVEL_Absolute);
+			}
+		}
 	}
 }
 
@@ -49,6 +63,15 @@ bool UMainMenuWidget::Initialize()
 	OptionButton->OnClicked.AddDynamic(this, &ThisClass::OptionButtonClicked);
 	ExitButton->OnClicked.AddDynamic(this, &ThisClass::ExitButtonClicked);
 
+	if(UGameInstance* GameInstance = GetGameInstance())
+	{
+		SessionSubsystem = GameInstance->GetSubsystem<USessionSubsystem>();
+		if(SessionSubsystem)
+		{
+			SessionSubsystem->MultiplayerOnFindSessionsComplete.AddUObject(this, &ThisClass::OnFindSession);
+			SessionSubsystem->MultiplayerOnJoinSessionComplete.AddUObject(this, &ThisClass::OnJoinSession);
+		}
+	}
 	return true;
 }
 
@@ -85,7 +108,17 @@ void UMainMenuWidget::MultiplayButtonClicked()
 	if(ReceivedData.bExist)
 	{
 		ReceivedLobbyPort = ReceivedData.ReceivedData[0];
+
+		if(SessionSubsystem)
+		{
+			GetWorld()->GetTimerManager().SetTimer(SessionWaitHandle, this, &ThisClass::DelayedFindSession, 1.f);
+		}
 	}
+}
+
+void UMainMenuWidget::DelayedFindSession()
+{
+	SessionSubsystem->FindSession(1000, ReceivedLobbyPort);
 }
 
 void UMainMenuWidget::OptionButtonClicked()

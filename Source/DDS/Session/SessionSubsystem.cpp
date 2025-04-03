@@ -50,7 +50,8 @@ void USessionSubsystem::CreateSession(int32 NumPublicConnections, FString Port)
 	LastSessionSettings->bUsesPresence = false;
 	LastSessionSettings->bUseLobbiesIfAvailable = false;
 
-	LastSessionSettings->Set("PortNumber", Port, EOnlineDataAdvertisementType::ViaOnlineServiceAndPing);
+	LastSessionSettings->Set(FName("PortNumber"), Port, EOnlineDataAdvertisementType::ViaOnlineServiceAndPing);
+	LastSessionSettings->Set(FName("ProjectName"), FString("DDS"), EOnlineDataAdvertisementType::ViaOnlineServiceAndPing);
 	
 	if(!SessionInterface->CreateSession(0, NAME_GameSession, *LastSessionSettings))
 	{
@@ -60,7 +61,7 @@ void USessionSubsystem::CreateSession(int32 NumPublicConnections, FString Port)
 	}
 }
 
-void USessionSubsystem::FindSession(int32 MaxSearchResult)
+void USessionSubsystem::FindSession(int32 MaxSearchResult, FString Port)
 {
 	if(!SessionInterface.IsValid())
 	{
@@ -72,7 +73,8 @@ void USessionSubsystem::FindSession(int32 MaxSearchResult)
 	LastSessionSearch = MakeShareable(new FOnlineSessionSearch());
 	LastSessionSearch->MaxSearchResults = MaxSearchResult;
 	LastSessionSearch->bIsLanQuery = IOnlineSubsystem::Get()->GetSubsystemName() == "NULL" ? true : false;
-	LastSessionSearch->QuerySettings.Set(SEARCH_LOBBIES, true, EOnlineComparisonOp::Equals);
+	// LastSessionSearch->QuerySettings.Set(FName("PortNumber"), Port, EOnlineComparisonOp::Equals);
+	// LastSessionSearch->QuerySettings.Set(FName("ProjectName"), FString("DDS"), EOnlineComparisonOp::Equals);
 
 	const ULocalPlayer* LocalPlayer = GetWorld()->GetFirstLocalPlayerFromController();
 	if(!SessionInterface->FindSessions(*LocalPlayer->GetPreferredUniqueNetId(), LastSessionSearch.ToSharedRef()))
@@ -93,7 +95,7 @@ void USessionSubsystem::JoinSession(const FOnlineSessionSearchResult& SessionRes
 	JoinSessionCompleteDelegateHandle = SessionInterface->AddOnJoinSessionCompleteDelegate_Handle(JoinSessionCompleteDelegate);
 
 	const ULocalPlayer* LocalPlayer = GetWorld()->GetFirstLocalPlayerFromController();
-	if(SessionInterface->JoinSession(*LocalPlayer->GetPreferredUniqueNetId(), NAME_GameSession, SessionResult))
+	if(!SessionInterface->JoinSession(*LocalPlayer->GetPreferredUniqueNetId(), NAME_GameSession, SessionResult))
 	{
 		SessionInterface->ClearOnJoinSessionCompleteDelegate_Handle(JoinSessionCompleteDelegateHandle);
 
@@ -129,18 +131,18 @@ void USessionSubsystem::OnCreateSessionComplete(FName SessionName, bool bWasSucc
 		if(bWasSuccessful)
 		{
 			// Steam에 세션이 등록되었음
+			const FString Port = FString::FromInt(GetWorld()->URL.Port);
+			FString ExtraInfo = Port;
+			FSocketReceivedData ReceivedData;
+			
 			UClientSocket* NewSocket = NewObject<UClientSocket>(this);
 			if(NewSocket)
 			{
-				const FString Port = FString::FromInt(GetWorld()->URL.Port);
-
-				FString ExtraInfo = Port;
-				
 				bool bIsLocal = IOnlineSubsystem::Get()->GetSubsystemName() == "NULL" ? true : false;
-				FSocketReceivedData ReceivedData = NewSocket->CreateSocket("Dedicated_CreateRoomSuccess", ExtraInfo, bIsLocal);
+				// 소켓 통신
+				ReceivedData = NewSocket->CreateSocket("Dedicated_CreateRoomSuccess", ExtraInfo, bIsLocal);
+				// 소켓 종료
 				NewSocket = nullptr;
-				
-				MY_LOG(LogTemp, Warning, TEXT("Create Session Success!! : %s"), *IOnlineSubsystem::Get()->GetSubsystemName().ToString());
 			}	
 		}
 		SessionInterface->ClearOnCreateSessionCompleteDelegate_Handle(CreateSessionCompleteDelegateHandle);
@@ -151,6 +153,7 @@ void USessionSubsystem::OnCreateSessionComplete(FName SessionName, bool bWasSucc
 
 void USessionSubsystem::OnFindSessionComplete(bool bWasSuccessful)
 {
+	MY_LOG(LogTemp, Error, TEXT("%d"), LastSessionSearch->SearchResults.Num());
 	if(SessionInterface.IsValid())
 	{
 		SessionInterface->ClearOnFindSessionsCompleteDelegate_Handle(FindSessionCompleteDelegateHandle);
@@ -162,7 +165,7 @@ void USessionSubsystem::OnFindSessionComplete(bool bWasSuccessful)
 		return;
 	}
 
-	MultiplayerOnFindSessionsComplete.Broadcast(TArray<FOnlineSessionSearchResult>(), true);
+	MultiplayerOnFindSessionsComplete.Broadcast(LastSessionSearch->SearchResults, true);
 }
 
 void USessionSubsystem::OnJoinSessionComplete(FName SessionName, EOnJoinSessionCompleteResult::Type Result)

@@ -7,6 +7,7 @@
 #include "Interfaces/OnlineSessionInterface.h"
 #include "MainMenuWidget.generated.h"
 
+class USessionSubsystem;
 class UButton;
 /**
  * 
@@ -15,11 +16,14 @@ UCLASS()
 class DDS_API UMainMenuWidget : public UUserWidget
 {
 	GENERATED_BODY()
-
+	
 protected:
 	void OnCreateSession(bool bWasSuccessful);
 	
 	void OnFindSession(const TArray<FOnlineSessionSearchResult>& SessionResult, bool bWasSuccessful);
+
+	UFUNCTION()
+	void DelayedFindSession();
 	
 	void OnJoinSession(EOnJoinSessionCompleteResult::Type Result);
 	
@@ -40,6 +44,11 @@ protected:
 	TObjectPtr<UButton> ExitButton;
 
 private:
+	FTimerHandle SessionWaitHandle;
+	
+	UPROPERTY()
+	USessionSubsystem* SessionSubsystem;
+	
 	UFUNCTION()
 	void SingleplayButtonClicked();
 	
