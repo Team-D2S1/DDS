@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "AbilitySystemReplicationProxyInterface.h"
 #include "AbilitySystemInterface.h"
+#include "Components/Combat/IPawnCombatInterface.h"
 #include "GameFramework/Character.h"
 #include "EntityBase.generated.h"
 
@@ -16,7 +17,7 @@ class UDDSAbilitySystemComponent;
 class UDataAsset_StartUpDataBase;
 
 UCLASS(Abstract) 
-class DDS_API AEntityBase : public ACharacter, public IAbilitySystemInterface
+class DDS_API AEntityBase : public ACharacter, public IAbilitySystemInterface, public IIPawnCombatInterface
 {
 	GENERATED_BODY()
 
@@ -29,7 +30,7 @@ public:
 	virtual UAbilitySystemComponent* GetAbilitySystemComponent() const override;
 	//~ End IAbilitySystemInterface Interface
 
-	virtual UPawnCombatComponent* GetCombatComponent() const;
+	virtual UPawnCombatComponent* GetCombatComponent() const override;
 	
 	UAttributeSet* GetAttributeSet() const;
 

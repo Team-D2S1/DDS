@@ -24,8 +24,21 @@ ADDSWeaponBase::ADDSWeaponBase()
 	WeaponCollisionBox-> SetupAttachment(GetRootComponent());
 	WeaponCollisionBox->SetBoxExtent(FVector(20.f));
 	WeaponCollisionBox->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+	WeaponCollisionBox->OnComponentBeginOverlap.AddUniqueDynamic(this, &ADDSWeaponBase::OnBeginOverlap);
+	WeaponCollisionBox->OnComponentEndOverlap.AddUniqueDynamic(this, &ADDSWeaponBase::OnEndOverlap);
+
+}
+void ADDSWeaponBase::OnBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
+	UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
+{
+	DEBUG_CLOG_DISPLAY_NET(FColor::Silver, HasAuthority(), TEXT("Weapon %s Begin Overlap with %s"), *GetName(), *OtherActor->GetName());
 }
 
+void ADDSWeaponBase::OnEndOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
+	UPrimitiveComponent* OtherComp, int32 OtherBodyIndex)
+{
+	DEBUG_CLOG_DISPLAY_NET(FColor::Silver, HasAuthority(), TEXT("Weapon %s End Overlap with %s"), *GetName(), *OtherActor->GetName());
+}
 void ADDSWeaponBase::GetLifetimeReplicatedProps(TArray<class FLifetimeProperty>& OutLifetimeProps) const
 {
 	Super::GetLifetimeReplicatedProps(OutLifetimeProps);

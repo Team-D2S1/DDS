@@ -48,12 +48,12 @@ void UPawnCombatComponent::ToggleWeaponCollision(bool bEnable, EToggleCollisionT
 			if (bEnable)
 			{
 				CurrentWeapon->GetWeaponCollsionBox()->SetCollisionEnabled(ECollisionEnabled::Type::QueryOnly);
-				DEBUG_CLOG_DISPLAY_NET(FColor::Green, GetOwningPawn()->HasAuthority(), TEXT("Current Weapon is equipped."));
+				// DEBUG_CLOG_DISPLAY_NET(FColor::Green, GetOwningPawn()->HasAuthority(), TEXT("Current Weapon is enabled."));
 			}
 			else
 			{
 				CurrentWeapon->GetWeaponCollsionBox()->SetCollisionEnabled(ECollisionEnabled::Type::NoCollision);
-				DEBUG_CLOG_DISPLAY_NET(FColor::Red, GetOwningPawn()->HasAuthority(), TEXT("Current Weapon is not equipped."));
+				// DEBUG_CLOG_DISPLAY_NET(FColor::Red, GetOwningPawn()->HasAuthority(), TEXT("Current Weapon is not disabled."));
 			}
 			
 		}else
