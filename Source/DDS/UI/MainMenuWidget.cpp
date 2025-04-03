@@ -17,14 +17,13 @@ void UMainMenuWidget::OnFindSession(const TArray<FOnlineSessionSearchResult>& Se
 	MY_LOG(LogTemp, Error, TEXT("%d, %s"), SessionResult.Num(), bWasSuccessful ? *FString("Success") : *FString("Fail"));
 	for(auto Result : SessionResult)
 	{
-		FString Value;
-		if(Result.Session.SessionSettings.Get(FName("ProjectName"), Value))
+		FString ProjectName;
+		bool bProjectNameEquals = Result.Session.SessionSettings.Get(FName("ProjectName"), ProjectName);
+
+		if(bProjectNameEquals)
 		{
-			if(Value == "DDS")
-			{
-				SessionSubsystem->JoinSession(Result);
-				return;				
-			}
+			SessionSubsystem->JoinSession(Result);
+			return;
 		}
 	}
 
@@ -110,12 +109,16 @@ void UMainMenuWidget::MultiplayButtonClicked()
 	{
 		ReceivedLobbyPort = ReceivedData.ReceivedData[0];
 
-		// 방금 만든 세션을 찾아야 한다
 		if(SessionSubsystem)
 		{
-			SessionSubsystem->FindSession(4, ReceivedLobbyPort);
+			GetWorld()->GetTimerManager().SetTimer(SessionWaitHandle, this, &ThisClass::DelayedFindSession, 1.f);
 		}
 	}
+}
+
+void UMainMenuWidget::DelayedFindSession()
+{
+	SessionSubsystem->FindSession(1000, ReceivedLobbyPort);
 }
 
 void UMainMenuWidget::OptionButtonClicked()

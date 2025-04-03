@@ -21,6 +21,9 @@ protected:
 	void OnCreateSession(bool bWasSuccessful);
 	
 	void OnFindSession(const TArray<FOnlineSessionSearchResult>& SessionResult, bool bWasSuccessful);
+
+	UFUNCTION()
+	void DelayedFindSession();
 	
 	void OnJoinSession(EOnJoinSessionCompleteResult::Type Result);
 	
@@ -41,6 +44,8 @@ protected:
 	TObjectPtr<UButton> ExitButton;
 
 private:
+	FTimerHandle SessionWaitHandle;
+	
 	UPROPERTY()
 	USessionSubsystem* SessionSubsystem;
 	

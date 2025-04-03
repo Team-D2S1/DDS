@@ -73,8 +73,8 @@ void USessionSubsystem::FindSession(int32 MaxSearchResult, FString Port)
 	LastSessionSearch = MakeShareable(new FOnlineSessionSearch());
 	LastSessionSearch->MaxSearchResults = MaxSearchResult;
 	LastSessionSearch->bIsLanQuery = IOnlineSubsystem::Get()->GetSubsystemName() == "NULL" ? true : false;
-	LastSessionSearch->QuerySettings.Set(FName("PortNumber"), Port, EOnlineComparisonOp::Equals);
-	LastSessionSearch->QuerySettings.Set(FName("ProjectName"), FString("DDS"), EOnlineComparisonOp::Equals);
+	// LastSessionSearch->QuerySettings.Set(FName("PortNumber"), Port, EOnlineComparisonOp::Equals);
+	// LastSessionSearch->QuerySettings.Set(FName("ProjectName"), FString("DDS"), EOnlineComparisonOp::Equals);
 
 	const ULocalPlayer* LocalPlayer = GetWorld()->GetFirstLocalPlayerFromController();
 	if(!SessionInterface->FindSessions(*LocalPlayer->GetPreferredUniqueNetId(), LastSessionSearch.ToSharedRef()))
