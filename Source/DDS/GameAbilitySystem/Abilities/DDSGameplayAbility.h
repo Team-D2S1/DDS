@@ -38,10 +38,22 @@ protected:
 
 	UFUNCTION(BlueprintPure, Category = "DDS|Ability")
 	UDDSAbilitySystemComponent* GetDDSAbilitySystemComponentFromActorInfo() const;	
+
+	\
+	/**
+	 * 콤보 카운드가 SetByCallerMagnitude 로 설정됨
+	 * @param EffectClass 
+	 * @param InWeaponBaseDamage 
+	 * @param InCurrentAttackTypeTag 
+	 * @param InCurrentAttackComboCount 
+	 * @return 
+	 */
+	UFUNCTION(BlueprintCallable, Category = "DDS|Ability")
+	FGameplayEffectSpecHandle MakeGameplayEffectSpecHandle(TSubclassOf<UGameplayEffect> EffectClass,float InWeaponBaseDamage,FGameplayTag InCurrentAttackTypeTag, int32 InCurrentAttackComboCount) const;
 public:
 	UFUNCTION(BlueprintPure, Category = "DDS|Ability")
 	FORCEINLINE EDDSAbilityActivationPolicy GetAbilityActivationPolicy() const { return AbilityActivationPolicy; }
 protected:
-	void PlayMontageAndWaitForEvent(UAnimMontage* Montage, FName SectionName, FGameplayTag EventTag, float Rate = 1.f, FName StartSection = NAME_None);
+	// void PlayMontageAndWaitForEvent(UAnimMontage* Montage, FName SectionName, FGameplayTag EventTag, float Rate = 1.f, FName StartSection = NAME_None);
 
 };

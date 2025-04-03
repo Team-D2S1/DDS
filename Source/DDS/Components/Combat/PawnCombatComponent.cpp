@@ -2,7 +2,8 @@
 
 
 #include "Components/Combat/PawnCombatComponent.h"
-
+#include "AbilitySystemBlueprintLibrary.h"
+#include "DDSGameplayTags.h"
 #include "Character/EntityBase.h"
 #include "Components/BoxComponent.h"
 #include "ETC/CustomLog.h"
@@ -19,6 +20,10 @@ void UPawnCombatComponent::RegisterSpawnedWeapon(FGameplayTag InWeaponTag, ADDSW
 	}
 
 	CharacterCarriedWeaponMap.Emplace(InWeaponTag, InWeapon);
+
+	// UFunction() 이면 DynamicDelegate로 해야함
+	InWeapon->OnWeaponHitTarget.BindUObject(this, &UPawnCombatComponent::OnHitTarget);
+	InWeapon->OnWeaponPulledFromTarget.BindUObject(this, &UPawnCombatComponent::OnPulledFromTarget);
 	if (bRegisterAsEquippedWeapon)
 	{
 		CurrentEquippedWeaponTag = InWeaponTag;
@@ -53,6 +58,7 @@ void UPawnCombatComponent::ToggleWeaponCollision(bool bEnable, EToggleCollisionT
 			else
 			{
 				CurrentWeapon->GetWeaponCollsionBox()->SetCollisionEnabled(ECollisionEnabled::Type::NoCollision);
+				OverlappedActors.Empty();
 				// DEBUG_CLOG_DISPLAY_NET(FColor::Red, GetOwningPawn()->HasAuthority(), TEXT("Current Weapon is not disabled."));
 			}
 			
@@ -62,4 +68,27 @@ void UPawnCombatComponent::ToggleWeaponCollision(bool bEnable, EToggleCollisionT
 		}
 	}
 	//TODO : 무기가 없는 경우 처리
+}
+
+void UPawnCombatComponent::OnHitTarget(AActor* InTargetActor)
+{
+	if (OverlappedActors.Contains(InTargetActor))
+	{
+		return;
+	}
+	OverlappedActors.Add(InTargetActor); // 어차피 위에서 확인함
+
+	FGameplayEventData EventData;
+	EventData.Instigator = GetOwningPawn();
+	EventData.Target = InTargetActor;
+
+	UAbilitySystemBlueprintLibrary::SendGameplayEventToActor(
+		GetOwningPawn(),
+		DDSGameplayTags::Shared_Event_MeleeHit,
+		EventData);
+}
+
+void UPawnCombatComponent::OnPulledFromTarget(AActor* InTargetActor)
+{
+	
 }

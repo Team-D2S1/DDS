@@ -3,6 +3,7 @@
 
 #include "GameAbilitySystem/Abilities/DDSGameplayAbility.h"
 #include "AbilitySystemComponent.h"
+#include "DDSGameplayTags.h"
 #include "Components/Combat/PawnCombatComponent.h"
 #include "ETC/CustomLog.h"
 #include "GameAbilitySystem/DDSAbilitySystemComponent.h"
@@ -53,11 +54,39 @@ UDDSAbilitySystemComponent* UDDSGameplayAbility::GetDDSAbilitySystemComponentFro
 	return Cast<UDDSAbilitySystemComponent>(CurrentActorInfo->AbilitySystemComponent);
 }
 
-void UDDSGameplayAbility::PlayMontageAndWaitForEvent(UAnimMontage* Montage, FName SectionName, FGameplayTag EventTag,
-	float Rate, FName StartSection)
+FGameplayEffectSpecHandle UDDSGameplayAbility::MakeGameplayEffectSpecHandle(TSubclassOf<UGameplayEffect> EffectClass,
+	float InWeaponBaseDamage, FGameplayTag InCurrentAttackTypeTag, int32 InCurrentAttackComboCount) const
 {
-	// if (CurrentActorInfo->OwnerActor->HasAuthority() && Montage)
-	// {
-	// 	UAbilityTask *Task =
-	// }
+	if (!EffectClass)
+	{
+		DEBUG_CLOG_DISPLAY_NET(FColor::Red, CurrentActorInfo->OwnerActor->HasAuthority(), TEXT("EffectClass is nullptr"));
+		return FGameplayEffectSpecHandle();
+	}
+
+	FGameplayEffectContextHandle ContextHandle = GetDDSAbilitySystemComponentFromActorInfo()->MakeEffectContext();
+	ContextHandle.SetAbility(this);
+	ContextHandle.AddSourceObject(GetAvatarActorFromActorInfo());
+	ContextHandle.AddInstigator(GetAvatarActorFromActorInfo(), GetAvatarActorFromActorInfo());
+	
+	
+	FGameplayEffectSpecHandle EffectSpecHandle = GetDDSAbilitySystemComponentFromActorInfo()->MakeOutgoingSpec(
+		EffectClass,
+		GetAbilityLevel(),
+		ContextHandle
+	);
+	EffectSpecHandle.Data->SetSetByCallerMagnitude(DDSGameplayTags::Shared_SetByCaller_BaseDamage, InWeaponBaseDamage);
+	if (InCurrentAttackTypeTag.IsValid())
+	{
+		EffectSpecHandle.Data->SetSetByCallerMagnitude(InCurrentAttackTypeTag,InCurrentAttackComboCount);
+	}
+	return EffectSpecHandle;
 }
+
+// void UDDSGameplayAbility::PlayMontageAndWaitForEvent(UAnimMontage* Montage, FName SectionName, FGameplayTag EventTag,
+// 	float Rate, FName StartSection)
+// {
+// 	// if (CurrentActorInfo->OwnerActor->HasAuthority() && Montage)
+// 	// {
+// 	// 	UAbilityTask *Task =
+// 	// }
+// }

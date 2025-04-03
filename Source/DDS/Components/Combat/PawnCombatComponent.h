@@ -55,6 +55,15 @@ public:
 	void ToggleWeaponCollision(bool bEnable,EToggleCollisionType InDamageType = EToggleCollisionType::CurrentEquippedWeapon);
 
 protected:
+	
+	/**
+	 *  @brief 무기와 겹쳐져 있는 액터들.
+	 */
+	UPROPERTY()
+	TArray<AActor*> OverlappedActors;
+	
+	virtual void OnHitTarget(AActor* InTargetActor);
+	virtual void OnPulledFromTarget(AActor* InTargetActor);
 
 private:
 	TMap<FGameplayTag, ADDSWeaponBase*> CharacterCarriedWeaponMap;

@@ -9,6 +9,8 @@
 
 class UBoxComponent;
 
+DECLARE_DELEGATE_OneParam(FOnTargetInteractedDelegate, AActor*);
+
 UCLASS()
 class DDS_API ADDSWeaponBase : public AActor
 {
@@ -18,6 +20,8 @@ public:
 	// Sets default values for this actor's properties
 	ADDSWeaponBase();
 
+	FOnTargetInteractedDelegate OnWeaponHitTarget;
+	FOnTargetInteractedDelegate OnWeaponPulledFromTarget;
 protected:
 
 	virtual void GetLifetimeReplicatedProps(TArray<class FLifetimeProperty>& OutLifetimeProps) const override;
@@ -43,6 +47,7 @@ protected:
 public:
 	FORCEINLINE UBoxComponent* GetWeaponCollsionBox() const {return WeaponCollisionBox;};
 
+	
 	
 	UFUNCTION(BlueprintCallable,Category="DDS|Weapon")
 	void SetOwnerPawn(APawn* InOwnerPawn);

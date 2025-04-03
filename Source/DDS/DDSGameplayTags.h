@@ -37,6 +37,12 @@ namespace DDSGameplayTags
 	DDS_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Monster_Weapon)
 
 	/** Shared Tags */
+
+	DDS_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Shared_Event_MeleeHit);
+
+	DDS_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Shared_SetByCaller_BaseDamage);
+	
 	DDS_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Shared_State_LockedOn)
+	
 }
  

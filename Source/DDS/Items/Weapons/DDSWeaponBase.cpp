@@ -48,7 +48,8 @@ void ADDSWeaponBase::OnBeginOverlap(UPrimitiveComponent* OverlappedComponent, AA
 	{
 		if (UDDSFunctionLibrary::IsTargetHostile(OwingPawn,OtherPawn))
 		{
-			DEBUG_CLOG_DISPLAY_NET( FColor::Silver, HasAuthority(), TEXT("Weapon %s Begin Overlap with %s"), *GetName(), *OtherActor->GetName());
+			// DEBUG_CLOG_DISPLAY_NET( FColor::Silver, HasAuthority(), TEXT("Weapon %s Begin Overlap with %s"), *GetName(), *OtherActor->GetName());
+			OnWeaponHitTarget.ExecuteIfBound(OtherActor);
 		}
 	}
 }
@@ -64,7 +65,8 @@ void ADDSWeaponBase::OnEndOverlap(UPrimitiveComponent* OverlappedComponent, AAct
 		return;
 	if (OtherPawn != OwingPawn)
 	{
-		DEBUG_CLOG_DISPLAY_NET( FColor::Silver, HasAuthority(), TEXT("Weapon %s End Overlap with %s"), *GetName(), *OtherActor->GetName());
+		// DEBUG_CLOG_DISPLAY_NET( FColor::Silver, HasAuthority(), TEXT("Weapon %s End Overlap with %s"), *GetName(), *OtherActor->GetName());
+		OnWeaponPulledFromTarget.ExecuteIfBound(OtherActor);
 	}
 }
 void ADDSWeaponBase::GetLifetimeReplicatedProps(TArray<class FLifetimeProperty>& OutLifetimeProps) const
