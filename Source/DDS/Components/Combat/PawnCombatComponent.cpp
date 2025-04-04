@@ -43,8 +43,6 @@ void UPawnCombatComponent::RegisterSpawnedWeapon(FGameplayTag InWeaponTag, ADDSW
 
 void UPawnCombatComponent::ToggleWeaponCollision(bool bEnable, EToggleCollisionType InDamageType)
 {
-	
-	
 	if (InDamageType == EToggleCollisionType::CurrentEquippedWeapon)
 	{
 		ADDSWeaponBase* CurrentWeapon = GetCurrentEquippedWeapon();
@@ -81,14 +79,26 @@ void UPawnCombatComponent::OnHitTarget(AActor* InTargetActor)
 	FGameplayEventData EventData;
 	EventData.Instigator = GetOwningPawn();
 	EventData.Target = InTargetActor;
+	// TODO : 무기 정보도 넘기기
 
 	UAbilitySystemBlueprintLibrary::SendGameplayEventToActor(
 		GetOwningPawn(),
-		DDSGameplayTags::Shared_Event_MeleeHit,
+		DDSGameplayTags::Shared_Event_MeleeHit_Start,
 		EventData);
 }
 
 void UPawnCombatComponent::OnPulledFromTarget(AActor* InTargetActor)
 {
-	
+	if (!OverlappedActors.Contains(InTargetActor))
+	{
+		return;
+	}
+	OverlappedActors.Remove(InTargetActor);
+	FGameplayEventData EventData;
+	EventData.Instigator = GetOwningPawn();
+	EventData.Target = InTargetActor;
+	UAbilitySystemBlueprintLibrary::SendGameplayEventToActor(
+		GetOwningPawn(),
+		DDSGameplayTags::Shared_Event_MeleeHit_End,
+		EventData);
 }

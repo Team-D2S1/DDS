@@ -140,6 +140,7 @@ void APlayerBase::InitAbilityActorInfo()
 	DDSPlayerState->GetAbilitySystemComponent()->InitAbilityActorInfo(DDSPlayerState, this);
 	AbilitySystemComponent = DDSPlayerState->GetDDSAbilitySystemComponent();
 	AttributeSet = DDSPlayerState->GetDDSAttribueSet();
+	
 
 	
 

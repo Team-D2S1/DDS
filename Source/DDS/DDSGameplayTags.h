@@ -33,12 +33,16 @@ namespace DDSGameplayTags
 	DDS_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Event_Equip_Sword)
 	DDS_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Event_Unequip_Sword)
 
+	DDS_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_SetByCaller_AttackType_Light)
+	DDS_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_SetByCaller_AttackType_Heavy)
+
 	/** Monster Tags */
 	DDS_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Monster_Weapon)
 
 	/** Shared Tags */
 
-	DDS_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Shared_Event_MeleeHit);
+	DDS_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Shared_Event_MeleeHit_Start);
+	DDS_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Shared_Event_MeleeHit_End);
 
 	DDS_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Shared_SetByCaller_BaseDamage);
 	

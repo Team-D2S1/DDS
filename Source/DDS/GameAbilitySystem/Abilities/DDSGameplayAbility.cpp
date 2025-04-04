@@ -7,6 +7,7 @@
 #include "Components/Combat/PawnCombatComponent.h"
 #include "ETC/CustomLog.h"
 #include "GameAbilitySystem/DDSAbilitySystemComponent.h"
+#include "AbilitySystemBlueprintLibrary.h"
 
 void UDDSGameplayAbility::OnGiveAbility(const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilitySpec& Spec)
 {
@@ -54,8 +55,43 @@ UDDSAbilitySystemComponent* UDDSGameplayAbility::GetDDSAbilitySystemComponentFro
 	return Cast<UDDSAbilitySystemComponent>(CurrentActorInfo->AbilitySystemComponent);
 }
 
+FActiveGameplayEffectHandle UDDSGameplayAbility::NativeApplyEffectSpecHandleToTarget(AActor* TargetActor,
+	const FGameplayEffectSpecHandle& InEffectSpecHandle)
+{
+	UAbilitySystemComponent* TargetASC = UAbilitySystemBlueprintLibrary::GetAbilitySystemComponent(TargetActor);
+	if(!TargetASC)
+	{
+		DEBUG_CLOG_DISPLAY_NET(FColor::Red, CurrentActorInfo->OwnerActor->HasAuthority(), TEXT("TargetASC is nullptr"));
+		return FActiveGameplayEffectHandle();
+	}
+	if (!InEffectSpecHandle.IsValid())
+	{
+		DEBUG_CLOG_DISPLAY_NET(FColor::Red, CurrentActorInfo->OwnerActor->HasAuthority(), TEXT("InEffectSpecHandle is invalid"));
+		return FActiveGameplayEffectHandle();
+	}
+	return GetDDSAbilitySystemComponentFromActorInfo()->ApplyGameplayEffectSpecToTarget( 
+		*InEffectSpecHandle.Data,
+		TargetASC
+	);
+}
+
+FActiveGameplayEffectHandle UDDSGameplayAbility::BP_ApplyEffectSpecHandleToTarget(AActor* TargetActor,
+	const FGameplayEffectSpecHandle& InEffectSpecHandle, EDDSSuccessType& OutSuccessType)
+{
+	FActiveGameplayEffectHandle Handle = NativeApplyEffectSpecHandleToTarget(TargetActor, InEffectSpecHandle);
+	if (Handle.IsValid())
+	{
+		OutSuccessType = EDDSSuccessType::Success;
+	}
+	else
+	{
+		OutSuccessType = EDDSSuccessType::Fail;
+	}
+	return Handle;
+}
+
 FGameplayEffectSpecHandle UDDSGameplayAbility::MakeGameplayEffectSpecHandle(TSubclassOf<UGameplayEffect> EffectClass,
-	float InWeaponBaseDamage, FGameplayTag InCurrentAttackTypeTag, int32 InCurrentAttackComboCount) const
+                                                                            float InWeaponBaseDamage, FGameplayTag InCurrentAttackTypeTag, int32 InCurrentAttackComboCount) const
 {
 	if (!EffectClass)
 	{

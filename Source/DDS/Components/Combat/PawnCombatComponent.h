@@ -51,6 +51,12 @@ public:
 	UFUNCTION(BlueprintCallable,Category="DDS|Combat")
 	ADDSWeaponBase* GetCurrentEquippedWeapon() const;
 
+	/**
+	 * @brief 무기 충돌을 활성화/비활성화 한다.
+	 * @note 비활성화할 시, OverlappedActors를 초기화함
+	 * @param bEnable 활성화 여부
+	 * @param InDamageType 무기 종류
+	 */
 	UFUNCTION(BlueprintCallable,Category="DDS|Combat")
 	void ToggleWeaponCollision(bool bEnable,EToggleCollisionType InDamageType = EToggleCollisionType::CurrentEquippedWeapon);
 

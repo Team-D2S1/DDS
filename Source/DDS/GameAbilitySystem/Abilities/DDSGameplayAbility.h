@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "Abilities/GameplayAbility.h"
+#include "DDSTypes/DDSEnumTypes.h"
 #include "DDSGameplayAbility.generated.h"
 
 class UPawnCombatComponent;
@@ -37,9 +38,13 @@ protected:
 	UPawnCombatComponent* GetPawnCombatComponentFromActorInfo() const;
 
 	UFUNCTION(BlueprintPure, Category = "DDS|Ability")
-	UDDSAbilitySystemComponent* GetDDSAbilitySystemComponentFromActorInfo() const;	
+	UDDSAbilitySystemComponent* GetDDSAbilitySystemComponentFromActorInfo() const;
+	
+	UFUNCTION(BlueprintCallable, Category = "DDS|Ability")
+	FActiveGameplayEffectHandle NativeApplyEffectSpecHandleToTarget(AActor* TargetActor, const FGameplayEffectSpecHandle& InEffectSpecHandle);
 
-	\
+	UFUNCTION(BlueprintCallable, Category = "DDS|Ability",meta = (DisplayName = "Apply Gameplay Effect Spec Handle To Target Actor",ExpandEnumAsExecs = "OutSuccessType"))
+	FActiveGameplayEffectHandle BP_ApplyEffectSpecHandleToTarget(AActor* TargetActor, const FGameplayEffectSpecHandle& InEffectSpecHandle,EDDSSuccessType& OutSuccessType);
 	/**
 	 * 콤보 카운드가 SetByCallerMagnitude 로 설정됨
 	 * @param EffectClass 
@@ -48,11 +53,13 @@ protected:
 	 * @param InCurrentAttackComboCount 
 	 * @return 
 	 */
-	UFUNCTION(BlueprintCallable, Category = "DDS|Ability")
+	UFUNCTION(BlueprintPure, Category = "DDS|Ability")
 	FGameplayEffectSpecHandle MakeGameplayEffectSpecHandle(TSubclassOf<UGameplayEffect> EffectClass,float InWeaponBaseDamage,FGameplayTag InCurrentAttackTypeTag, int32 InCurrentAttackComboCount) const;
 public:
 	UFUNCTION(BlueprintPure, Category = "DDS|Ability")
 	FORCEINLINE EDDSAbilityActivationPolicy GetAbilityActivationPolicy() const { return AbilityActivationPolicy; }
+	
+
 protected:
 	// void PlayMontageAndWaitForEvent(UAnimMontage* Montage, FName SectionName, FGameplayTag EventTag, float Rate = 1.f, FName StartSection = NAME_None);
 

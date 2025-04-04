@@ -13,6 +13,16 @@ ADDSPlayerWeapon* UPlayerCombatComponent::GetPlayerCarriedWeaponByTag(FGameplayT
 	return Cast<ADDSPlayerWeapon>(GetCharacterCarriedWeapon(InWeaponTag));
 }
 
+ADDSPlayerWeapon* UPlayerCombatComponent::GetPlayerCurrentEquippedWeapon() const
+{
+	return Cast<ADDSPlayerWeapon>(GetCurrentEquippedWeapon());
+}
+
+float UPlayerCombatComponent::GetPlayerCurrentEquippedWeaponDamageAtLevel(float InLevel) const
+{
+	return GetPlayerCurrentEquippedWeapon()->PlayerWeaponData.WeaponBaseDamage.GetValueAtLevel(InLevel);
+}
+
 // void UPlayerCombatComponent::TickComponent(float DeltaTime, ELevelTick TickType,
 // 	FActorComponentTickFunction* ThisTickFunction)
 // {

@@ -27,8 +27,11 @@ class DDS_API UDDSAttributeSet : public UAttributeSet
 	GENERATED_BODY()
 public:
 	UDDSAttributeSet();
+	
 	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
-
+	
+	virtual void PostGameplayEffectExecute(const struct FGameplayEffectModCallbackData &Data) override;
+	
 	UPROPERTY(ReplicatedUsing = OnRep_Health, BlueprintReadOnly, Category = "Vital Attributes")
 	FGameplayAttributeData Health;
 	ATTRIBUTE_ACCESSORS(UDDSAttributeSet, Health);
@@ -44,6 +47,18 @@ public:
 	UPROPERTY(ReplicatedUsing= OnRep_MaxStamina, BlueprintReadOnly, Category = "Vital Attributes")
 	FGameplayAttributeData MaxStamina;
 	ATTRIBUTE_ACCESSORS(UDDSAttributeSet, MaxStamina);
+
+    UPROPERTY(ReplicatedUsing= OnRep_AttackPower, BlueprintReadOnly, Category = "Combat Attributes")
+	FGameplayAttributeData AttackPower;
+	ATTRIBUTE_ACCESSORS(UDDSAttributeSet, AttackPower);
+
+    UPROPERTY(ReplicatedUsing= OnRep_DefensePower, BlueprintReadOnly, Category = "Combat Attributes")
+	FGameplayAttributeData DefensePower;
+	ATTRIBUTE_ACCESSORS(UDDSAttributeSet, DefensePower);
+
+	UPROPERTY(ReplicatedUsing= OnRep_DamageTaken, BlueprintReadOnly, Category = "Combat Attributes")
+	FGameplayAttributeData DamageTaken;
+	ATTRIBUTE_ACCESSORS(UDDSAttributeSet, DamageTaken);
 	
 	UFUNCTION()
 	void OnRep_Health(const FGameplayAttributeData& OldHealth) const;
@@ -56,6 +71,18 @@ public:
 
 	UFUNCTION()
 	void OnRep_MaxStamina(const FGameplayAttributeData& OldMaxStamina) const;
+
+	UFUNCTION()
+	void OnRep_AttackPower(const FGameplayAttributeData& OldAttackPower) const;
+
+	UFUNCTION()
+	void OnRep_DefensePower(const FGameplayAttributeData& OldDefensePower) const;
+
+	UFUNCTION()
+	void OnRep_DamageTaken(const FGameplayAttributeData& OldDamageTaken) const;
 };
+
+
+
 
 

@@ -28,3 +28,11 @@ enum class EDDSValidType : uint8
 	Invalid,
 	Valid,
 };
+
+
+UENUM()
+enum class EDDSSuccessType : uint8
+{
+	Success,
+	Fail
+};
