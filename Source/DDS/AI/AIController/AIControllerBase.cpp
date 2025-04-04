@@ -6,8 +6,11 @@
 #include "AI/DDSPerceptionComponent.h"
 #include "BehaviorTree/BlackboardComponent.h"
 #include "Character/Monster/MonsterBase.h"
+#include "ETC/CustomLog.h"
+#include "ETC/DDSFunctionLibrary.h"
 #include "Perception/AIPerceptionComponent.h"
 #include "Perception/AISenseConfig_Sight.h"
+#include "Character/Player/DDSPlayerState.h"
 
 AAIControllerBase::AAIControllerBase(FObjectInitializer const& ObjectInitializer)
 {
@@ -26,7 +29,16 @@ void AAIControllerBase::BeginPlay()
 ETeamAttitude::Type AAIControllerBase::GetTeamAttitudeTowards(const AActor& Other) const
 {
 	const APawn* OtherPawn = Cast<APawn>(&Other);
-	const IGenericTeamAgentInterface* OtherTeamAgent = Cast<IGenericTeamAgentInterface>(OtherPawn);
+	const IGenericTeamAgentInterface* OtherTeamAgent = nullptr;
+	if (OtherPawn)
+	{
+		OtherTeamAgent = Cast<IGenericTeamAgentInterface>(OtherPawn->GetController());
+		if (!OtherTeamAgent)
+		{
+			OtherTeamAgent = Cast<IGenericTeamAgentInterface>(OtherPawn->GetPlayerState());
+		}
+	}
+	
 	if (OtherTeamAgent && OtherTeamAgent->GetGenericTeamId().GetId() != GetGenericTeamId().GetId())
 	{
 		return ETeamAttitude::Hostile;
@@ -38,7 +50,13 @@ void AAIControllerBase::OnTargetPerceptionUpdated(AActor* Actor, FAIStimulus Sti
 {
 	if (UBlackboardComponent* BlackboardComponent = GetBlackboardComponent())
 	{
-		if(Stimulus.WasSuccessfullySensed())
+		// DEBUG_CLOG_DISPLAY(FColor::Green,"OnTargetPerceptionUpdated %s", *Actor->GetName());
+		// if(Stimulus.WasSuccessfullySensed())
+		// {
+		//
+		// 	DEBUG_CLOG_DISPLAY(FColor::Green,"GetTeamAttitudeTowards %d", GetTeamAttitudeTowards(*Actor));
+		// }
+		if(Stimulus.WasSuccessfullySensed() && Actor && GetTeamAttitudeTowards(*Actor) == ETeamAttitude::Hostile)
 		{
 			BlackboardComponent->SetValueAsObject("TargetActor", Actor);
 		}

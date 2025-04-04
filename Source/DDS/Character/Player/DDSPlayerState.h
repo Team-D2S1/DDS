@@ -47,6 +47,6 @@ protected:
 	UPROPERTY(VisibleAnywhere,BlueprintReadOnly,Category="AbilitySystem")
 	TObjectPtr<UDDSAttributeSet> AttributeSet;
 	
-	
+	UPROPERTY()
 	FGenericTeamId PlayerTeamId;
 };
