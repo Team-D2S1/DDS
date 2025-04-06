@@ -32,4 +32,7 @@ protected:
 
 	void OnRegisterPlayerComplete(FName NameOfSession, const TArray<FUniqueNetIdRef>& PlayerIds, bool bWasSuccessful);
 	void OnUnregisterPlayerComplete(FName NameOfSession, const TArray<FUniqueNetIdRef>& PlayerIds, bool bWasSuccessful);
+
+	UFUNCTION()
+	void OnCreateSession(bool bWasSuccessful);
 };

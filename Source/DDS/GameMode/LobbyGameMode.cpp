@@ -7,6 +7,7 @@
 #include <iostream>
 
 #include "GameFramework/PlayerState.h"
+#include "Kismet/GameplayStatics.h"
 #include "Session/LobbySession.h"
 
 ALobbyGameMode::ALobbyGameMode()
@@ -23,6 +24,14 @@ void ALobbyGameMode::BeginPlay()
 	if(UGameInstance* GameInstance = GetGameInstance())
 	{
 		// 작업
+	}
+
+	UWorld* World = GetWorld();
+	if (World)
+	{
+		FString MapName = World->GetMapName(); // 내부 이름 (예: "UEDPIE_0_LobbyMenu")
+		FString CleanName = FPackageName::GetShortName(MapName); // 깔끔한 이름 추출
+		UE_LOG(LogTemp, Log, TEXT("현재 맵 이름: %s"), *CleanName);
 	}
 }
 

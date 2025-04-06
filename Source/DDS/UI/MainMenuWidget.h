@@ -38,6 +38,9 @@ protected:
 	TObjectPtr<UButton> MultiplayButton;
 
 	UPROPERTY(meta=(BindWidget))
+	TObjectPtr<UButton> JoinButton;
+	
+	UPROPERTY(meta=(BindWidget))
 	TObjectPtr<UButton> OptionButton;
 
 	UPROPERTY(meta=(BindWidget))
@@ -54,6 +57,9 @@ private:
 	
 	UFUNCTION()
 	void MultiplayButtonClicked();
+
+	UFUNCTION()
+	void JoinButtonClicked();
 	
 	UFUNCTION()
 	void OptionButtonClicked();

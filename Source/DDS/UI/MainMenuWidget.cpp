@@ -14,7 +14,6 @@
 void UMainMenuWidget::OnFindSession(const TArray<FOnlineSessionSearchResult>& SessionResult, bool bWasSuccessful)
 {
 	if(!SessionSubsystem) return;
-	MY_LOG(LogTemp, Error, TEXT("%d, %s"), SessionResult.Num(), bWasSuccessful ? *FString("Success") : *FString("Fail"));
 	for(auto Result : SessionResult)
 	{
 		FString ProjectName;
@@ -27,10 +26,8 @@ void UMainMenuWidget::OnFindSession(const TArray<FOnlineSessionSearchResult>& Se
 		}
 	}
 
-	if(!bWasSuccessful || SessionResult.Num() == 0)
-	{
-		MultiplayButton->SetIsEnabled(true);
-	}
+	MY_LOG(LogTemp, Error, TEXT("Find Lobby Failed!"));
+	MultiplayButton->SetIsEnabled(true);
 }
 
 void UMainMenuWidget::OnJoinSession(EOnJoinSessionCompleteResult::Type Result)
@@ -60,6 +57,7 @@ bool UMainMenuWidget::Initialize()
 	
 	SingleplayButton->OnClicked.AddDynamic(this, &ThisClass::SingleplayButtonClicked);
 	MultiplayButton->OnClicked.AddDynamic(this, &ThisClass::MultiplayButtonClicked);
+	JoinButton->OnClicked.AddDynamic(this, &ThisClass::JoinButtonClicked);
 	OptionButton->OnClicked.AddDynamic(this, &ThisClass::OptionButtonClicked);
 	ExitButton->OnClicked.AddDynamic(this, &ThisClass::ExitButtonClicked);
 
@@ -111,9 +109,15 @@ void UMainMenuWidget::MultiplayButtonClicked()
 
 		if(SessionSubsystem)
 		{
-			GetWorld()->GetTimerManager().SetTimer(SessionWaitHandle, this, &ThisClass::DelayedFindSession, 1.f);
+			GetWorld()->GetTimerManager().SetTimer(SessionWaitHandle, this, &ThisClass::DelayedFindSession, 4.f);
 		}
 	}
+}
+
+void UMainMenuWidget::JoinButtonClicked()
+{
+	JoinButton->SetIsEnabled(false);
+	DelayedFindSession();
 }
 
 void UMainMenuWidget::DelayedFindSession()

@@ -6,6 +6,7 @@
 #include "OnlineSubsystem.h"
 #include "SessionSubsystem.h"
 #include "ETC/CustomLog.h"
+#include "GameFramework/GameModeBase.h"
 #include "Interfaces/OnlineSessionInterface.h"
 
 
@@ -72,22 +73,46 @@ void ALobbySession::GameStart()
 void ALobbySession::BeginPlay()
 {
 	Super::BeginPlay();
-	if(IsRunningDedicatedServer())
-	{
-		FString PortNumber;
-		
-		if(UWorld* World = GetWorld())
-		{
-			PortNumber = FString::FromInt(World->URL.Port);
-		}
 
-		if(!PortNumber.IsEmpty())
+	
+	if(UGameInstance* GameInstance = GetGameInstance())
+	{
+		if(USessionSubsystem* SessionSubsystem = GameInstance->GetSubsystem<USessionSubsystem>())
 		{
-			MY_LOG(LogTemp, Log, TEXT("Lobby port : %s"), *PortNumber);
-			USessionSubsystem* SessionSubsystem = GetGameInstance()->GetSubsystem<USessionSubsystem>();
-			SessionSubsystem->CreateSession(4, PortNumber);
+			SessionSubsystem->MultiplayerOnCreateSessionComplete.AddDynamic(this, &ThisClass::ALobbySession::OnCreateSession);
+
+			// 현재 세션이 생성되었는지 확인, 생성되었다면 Return
+			IOnlineSubsystem* OnlineSubsystem = IOnlineSubsystem::Get();
+			if(OnlineSubsystem)
+			{
+				IOnlineSessionPtr SessionPtr = OnlineSubsystem->GetSessionInterface();
+				if(SessionPtr->GetNamedSession(NAME_GameSession) != nullptr)
+				{
+					MY_LOG(LogTemp, Error, TEXT("Session Already Exist"));
+					return;
+				}
+			}
+
+			// 현재 생성된 세션이 없다면 세션을 만든다
+			if(IsRunningDedicatedServer())
+			{
+				FString PortNumber;
+		
+				if(UWorld* World = GetWorld())
+				{
+					PortNumber = FString::FromInt(World->URL.Port);
+				}
+
+				if(!PortNumber.IsEmpty())
+				{
+					MY_LOG(LogTemp, Log, TEXT("Lobby port : %s"), *PortNumber);
+					SessionSubsystem->CreateSession(2, PortNumber);
+				}
+			}
 		}
 	}
+	
+	
 }
 
 void ALobbySession::OnRegisterPlayerComplete(FName NameOfSession, const TArray<FUniqueNetIdRef>& PlayerIds,
@@ -129,5 +154,16 @@ void ALobbySession::OnUnregisterPlayerComplete(FName NameOfSession, const TArray
 			// TODO
 			// 플레이어 해제 완료시 할 작업 작성 
 		}
+	}
+}
+
+void ALobbySession::OnCreateSession(bool bWasSuccessful)
+{
+	// 로비 맵 오픈
+	MY_LOG(LogTemp, Error, TEXT("Create Session One"));
+	UWorld* World = GetWorld();
+	if(World)
+	{
+		World->ServerTravel("/Game/Maps/LobbyMenu");
 	}
 }
