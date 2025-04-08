@@ -35,13 +35,13 @@ void ADDSWeaponBase::OnBeginOverlap(UPrimitiveComponent* OverlappedComponent, AA
 	APawn* OwingPawn = GetInstigator();
 	if (OwingPawn == nullptr)
 	{
-		DEBUG_CLOG_DISPLAY_NET( FColor::Red, HasAuthority(), TEXT("Weapon %s OwingPawn is nullptr"), *GetName());
+		MY_CLOG_DISPLAY_NET( FColor::Red, HasAuthority(), TEXT("Weapon %s OwingPawn is nullptr"), *GetName());
 		return;
 	}
 	APawn* OtherPawn = Cast<APawn>(OtherActor);
 	if (OtherPawn == nullptr)
 	{
-		DEBUG_CLOG_DISPLAY_NET( FColor::Red, HasAuthority(), TEXT("Weapon %s OtherPawn is nullptr"), *GetName());
+		MY_CLOG_DISPLAY_NET( FColor::Red, HasAuthority(), TEXT("Weapon %s OtherPawn is nullptr"), *GetName());
 		return;
 	}
 	if (OtherPawn != OwingPawn)
