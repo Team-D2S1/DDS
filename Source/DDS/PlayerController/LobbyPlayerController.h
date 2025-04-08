@@ -6,6 +6,7 @@
 #include "GameFramework/PlayerController.h"
 #include "LobbyPlayerController.generated.h"
 
+class ULobbyWidget;
 class UMainMenuWidget;
 /**
  * 
@@ -27,10 +28,16 @@ protected:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "UI")
 	TSubclassOf<UUserWidget> MainMenuWidgetClass;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "UI")
+	TSubclassOf<UUserWidget> LobbyWidgetClass;
 	
 private:
 	UPROPERTY()
 	TObjectPtr<UMainMenuWidget> MainMenuWidget;
+
+	UPROPERTY()
+	TObjectPtr<ULobbyWidget> LobbyWidget;
 	
 	UFUNCTION(Server, Reliable)
 	void Server_GameStart();
@@ -38,6 +45,8 @@ private:
 protected:
 	// MainMenuWidget 생성 후 할당, InputMode 변경
 	void ShowMainMenuWidget();
+
+	void ShowLobbyWidget();
 	
 public:
 	UFUNCTION(Client, Reliable)
