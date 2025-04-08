@@ -164,6 +164,6 @@ void ALobbySession::OnCreateSession(bool bWasSuccessful)
 	UWorld* World = GetWorld();
 	if(World)
 	{
-		World->ServerTravel("/Game/Maps/LobbyMenu");
+		World->ServerTravel("/Game/Maps/MainMap");
 	}
 }

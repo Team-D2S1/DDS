@@ -8,6 +8,7 @@
 
 #include "GameFramework/PlayerState.h"
 #include "Kismet/GameplayStatics.h"
+#include "PlayerController/LobbyPlayerController.h"
 #include "Session/LobbySession.h"
 
 ALobbyGameMode::ALobbyGameMode()
@@ -25,14 +26,6 @@ void ALobbyGameMode::BeginPlay()
 	{
 		// 작업
 	}
-
-	UWorld* World = GetWorld();
-	if (World)
-	{
-		FString MapName = World->GetMapName(); // 내부 이름 (예: "UEDPIE_0_LobbyMenu")
-		FString CleanName = FPackageName::GetShortName(MapName); // 깔끔한 이름 추출
-		UE_LOG(LogTemp, Log, TEXT("현재 맵 이름: %s"), *CleanName);
-	}
 }
 
 void ALobbyGameMode::StartPlay()
@@ -46,4 +39,10 @@ void ALobbyGameMode::PostLogin(APlayerController* NewPlayer)
 
 	FString PlayerName = NewPlayer->GetPawn()->GetPlayerState()->GetPlayerName();
 	MY_LOG(LogTemp, Error, TEXT("Player \"%s\" Login!"), *PlayerName);
+
+	ALobbyPlayerController* LobbyPC = Cast<ALobbyPlayerController>(NewPlayer);
+	if(LobbyPC)
+	{
+		LobbyPC->Client_PostLoginServer();
+	}
 }

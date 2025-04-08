@@ -22,7 +22,7 @@ protected:
 	virtual void BeginPlay() override;
 
 	virtual void Tick(float DeltaSeconds) override;
-
+	
 	void GameStart();
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "UI")
@@ -40,6 +40,9 @@ protected:
 	void ShowMainMenuWidget();
 	
 public:
+	UFUNCTION(Client, Reliable)
+	void Client_PostLoginServer();
+	
 	FORCEINLINE UMainMenuWidget* GetMainMenuWidget() { return MainMenuWidget; }
 
 	
