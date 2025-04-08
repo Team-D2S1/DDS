@@ -131,7 +131,7 @@ void AInGamePlayerController::Input_LockOn()
 	APlayerBase* PlayerBase = GetPlayerBase();
 	if (!PlayerBase) return;
 
-	DEBUG_CLOG_DISPLAY_NET(FColor::White, HasAuthority(), TEXT("Start Lock On"));
+	MY_CLOG_DISPLAY_NET(FColor::White, HasAuthority(), TEXT("Start Lock On"));
 	// 대상을 찾는다.
 	// 대상은 현재 플레이어 카메라 기준 가장 가운데에 가까운 적
 	// 대상이 없으면? 그냥 취소
@@ -167,7 +167,7 @@ void AInGamePlayerController::Input_LockOn()
 	//GetActorsInSelectionRectangle
 	if (target)
 	{
-		DEBUG_CLOG_DISPLAY_NET(FColor::White, HasAuthority(), TEXT("Lock On Target : %s"), *target->GetName());
+		MY_CLOG_DISPLAY_NET(FColor::White, HasAuthority(), TEXT("Lock On Target : %s"), *target->GetName());
 		// USpringArmComponent* SpringArm = PlayerBase->GetSpringArmComponent();
 		// SpringArm->bUsePawnControlRotation = false;
 		
@@ -200,7 +200,7 @@ void AInGamePlayerController::Input_LockOn()
 
 void AInGamePlayerController::Input_AbilityInputPressed(FGameplayTag InputTag)
 {
-	DEBUG_CLOG_DISPLAY_NET(FColor::Cyan,HasAuthority(), TEXT("Ability Input Pressed %s"), *InputTag.ToString());
+	MY_CLOG_DISPLAY_NET(FColor::Cyan,HasAuthority(), TEXT("Ability Input Pressed %s"), *InputTag.ToString());
 	GetDDSAbilitySystemComponent()->AbilityInputTagPressed(InputTag);
 }
 

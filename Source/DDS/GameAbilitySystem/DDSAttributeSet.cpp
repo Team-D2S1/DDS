@@ -59,7 +59,7 @@ void UDDSAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCallbac
 
 		// TODO : UI 알리기
 		bool authority = GetOwningAbilitySystemComponent()->GetOwner()->HasAuthority();
-		DEBUG_CLOG_DISPLAY_NET(FColor::Red,authority, TEXT("OldHealth: %f, TakenDamage: %f, NewHealth: %f"), OldHealth, TakenDamage, NewHealth);
+		MY_CLOG_DISPLAY_NET(FColor::Red,authority, TEXT("OldHealth: %f, TakenDamage: %f, NewHealth: %f"), OldHealth, TakenDamage, NewHealth);
 
 		if (NewHealth <= 0.f)
 		{

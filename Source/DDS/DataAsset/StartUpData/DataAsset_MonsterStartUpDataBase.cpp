@@ -24,7 +24,7 @@ void UDataAsset_MonsterStartUpDataBase::GiveToAbilitySystemComponent(UDDSAbility
 			spec.SourceObject = InASCToGive->GetAvatarActor();
 			spec.Level = ApplyLevel;
 			InASCToGive->GiveAbility(spec);
-			DEBUG_CLOG_DISPLAY(FColor::Green, "Monster StartUpData Loaded : %s", *AbilityClass->GetName());
+			MY_CLOG_DISPLAY(FColor::Green, "Monster StartUpData Loaded : %s", *AbilityClass->GetName());
 		}
 	}
 }

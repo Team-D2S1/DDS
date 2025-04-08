@@ -36,7 +36,7 @@ void UPawnCombatComponent::RegisterSpawnedWeapon(FGameplayTag InWeaponTag, ADDSW
 		InWeapon->SetOwnerPawn(GetOwningPawn());
 		InWeapon->SetWeaponTag(InWeaponTag);
 	}
-	DEBUG_LOG_DISPLAY_NET(hasAuthority, TEXT("A Weapon %s (Tag: %s) is registered."), *InWeapon->GetName(), *InWeaponTag.ToString());
+	MY_LOG_DISPLAY_NET(hasAuthority, TEXT("A Weapon %s (Tag: %s) is registered."), *InWeapon->GetName(), *InWeaponTag.ToString());
 }
 
 
@@ -62,7 +62,7 @@ void UPawnCombatComponent::ToggleWeaponCollision(bool bEnable, EToggleCollisionT
 			
 		}else
 		{
-			DEBUG_CLOG_DISPLAY_NET(FColor::Red, GetOwningPawn()->HasAuthority(), TEXT("Current Weapon is not equipped."));
+			MY_CLOG_DISPLAY_NET(FColor::Red, GetOwningPawn()->HasAuthority(), TEXT("Current Weapon is not equipped."));
 		}
 	}
 	//TODO : 무기가 없는 경우 처리

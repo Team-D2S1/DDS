@@ -16,7 +16,7 @@ void UDDSAbilitySystemComponent::AbilityActorInfoSet()
 
 void UDDSAbilitySystemComponent::AddCharacterAbilities(const TArray<TSubclassOf<UDDSGameplayAbility>>& StartupAbilities)
 {
-	DEBUG_LOG_DISPLAY("%s AddCharacterAbilities",*GetOwner()->GetName());
+	MY_LOG_DISPLAY("%s AddCharacterAbilities",*GetOwner()->GetName());
 	for (const TSubclassOf<UDDSGameplayAbility>& Ability : StartupAbilities)
 	{
 		if (!Ability)
@@ -53,7 +53,7 @@ void UDDSAbilitySystemComponent::AbilityInputTagPressed(const FGameplayTag& Inpu
 		{
 			// spec 이름 출력
 			bool isServer = GetOwner()->HasAuthority();
-			DEBUG_CLOG_DISPLAY_NET(FColor::Emerald,isServer,TEXT("Try to Activate Ability : %s "),*spec.Ability->GetName());
+			MY_CLOG_DISPLAY_NET(FColor::Emerald,isServer,TEXT("Try to Activate Ability : %s "),*spec.Ability->GetName());
 			TryActivateAbility(spec.Handle);
 		}
 	}
@@ -69,7 +69,7 @@ void UDDSAbilitySystemComponent::GrantPlayerWeaponAbilities(const TArray<FDDSPla
 {
 	if (InDefaultWeaponAbilities.IsEmpty())
 	{
-		DEBUG_LOG_DISPLAY("InDefaultWeaponAbilities is Empty");
+		MY_LOG_DISPLAY("InDefaultWeaponAbilities is Empty");
 		return;
 	}
 	for (const FDDSPlayerAbilitySet& AbilitySet : InDefaultWeaponAbilities)
@@ -83,7 +83,7 @@ void UDDSAbilitySystemComponent::GrantPlayerWeaponAbilities(const TArray<FDDSPla
 		OutHandles.AddUnique( GiveAbility(AbilitySpec) );
 		// MY_LOG(LogTemp, Log, TEXT("Granting %s, tag: %s"), *AbilitySet.AbilityToGrant->GetName(), *AbilitySet.InputTag.ToString());
 		bool isServer = GetOwner()->HasAuthority();
-		DEBUG_LOG_DISPLAY_NET(isServer, TEXT("Granting %s, tag: %s"), *AbilitySet.AbilityToGrant->GetName(), *AbilitySet.InputTag.ToString());
+		MY_LOG_DISPLAY_NET(isServer, TEXT("Granting %s, tag: %s"), *AbilitySet.AbilityToGrant->GetName(), *AbilitySet.InputTag.ToString());
 	}
 }
 
@@ -101,13 +101,13 @@ void UDDSAbilitySystemComponent::RemoveGrantedPlayerWeaponAbilities(TArray<FGame
 void UDDSAbilitySystemComponent::Multicast_AddLooseGameplayTag_Implementation(const FGameplayTag& InTag)
 {
 	bool isServer = GetOwner()->HasAuthority();
-	DEBUG_CLOG_DISPLAY_NET(FColor::White,isServer,TEXT("AddLooseGameplayTag : %s"),*InTag.ToString());
+	MY_CLOG_DISPLAY_NET(FColor::White,isServer,TEXT("AddLooseGameplayTag : %s"),*InTag.ToString());
 	AddLooseGameplayTag(InTag);
 }
 
 void UDDSAbilitySystemComponent::Multicast_RemoveLooseGameplayTag_Implementation(const FGameplayTag& InTag)
 {
 	bool isServer = GetOwner()->HasAuthority();
-	DEBUG_CLOG_DISPLAY_NET(FColor::White,isServer,TEXT("RemoveLooseGameplayTag : %s"),*InTag.ToString());
+	MY_CLOG_DISPLAY_NET(FColor::White,isServer,TEXT("RemoveLooseGameplayTag : %s"),*InTag.ToString());
 	RemoveLooseGameplayTag(InTag);
 }

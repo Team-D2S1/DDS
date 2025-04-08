@@ -61,12 +61,12 @@ FActiveGameplayEffectHandle UDDSGameplayAbility::NativeApplyEffectSpecHandleToTa
 	UAbilitySystemComponent* TargetASC = UAbilitySystemBlueprintLibrary::GetAbilitySystemComponent(TargetActor);
 	if(!TargetASC)
 	{
-		DEBUG_CLOG_DISPLAY_NET(FColor::Red, CurrentActorInfo->OwnerActor->HasAuthority(), TEXT("TargetASC is nullptr"));
+		MY_CLOG_DISPLAY_NET(FColor::Red, CurrentActorInfo->OwnerActor->HasAuthority(), TEXT("TargetASC is nullptr"));
 		return FActiveGameplayEffectHandle();
 	}
 	if (!InEffectSpecHandle.IsValid())
 	{
-		DEBUG_CLOG_DISPLAY_NET(FColor::Red, CurrentActorInfo->OwnerActor->HasAuthority(), TEXT("InEffectSpecHandle is invalid"));
+		MY_CLOG_DISPLAY_NET(FColor::Red, CurrentActorInfo->OwnerActor->HasAuthority(), TEXT("InEffectSpecHandle is invalid"));
 		return FActiveGameplayEffectHandle();
 	}
 	return GetDDSAbilitySystemComponentFromActorInfo()->ApplyGameplayEffectSpecToTarget( 
@@ -95,7 +95,7 @@ FGameplayEffectSpecHandle UDDSGameplayAbility::MakeGameplayEffectSpecHandle(TSub
 {
 	if (!EffectClass)
 	{
-		DEBUG_CLOG_DISPLAY_NET(FColor::Red, CurrentActorInfo->OwnerActor->HasAuthority(), TEXT("EffectClass is nullptr"));
+		MY_CLOG_DISPLAY_NET(FColor::Red, CurrentActorInfo->OwnerActor->HasAuthority(), TEXT("EffectClass is nullptr"));
 		return FGameplayEffectSpecHandle();
 	}
 

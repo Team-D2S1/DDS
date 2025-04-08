@@ -9,19 +9,19 @@ UE_LOG(Category, Verbosity, TEXT("[%s - %d] : ") Format, ANSI_TO_TCHAR(__FUNCTIO
 
 
 // 색 랜덤 로그
-#define DEBUG_LOG_DISPLAY(Format, ...) \
+#define MY_LOG_DISPLAY(Format, ...) \
 Debug::Log(FString::Printf(TEXT("[%s - %d] : ") Format, ANSI_TO_TCHAR(__FUNCTION__), __LINE__, ##__VA_ARGS__))
 
 // 색 지정 가능한 로그
-#define DEBUG_CLOG_DISPLAY(Color, Format, ...) \
+#define MY_CLOG_DISPLAY(Color, Format, ...) \
 Debug::Log(FString::Printf(TEXT("[%s - %d] : ") Format, ANSI_TO_TCHAR(__FUNCTION__), __LINE__, ##__VA_ARGS__),Color)
 
 
 // 색 랜덤 로그(서버여부 출력)
-#define DEBUG_LOG_DISPLAY_NET(IS_SERVER,Format, ...) \
+#define MY_LOG_DISPLAY_NET(IS_SERVER,Format, ...) \
 Debug::LogWithNetInfo(FString::Printf(TEXT("[%s - %d] : ") Format, ANSI_TO_TCHAR(__FUNCTION__), __LINE__, ##__VA_ARGS__), IS_SERVER)
 // 색 지정 로그 (서버여부 출력)
-#define DEBUG_CLOG_DISPLAY_NET(Color,IS_SERVER,Format, ...) \
+#define MY_CLOG_DISPLAY_NET(Color,IS_SERVER,Format, ...) \
 Debug::LogWithNetInfo(FString::Printf(TEXT("[%s - %d] : ") Format, ANSI_TO_TCHAR(__FUNCTION__), __LINE__, ##__VA_ARGS__), IS_SERVER,Color)
 
 
