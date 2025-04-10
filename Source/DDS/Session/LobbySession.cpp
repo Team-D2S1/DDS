@@ -88,7 +88,6 @@ void ALobbySession::BeginPlay()
 				IOnlineSessionPtr SessionPtr = OnlineSubsystem->GetSessionInterface();
 				if(SessionPtr->GetNamedSession(NAME_GameSession) != nullptr)
 				{
-					MY_LOG(LogTemp, Error, TEXT("Session Already Exist"));
 					return;
 				}
 			}
@@ -160,10 +159,9 @@ void ALobbySession::OnUnregisterPlayerComplete(FName NameOfSession, const TArray
 void ALobbySession::OnCreateSession(bool bWasSuccessful)
 {
 	// 로비 맵 오픈
-	MY_LOG(LogTemp, Error, TEXT("Create Session One"));
 	UWorld* World = GetWorld();
 	if(World)
 	{
-		World->ServerTravel("/Game/Maps/DasanMultiTestMap");
+		World->ServerTravel("/Game/Maps/LobbyMenu");
 	}
 }

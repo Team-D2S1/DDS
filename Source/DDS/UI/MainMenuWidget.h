@@ -18,6 +18,7 @@ class DDS_API UMainMenuWidget : public UUserWidget
 	GENERATED_BODY()
 	
 protected:
+	UFUNCTION()
 	void OnCreateSession(bool bWasSuccessful);
 	
 	void OnFindSession(const TArray<FOnlineSessionSearchResult>& SessionResult, bool bWasSuccessful);
@@ -30,8 +31,6 @@ protected:
 	void OnDestroySession(bool bWasSuccessful);
 	
 	virtual bool Initialize() override;
-
-	void NativeDestruct() override;
 	
 	UPROPERTY(meta=(BindWidget))
 	TObjectPtr<UButton> SingleplayButton;
@@ -68,8 +67,6 @@ private:
 	
 	UFUNCTION()
 	void ExitButtonClicked();
-
-	void MenuTearDown();
 
 protected:
 	FString ReceivedLobbyPort;

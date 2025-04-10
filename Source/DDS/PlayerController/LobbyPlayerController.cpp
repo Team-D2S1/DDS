@@ -5,12 +5,21 @@
 
 #include "Blueprint/UserWidget.h"
 #include "ETC/CustomLog.h"
+#include "Net/UnrealNetwork.h"
 #include "UI/LobbyWidget.h"
 #include "UI/MainMenuWidget.h"
 
 
 ALobbyPlayerController::ALobbyPlayerController()
 {
+	bReplicates = true;
+}
+
+void ALobbyPlayerController::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
+{
+	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
+
+	DOREPLIFETIME(ThisClass, bIsManager);
 }
 
 void ALobbyPlayerController::BeginPlay()
@@ -51,6 +60,15 @@ void ALobbyPlayerController::Client_PostLoginServer_Implementation()
 
 void ALobbyPlayerController::GameStart()
 {
+	Server_GameStart();
+}
+
+void ALobbyPlayerController::OnRep_IsManagerChanged()
+{
+	if(LobbyWidget)
+	{
+		LobbyWidget->UpdateUI();
+	}
 }
 
 void ALobbyPlayerController::ShowMainMenuWidget()
@@ -85,4 +103,9 @@ void ALobbyPlayerController::ShowLobbyWidget()
 
 void ALobbyPlayerController::Server_GameStart_Implementation()
 {
+	MY_LOG(LogTemp, Error, TEXT("Server Travel to Test Level"));
+	if(UWorld* World = GetWorld())
+	{
+		World->ServerTravel("/Game/Maps/DasanMultiTestMap");
+	}
 }

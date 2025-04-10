@@ -17,11 +17,15 @@ class DDS_API ALobbyGameMode : public AGameModeBase
 public:
 	ALobbyGameMode();
 
+	UPROPERTY()
+	TArray<APlayerController*> PCs;
+
 protected:
 	virtual void BeginPlay() override;
 
 	virtual void StartPlay() override;
 
 	virtual void PostLogin(APlayerController* NewPlayer) override;
-	
+
+	virtual void Logout(AController* Exiting) override;
 };

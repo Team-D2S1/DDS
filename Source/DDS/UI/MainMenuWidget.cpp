@@ -11,6 +11,11 @@
 #include "Session/SessionSubsystem.h"
 #include "Socket/ClientSocket.h"
 
+void UMainMenuWidget::OnCreateSession(bool bWasSuccessful)
+{
+	
+}
+
 void UMainMenuWidget::OnFindSession(const TArray<FOnlineSessionSearchResult>& SessionResult, bool bWasSuccessful)
 {
 	if(!SessionSubsystem) return;
@@ -51,10 +56,8 @@ void UMainMenuWidget::OnJoinSession(EOnJoinSessionCompleteResult::Type Result)
 	}
 }
 
-void UMainMenuWidget::NativeDestruct()
+void UMainMenuWidget::OnDestroySession(bool bWasSuccessful)
 {
-	MenuTearDown();
-	Super::NativeDestruct();
 }
 
 bool UMainMenuWidget::Initialize()
@@ -72,6 +75,7 @@ bool UMainMenuWidget::Initialize()
 		SessionSubsystem = GameInstance->GetSubsystem<USessionSubsystem>();
 		if(SessionSubsystem)
 		{
+			SessionSubsystem->MultiplayerOnCreateSessionComplete.AddDynamic(this, &ThisClass::OnCreateSession);
 			SessionSubsystem->MultiplayerOnFindSessionsComplete.AddUObject(this, &ThisClass::OnFindSession);
 			SessionSubsystem->MultiplayerOnJoinSessionComplete.AddUObject(this, &ThisClass::OnJoinSession);
 		}
@@ -145,21 +149,5 @@ void UMainMenuWidget::ExitButtonClicked()
 	if(PlayerController)
 	{
 		UKismetSystemLibrary::QuitGame(GetWorld(), PlayerController, EQuitPreference::Quit, false);
-	}
-}
-
-void UMainMenuWidget::MenuTearDown()
-{
-	RemoveFromParent();
-	UWorld* World = GetWorld();
-	if(World)
-	{
-		APlayerController* PlayerController = World->GetFirstPlayerController();
-		if(PlayerController)
-		{
-			FInputModeGameOnly InputModeData;
-			PlayerController->SetInputMode(InputModeData);
-			PlayerController->SetShowMouseCursor(false);
-		}
 	}
 }

@@ -19,12 +19,17 @@ class DDS_API ALobbyPlayerController : public APlayerController
 public:
 	ALobbyPlayerController();
 
+	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
+
+	void GameStart();
+	
+	UPROPERTY(ReplicatedUsing = OnRep_IsManagerChanged)
+	bool bIsManager = false;
+
 protected:
 	virtual void BeginPlay() override;
 
 	virtual void Tick(float DeltaSeconds) override;
-	
-	void GameStart();
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "UI")
 	TSubclassOf<UUserWidget> MainMenuWidgetClass;
@@ -42,6 +47,9 @@ private:
 	UFUNCTION(Server, Reliable)
 	void Server_GameStart();
 
+	UFUNCTION()
+	void OnRep_IsManagerChanged();
+
 protected:
 	// MainMenuWidget 생성 후 할당, InputMode 변경
 	void ShowMainMenuWidget();
@@ -53,6 +61,4 @@ public:
 	void Client_PostLoginServer();
 	
 	FORCEINLINE UMainMenuWidget* GetMainMenuWidget() { return MainMenuWidget; }
-
-	
 };
