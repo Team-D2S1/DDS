@@ -12,6 +12,7 @@
 #include "DDS/GameAbilitySystem/DDSAbilitySystemComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "GameFramework/SpringArmComponent.h"
+#include "Components/UI/PlayerUIComponent.h"
 
 APlayerBase::APlayerBase()
 {
@@ -33,8 +34,11 @@ APlayerBase::APlayerBase()
 
 
 	CombatComponent = CreateDefaultSubobject<UPlayerCombatComponent>(TEXT("PlayerCombatComponent"));
-	// CombatComponent->SetIsReplicated(true);
+	CombatComponent->SetIsReplicated(true);
 	// Owner 설정
+
+	PlayerUIComponent = CreateDefaultSubobject<UPlayerUIComponent>(TEXT("PlayerUIComponent"));
+	PlayerUIComponent->SetIsReplicated(true);
 }
 
 // UAbilitySystemComponent* APlayerBase::GetAbilitySystemComponent() const
@@ -75,6 +79,16 @@ void APlayerBase::OnRep_PlayerState()
 UPawnCombatComponent* APlayerBase::GetCombatComponent() const
 {
 	return CombatComponent;
+}
+
+UPawnUIComponent* APlayerBase::GetPawnUIComponent() const
+{
+	return PlayerUIComponent;
+}
+
+UPlayerUIComponent* APlayerBase::GetPlayerUIComponent() const
+{
+	return PlayerUIComponent;
 }
 
 void APlayerBase::Tick(float DeltaSeconds)

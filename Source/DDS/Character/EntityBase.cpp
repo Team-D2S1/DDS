@@ -39,6 +39,11 @@ UPawnCombatComponent* AEntityBase::GetCombatComponent() const
 	return nullptr;
 }
 
+UPawnUIComponent* AEntityBase::GetPawnUIComponent() const
+{
+	return nullptr;
+}
+
 UAttributeSet* AEntityBase::GetAttributeSet() const
 {
 	return AttributeSet;

@@ -80,7 +80,7 @@ void UDDSAbilitySystemComponent::GrantPlayerWeaponAbilities(const TArray<FDDSPla
 		AbilitySpec.SourceObject = GetAvatarActor();
 		AbilitySpec.GetDynamicSpecSourceTags().AddTag(AbilitySet.InputTag);
 		AbilitySpec.Level = ApplyLevel;
-		OutHandles.AddUnique( GiveAbility(AbilitySpec) );
+		OutHandles.AddUnique( GiveAbility(AbilitySpec));
 		// MY_LOG(LogTemp, Log, TEXT("Granting %s, tag: %s"), *AbilitySet.AbilityToGrant->GetName(), *AbilitySet.InputTag.ToString());
 		bool isServer = GetOwner()->HasAuthority();
 		MY_LOG_DISPLAY_NET(isServer, TEXT("Granting %s, tag: %s"), *AbilitySet.AbilityToGrant->GetName(), *AbilitySet.InputTag.ToString());
