@@ -4,6 +4,7 @@
 #include "MonsterBase.h"
 
 #include "Components/Combat/MonsterCombatComponent.h"
+#include "Components/UI/MonsterUIComponent.h"
 #include "DataAsset/StartUpData/DataAsset_StartUpDataBase.h"
 #include "DDS/GameAbilitySystem/DDSAbilitySystemComponent.h"
 #include "DDS/GameAbilitySystem/DDSAttributeSet.h"
@@ -28,14 +29,18 @@ AMonsterBase::AMonsterBase()
 	GetCharacterMovement()->MaxWalkSpeed = 300.0f;
 	GetCharacterMovement()->BrakingDecelerationWalking = 1000.0f; // 안움직일때 감속
 
-	MonsterCombatComponent = CreateDefaultSubobject<UMonsterCombatComponent>(TEXT("MonsterCombatComponent"));
-	
-	
+
 	AbilitySystemComponent = CreateDefaultSubobject<UDDSAbilitySystemComponent>(TEXT("AbilitySystemComponent"));
 	AbilitySystemComponent->SetIsReplicated(true);//
 	AbilitySystemComponent->SetReplicationMode(EGameplayEffectReplicationMode::Minimal);
 	
 	AttributeSet = CreateDefaultSubobject<UDDSAttributeSet>(TEXT("AttributeSet"));
+	
+	MonsterCombatComponent = CreateDefaultSubobject<UMonsterCombatComponent>(TEXT("MonsterCombatComponent"));
+	MonsterCombatComponent->SetIsReplicated(true);
+
+	MonsterUIComponent = CreateDefaultSubobject<UMonsterUIComponent>(TEXT("MonsterUIComponent"));
+	MonsterUIComponent->SetIsReplicated(true);
 }
 
 UPawnCombatComponent* AMonsterBase::GetCombatComponent() const
@@ -43,11 +48,16 @@ UPawnCombatComponent* AMonsterBase::GetCombatComponent() const
 	return MonsterCombatComponent;
 }
 
+UPawnUIComponent* AMonsterBase::GetPawnUIComponent() const
+{
+	return MonsterUIComponent;
+}
+
 void AMonsterBase::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
 {
 	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
 
-	DOREPLIFETIME(AMonsterBase, MonsterCombatComponent);
+	// DOREPLIFETIME(AMonsterBase, MonsterCombatComponent);
 }
 
 

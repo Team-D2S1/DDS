@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "DDS/Character/EntityBase.h"
+#include "Interfaces/PawnUIInterface.h"
 #include "PlayerBase.generated.h"
 
 class IFocusable;
@@ -26,6 +27,15 @@ public:
 	virtual void PossessedBy(AController* NewController) override;
 	virtual void OnRep_PlayerState() override; 
 	virtual UPawnCombatComponent* GetCombatComponent() const override;
+	
+	FORCEINLINE UCameraComponent* GetCameraComponent() { return Camera; }
+	FORCEINLINE USpringArmComponent* GetSpringArmComponent() { return SpringArm; }
+	FORCEINLINE UPlayerCombatComponent* GetCombatComponent() { return CombatComponent; }
+
+	/* IPawnUIInterface Begin~ */
+	virtual UPawnUIComponent* GetPawnUIComponent() const override;
+	virtual UPlayerUIComponent* GetPlayerUIComponent() const override;
+	/* IPawnUIInterface End~ */
 protected:
 	virtual void Tick(float DeltaSeconds) override;
 	virtual void BeginPlay() override;
@@ -36,14 +46,12 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Camera", meta = (AllowPrivateAccess = "true"))
 	TObjectPtr<UCameraComponent> Camera;	
 
-	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Combat", meta = (AllowPrivateAccess = "true"))
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Combat", meta = (AllowPrivateAccess = "true"))
 	TObjectPtr<UPlayerCombatComponent> CombatComponent;
+
+	UPROPERTY(VisibleAnywhere,BlueprintReadOnly, Category = "UI")
+	TObjectPtr<UPlayerUIComponent> PlayerUIComponent;
 public:
-	FORCEINLINE UCameraComponent* GetCameraComponent() { return Camera; }
-	FORCEINLINE USpringArmComponent* GetSpringArmComponent() { return SpringArm; }
-	FORCEINLINE UPlayerCombatComponent* GetCombatComponent() { return CombatComponent; }
-
-
 	
 	virtual void Server_SetFocusedObject(AActor* InFocusedObject) override;
 	virtual void Server_ClearFocusedObject() override;

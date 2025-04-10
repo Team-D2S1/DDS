@@ -6,7 +6,10 @@
 #include "AbilitySystemComponent.h"
 #include "Net/UnrealNetwork.h"
 #include  "GameplayEffectExtension.h"
+#include "Components/UI/PawnUIComponent.h"
 #include "ETC/CustomLog.h"
+#include "Interfaces/PawnUIInterface.h"
+#include "Components/UI/PlayerUIComponent.h"
 
 UDDSAttributeSet::UDDSAttributeSet()
 {
@@ -38,16 +41,43 @@ void UDDSAttributeSet::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& Out
 
 void UDDSAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCallbackData& Data)
 {
+	if (!CachedPawnUIInterface.IsValid())
+	{
+		CachedPawnUIInterface = TWeakInterfacePtr<IPawnUIInterface>(Data.Target.GetAvatarActor());
+	}
+	if (!CachedPawnUIInterface.IsValid())
+	{
+		MY_ERROR_DISPLAY(TEXT("PawnUIInterface is not implemented"));
+		return;
+	}
+	UPawnUIComponent* PawnUIComponent = CachedPawnUIInterface->GetPawnUIComponent();
+	if (!PawnUIComponent)
+	{
+		MY_ERROR_DISPLAY(TEXT("Couldn't get PawnUIComponent from %s"), *GetName());
+		return;
+	}
+	
 	if (Data.EvaluatedData.Attribute == GetHealthAttribute())
 	{
 		const float NewHealth = FMath::Clamp( GetHealth(), 0.f, GetMaxHealth());
 		SetHealth(NewHealth);
+		PawnUIComponent->OnHealthChanged.Broadcast(NewHealth, GetMaxHealth());
 	}
 
 	if (Data.EvaluatedData.Attribute == GetStaminaAttribute())
 	{
 		const float NewStamina = FMath::Clamp( GetStamina(), 0.f, GetMaxStamina());
 		SetStamina(NewStamina);
+
+		UPlayerUIComponent* PlayerUIComponent = CachedPawnUIInterface->GetPlayerUIComponent();
+		if (PlayerUIComponent)
+		{
+			PlayerUIComponent->OnStaminaChanged.Broadcast(NewStamina, GetMaxStamina());
+		}
+		else
+		{
+			MY_ERROR_DISPLAY(TEXT("Couldn't get PlayerUIComponent from %s"), *GetName());
+		}
 	}
 
 	if (Data.EvaluatedData.Attribute == GetDamageTakenAttribute())
@@ -56,12 +86,13 @@ void UDDSAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCallbac
 		const float TakenDamage = GetDamageTaken();
 		const float NewHealth = FMath::Clamp(OldHealth - TakenDamage, 0.f, GetMaxHealth());
 		SetHealth(NewHealth);
+		PawnUIComponent->OnHealthChanged.Broadcast(NewHealth, GetMaxHealth());
 
 		// TODO : UI 알리기
 		bool authority = GetOwningAbilitySystemComponent()->GetOwner()->HasAuthority();
 		MY_CLOG_DISPLAY_NET(FColor::Red,authority, TEXT("OldHealth: %f, TakenDamage: %f, NewHealth: %f"), OldHealth, TakenDamage, NewHealth);
 
-		if (NewHealth <= 0.f)
+		if (GetHealth() <= 0.f)
 		{
 			// TODO : 죽음 처리
 		}
@@ -71,6 +102,7 @@ void UDDSAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCallbac
 	{
 		const float NewMaxHealth = FMath::Clamp( GetMaxHealth(), 0.f, GetMaxHealth());
 		SetMaxHealth(NewMaxHealth);
+		PawnUIComponent->OnHealthChanged.Broadcast(NewMaxHealth, GetMaxHealth());
 	}
 }
 

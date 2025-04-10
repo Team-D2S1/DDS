@@ -15,7 +15,7 @@
 #include "GameAbilitySystem/DDSAbilitySystemComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "GameFramework/SpringArmComponent.h"
-#include "Intertaction/Focusable.h"
+#include "Interfaces/Focusable.h"
 #include "Kismet/GameplayStatics.h"
 #include "Kismet/KismetMathLibrary.h"
 

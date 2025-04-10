@@ -14,6 +14,7 @@
 	GAMEPLAYATTRIBUTE_VALUE_SETTER(PropertyName) \
 	GAMEPLAYATTRIBUTE_VALUE_INITTER(PropertyName)
 
+class IPawnUIInterface;
 /**
  * 기본 어트리부트 세트.
  * 강의대로 만드는 중
@@ -80,6 +81,10 @@ public:
 
 	UFUNCTION()
 	void OnRep_DamageTaken(const FGameplayAttributeData& OldDamageTaken) const;
+
+
+private:
+	TWeakInterfacePtr<IPawnUIInterface> CachedPawnUIInterface;
 };
 
 

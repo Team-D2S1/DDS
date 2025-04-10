@@ -1,0 +1,1 @@
+g++ -o MainServer.exe MainServer.cpp -lws2_32

@@ -122,6 +122,7 @@ ADDSWeaponBase* UPawnCombatComponent::GetCurrentEquippedWeapon() const
 {
 	if (!CurrentEquippedWeaponTag.IsValid())
 	{
+		MY_LOG(LogTemp, Error, TEXT("CurrentEquippedWeaponTag is not valid."));
 		return nullptr;
 	}
 	return GetCharacterCarriedWeapon(CurrentEquippedWeaponTag);

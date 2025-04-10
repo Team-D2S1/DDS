@@ -4,9 +4,10 @@
 
 #include "CoreMinimal.h"
 #include "DDS/Character/EntityBase.h"
-#include "Intertaction/Focusable.h"
+#include "Interfaces//Focusable.h"
 #include "MonsterBase.generated.h"
 
+class UMonsterUIComponent;
 class UMonsterCombatComponent;
 class UPawnCombatComponent;
 
@@ -21,6 +22,10 @@ public:
 	AMonsterBase();
 
 	virtual UPawnCombatComponent* GetCombatComponent() const override;
+
+	/* IPawnUIInterface Begin~ */
+	virtual UPawnUIComponent* GetPawnUIComponent() const override;
+	/* ~ IPawnUIInterface End */
 protected:
 	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
 	virtual void PossessedBy(AController* NewController) override;
@@ -28,14 +33,20 @@ protected:
 
 	virtual void Tick(float DeltaSeconds) override;	
 
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, ReplicatedUsing= OnRep_MonsterCombatComponent, Category = "Combat")
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Combat")
 	TObjectPtr<UMonsterCombatComponent> MonsterCombatComponent;
 
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "UI")
+	TObjectPtr<UMonsterUIComponent> MonsterUIComponent;
+	
 	UFUNCTION()
 	void OnRep_MonsterCombatComponent();
 
 	// 로컬 변수. 복제되면 안됨
 	bool bIsFocused = false;
+	
+	// UPROPERTY(VisibleAnywhere,BlueprintReadOnly, Category = "UI")
+	// TObjectPtr<UMonsterUIComponent> PlayerUIComponent;
 private:
 	void InitMonsterStartUpData();
 public:
