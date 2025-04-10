@@ -51,6 +51,12 @@ void UMainMenuWidget::OnJoinSession(EOnJoinSessionCompleteResult::Type Result)
 	}
 }
 
+void UMainMenuWidget::NativeDestruct()
+{
+	MenuTearDown();
+	Super::NativeDestruct();
+}
+
 bool UMainMenuWidget::Initialize()
 {
 	if(!Super::Initialize()) return false;
@@ -139,5 +145,21 @@ void UMainMenuWidget::ExitButtonClicked()
 	if(PlayerController)
 	{
 		UKismetSystemLibrary::QuitGame(GetWorld(), PlayerController, EQuitPreference::Quit, false);
+	}
+}
+
+void UMainMenuWidget::MenuTearDown()
+{
+	RemoveFromParent();
+	UWorld* World = GetWorld();
+	if(World)
+	{
+		APlayerController* PlayerController = World->GetFirstPlayerController();
+		if(PlayerController)
+		{
+			FInputModeGameOnly InputModeData;
+			PlayerController->SetInputMode(InputModeData);
+			PlayerController->SetShowMouseCursor(false);
+		}
 	}
 }

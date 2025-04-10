@@ -31,6 +31,8 @@ protected:
 	
 	virtual bool Initialize() override;
 
+	void NativeDestruct() override;
+	
 	UPROPERTY(meta=(BindWidget))
 	TObjectPtr<UButton> SingleplayButton;
 
@@ -66,6 +68,8 @@ private:
 	
 	UFUNCTION()
 	void ExitButtonClicked();
+
+	void MenuTearDown();
 
 protected:
 	FString ReceivedLobbyPort;
