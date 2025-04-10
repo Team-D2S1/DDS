@@ -16,6 +16,9 @@ Debug::Log(FString::Printf(TEXT("[%s - %d] : ") Format, ANSI_TO_TCHAR(__FUNCTION
 #define MY_CLOG_DISPLAY(Color, Format, ...) \
 Debug::Log(FString::Printf(TEXT("[%s - %d] : ") Format, ANSI_TO_TCHAR(__FUNCTION__), __LINE__, ##__VA_ARGS__),Color)
 
+// 에러 로그
+#define MY_ERROR_DISPLAY(Format, ...) \
+Debug::LogError(FString::Printf(TEXT("[%s - %d] : ") Format, ANSI_TO_TCHAR(__FUNCTION__), __LINE__, ##__VA_ARGS__))
 
 // 색 랜덤 로그(서버여부 출력)
 #define MY_LOG_DISPLAY_NET(IS_SERVER,Format, ...) \
@@ -24,6 +27,9 @@ Debug::LogWithNetInfo(FString::Printf(TEXT("[%s - %d] : ") Format, ANSI_TO_TCHAR
 #define MY_CLOG_DISPLAY_NET(Color,IS_SERVER,Format, ...) \
 Debug::LogWithNetInfo(FString::Printf(TEXT("[%s - %d] : ") Format, ANSI_TO_TCHAR(__FUNCTION__), __LINE__, ##__VA_ARGS__), IS_SERVER,Color)
 
+// 에러 로그 (서버여부 출력)
+#define MY_ERROR_DISPLAY_NET(IS_SERVER,Format, ...) \
+Debug::LogErrorWithNetInfo(FString::Printf(TEXT("[%s - %d] : ") Format, ANSI_TO_TCHAR(__FUNCTION__), __LINE__, ##__VA_ARGS__), IS_SERVER)
 
 namespace Debug
 {
