@@ -25,6 +25,7 @@ public:
 
 	/* IPawnUIInterface Begin~ */
 	virtual UPawnUIComponent* GetPawnUIComponent() const override;
+	virtual UMonsterUIComponent* GetMonsterUIComponent() const override;
 	/* ~ IPawnUIInterface End */
 protected:
 	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;

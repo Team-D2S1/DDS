@@ -53,6 +53,11 @@ UPawnUIComponent* AMonsterBase::GetPawnUIComponent() const
 	return MonsterUIComponent;
 }
 
+UMonsterUIComponent* AMonsterBase::GetMonsterUIComponent() const
+{
+	return MonsterUIComponent;
+}
+
 void AMonsterBase::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
 {
 	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
