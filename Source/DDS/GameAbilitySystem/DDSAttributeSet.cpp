@@ -52,6 +52,8 @@ void UDDSAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCallbac
 		MY_ERROR_DISPLAY(TEXT("PawnUIInterface is not implemented"));
 		return;
 	}
+
+	bool hasAuthority = GetOwningAbilitySystemComponent()->GetOwner()->HasAuthority();
 	UPawnUIComponent* PawnUIComponent = CachedPawnUIInterface->GetPawnUIComponent();
 	if (!PawnUIComponent)
 	{
@@ -63,7 +65,15 @@ void UDDSAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCallbac
 	{
 		const float NewHealth = FMath::Clamp( GetHealth(), 0.f, GetMaxHealth());
 		SetHealth(NewHealth);
-		PawnUIComponent->OnHealthChanged.Broadcast(NewHealth, GetMaxHealth());
+		if (hasAuthority)
+		{
+			PawnUIComponent->Multicast_OnHealthChanged(NewHealth, GetMaxHealth());
+		}
+		else
+		{
+			PawnUIComponent->OnHealthChanged.Broadcast(NewHealth);
+		}
+		// PawnUIComponent->OnHealthChanged.Broadcast(NewHealth);
 	}
 
 	if (Data.EvaluatedData.Attribute == GetStaminaAttribute())
@@ -74,7 +84,23 @@ void UDDSAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCallbac
 		UPlayerUIComponent* PlayerUIComponent = CachedPawnUIInterface->GetPlayerUIComponent();
 		if (PlayerUIComponent)
 		{
-			PlayerUIComponent->OnStaminaChanged.Broadcast(NewStamina, GetMaxStamina());
+			PlayerUIComponent->OnStaminaChanged.Broadcast(NewStamina);
+		}
+		else
+		{
+			MY_ERROR_DISPLAY(TEXT("Couldn't get PlayerUIComponent from %s"), *GetName());
+		}
+	}
+
+	if (Data.EvaluatedData.Attribute == GetMaxStaminaAttribute())
+	{
+		const float NewMaxStamina = FMath::Clamp( GetMaxStamina(), 0.f, GetMaxStamina());
+		SetMaxStamina(NewMaxStamina);
+
+		UPlayerUIComponent* PlayerUIComponent = CachedPawnUIInterface->GetPlayerUIComponent();
+		if (PlayerUIComponent)
+		{
+			PlayerUIComponent->Multicast_OnMaxStaminaChanged(NewMaxStamina, GetMaxStamina());
 		}
 		else
 		{
@@ -88,9 +114,15 @@ void UDDSAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCallbac
 		const float TakenDamage = GetDamageTaken();
 		const float NewHealth = FMath::Clamp(OldHealth - TakenDamage, 0.f, GetMaxHealth());
 		SetHealth(NewHealth);
-		PawnUIComponent->OnHealthChanged.Broadcast(NewHealth, GetMaxHealth());
+		if (hasAuthority)
+		{
+			PawnUIComponent->Multicast_OnHealthChanged(NewHealth, OldHealth);
+		}
+		else
+		{
+			PawnUIComponent->OnHealthChanged.Broadcast(NewHealth);
+		}
 
-		// TODO : UI 알리기
 		bool authority = GetOwningAbilitySystemComponent()->GetOwner()->HasAuthority();
 		MY_CLOG_DISPLAY_NET(FColor::Red,authority, TEXT("OldHealth: %f, TakenDamage: %f, NewHealth: %f"), OldHealth, TakenDamage, NewHealth);
 
@@ -104,9 +136,16 @@ void UDDSAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCallbac
 	{
 		const float NewMaxHealth = FMath::Clamp( GetMaxHealth(), 0.f, GetMaxHealth());
 		SetMaxHealth(NewMaxHealth);
-		PawnUIComponent->OnHealthChanged.Broadcast(NewMaxHealth, GetMaxHealth());
+		if (hasAuthority)
+		{
+			PawnUIComponent->Multicast_OnMaxHealthChanged(NewMaxHealth, GetMaxHealth());
+		}
+		else
+		{
+			PawnUIComponent->OnMaxHealthChanged.Broadcast(NewMaxHealth);
+		}
 	}
-}
+} 
 
 
 /**

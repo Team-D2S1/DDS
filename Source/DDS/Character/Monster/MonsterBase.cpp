@@ -89,6 +89,8 @@ void AMonsterBase::BeginPlay()
 			MY_LOG(LogTemp, Type::Warning, TEXT("MonsterHealthWidgetComponent is not a UDDSUserWidget"));
 		}
 	}
+	MonsterUIComponent->BroadcastInitialValues(AttributeSet);
+	// MonsterHealthWidgetComponent->SetVisibility(false);
 }
 
 void AMonsterBase::Tick(float DeltaSeconds)
