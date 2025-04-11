@@ -3,6 +3,8 @@
   <component name="Encoding">
     <file url="file://$PROJECT_DIR$/Source/DDS/GameMode/LobbyGameMode.cpp" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/Source/DDS/GameMode/LobbyGameMode.h" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/Source/DDS/GameState/LobbyGameState.cpp" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/Source/DDS/GameState/LobbyGameState.h" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/Source/DDS/UI/LobbyWidget.cpp" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/Source/DDS/UI/LobbyWidget.h" charset="UTF-8" />
   </component>

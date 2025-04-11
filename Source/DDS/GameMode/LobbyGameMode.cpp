@@ -7,6 +7,7 @@
 #include <iostream>
 
 #include "GameFramework/PlayerState.h"
+#include "GameState/LobbyGameState.h"
 #include "Kismet/GameplayStatics.h"
 #include "PlayerController/LobbyPlayerController.h"
 #include "Session/LobbySession.h"
@@ -40,30 +41,38 @@ void ALobbyGameMode::PostLogin(APlayerController* NewPlayer)
 	FString PlayerName = NewPlayer->GetPawn()->GetPlayerState()->GetPlayerName();
 	MY_LOG(LogTemp, Error, TEXT("Player \"%s\" Login!"), *PlayerName);
 
+	// 접속한 PlayerController에 대한 작업
 	ALobbyPlayerController* LobbyPC = Cast<ALobbyPlayerController>(NewPlayer);
 	if(LobbyPC)
 	{
 		LobbyPC->Client_PostLoginServer();
 		PCs.Add(LobbyPC);
 	}
+
+	// GameState 설정
+	if(ALobbyGameState* LobbyGameState = GetGameState<ALobbyGameState>())
+	{
+		LobbyGameState->LobbyPlayerNum = PCs.Num();
+	}
 	
-	// 플레이어가 1명이면 자동 방장
+	// 플레이어가 1명이면 해당 플레이어를 방장으로
 	if(PCs.Num() == 1)
 	{
 		LobbyPC->bIsManager = true;
 	}
+
+	
 }
 
 void ALobbyGameMode::Logout(AController* Exiting)
 {
 	Super::Logout(Exiting);
 
-	FString PlayerName = Exiting->GetPawn()->GetPlayerState()->GetPlayerName();
-	MY_LOG(LogTemp, Error, TEXT("Player \"%s\" Logout!"), *PlayerName);
+	MY_LOG(LogTemp, Error, TEXT("Player Logout!"));
 
 	PCs.Remove(Cast<APlayerController>(Exiting));
 
-	// 남아있는 플레이어가 1명이면 자동 방장
+	// 남아있는 플레이어가 1명이면 해당 플레이어를 방장으로
 	if(PCs.Num() == 1)
 	{
 		if(ALobbyPlayerController* LobbyPC = Cast<ALobbyPlayerController>(PCs[0]))

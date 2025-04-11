@@ -6,10 +6,10 @@
 #include "Blueprint/UserWidget.h"
 #include "LobbyWidget.generated.h"
 
-
 class UTextBlock;
 class UImage;
 class UButton;
+
 
 UCLASS()
 class DDS_API ULobbyWidget : public UUserWidget
@@ -18,6 +18,8 @@ class DDS_API ULobbyWidget : public UUserWidget
 	
 public:
 	void UpdatePlayerInfo(int32 PlayerIdx, UTexture2D* SteamImage, const FString& Name);
+
+	void RemovePlayerInfo(int32 PlayerIdx);
 
 	void UpdateUI();
 	
@@ -54,9 +56,12 @@ protected:
 private:
 	bool bIsManager = false;
 
-	int32 PlayerNum = 1;
-
+	// Client에게만 적용된다
+	bool bIsReady = false;
+	
 	void UpdateReadyStartButton();
+
+	void UpdatePlayer();
 
 	UFUNCTION()
 	void StartButtonClicked();

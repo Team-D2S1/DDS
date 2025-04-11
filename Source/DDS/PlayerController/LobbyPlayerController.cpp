@@ -5,6 +5,8 @@
 
 #include "Blueprint/UserWidget.h"
 #include "ETC/CustomLog.h"
+#include "GameState/LobbyGameState.h"
+#include "Kismet/GameplayStatics.h"
 #include "Net/UnrealNetwork.h"
 #include "UI/LobbyWidget.h"
 #include "UI/MainMenuWidget.h"
@@ -54,7 +56,7 @@ void ALobbyPlayerController::Client_PostLoginServer_Implementation()
 	{
 		FString MapName = World->GetMapName(); 
 		FString CleanName = FPackageName::GetShortName(MapName);
-		UE_LOG(LogTemp, Log, TEXT("현재 맵 이름: %s"), *CleanName);
+		MY_LOG(LogTemp, Log, TEXT("현재 맵 이름: %s"), *CleanName);
 	}
 }
 
@@ -63,8 +65,24 @@ void ALobbyPlayerController::GameStart()
 	Server_GameStart();
 }
 
+void ALobbyPlayerController::NetMulticast_UpdatePlayerInfo_Implementation(FLobbyPlayerInfo NewPlayerInfo)
+{
+	LobbyPlayerInfo.SteamID = NewPlayerInfo.SteamID;
+	LobbyPlayerInfo.SteamImage = NewPlayerInfo.SteamImage;
+	LobbyPlayerInfo.bIsReady = false;
+}
+
 void ALobbyPlayerController::OnRep_IsManagerChanged()
 {
+	// Manager은 자동으로 Ready상태가 된다.
+	if(bIsManager)
+	{
+		if(ALobbyGameState* LobbyGameState = Cast<ALobbyGameState>(UGameplayStatics::GetGameState(this)))
+		{
+			LobbyGameState->Server_UpdatePlayerReady(this, true);
+		}
+	}
+	
 	if(LobbyWidget)
 	{
 		LobbyWidget->UpdateUI();
@@ -79,9 +97,7 @@ void ALobbyPlayerController::ShowMainMenuWidget()
 		if(MainMenuWidget)
 		{
 			MainMenuWidget->AddToViewport();
-			bShowMouseCursor = true;
-			const FInputModeUIOnly UIInputMode;
-			SetInputMode(UIInputMode);
+			ChangeUIInput();
 		}
 	}
 }
@@ -94,11 +110,16 @@ void ALobbyPlayerController::ShowLobbyWidget()
 		if(LobbyWidget)
 		{
 			LobbyWidget->AddToViewport();
-			bShowMouseCursor = true;
-			const FInputModeUIOnly UIInputMode;
-			SetInputMode(UIInputMode);
+			ChangeUIInput();
 		}
 	}
+}
+
+void ALobbyPlayerController::ChangeUIInput()
+{
+	const FInputModeUIOnly InputModeData;
+	SetInputMode(InputModeData);
+	SetShowMouseCursor(true);
 }
 
 void ALobbyPlayerController::Server_GameStart_Implementation()
