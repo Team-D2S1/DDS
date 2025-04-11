@@ -28,6 +28,10 @@ class DDS_API UPawnCombatComponent : public UPawnExtensionComponentBase
 	GENERATED_BODY()
 
 public:
+
+	virtual void GetLifetimeReplicatedProps(TArray<class FLifetimeProperty>& OutLifetimeProps) const override;
+
+	
 	/**
 	 * 멀티 환경에서도 구현이 되어야함
 	 * @param InWeaponTag 
@@ -45,7 +49,7 @@ public:
 	UFUNCTION(BlueprintCallable,Category="DDS|Combat")
 	ADDSWeaponBase* GetCharacterCarriedWeapon(FGameplayTag InWeaponTag) const;
 
-	UPROPERTY(BlueprintReadWrite,Category="DDS|Combat")
+	UPROPERTY(BlueprintReadWrite,Replicated,Category="DDS|Combat")
 	FGameplayTag CurrentEquippedWeaponTag;
 
 	UFUNCTION(BlueprintCallable,Category="DDS|Combat")

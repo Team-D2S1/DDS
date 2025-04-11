@@ -3,6 +3,7 @@
 
 #include "MonsterBase.h"
 
+#include "Components/WidgetComponent.h"
 #include "Components/Combat/MonsterCombatComponent.h"
 #include "Components/UI/MonsterUIComponent.h"
 #include "DataAsset/StartUpData/DataAsset_StartUpDataBase.h"
@@ -12,6 +13,7 @@
 #include "ETC/CustomLog.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "Net/UnrealNetwork.h"
+#include "UI/DDSUserWidget.h"
 
 
 AMonsterBase::AMonsterBase()
@@ -41,6 +43,10 @@ AMonsterBase::AMonsterBase()
 
 	MonsterUIComponent = CreateDefaultSubobject<UMonsterUIComponent>(TEXT("MonsterUIComponent"));
 	MonsterUIComponent->SetIsReplicated(true);
+
+	MonsterHealthWidgetComponent = CreateDefaultSubobject<UWidgetComponent>(TEXT("MonsterHealthWidgetComponent"));
+	MonsterHealthWidgetComponent->SetIsReplicated(true);
+	MonsterHealthWidgetComponent->SetupAttachment(GetMesh());
 }
 
 UPawnCombatComponent* AMonsterBase::GetCombatComponent() const
@@ -49,6 +55,11 @@ UPawnCombatComponent* AMonsterBase::GetCombatComponent() const
 }
 
 UPawnUIComponent* AMonsterBase::GetPawnUIComponent() const
+{
+	return MonsterUIComponent;
+}
+
+UMonsterUIComponent* AMonsterBase::GetMonsterUIComponent() const
 {
 	return MonsterUIComponent;
 }
@@ -68,6 +79,16 @@ void AMonsterBase::BeginPlay()
 	if (!AbilitySystemComponent)
 		return;
 	AbilitySystemComponent->InitAbilityActorInfo(this, this);
+	if (GetNetMode() != NM_DedicatedServer) 
+	{
+		if (UDDSUserWidget* HealthWidget = Cast<UDDSUserWidget>(MonsterHealthWidgetComponent->GetUserWidgetObject()))
+		{
+			HealthWidget->InitMonsterCreatedWidget(this);
+		}else
+		{
+			MY_LOG(LogTemp, Type::Warning, TEXT("MonsterHealthWidgetComponent is not a UDDSUserWidget"));
+		}
+	}
 }
 
 void AMonsterBase::Tick(float DeltaSeconds)

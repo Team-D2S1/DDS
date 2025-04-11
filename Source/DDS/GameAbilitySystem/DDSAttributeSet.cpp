@@ -13,6 +13,8 @@
 
 UDDSAttributeSet::UDDSAttributeSet()
 {
+
+	// 어차피 이 값들은 GE_Player_Startup과 GE_Player_Static 에 의해 처음에 덮어씌워짐 
 	InitHealth(50.f);
 	InitMaxHealth(100.f);
 

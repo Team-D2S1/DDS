@@ -9,6 +9,13 @@
 #include "ETC/CustomLog.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "Items/Weapons/DDSWeaponBase.h"
+#include "Net/UnrealNetwork.h"
+
+void UPawnCombatComponent::GetLifetimeReplicatedProps(TArray<class FLifetimeProperty>& OutLifetimeProps) const
+{
+	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
+	DOREPLIFETIME(UPawnCombatComponent, CurrentEquippedWeaponTag);
+}
 
 void UPawnCombatComponent::RegisterSpawnedWeapon(FGameplayTag InWeaponTag, ADDSWeaponBase* InWeapon,
                                                  bool bRegisterAsEquippedWeapon)
@@ -51,13 +58,13 @@ void UPawnCombatComponent::ToggleWeaponCollision(bool bEnable, EToggleCollisionT
 			if (bEnable)
 			{
 				CurrentWeapon->GetWeaponCollsionBox()->SetCollisionEnabled(ECollisionEnabled::Type::QueryOnly);
-				// DEBUG_CLOG_DISPLAY_NET(FColor::Green, GetOwningPawn()->HasAuthority(), TEXT("Current Weapon is enabled."));
+				// MY_CLOG_DISPLAY_NET(FColor::Green, GetOwningPawn()->HasAuthority(), TEXT("Current Weapon is enabled."));
 			}
 			else
 			{
 				CurrentWeapon->GetWeaponCollsionBox()->SetCollisionEnabled(ECollisionEnabled::Type::NoCollision);
 				OverlappedActors.Empty();
-				// DEBUG_CLOG_DISPLAY_NET(FColor::Red, GetOwningPawn()->HasAuthority(), TEXT("Current Weapon is not disabled."));
+				// MY_CLOG_DISPLAY_NET(FColor::Red, GetOwningPawn()->HasAuthority(), TEXT("Current Weapon is disabled."));
 			}
 			
 		}else
@@ -85,6 +92,7 @@ void UPawnCombatComponent::OnHitTarget(AActor* InTargetActor)
 		GetOwningPawn(),
 		DDSGameplayTags::Shared_Event_MeleeHit_Start,
 		EventData);
+	MY_LOG(LogTemp, Log, TEXT("Hit Target %s"), *InTargetActor->GetName());
 }
 
 void UPawnCombatComponent::OnPulledFromTarget(AActor* InTargetActor)
