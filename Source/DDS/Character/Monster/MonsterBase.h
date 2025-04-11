@@ -7,6 +7,7 @@
 #include "Interfaces//Focusable.h"
 #include "MonsterBase.generated.h"
 
+class UWidgetComponent;
 class UMonsterUIComponent;
 class UMonsterCombatComponent;
 class UPawnCombatComponent;
@@ -39,6 +40,9 @@ protected:
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "UI")
 	TObjectPtr<UMonsterUIComponent> MonsterUIComponent;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "UI")
+	TObjectPtr<UWidgetComponent> MonsterHealthWidgetComponent;
 	
 	UFUNCTION()
 	void OnRep_MonsterCombatComponent();
