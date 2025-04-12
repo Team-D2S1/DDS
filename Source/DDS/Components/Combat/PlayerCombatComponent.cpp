@@ -2,8 +2,11 @@
 
 
 #include "Components/Combat/PlayerCombatComponent.h"
+
+#include "AnimInstances/Player/DDSPlayerLinkedAnimLayer.h"
 #include "Character/Player/PlayerBase.h"
 #include "Camera/CameraComponent.h"
+#include "ETC/CustomLog.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "Items/Weapons/DDSPlayerWeapon.h"
 #include "Kismet/KismetMathLibrary.h"

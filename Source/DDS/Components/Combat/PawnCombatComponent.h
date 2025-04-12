@@ -49,7 +49,7 @@ public:
 	UFUNCTION(BlueprintCallable,Category="DDS|Combat")
 	ADDSWeaponBase* GetCharacterCarriedWeapon(FGameplayTag InWeaponTag) const;
 
-	UPROPERTY(BlueprintReadWrite,Replicated,Category="DDS|Combat")
+	UPROPERTY(BlueprintReadWrite,ReplicatedUsing=OnRep_CurrentEquippedWeaponTag,Category="DDS|Combat")
 	FGameplayTag CurrentEquippedWeaponTag;
 
 	UFUNCTION(BlueprintCallable,Category="DDS|Combat")
@@ -64,6 +64,8 @@ public:
 	UFUNCTION(BlueprintCallable,Category="DDS|Combat")
 	void ToggleWeaponCollision(bool bEnable,EToggleCollisionType InDamageType = EToggleCollisionType::CurrentEquippedWeapon);
 
+	UFUNCTION()
+	virtual void OnRep_CurrentEquippedWeaponTag();
 protected:
 	
 	/**
@@ -74,9 +76,9 @@ protected:
 	
 	virtual void OnHitTarget(AActor* InTargetActor);
 	virtual void OnPulledFromTarget(AActor* InTargetActor);
-
 private:
 	TMap<FGameplayTag, ADDSWeaponBase*> CharacterCarriedWeaponMap;
 
-
+	
+	
 };
