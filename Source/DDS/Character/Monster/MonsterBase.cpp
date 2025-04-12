@@ -77,7 +77,10 @@ void AMonsterBase::BeginPlay()
 	Super::BeginPlay();
 
 	if (!AbilitySystemComponent)
+	{
+		MY_ERROR_DISPLAY(TEXT("AbilitySystemComponent is null"));
 		return;
+	}
 	AbilitySystemComponent->InitAbilityActorInfo(this, this);
 	if (GetNetMode() != NM_DedicatedServer) 
 	{
@@ -90,7 +93,8 @@ void AMonsterBase::BeginPlay()
 		}
 	}
 	MonsterUIComponent->BroadcastInitialValues(AttributeSet);
-	// MonsterHealthWidgetComponent->SetVisibility(false);
+	MonsterUIComponent->OnPawnInitializingFinished.Broadcast();
+	MY_LOG(LogTemp, Type::Log, TEXT("MonsterBase BeginPlay Finished"));
 }
 
 void AMonsterBase::Tick(float DeltaSeconds)
