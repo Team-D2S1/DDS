@@ -61,12 +61,12 @@ FActiveGameplayEffectHandle UDDSGameplayAbility::NativeApplyEffectSpecHandleToTa
 	UAbilitySystemComponent* TargetASC = UAbilitySystemBlueprintLibrary::GetAbilitySystemComponent(TargetActor);
 	if(!TargetASC)
 	{
-		MY_CLOG_DISPLAY_NET(FColor::Red, CurrentActorInfo->OwnerActor->HasAuthority(), TEXT("TargetASC is nullptr"));
+		MY_ERROR_DISPLAY_NET(CurrentActorInfo->OwnerActor->HasAuthority(), TEXT("TargetASC is nullptr"));
 		return FActiveGameplayEffectHandle();
 	}
 	if (!InEffectSpecHandle.IsValid())
 	{
-		MY_CLOG_DISPLAY_NET(FColor::Red, CurrentActorInfo->OwnerActor->HasAuthority(), TEXT("InEffectSpecHandle is invalid"));
+		MY_ERROR_DISPLAY_NET(CurrentActorInfo->OwnerActor->HasAuthority(), TEXT("InEffectSpecHandle is invalid"));
 		return FActiveGameplayEffectHandle();
 	}
 	return GetDDSAbilitySystemComponentFromActorInfo()->ApplyGameplayEffectSpecToTarget( 
@@ -90,12 +90,14 @@ FActiveGameplayEffectHandle UDDSGameplayAbility::BP_ApplyEffectSpecHandleToTarge
 	return Handle;
 }
 
+
+
 FGameplayEffectSpecHandle UDDSGameplayAbility::MakeGameplayEffectSpecHandle(TSubclassOf<UGameplayEffect> EffectClass,
                                                                             float InWeaponBaseDamage, FGameplayTag InCurrentAttackTypeTag, int32 InCurrentAttackComboCount) const
 {
 	if (!EffectClass)
 	{
-		MY_CLOG_DISPLAY_NET(FColor::Red, CurrentActorInfo->OwnerActor->HasAuthority(), TEXT("EffectClass is nullptr"));
+		MY_ERROR_DISPLAY_NET(CurrentActorInfo->OwnerActor->HasAuthority(), TEXT("EffectClass is nullptr"));
 		return FGameplayEffectSpecHandle();
 	}
 

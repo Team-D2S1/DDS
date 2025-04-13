@@ -43,6 +43,13 @@ public:
 
 	UFUNCTION(BlueprintCallable,Category="DDS|Combat")
 	AActor* GetFocusedObject() const { return FocusedObject; }
+
+	UFUNCTION(BlueprintCallable,NetMulticast,Reliable)
+	void Multicast_LinkAnimLayer(TSubclassOf<UAnimInstance> InAnimLayerClass);
+
+	UFUNCTION(BlueprintCallable, NetMulticast, Reliable)
+	void Multicast_UnlinkAnimLayer(TSubclassOf<UAnimInstance> InAnimLayerClass);
+	
 protected:
 	virtual void BeginPlay() override;
 

@@ -14,6 +14,7 @@
 	GAMEPLAYATTRIBUTE_VALUE_SETTER(PropertyName) \
 	GAMEPLAYATTRIBUTE_VALUE_INITTER(PropertyName)
 
+class UPawnUIComponent;
 class IPawnUIInterface;
 /**
  * 기본 어트리부트 세트.
@@ -82,9 +83,12 @@ public:
 	UFUNCTION()
 	void OnRep_DamageTaken(const FGameplayAttributeData& OldDamageTaken) const;
 
-
+protected:
+	UPawnUIComponent* GetPawnUIComponent() const;
 private:
 	TWeakInterfacePtr<IPawnUIInterface> CachedPawnUIInterface;
+
+	
 };
 
 

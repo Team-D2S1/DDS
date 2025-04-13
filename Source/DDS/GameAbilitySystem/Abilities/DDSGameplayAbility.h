@@ -45,6 +45,8 @@ protected:
 
 	UFUNCTION(BlueprintCallable, Category = "DDS|Ability",meta = (DisplayName = "Apply Gameplay Effect Spec Handle To Target Actor",ExpandEnumAsExecs = "OutSuccessType"))
 	FActiveGameplayEffectHandle BP_ApplyEffectSpecHandleToTarget(AActor* TargetActor, const FGameplayEffectSpecHandle& InEffectSpecHandle,EDDSSuccessType& OutSuccessType);
+
+
 	/**
 	 * 콤보 카운드가 SetByCallerMagnitude 로 설정됨
 	 * @param EffectClass 

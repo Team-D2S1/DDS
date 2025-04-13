@@ -75,6 +75,13 @@ void UPawnCombatComponent::ToggleWeaponCollision(bool bEnable, EToggleCollisionT
 	//TODO : 무기가 없는 경우 처리
 }
 
+void UPawnCombatComponent::OnRep_CurrentEquippedWeaponTag()
+{
+	if (CurrentEquippedWeaponTag.IsValid())
+		MY_LOG(LogTemp, Log, TEXT("CurrentEquippedWeaponTag is changed(Rep) to %s"), *CurrentEquippedWeaponTag.ToString());
+}
+
+
 void UPawnCombatComponent::OnHitTarget(AActor* InTargetActor)
 {
 	if (OverlappedActors.Contains(InTargetActor))

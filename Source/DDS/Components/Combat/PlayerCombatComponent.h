@@ -21,6 +21,7 @@ public:
 
 	UFUNCTION(BlueprintCallable, Category = "DDS|Combat")
 	float GetPlayerCurrentEquippedWeaponDamageAtLevel(float InLevel = 0) const;
+
 protected:
 	// void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 

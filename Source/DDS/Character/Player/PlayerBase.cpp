@@ -64,6 +64,7 @@ void APlayerBase::PossessedBy(AController* NewController)
 			LoadedData->GiveToAbilitySystemComponent(AbilitySystemComponent);
 		}
 	}
+	PlayerUIComponent->OnPawnInitializingFinished.Broadcast();
 	// AbilitySystemComponent->AddReplicatedLooseGameplayTag(DDSGameplayTags::Shared_State_LockedOn);
 }
 
@@ -73,7 +74,7 @@ void APlayerBase::OnRep_PlayerState()
 
 	// 클라이언트에서 actor info 초기화
 	InitAbilityActorInfo();
-
+	PlayerUIComponent->OnPawnInitializingFinished.Broadcast();
 }
 
 UPawnCombatComponent* APlayerBase::GetCombatComponent() const
@@ -154,9 +155,7 @@ void APlayerBase::InitAbilityActorInfo()
 	DDSPlayerState->GetAbilitySystemComponent()->InitAbilityActorInfo(DDSPlayerState, this);
 	AbilitySystemComponent = DDSPlayerState->GetDDSAbilitySystemComponent();
 	AttributeSet = DDSPlayerState->GetDDSAttribueSet();
-	
-
-	
+	PlayerUIComponent->BroadcastInitialValues(AttributeSet);
 
 }
 

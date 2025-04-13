@@ -77,7 +77,10 @@ void AMonsterBase::BeginPlay()
 	Super::BeginPlay();
 
 	if (!AbilitySystemComponent)
+	{
+		MY_ERROR_DISPLAY(TEXT("AbilitySystemComponent is null"));
 		return;
+	}
 	AbilitySystemComponent->InitAbilityActorInfo(this, this);
 	if (GetNetMode() != NM_DedicatedServer) 
 	{
@@ -89,6 +92,9 @@ void AMonsterBase::BeginPlay()
 			MY_LOG(LogTemp, Type::Warning, TEXT("MonsterHealthWidgetComponent is not a UDDSUserWidget"));
 		}
 	}
+	MonsterUIComponent->BroadcastInitialValues(AttributeSet);
+	MonsterUIComponent->OnPawnInitializingFinished.Broadcast();
+	MY_LOG(LogTemp, Type::Log, TEXT("MonsterBase BeginPlay Finished"));
 }
 
 void AMonsterBase::Tick(float DeltaSeconds)

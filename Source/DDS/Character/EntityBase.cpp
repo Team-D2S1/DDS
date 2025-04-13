@@ -49,6 +49,32 @@ UAttributeSet* AEntityBase::GetAttributeSet() const
 	return AttributeSet;
 }
 
+void AEntityBase::Multicast_LinkAnimLayer_Implementation(TSubclassOf<UAnimInstance> InAnimLayerClass)
+{
+	USkeletalMeshComponent* SkeletalMesh = GetMesh();
+	if (SkeletalMesh)
+	{
+		SkeletalMesh->LinkAnimClassLayers(InAnimLayerClass);
+	}
+	else
+	{
+		MY_LOG(LogTemp,Error,TEXT("MeshComp is nullptr"));
+	}
+}
+
+void AEntityBase::Multicast_UnlinkAnimLayer_Implementation(TSubclassOf<UAnimInstance> InAnimLayerClass)
+{
+	USkeletalMeshComponent* SkeletalMesh = GetMesh();
+	if (SkeletalMesh)
+	{
+		SkeletalMesh->UnlinkAnimClassLayers(InAnimLayerClass);
+	}
+	else
+	{
+		MY_LOG(LogTemp,Error,TEXT("MeshComp is nullptr"));
+	}
+}
+
 void AEntityBase::BeginPlay()
 {
 	Super::BeginPlay();
