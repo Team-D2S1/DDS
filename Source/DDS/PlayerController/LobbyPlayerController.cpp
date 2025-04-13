@@ -22,6 +22,7 @@ void ALobbyPlayerController::GetLifetimeReplicatedProps(TArray<FLifetimeProperty
 	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
 
 	DOREPLIFETIME(ThisClass, bIsManager);
+	DOREPLIFETIME(ThisClass, bIsReady);
 }
 
 void ALobbyPlayerController::BeginPlay()
@@ -65,11 +66,24 @@ void ALobbyPlayerController::GameStart()
 	Server_GameStart();
 }
 
+void ALobbyPlayerController::ReadyPlayer(bool bReady)
+{
+	Server_ReadyPlayer(bReady);
+}
+
 void ALobbyPlayerController::NetMulticast_UpdatePlayerInfo_Implementation(FLobbyPlayerInfo NewPlayerInfo)
 {
 	LobbyPlayerInfo.SteamID = NewPlayerInfo.SteamID;
 	LobbyPlayerInfo.SteamImage = NewPlayerInfo.SteamImage;
-	LobbyPlayerInfo.bIsReady = false;
+	LobbyPlayerInfo.bIsReady = NewPlayerInfo.bIsReady;
+}
+
+void ALobbyPlayerController::Server_ReadyPlayer_Implementation(bool bReady)
+{
+	bIsReady = bReady;
+	
+	// Server에서 플레이어가 준비 완료 & 해제되었다고 Broadcast
+	PlayerReadyDelegate.Broadcast(this, bIsReady);
 }
 
 void ALobbyPlayerController::OnRep_IsManagerChanged()
@@ -77,10 +91,12 @@ void ALobbyPlayerController::OnRep_IsManagerChanged()
 	// Manager은 자동으로 Ready상태가 된다.
 	if(bIsManager)
 	{
-		if(ALobbyGameState* LobbyGameState = Cast<ALobbyGameState>(UGameplayStatics::GetGameState(this)))
-		{
-			LobbyGameState->Server_UpdatePlayerReady(this, true);
-		}
+		bIsReady = true;
+	}
+	// Manager에서 해제되면 Ready가 풀림
+	else
+	{
+		bIsReady = false;
 	}
 	
 	if(LobbyWidget)

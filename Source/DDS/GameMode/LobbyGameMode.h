@@ -6,6 +6,7 @@
 #include "GameFramework/GameModeBase.h"
 #include "LobbyGameMode.generated.h"
 
+class ALobbyPlayerController;
 /**
  * 
  */
@@ -28,4 +29,8 @@ protected:
 	virtual void PostLogin(APlayerController* NewPlayer) override;
 
 	virtual void Logout(AController* Exiting) override;
+
+private:
+	UFUNCTION()
+	void OnPlayerReady(ALobbyPlayerController* PC, bool bIsReady);
 };

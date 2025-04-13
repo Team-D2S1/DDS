@@ -41,7 +41,6 @@ protected:
 	UPROPERTY(meta = (BindWidget))
 	UTextBlock* Player2Name;
 	
-	
 	UPROPERTY(meta = (BindWidget))
 	UButton* ReadyStartButton;
 	UPROPERTY(meta = (BindWidget))
@@ -54,15 +53,8 @@ protected:
 	UButton* MainMenuButton;
 	
 private:
-	bool bIsManager = false;
-
-	// Client에게만 적용된다
-	bool bIsReady = false;
+	bool bIsReady;
 	
-	void UpdateReadyStartButton();
-
-	void UpdatePlayer();
-
 	UFUNCTION()
 	void StartButtonClicked();
 
@@ -75,6 +67,9 @@ private:
 	UFUNCTION()
 	void MainMenuButtonClicked();
 	
-	void MenuTearDown();
+	void UpdateReadyStartButton();
+
+	void UpdatePlayer();
 	
+	void MenuTearDown();
 };

@@ -18,8 +18,10 @@ void ALobbyGameState::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutL
 	DOREPLIFETIME(ThisClass, ReadyPlayerNum);
 }
 
-void ALobbyGameState::Server_UpdatePlayerReady_Implementation(APlayerController* Controller, bool bIsReady)
+void ALobbyGameState::UpdatePlayerReady(ALobbyPlayerController* Controller, bool bIsReady)
 {
+	if(!HasAuthority()) return;
+	
 	if(ALobbyGameMode* LobbyGameMode = Cast<ALobbyGameMode>(UGameplayStatics::GetGameMode(this)))
 	{
 		for(auto PC : LobbyGameMode->PCs)
@@ -27,15 +29,22 @@ void ALobbyGameState::Server_UpdatePlayerReady_Implementation(APlayerController*
 			// PlayerInfo에서 bIsReady만 수정해서 다시 업데이트해준다
 			if(Controller == PC)
 			{
-				FLobbyPlayerInfo NewPlayerInfo = Cast<ALobbyPlayerController>(PC)->LobbyPlayerInfo;
+				FLobbyPlayerInfo NewPlayerInfo = Controller->LobbyPlayerInfo;
 				NewPlayerInfo.bIsReady = bIsReady;
 				
-				Cast<ALobbyPlayerController>(PC)->NetMulticast_UpdatePlayerInfo(NewPlayerInfo);
+				Controller->NetMulticast_UpdatePlayerInfo(NewPlayerInfo);
 			}
 		}
 	}
 
-	ReadyPlayerNum = bIsReady ? ReadyPlayerNum++ : ReadyPlayerNum--;
+	if(bIsReady)
+	{
+		this->ReadyPlayerNum++;
+	}
+	else
+	{
+		this->ReadyPlayerNum--;
+	}
 }
 
 void ALobbyGameState::OnRep_PlayerStateChanged()

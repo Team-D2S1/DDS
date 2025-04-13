@@ -7,6 +7,8 @@
 #include "LobbyGameState.generated.h"
 
 
+class ALobbyPlayerController;
+
 UCLASS()
 class DDS_API ALobbyGameState : public AGameStateBase
 {
@@ -16,8 +18,7 @@ class DDS_API ALobbyGameState : public AGameStateBase
 public:
 	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
 
-	UFUNCTION(Server, Reliable)
-	void Server_UpdatePlayerReady(APlayerController* Controller, bool bIsReady);
+	void UpdatePlayerReady(ALobbyPlayerController* Controller, bool bIsReady);
 	
 	UPROPERTY(ReplicatedUsing = OnRep_PlayerStateChanged)
 	int32 LobbyPlayerNum;
