@@ -2,13 +2,9 @@
 
 
 #include "LobbyGameMode.h"
-
 #include "ETC/CustomLog.h"
-#include <iostream>
-
 #include "GameFramework/PlayerState.h"
 #include "GameState/LobbyGameState.h"
-#include "Kismet/GameplayStatics.h"
 #include "PlayerController/LobbyPlayerController.h"
 #include "Session/LobbySession.h"
 
@@ -22,11 +18,6 @@ ALobbyGameMode::ALobbyGameMode()
 void ALobbyGameMode::BeginPlay()
 {
 	Super::BeginPlay();
-	
-	if(UGameInstance* GameInstance = GetGameInstance())
-	{
-		// 작업
-	}
 }
 
 void ALobbyGameMode::StartPlay()
@@ -47,6 +38,7 @@ void ALobbyGameMode::PostLogin(APlayerController* NewPlayer)
 	{
 		LobbyPC->Client_PostLoginServer();
 		PCs.Add(LobbyPC);
+		LobbyPC->PlayerReadyDelegate.AddUniqueDynamic(this, &ThisClass::OnPlayerReady);
 	}
 
 	// GameState 설정
@@ -59,9 +51,8 @@ void ALobbyGameMode::PostLogin(APlayerController* NewPlayer)
 	if(PCs.Num() == 1)
 	{
 		LobbyPC->bIsManager = true;
+		GetGameState<ALobbyGameState>()->UpdatePlayerReady(LobbyPC, true);
 	}
-
-	
 }
 
 void ALobbyGameMode::Logout(AController* Exiting)
@@ -78,6 +69,16 @@ void ALobbyGameMode::Logout(AController* Exiting)
 		if(ALobbyPlayerController* LobbyPC = Cast<ALobbyPlayerController>(PCs[0]))
 		{
 			LobbyPC->bIsManager = true;
+			GetGameState<ALobbyGameState>()->UpdatePlayerReady(LobbyPC, true);
 		}
+	}
+}
+
+void ALobbyGameMode::OnPlayerReady(ALobbyPlayerController* PC, bool bIsReady)
+{
+	ALobbyGameState* LobbyGameState = GetGameState<ALobbyGameState>();
+	if(LobbyGameState)
+	{
+		LobbyGameState->UpdatePlayerReady(PC, bIsReady);
 	}
 }

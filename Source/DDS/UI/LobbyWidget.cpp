@@ -5,12 +5,14 @@
 
 #include "Components/Button.h"
 #include "Components/TextBlock.h"
+#include "ETC/CustomLog.h"
 #include "GameState/LobbyGameState.h"
 #include "Kismet/GameplayStatics.h"
 #include "PlayerController/LobbyPlayerController.h"
 
 void ULobbyWidget::UpdatePlayerInfo(int32 PlayerIdx, UTexture2D* SteamImage, const FString& Name)
 {
+	
 }
 
 void ULobbyWidget::RemovePlayerInfo(int32 PlayerIdx)
@@ -22,6 +24,8 @@ bool ULobbyWidget::Initialize()
 {
 	if(!Super::Initialize()) return false;
 
+	bIsReady = false;
+	
 	OptionButton->OnClicked.AddDynamic(this, &ThisClass::OptionButtonClicked);
 	MainMenuButton->OnClicked.AddDynamic(this, &ThisClass::MainMenuButtonClicked);
 
@@ -46,8 +50,7 @@ void ULobbyWidget::UpdateReadyStartButton()
 		ReadyStartText->SetText(FText::FromString(ReadyStartString));
 
 		// bIsManager 업데이트
-		this->bIsManager = LobbyPC->bIsManager;
-		if(bIsManager)
+		if(LobbyPC->bIsManager)
 		{
 			ReadyStartButton->OnClicked.Clear();
 			ReadyStartButton->OnClicked.AddDynamic(this, &ThisClass::StartButtonClicked);
@@ -62,23 +65,31 @@ void ULobbyWidget::UpdateReadyStartButton()
 
 void ULobbyWidget::UpdatePlayer()
 {
+	MY_LOG(LogTemp, Error, TEXT("Update Player 0"));
 	ALobbyGameState* LobbyGameState = Cast<ALobbyGameState>(UGameplayStatics::GetGameState(this));
 	if(!LobbyGameState) return;
 
+	MY_LOG(LogTemp, Error, TEXT("Update Player 1"));
 	// Server 입장
-	if(bIsManager)
+	if(ALobbyPlayerController* LobbyPC = Cast<ALobbyPlayerController>(GetOwningPlayer()))
 	{
-		ReadyStartButton->SetIsEnabled(false);
-		
-		if(LobbyGameState->LobbyPlayerNum == LobbyGameState->ReadyPlayerNum)
+		MY_LOG(LogTemp, Error, TEXT("Update Player 3"));
+
+		if(LobbyPC->bIsManager)
 		{
-			ReadyStartButton->SetIsEnabled(true);
+			MY_LOG(LogTemp, Error, TEXT("Update Player 4"));
+
+			ReadyStartButton->SetIsEnabled(false);
+			MY_LOG(LogTemp, Error, TEXT("LobbyPlayer : %d, ReadyPlayer : %d"), LobbyGameState->LobbyPlayerNum, LobbyGameState->ReadyPlayerNum);
+			MY_LOG(LogTemp, Error, TEXT("Me Ready ? %d"), LobbyPC->bIsReady);
+		
+			if(LobbyGameState->LobbyPlayerNum == LobbyGameState->ReadyPlayerNum)
+			{
+				MY_LOG(LogTemp, Error, TEXT("Update Player 5"));
+				ReadyStartButton->SetIsEnabled(true);
+			}
 		}
 	}
-
-	// TODO
-	// PlayerState 정보 돌면서 모든 PlayerController의 LobbyPlayerInfo들을 이용해
-	// 화면에 뜨는 정보(스팀 이미지, 이름 등)를 업데이트한다
 }
 
 void ULobbyWidget::NativeConstruct()
@@ -115,14 +126,7 @@ void ULobbyWidget::ReadyButtonClicked()
 	ALobbyPlayerController* MyPC = Cast<ALobbyPlayerController>(GetOwningPlayer());
 	if(MyPC)
 	{
-		MyPC->GameStart();
-	}
-	
-	ALobbyGameState* LobbyGameState = Cast<ALobbyGameState>(UGameplayStatics::GetGameState(this));
-	if(LobbyGameState)
-	{
-		// GameState에 해당 PC가 준비 완료되었다고 알림
-		LobbyGameState->Server_UpdatePlayerReady(GetOwningPlayer(), bIsReady);
+		MyPC->ReadyPlayer(bIsReady);
 	}
 }
 

@@ -25,6 +25,7 @@ struct FLobbyPlayerInfo
 	bool bIsReady;
 };
 
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FPlayerReadyDelegate, ALobbyPlayerController*, PlayerController, bool, bIsReady);
 
 UCLASS()
 class DDS_API ALobbyPlayerController : public APlayerController
@@ -38,12 +39,20 @@ public:
 
 	void GameStart();
 
+	void ReadyPlayer(bool bReady);
+	
 	UFUNCTION(NetMulticast, Reliable)
 	void NetMulticast_UpdatePlayerInfo(FLobbyPlayerInfo NewPlayerInfo);
+
+	UPROPERTY()
+	FPlayerReadyDelegate PlayerReadyDelegate;
 	
 	UPROPERTY(ReplicatedUsing = OnRep_IsManagerChanged)
 	bool bIsManager = false;
 
+	UPROPERTY(Replicated)
+	bool bIsReady;
+	
 	UPROPERTY(Replicated)
 	int32 LobbyPlayerIdx;
 
@@ -70,6 +79,9 @@ private:
 
 	UFUNCTION(Server, Reliable)
 	void Server_GameStart();
+
+	UFUNCTION(Server, Reliable)
+	void Server_ReadyPlayer(bool bReady);
 
 	UFUNCTION()
 	void OnRep_IsManagerChanged();
