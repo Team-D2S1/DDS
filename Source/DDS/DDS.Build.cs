@@ -13,6 +13,7 @@ public class DDS : ModuleRules
 			"Core", 
 			"CoreUObject", 
 			"Engine", 
+			"NetCore",
 			"InputCore", 
 			"EnhancedInput", 
 			"GameplayTags", 
@@ -24,7 +25,8 @@ public class DDS : ModuleRules
 			"OnlineSubsystem",
 			"OnlineSubsystemSteam",
 			"Sockets",
-			"Networking"
+			"Networking",
+			"Paper2D"
 		});
 
 		PrivateDependencyModuleNames.AddRange(new string[] {  });
