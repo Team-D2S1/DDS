@@ -22,6 +22,16 @@ enum class EPlayerType : uint8
 	
 };
 
+UENUM(BlueprintType)
+enum class EItemRarity : uint8
+{
+	None,
+	Common,
+	Rare,
+	Epic,
+	Legendary,
+};
+
 UENUM()
 enum class EDDSValidType : uint8
 {

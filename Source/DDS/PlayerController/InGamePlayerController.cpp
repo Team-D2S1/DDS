@@ -92,16 +92,6 @@ void AInGamePlayerController::Input_Jump()
 	MyCharacter->Jump();
 }
 
-// void AInGamePlayerController::Attack()
-// {
-// 	MY_LOG(LogTemp, Log, TEXT("Character Attack"));
-// }
-//
-// void AInGamePlayerController::Dash()
-// {
-// 	MY_LOG(LogTemp, Log, TEXT("Character Dash"));
-// }
-
 void AInGamePlayerController::Input_Look(const FInputActionValue& Value)
 {
 	// MY_LOG(LogTemp, Log, TEXT("Character Look"));

@@ -5,10 +5,12 @@
 #include "CoreMinimal.h"
 #include "AbilitySystemInterface.h"
 #include "GenericTeamAgentInterface.h"
+#include "Components/Inventory/InventoryComponentInterface.h"
 #include "GameAbilitySystem/IDDSAbilitySystemInterface.h"
 #include "GameFramework/PlayerState.h"
 #include "DDSPlayerState.generated.h"
 
+class UInventoryComponent;
 class UDDSAttributeSet;
 class UAbilitySystemComponent;
 class UAttributeSet;
@@ -19,7 +21,7 @@ class UAttributeSet;
  * 
  */
 UCLASS()
-class DDS_API ADDSPlayerState : public APlayerState, public IAbilitySystemInterface,public IIDDSAbilitySystemInterface, public IGenericTeamAgentInterface
+class DDS_API ADDSPlayerState : public APlayerState, public IAbilitySystemInterface,public IIDDSAbilitySystemInterface, public IGenericTeamAgentInterface, public IInventoryComponentInterface
 {
 	GENERATED_BODY()
 
@@ -40,12 +42,20 @@ public:
 	virtual FGenericTeamId GetGenericTeamId() const override;
 	virtual void SetGenericTeamId(const FGenericTeamId& NewTeamID) override;
 	// ~ End IGenericTeamAgentInterface Interface
+
+	// ~ Begin IInventoryComponentInterface Interface
+	virtual UInventoryComponent* GetInventoryComponent() override { return InventoryComponent; }
+	// ~ End IInventoryComponentInterface Interface
+	
 protected:
 	UPROPERTY(VisibleAnywhere,BlueprintReadOnly,Category="AbilitySystem")
 	TObjectPtr<UDDSAbilitySystemComponent> AbilitySystemComponent;
 
 	UPROPERTY(VisibleAnywhere,BlueprintReadOnly,Category="AbilitySystem")
 	TObjectPtr<UDDSAttributeSet> AttributeSet;
+
+	UPROPERTY(VisibleAnywhere,BlueprintReadOnly,Category="Inventory")
+	TObjectPtr<UInventoryComponent> InventoryComponent;
 	
 	UPROPERTY()
 	FGenericTeamId PlayerTeamId;

@@ -6,6 +6,8 @@
 #include "Engine/DataAsset.h"
 #include "DataAsset_StartUpDataBase.generated.h"
 
+class UItemStaticData;
+class UInventoryComponent;
 class UGameplayEffect;
 class UDDSAbilitySystemComponent;
 class UDDSGameplayAbility;
@@ -20,6 +22,7 @@ class DDS_API UDataAsset_StartUpDataBase : public UDataAsset
 public:
 	// ASC에 능력을 부여하는 함수
 	virtual void GiveToAbilitySystemComponent(UDDSAbilitySystemComponent* InASCToGive,int32 ApplyLevel = 1);
+	virtual void GiveItemsToInventoryComponent(UInventoryComponent* InInventory);
 protected:
 	UPROPERTY(EditDefaultsOnly,Category="StartUpData")
 	TArray<TSubclassOf<UDDSGameplayAbility>> ActivateOnGivenAbilities;
@@ -30,6 +33,9 @@ protected:
 
 	UPROPERTY(EditDefaultsOnly,Category="StartUpData")
 	TArray<TSubclassOf<UGameplayEffect>> StartUpGameplayEffects;
+
+	UPROPERTY(EditDefaultsOnly,Category="StartUpData")
+	TArray<TSubclassOf<UItemStaticData>> StartUpItems;
 
 	void GrantAbilities(const TArray<TSubclassOf<UDDSGameplayAbility>> InAbilitiesToGive,UDDSAbilitySystemComponent* InASCToGive,int32 ApplyLevel = 1);
 };

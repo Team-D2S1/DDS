@@ -3,6 +3,8 @@
 
 #include "DataAsset/StartUpData/DataAsset_StartUpDataBase.h"
 
+#include "Components/Inventory/InventoryComponent.h"
+#include "DDSTypes/DDSClassTypes.h"
 #include "ETC/CustomLog.h"
 #include "GameAbilitySystem/DDSAbilitySystemComponent.h"
 #include "GameAbilitySystem/Abilities/DDSGameplayAbility.h"
@@ -31,8 +33,23 @@ void UDataAsset_StartUpDataBase::GiveToAbilitySystemComponent(UDDSAbilitySystemC
 	}
 }
 
+void UDataAsset_StartUpDataBase::GiveItemsToInventoryComponent(UInventoryComponent* InInventory)
+{
+	if (!InInventory)
+	{
+		MY_ERROR_DISPLAY(TEXT("InInventory is nullptr"));
+		return;
+	}
+	for (const TSubclassOf<UItemStaticData>& ItemClass : StartUpItems)
+	{
+		if (!ItemClass)
+			continue;
+		InInventory->AddItem(ItemClass);
+	}
+}
+
 void UDataAsset_StartUpDataBase::GrantAbilities(const TArray<TSubclassOf<UDDSGameplayAbility>> InAbilitiesToGive,
-	UDDSAbilitySystemComponent* InASCToGive, int32 ApplyLevel)
+                                                UDDSAbilitySystemComponent* InASCToGive, int32 ApplyLevel)
 {
 	if (InAbilitiesToGive.IsEmpty())
 	{

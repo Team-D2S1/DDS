@@ -62,6 +62,7 @@ void APlayerBase::PossessedBy(AController* NewController)
 		{
 			MY_LOG(LogTemp,Log,TEXT("LoadedData not null"))
 			LoadedData->GiveToAbilitySystemComponent(AbilitySystemComponent);
+			LoadedData->GiveItemsToInventoryComponent(GetInventoryComponent());
 		}
 	}
 	PlayerUIComponent->OnPawnInitializingFinished.Broadcast();
@@ -90,6 +91,27 @@ UPawnUIComponent* APlayerBase::GetPawnUIComponent() const
 UPlayerUIComponent* APlayerBase::GetPlayerUIComponent() const
 {
 	return PlayerUIComponent;
+}
+
+UInventoryComponent* APlayerBase::GetInventoryComponent()
+{
+	if (CachedInventoryComponent.IsValid())
+	{
+		return CachedInventoryComponent.Get();
+	}
+	ADDSPlayerState* DDSPlayerState = GetPlayerState<ADDSPlayerState>()
+	if (!DDSPlayerState)
+	{
+		MY_ERROR_DISPLAY_NET(HasAuthority(), TEXT("PlayerState is nullptr"));
+		return nullptr;
+	}
+	CachedInventoryComponent = DDSPlayerState->GetInventoryComponent();
+	if (!CachedInventoryComponent.IsValid())
+	{
+		MY_ERROR_DISPLAY_NET(HasAuthority(), TEXT("InventoryComponent is nullptr"));
+		return nullptr;
+	}
+	return CachedInventoryComponent.Get();
 }
 
 void APlayerBase::Tick(float DeltaSeconds)
@@ -155,6 +177,7 @@ void APlayerBase::InitAbilityActorInfo()
 	DDSPlayerState->GetAbilitySystemComponent()->InitAbilityActorInfo(DDSPlayerState, this);
 	AbilitySystemComponent = DDSPlayerState->GetDDSAbilitySystemComponent();
 	AttributeSet = DDSPlayerState->GetDDSAttribueSet();
+	CachedInventoryComponent = DDSPlayerState->GetInventoryComponent();
 	PlayerUIComponent->BroadcastInitialValues(AttributeSet);
 
 }

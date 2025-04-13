@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "Components/Inventory/InventoryComponentInterface.h"
 #include "DDS/Character/EntityBase.h"
 #include "Interfaces/PawnUIInterface.h"
 #include "PlayerBase.generated.h"
@@ -16,7 +17,7 @@ class UPawnCombatComponent;
  * 
  */
 UCLASS()
-class DDS_API APlayerBase : public AEntityBase
+class DDS_API APlayerBase : public AEntityBase, public IInventoryComponentInterface
 {
 	GENERATED_BODY()
 
@@ -36,6 +37,11 @@ public:
 	virtual UPawnUIComponent* GetPawnUIComponent() const override;
 	virtual UPlayerUIComponent* GetPlayerUIComponent() const override;
 	/* IPawnUIInterface End~ */
+
+    /* IInventoryComponentInterface Begin~ */
+    virtual UInventoryComponent* GetInventoryComponent() override;
+	/* IInventoryComponentInterface End~ */
+	
 protected:
 	virtual void Tick(float DeltaSeconds) override;
 	virtual void BeginPlay() override;
@@ -51,6 +57,8 @@ protected:
 
 	UPROPERTY(VisibleAnywhere,BlueprintReadOnly, Category = "UI")
 	TObjectPtr<UPlayerUIComponent> PlayerUIComponent;
+
+	TWeakObjectPtr<UInventoryComponent> CachedInventoryComponent;
 public:
 	
 	virtual void Server_SetFocusedObject(AActor* InFocusedObject) override;
