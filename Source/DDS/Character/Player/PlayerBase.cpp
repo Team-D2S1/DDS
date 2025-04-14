@@ -3,7 +3,6 @@
 
 #include "PlayerBase.h"
 
-#include <Components/Inventory/InventoryComponent.h>
 
 #include "DDSGameplayTags.h"
 #include "DDSPlayerState.h"
@@ -11,10 +10,10 @@
 #include "Components/Combat/PlayerCombatComponent.h"
 #include "DataAsset/StartUpData/DataAsset_StartUpDataBase.h"
 #include "DDS/ETC/CustomLog.h"
-#include "DDS/GameAbilitySystem/DDSAbilitySystemComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "Components/UI/PlayerUIComponent.h"
+#include "Components/Inventory/InventoryComponent.h"
 
 APlayerBase::APlayerBase()
 {
@@ -179,7 +178,7 @@ void APlayerBase::InitAbilityActorInfo()
 	DDSPlayerState->GetAbilitySystemComponent()->InitAbilityActorInfo(DDSPlayerState, this);
 	AbilitySystemComponent = DDSPlayerState->GetDDSAbilitySystemComponent();
 	AttributeSet = DDSPlayerState->GetDDSAttribueSet();
-	CachedInventoryComponent = DDSPlayerState->GetInventoryComponent();
+	CachedInventoryComponent = TWeakObjectPtr<UInventoryComponent>(DDSPlayerState->GetInventoryComponent());
 	PlayerUIComponent->BroadcastInitialValues(AttributeSet);
 
 }
