@@ -16,6 +16,7 @@ void ALobbyGameState::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutL
 
 	DOREPLIFETIME(ThisClass, LobbyPlayerNum);
 	DOREPLIFETIME(ThisClass, ReadyPlayerNum);
+	DOREPLIFETIME(ThisClass, PlayerNetIds);
 }
 
 void ALobbyGameState::UpdatePlayerReady(ALobbyPlayerController* Controller, bool bIsReady)

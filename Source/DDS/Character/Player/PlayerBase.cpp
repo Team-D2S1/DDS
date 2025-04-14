@@ -3,6 +3,8 @@
 
 #include "PlayerBase.h"
 
+#include <Components/Inventory/InventoryComponent.h>
+
 #include "DDSGameplayTags.h"
 #include "DDSPlayerState.h"
 #include "Camera/CameraComponent.h"
@@ -99,7 +101,7 @@ UInventoryComponent* APlayerBase::GetInventoryComponent()
 	{
 		return CachedInventoryComponent.Get();
 	}
-	ADDSPlayerState* DDSPlayerState = GetPlayerState<ADDSPlayerState>()
+	ADDSPlayerState* DDSPlayerState = GetPlayerState<ADDSPlayerState>();
 	if (!DDSPlayerState)
 	{
 		MY_ERROR_DISPLAY_NET(HasAuthority(), TEXT("PlayerState is nullptr"));

@@ -5,6 +5,7 @@
 #include "OnlineSubsystem.h"
 #include "Online/OnlineSessionNames.h"
 #include "OnlineSessionSettings.h"
+#include "Interfaces/OnlineIdentityInterface.h"
 #include "ETC/CustomLog.h"
 #include "Socket/ClientSocket.h"
 
@@ -189,4 +190,19 @@ void USessionSubsystem::OnStartSessionComplete(FName SessionName, bool bWasSucce
 
 void USessionSubsystem::OnDestroySessionComplete(FName SessionName, bool bWasSuccessful)
 {
+}
+
+TSharedPtr<const FUniqueNetId> USessionSubsystem::CreateUniqueIdFromString(const FString& StringId) const
+{
+	IOnlineSubsystem* OnlineSubsystem = IOnlineSubsystem::Get();
+	if(OnlineSubsystem)
+	{
+		const IOnlineIdentityPtr IdentityInterface = OnlineSubsystem->GetIdentityInterface();
+		if(IdentityInterface.IsValid())
+		{
+			return IdentityInterface->CreateUniquePlayerId(StringId);
+		}
+	}
+
+	return nullptr;
 }

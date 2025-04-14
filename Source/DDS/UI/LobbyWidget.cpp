@@ -3,12 +3,17 @@
 
 #include "UI/LobbyWidget.h"
 
+#include "OnlineSubsystem.h"
 #include "Components/Button.h"
+#include "Components/Image.h"
 #include "Components/TextBlock.h"
-#include "ETC/CustomLog.h"
+#include "Online/CoreOnline.h"
 #include "GameState/LobbyGameState.h"
+#include "Interfaces/OnlineIdentityInterface.h"
 #include "Kismet/GameplayStatics.h"
 #include "PlayerController/LobbyPlayerController.h"
+#include "Session/SessionSubsystem.h"
+#include "Socket/SteamHelper.h"
 
 void ULobbyWidget::UpdatePlayerInfo(int32 PlayerIdx, UTexture2D* SteamImage, const FString& Name)
 {
@@ -65,28 +70,51 @@ void ULobbyWidget::UpdateReadyStartButton()
 
 void ULobbyWidget::UpdatePlayer()
 {
-	MY_LOG(LogTemp, Error, TEXT("Update Player 0"));
 	ALobbyGameState* LobbyGameState = Cast<ALobbyGameState>(UGameplayStatics::GetGameState(this));
 	if(!LobbyGameState) return;
-
-	MY_LOG(LogTemp, Error, TEXT("Update Player 1"));
-	// Server 입장
+	
 	if(ALobbyPlayerController* LobbyPC = Cast<ALobbyPlayerController>(GetOwningPlayer()))
 	{
-		MY_LOG(LogTemp, Error, TEXT("Update Player 3"));
-
+		// Manager일 때, 플레이어 준비상태에 따라 Button 상태를 업데이트
 		if(LobbyPC->bIsManager)
 		{
-			MY_LOG(LogTemp, Error, TEXT("Update Player 4"));
-
 			ReadyStartButton->SetIsEnabled(false);
-			MY_LOG(LogTemp, Error, TEXT("LobbyPlayer : %d, ReadyPlayer : %d"), LobbyGameState->LobbyPlayerNum, LobbyGameState->ReadyPlayerNum);
-			MY_LOG(LogTemp, Error, TEXT("Me Ready ? %d"), LobbyPC->bIsReady);
-		
 			if(LobbyGameState->LobbyPlayerNum == LobbyGameState->ReadyPlayerNum)
 			{
-				MY_LOG(LogTemp, Error, TEXT("Update Player 5"));
 				ReadyStartButton->SetIsEnabled(true);
+			}
+		}
+
+		// 스팀 플레이어 아이디와 아바타를 업데이트
+		for(int i = 0; i < LobbyGameState->PlayerNetIds.Num(); i++)
+		{
+			// PlayerNetId 스트링을 UniqueNetId로 변경
+			USessionSubsystem* SessionSubsystem = GetGameInstance()->GetSubsystem<USessionSubsystem>();
+			TSharedPtr<const FUniqueNetId> PlayerUniqueNetId;
+			if(SessionSubsystem)
+			{
+				PlayerUniqueNetId = SessionSubsystem->CreateUniqueIdFromString(LobbyGameState->PlayerNetIds[0]);
+			}
+
+			FString PlayerNickname;
+			UTexture2D* PlayerAvatarImage = nullptr;
+			if(PlayerUniqueNetId.IsValid())
+			{
+				IOnlineSubsystem* OnlineSubsystem = IOnlineSubsystem::Get();
+				if(OnlineSubsystem)
+				{
+					PlayerNickname = OnlineSubsystem->GetIdentityInterface()->GetPlayerNickname(*PlayerUniqueNetId);
+				}
+			}
+
+			if(i == 0)
+			{
+				Player1Name->SetText(FText::FromString(PlayerNickname));
+
+				FSlateBrush Brush;
+				Brush.SetResourceObject(SteamHelper::GetSteamProfileImage());
+				Brush.SetImageSize(UE::Slate::FDeprecateVector2DParameter(150.f, 150.f));
+				Player1SteamImage->SetBrush(Brush);
 			}
 		}
 	}

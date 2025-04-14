@@ -38,6 +38,8 @@ public:
 	FMultiplayerOnJoinSessionComplete MultiplayerOnJoinSessionComplete;
 	FMultiplayerOnDestroySessionComplete MultiplayerOnDestroySessionComplete;
 	FMultiplayerOnStartSessionComplete MultiplayerOnStartSessionComplete;
+
+	TSharedPtr<const FUniqueNetId> CreateUniqueIdFromString(const FString& StringId) const;
 	
 protected:
 	// 내부 콜백 함수
