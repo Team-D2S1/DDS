@@ -37,11 +37,18 @@ class DDS_API UDataAsset_InputConfig : public UDataAsset
 public:
 	UPROPERTY(EditDefaultsOnly,BlueprintReadOnly)
 	UInputMappingContext* DefaultMappingContext;
+	UPROPERTY(EditDefaultsOnly,BlueprintReadOnly)
+	UInputMappingContext* UIInputMappingContext;
 
 	UPROPERTY(EditDefaultsOnly,BlueprintReadOnly,meta = (TitleProperty = "InputTag"))
 	TArray<FDDSInputActionConfig> NativeInputActions;
-
+	
+	UPROPERTY(EditDefaultsOnly,BlueprintReadOnly,meta = (TitleProperty = "InputTag"))
+	TArray<FDDSInputActionConfig> UIInputActions;
+	
 	UInputAction* FindInputActionByTag(const FGameplayTag& Tag) const;
+	UInputAction* FindUIActionByTag(const FGameplayTag& Tag) const;
+	UInputAction* FindUIActionByKey(const FKey& Key) const;
 
 
 	UPROPERTY(EditDefaultsOnly,BlueprintReadOnly,meta = (TitleProperty = "InputTag"))

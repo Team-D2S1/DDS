@@ -38,7 +38,6 @@ void FInventoryList::AddItem(const TSubclassOf<UItemStaticData>& InItemClass)
 	NewItem.ItemInstance = NewObject<UInventoryItemInstance>();
 	if (!NewItem.ItemInstance->Init(InItemClass))
 	{
-		Items.Remove(NewItem);
 		return;
 	}
 	MarkItemDirty(NewItem);

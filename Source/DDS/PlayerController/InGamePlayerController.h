@@ -46,11 +46,14 @@ protected:
 
 	UFUNCTION(BlueprintCallable)
 	void Input_LockOn();
-
 	UFUNCTION(BlueprintCallable)
-	void Input_ToggleCrafting();
+	void Input_UIInputPressed(FGameplayTag InputTag);
+	UFUNCTION(BlueprintCallable)
+	void Input_UIInputReleased(FGameplayTag InputTag);
 	
+	UFUNCTION(BlueprintCallable)
 	void Input_AbilityInputPressed(FGameplayTag InputTag);
+	UFUNCTION(BlueprintCallable)
 	void Input_AbilityInputReleased(FGameplayTag InputTag);
 	
 	// UFUNCTION(BlueprintCallable)

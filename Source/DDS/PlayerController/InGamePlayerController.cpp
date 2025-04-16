@@ -54,14 +54,17 @@ void AInGamePlayerController::SetupInputComponent()
 	if(!Subsystem) return;
 
 	Subsystem->AddMappingContext(InputConfigDataAsset->DefaultMappingContext, 0);
+	Subsystem->AddMappingContext(InputConfigDataAsset->UIInputMappingContext, 1);
 
 	UDDSInputComponent* DDSInputComponent = CastChecked<UDDSInputComponent>(InputComponent);
 	DDSInputComponent->BindNativeAction(InputConfigDataAsset, DDSGameplayTags::InputTag_Move, ETriggerEvent::Triggered, this, &ThisClass::Input_Move);
 	DDSInputComponent->BindNativeAction(InputConfigDataAsset, DDSGameplayTags::InputTag_Jump, ETriggerEvent::Started, this, &ThisClass::Input_Jump);
 	DDSInputComponent->BindNativeAction(InputConfigDataAsset, DDSGameplayTags::InputTag_Look, ETriggerEvent::Triggered, this, &ThisClass::Input_Look);
 	DDSInputComponent->BindNativeAction(InputConfigDataAsset, DDSGameplayTags::InputTag_LockOn, ETriggerEvent::Started, this, &ThisClass::Input_LockOn);
+	
+ 	DDSInputComponent->BindUIActions(InputConfigDataAsset, this, &ThisClass::Input_UIInputPressed, &ThisClass::Input_UIInputReleased);
+	DDSInputComponent->BindAbilityInputActions(InputConfigDataAsset,this, &ThisClass::Input_AbilityInputPressed, &ThisClass::Input_AbilityInputReleased);
 
-	DDSInputComponent->BindAbilityInputAction(InputConfigDataAsset,this, &ThisClass::Input_AbilityInputPressed, &ThisClass::Input_AbilityInputReleased);
 	MY_LOG(LogTemp, Log, TEXT("Setup Input Complete"));
 }
 
@@ -189,14 +192,28 @@ void AInGamePlayerController::Input_LockOn()
 	
 }
 
-void AInGamePlayerController::Input_ToggleCrafting()
+void AInGamePlayerController::Input_UIInputPressed(FGameplayTag InputTag)
 {
-	ADDSHUD* HUD = Cast<ADDSHUD>(GetHUD());
-	if (!HUD) return;
-	if (!IsLocalController()) return;
-
-	 HUD->ToggleCraftingWidget();
+	MY_CLOG_DISPLAY_NET(FColor::Cyan,HasAuthority(), TEXT("UI Input Pressed %s"), *InputTag.ToString());
+	if (!IsLocalController())
+	{
+		MY_LOG(LogTemp, Type::Warning, TEXT("Not Local Controller"));
+		return;
+	}
+	if (ADDSHUD * HUD = Cast<ADDSHUD>(GetHUD()))
+	{
+		HUD->HandleInputAction(InputTag);
+	}else
+	{
+		MY_ERROR_DISPLAY(TEXT("HUD is nullptr"));
+	}
 }
+
+void AInGamePlayerController::Input_UIInputReleased(FGameplayTag InputTag)
+{
+	// GetDDSAbilitySystemComponent()->UIInputTagReleased(InputTag);
+}
+
 
 void AInGamePlayerController::Input_AbilityInputPressed(FGameplayTag InputTag)
 {

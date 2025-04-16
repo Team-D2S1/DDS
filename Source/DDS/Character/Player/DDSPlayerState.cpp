@@ -3,6 +3,7 @@
 
 #include "DDSPlayerState.h"
 
+#include "Components/Inventory/InventoryComponent.h"
 #include "DDS/GameAbilitySystem/DDSAbilitySystemComponent.h"
 #include "DDS/GameAbilitySystem/DDSAttributeSet.h"
 #include "Items/Weapons/DDSWeaponBase.h"
@@ -19,6 +20,10 @@ ADDSPlayerState::ADDSPlayerState()
 	AbilitySystemComponent->SetReplicationMode(EGameplayEffectReplicationMode::Mixed);
 
 	AttributeSet = CreateDefaultSubobject<UDDSAttributeSet>(TEXT("AttributeSet"));
+
+	InventoryComponent = CreateDefaultSubobject<UInventoryComponent>(TEXT("InventoryComponent"));
+	InventoryComponent->SetIsReplicated(true);
+	
 
 	SetGenericTeamId(FGenericTeamId(0));
 }
