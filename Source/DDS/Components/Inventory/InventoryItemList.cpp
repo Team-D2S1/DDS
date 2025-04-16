@@ -19,6 +19,19 @@ void FInventoryItemEntry::PostReplicatedChange(const struct FInventoryList& InAr
 	InArraySerializer.OnRepItemRemoved.Broadcast(ItemInstance->GetItemId());
 }
 
+bool FInventoryItemEntry::operator==(const FInventoryItemEntry& Other) const
+{
+	if (ItemInstance && Other.ItemInstance)
+	{
+		return ItemInstance->GetItemId() == Other.ItemInstance->GetItemId();
+	}
+	if (ItemInstance == Other.ItemInstance)
+	{
+		return true;
+	}
+	return false;
+}
+
 void FInventoryList::AddItem(const TSubclassOf<UItemStaticData>& InItemClass)
 {
 	FInventoryItemEntry& NewItem = Items.AddDefaulted_GetRef();

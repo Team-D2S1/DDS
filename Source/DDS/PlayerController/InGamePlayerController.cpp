@@ -189,13 +189,13 @@ void AInGamePlayerController::Input_LockOn()
 	
 }
 
-void AInGamePlayerController::Input_ShowCrafting()
+void AInGamePlayerController::Input_ToggleCrafting()
 {
 	ADDSHUD* HUD = Cast<ADDSHUD>(GetHUD());
 	if (!HUD) return;
 	if (!IsLocalController()) return;
 
-	
+	 HUD->ToggleCraftingWidget();
 }
 
 void AInGamePlayerController::Input_AbilityInputPressed(FGameplayTag InputTag)

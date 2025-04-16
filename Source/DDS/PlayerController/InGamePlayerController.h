@@ -48,7 +48,7 @@ protected:
 	void Input_LockOn();
 
 	UFUNCTION(BlueprintCallable)
-	void Input_ShowCrafting();
+	void Input_ToggleCrafting();
 	
 	void Input_AbilityInputPressed(FGameplayTag InputTag);
 	void Input_AbilityInputReleased(FGameplayTag InputTag);

@@ -24,6 +24,8 @@ struct FInventoryItemEntry : public FFastArraySerializerItem
 	void PreReplicatedRemove(const struct FInventoryList& InArraySerializer);
 	void PostReplicatedAdd(const struct FInventoryList& InArraySerializer);
 	void PostReplicatedChange(const struct FInventoryList& InArraySerializer);
+	
+	bool operator==(const FInventoryItemEntry& Other) const;
 };
 
 USTRUCT(BlueprintType)
