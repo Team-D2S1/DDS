@@ -193,6 +193,8 @@ void AInGamePlayerController::Input_ShowCrafting()
 {
 	ADDSHUD* HUD = Cast<ADDSHUD>(GetHUD());
 	if (!HUD) return;
+	if (!IsLocalController()) return;
+
 	
 }
 

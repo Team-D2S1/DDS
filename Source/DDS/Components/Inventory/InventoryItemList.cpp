@@ -23,12 +23,20 @@ void FInventoryList::AddItem(const TSubclassOf<UItemStaticData>& InItemClass)
 {
 	FInventoryItemEntry& NewItem = Items.AddDefaulted_GetRef();
 	NewItem.ItemInstance = NewObject<UInventoryItemInstance>();
-	NewItem.ItemInstance->Init(InItemClass);
+	if (!NewItem.ItemInstance->Init(InItemClass))
+	{
+		Items.Remove(NewItem);
+		return;
+	}
 	MarkItemDirty(NewItem);
 }
 
 void FInventoryList::AddItem(UInventoryItemInstance* Item)
 {
+	if (!Item)
+	{
+		return;
+	}
 	FInventoryItemEntry& NewItem = Items.AddDefaulted_GetRef();
 	NewItem.ItemInstance = Item;
 	MarkItemDirty(NewItem);
