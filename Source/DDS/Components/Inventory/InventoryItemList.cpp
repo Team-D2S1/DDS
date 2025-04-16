@@ -3,6 +3,22 @@
 #include "DDSTypes/DDSClassTypes.h"
 // #include "Net/Serialization/FastArraySerializer.h"
 
+
+void FInventoryItemEntry::PreReplicatedRemove(const struct FInventoryList& InArraySerializer)
+{
+	InArraySerializer.OnRepItemAdded.Broadcast(ItemInstance->GetItemId());
+}
+
+void FInventoryItemEntry::PostReplicatedAdd(const struct FInventoryList& InArraySerializer)
+{
+	InArraySerializer.OnRepItemRemoved.Broadcast(ItemInstance->GetItemId());
+}
+
+void FInventoryItemEntry::PostReplicatedChange(const struct FInventoryList& InArraySerializer)
+{
+	InArraySerializer.OnRepItemRemoved.Broadcast(ItemInstance->GetItemId());
+}
+
 void FInventoryList::AddItem(const TSubclassOf<UItemStaticData>& InItemClass)
 {
 	FInventoryItemEntry& NewItem = Items.AddDefaulted_GetRef();

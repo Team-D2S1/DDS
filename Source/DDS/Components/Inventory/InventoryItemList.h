@@ -8,6 +8,9 @@
 
 class UInventoryItemInstance;
 class UItemStaticData;
+struct FInventoryList;
+
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FInventoryItemEvent, int32, ItemID);
 
 USTRUCT(BlueprintType)
 struct FInventoryItemEntry : public FFastArraySerializerItem
@@ -16,13 +19,18 @@ struct FInventoryItemEntry : public FFastArraySerializerItem
 
 	UPROPERTY()
 	UInventoryItemInstance* ItemInstance = nullptr;
+
+	/** 자동으로 호출되는 함수들 */
+	void PreReplicatedRemove(const struct FInventoryList& InArraySerializer);
+	void PostReplicatedAdd(const struct FInventoryList& InArraySerializer);
+	void PostReplicatedChange(const struct FInventoryList& InArraySerializer);
 };
 
 USTRUCT(BlueprintType)
 struct FInventoryList : public FFastArraySerializer
 {
 	GENERATED_BODY()
-
+public:
 	UPROPERTY()
 	TArray<FInventoryItemEntry> Items;
 
@@ -35,6 +43,10 @@ struct FInventoryList : public FFastArraySerializer
 	void AddItem(UInventoryItemInstance* Item);
 	void RemoveItem(TSubclassOf<UItemStaticData> ItemClass);
 	void RemoveItem(int32 Index);
+
+	FInventoryItemEvent OnRepItemRemoved;
+	FInventoryItemEvent OnRepItemAdded;
+	FInventoryItemEvent OnRepItemChanged;
 };
 
 template<>

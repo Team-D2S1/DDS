@@ -18,6 +18,7 @@
 #include "Interfaces/Focusable.h"
 #include "Kismet/GameplayStatics.h"
 #include "Kismet/KismetMathLibrary.h"
+#include "UI/HUD/DDSHUD.h"
 
 AInGamePlayerController::AInGamePlayerController()
 {
@@ -188,10 +189,18 @@ void AInGamePlayerController::Input_LockOn()
 	
 }
 
+void AInGamePlayerController::Input_ShowCrafting()
+{
+	ADDSHUD* HUD = Cast<ADDSHUD>(GetHUD());
+	if (!HUD) return;
+	
+}
+
 void AInGamePlayerController::Input_AbilityInputPressed(FGameplayTag InputTag)
 {
 	MY_CLOG_DISPLAY_NET(FColor::Cyan,HasAuthority(), TEXT("Ability Input Pressed %s"), *InputTag.ToString());
 	GetDDSAbilitySystemComponent()->AbilityInputTagPressed(InputTag);
+			
 }
 
 void AInGamePlayerController::Input_AbilityInputReleased(FGameplayTag InputTag)
