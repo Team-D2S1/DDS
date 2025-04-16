@@ -13,8 +13,7 @@ UCLASS()
 class DDS_API ALobbyGameState : public AGameStateBase
 {
 	GENERATED_BODY()
-	
-	
+
 public:
 	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
 
@@ -25,8 +24,12 @@ public:
 
 	UPROPERTY(ReplicatedUsing = OnRep_PlayerStateChanged)
 	int32 ReadyPlayerNum;
+
+	UPROPERTY(Replicated)
+	TArray<FString> PlayerNetIds;
 	
 protected:
+	// 로비 플레이어의 수, 준비된 플레이어의 수가 변했을 때 호출
 	UFUNCTION()
 	void OnRep_PlayerStateChanged();
 };

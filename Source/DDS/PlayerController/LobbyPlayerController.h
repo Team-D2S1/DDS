@@ -44,6 +44,8 @@ public:
 	UFUNCTION(NetMulticast, Reliable)
 	void NetMulticast_UpdatePlayerInfo(FLobbyPlayerInfo NewPlayerInfo);
 
+	UTexture2D* GetSteamProfileImage(int32 Width, int32 Height);
+
 	UPROPERTY()
 	FPlayerReadyDelegate PlayerReadyDelegate;
 	

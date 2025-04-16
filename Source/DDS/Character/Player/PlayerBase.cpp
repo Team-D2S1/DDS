@@ -3,6 +3,8 @@
 
 #include "PlayerBase.h"
 
+
+#include "DDSGameplayTags.h"
 #include "DDSPlayerState.h"
 #include "Camera/CameraComponent.h"
 #include "Components/Combat/PlayerCombatComponent.h"

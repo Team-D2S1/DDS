@@ -24,6 +24,7 @@ public class DDS : ModuleRules
 			"SlateCore",
 			"OnlineSubsystem",
 			"OnlineSubsystemSteam",
+			"Steamworks",
 			"Sockets",
 			"Networking",
 			"Paper2D"

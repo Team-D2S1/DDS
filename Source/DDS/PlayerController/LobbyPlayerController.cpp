@@ -71,6 +71,16 @@ void ALobbyPlayerController::ReadyPlayer(bool bReady)
 	Server_ReadyPlayer(bReady);
 }
 
+UTexture2D* ALobbyPlayerController::GetSteamProfileImage(int32 Width, int32 Height)
+{
+	UTexture2D* NewTexture = NewObject<UTexture2D>();
+
+	// TODO
+	// Do something...
+	
+	return NewTexture;
+}
+
 void ALobbyPlayerController::NetMulticast_UpdatePlayerInfo_Implementation(FLobbyPlayerInfo NewPlayerInfo)
 {
 	LobbyPlayerInfo.SteamID = NewPlayerInfo.SteamID;
