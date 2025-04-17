@@ -3,16 +3,52 @@
 #include "DDSTypes/DDSClassTypes.h"
 // #include "Net/Serialization/FastArraySerializer.h"
 
+
+void FInventoryItemEntry::PreReplicatedRemove(const struct FInventoryList& InArraySerializer)
+{
+	InArraySerializer.OnRepItemAdded.Broadcast(ItemInstance->GetItemId());
+}
+
+void FInventoryItemEntry::PostReplicatedAdd(const struct FInventoryList& InArraySerializer)
+{
+	InArraySerializer.OnRepItemRemoved.Broadcast(ItemInstance->GetItemId());
+}
+
+void FInventoryItemEntry::PostReplicatedChange(const struct FInventoryList& InArraySerializer)
+{
+	InArraySerializer.OnRepItemRemoved.Broadcast(ItemInstance->GetItemId());
+}
+
+bool FInventoryItemEntry::operator==(const FInventoryItemEntry& Other) const
+{
+	if (ItemInstance && Other.ItemInstance)
+	{
+		return ItemInstance->GetItemId() == Other.ItemInstance->GetItemId();
+	}
+	if (ItemInstance == Other.ItemInstance)
+	{
+		return true;
+	}
+	return false;
+}
+
 void FInventoryList::AddItem(const TSubclassOf<UItemStaticData>& InItemClass)
 {
 	FInventoryItemEntry& NewItem = Items.AddDefaulted_GetRef();
 	NewItem.ItemInstance = NewObject<UInventoryItemInstance>();
-	NewItem.ItemInstance->Init(InItemClass);
+	if (!NewItem.ItemInstance->Init(InItemClass))
+	{
+		return;
+	}
 	MarkItemDirty(NewItem);
 }
 
 void FInventoryList::AddItem(UInventoryItemInstance* Item)
 {
+	if (!Item)
+	{
+		return;
+	}
 	FInventoryItemEntry& NewItem = Items.AddDefaulted_GetRef();
 	NewItem.ItemInstance = Item;
 	MarkItemDirty(NewItem);

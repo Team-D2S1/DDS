@@ -14,7 +14,7 @@ class UItemStaticData : public UObject
 public:
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
-	FGameplayTagContainer ItemTags;
+	FGameplayTagContainer ItemStaticTags;
 	
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
 	FString ItemName;
