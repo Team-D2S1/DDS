@@ -24,7 +24,7 @@ class DDS_API UClientSocket : public UObject
 	GENERATED_BODY()
 
 public:
-	inline static FString ServerIP = "222.111.91.33";
+	inline static FString ServerIP = "118.32.109.221";
 	// 소켓 생성 후 통신작업 수행
 	FSocketReceivedData CreateSocket(const FString RequestMessage, const FString& ExtraInfo, bool bIsLocal);
 	

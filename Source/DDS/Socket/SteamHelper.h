@@ -4,9 +4,7 @@
 
 #include "CoreMinimal.h"
 
-/**
- * 
- */
+
 class DDS_API SteamHelper
 {
 public:

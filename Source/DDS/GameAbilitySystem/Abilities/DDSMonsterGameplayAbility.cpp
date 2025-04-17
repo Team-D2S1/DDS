@@ -19,8 +19,3 @@ UMonsterCombatComponent* UDDSMonsterGameplayAbility::GetMonsterCombatComponentFr
 {
 	return GetMonsterCharacterFromActorInfo()->GetMonsterCombatComponent();
 }
-
-void AMonsterBase::OnRep_MonsterCombatComponent()
-{
-	
-}
