@@ -70,6 +70,7 @@ void AInGamePlayerController::SetupInputComponent()
 
 void AInGamePlayerController::Input_Move(const FInputActionValue& Value)
 {
+	// MY_LOG_DISPLAY("Move %s", *Value.ToString());
 	FVector2D MoveVector = Value.Get<FVector2D>();
 	FRotator YawRotator(0.f, GetControlRotation().Yaw, 0.f);
 	FVector ForwardVector = FRotationMatrix(YawRotator).GetUnitAxis(EAxis::X);
@@ -200,6 +201,10 @@ void AInGamePlayerController::Input_UIInputPressed(FGameplayTag InputTag)
 		MY_LOG(LogTemp, Type::Warning, TEXT("Not Local Controller"));
 		return;
 	}
+	// 움직임 멈추기
+	// Input_Move(FInputActionValue(FVector2D(0.f, 0.f)));
+	
+	// 실제 UI 처리
 	if (ADDSHUD * HUD = Cast<ADDSHUD>(GetHUD()))
 	{
 		HUD->HandleInputAction(InputTag);
