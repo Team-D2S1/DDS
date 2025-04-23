@@ -22,15 +22,16 @@ class DDS_API AAIControllerBase : public AAIController
 
 public:
 	AAIControllerBase(FObjectInitializer const& ObjectInitializer);
-	
-	virtual void BeginPlay() override;
 
-	// ~ Begin IGenericTeamAgentInterface interface
-	virtual ETeamAttitude::Type GetTeamAttitudeTowards(const AActor& Other) const override; // 다른 액터에 대한 적대 설정
-	// ~ End IGenericTeamAgentInterface interface
-	
+	/** 다른 액터에 대한 ETeamAttitude를 반환 */
+	virtual ETeamAttitude::Type GetTeamAttitudeTowards(const AActor& Other) const override;
+
 protected:
 	virtual void OnPossess(APawn* InPawn) override;
+
+	/** AI의 타겟이 새로 업데이트되었을 때 실행되는 함수 */
+	UFUNCTION(BlueprintCallable)
+	void OnTargetPerceptionUpdated(AActor* Actor, FAIStimulus Stimulus);
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "AI")
 	TObjectPtr<UBehaviorTree> BehaviorTree;
@@ -44,18 +45,19 @@ protected:
 	UPROPERTY(VisibleAnywhere,Category = "Stat")
 	TObjectPtr<UAbilitySystemComponent> AbilityComponent;
 
-	UFUNCTION(BlueprintCallable)
-	void OnTargetPerceptionUpdated(AActor* Actor, FAIStimulus Stimulus);
+	/** 감지된 Actor들과 어그로 순위 저장된 TArray. 어그로 순위가 더 높은 대상을 우선해서 공격한다 */
+	TArray<TPair<AActor*, int32>> DetectedActors;
 
-	// 어그로 관련.. 감지된 Actor와 어그로 순위 (높은 대상을 우선해서 쫓거나 공격)
-	TArray<TPair<AActor*, float>> DetectedActors; 
-	
-	// 이동 관련
-	UPROPERTY(VisibleAnywhere, Category = "AI Movement")
-	FVector OriginPosition;
-	UPROPERTY(EditDefaultsOnly, Category = "AI Movement")
-	float PatrolRadius;
-
-private:
-	FGenericTeamId TeamID;
+	/** 몬스터 시작 지정 위치 */
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Behavior");
+	FVector OriginLocation;
+	/** 몬스터 행동 범위 */
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Behavior");
+	float BehaviorRadius;
+	/** 몬스터 인식 범위 */
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Behavior");
+	float DetectionRadius;
+	/** 몬스터 공격 가능한 범위 */
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Behavior");
+	float AttackRange;
 };

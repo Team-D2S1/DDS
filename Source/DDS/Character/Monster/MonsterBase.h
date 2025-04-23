@@ -19,49 +19,54 @@ UCLASS()
 class DDS_API AMonsterBase : public AEntityBase, public IFocusable
 {
 	GENERATED_BODY()
+	
 public:
 	AMonsterBase();
 
+protected:
+	virtual void PossessedBy(AController* NewController) override;
+	
+	virtual void BeginPlay() override;
+
+	virtual void Tick(float DeltaSeconds) override;	
+
+	/** 몬스터 전투 관리하는 컴포넌트 */
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Combat")
+	TObjectPtr<UMonsterCombatComponent> MonsterCombatComponent;
+
+	/** 몬스터와 관련된 UI를 관리하는 컴포넌트 */
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "UI")
+	TObjectPtr<UMonsterUIComponent> MonsterUIComponent;
+
+	/** 몬스터 체력바 위젯 */
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "UI")
+	TObjectPtr<UWidgetComponent> MonsterHealthWidgetComponent;
+
+	/** 몬스터 초기 스탯 초기화 */
+	void InitMonsterStartUpData();
+	
+	/** 현재 해당 몬스터가 Lock On 중인지를 표시하는 로컬 변수. 복제되면 안됨 */
+	bool bIsFocused = false;
+	
+public:
+	// IFocusable interface
+	/** 플레이어가 몬스터를 타게팅했을 때 호출되는 함수 */
+	UFUNCTION(BlueprintCallable, Category = "Focusable")
+	virtual void OnFocus() override;
+	/** 몬스터 타게팅이 해제되었을 때 호출되는 함수 */
+	UFUNCTION(BlueprintCallable, Category = "Focusable")
+	virtual void OnFocusLost() override;
+	// End of IFocusable interface
+
+	/** Get Monster Combat Component */
+	FORCEINLINE UMonsterCombatComponent* GetMonsterCombatComponent() const { return MonsterCombatComponent; }
+	/** Get Pawn Combat Component */ 
 	virtual UPawnCombatComponent* GetCombatComponent() const override;
 
 	/* IPawnUIInterface Begin~ */
 	virtual UPawnUIComponent* GetPawnUIComponent() const override;
 	virtual UMonsterUIComponent* GetMonsterUIComponent() const override;
 	/* ~ IPawnUIInterface End */
-protected:
-	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
-	virtual void PossessedBy(AController* NewController) override;
-	virtual void BeginPlay() override;
 
-	virtual void Tick(float DeltaSeconds) override;	
-
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Combat")
-	TObjectPtr<UMonsterCombatComponent> MonsterCombatComponent;
-
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "UI")
-	TObjectPtr<UMonsterUIComponent> MonsterUIComponent;
-
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "UI")
-	TObjectPtr<UWidgetComponent> MonsterHealthWidgetComponent;
-	
-	UFUNCTION()
-	void OnRep_MonsterCombatComponent();
-
-	// 로컬 변수. 복제되면 안됨
-	bool bIsFocused = false;
-	
-	// UPROPERTY(VisibleAnywhere,BlueprintReadOnly, Category = "UI")
-	// TObjectPtr<UMonsterUIComponent> PlayerUIComponent;
-private:
-	void InitMonsterStartUpData();
-public:
-	FORCEINLINE UMonsterCombatComponent* GetMonsterCombatComponent() const { return MonsterCombatComponent; }
-
-	// IFocusable interface
-	UFUNCTION(BlueprintCallable, Category = "Focusable")
-	virtual void OnFocus() override;
-	UFUNCTION(BlueprintCallable, Category = "Focusable")
-	virtual void OnFocusLost() override;
-	// End of IFocusable interface
 };
 

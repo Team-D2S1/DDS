@@ -5,25 +5,17 @@
 
 #include "AI/DDSPerceptionComponent.h"
 #include "BehaviorTree/BlackboardComponent.h"
-#include "Character/Monster/MonsterBase.h"
-#include "ETC/CustomLog.h"
-#include "ETC/DDSFunctionLibrary.h"
 #include "Perception/AIPerceptionComponent.h"
 #include "Perception/AISenseConfig_Sight.h"
 #include "Character/Player/DDSPlayerState.h"
+#include "ETC/Enum.h"
 
 AAIControllerBase::AAIControllerBase(FObjectInitializer const& ObjectInitializer)
 {
 	AIPerception = CreateDefaultSubobject<UDDSPerceptionComponent>(TEXT("AI Perception"));
 	SetPerceptionComponent(*AIPerception);
 
-	SetGenericTeamId(FGenericTeamId(1));
-}
-
-void AAIControllerBase::BeginPlay()
-{
-	Super::BeginPlay();
-	//AIPerception->OnTargetPerceptionUpdated.AddDynamic(this, &ThisClass::OnTargetPerceptionUpdated);
+	AAIController::SetGenericTeamId(FGenericTeamId(static_cast<uint8>(EGameTeam::Monster)));
 }
 
 ETeamAttitude::Type AAIControllerBase::GetTeamAttitudeTowards(const AActor& Other) const
@@ -50,12 +42,6 @@ void AAIControllerBase::OnTargetPerceptionUpdated(AActor* Actor, FAIStimulus Sti
 {
 	if (UBlackboardComponent* BlackboardComponent = GetBlackboardComponent())
 	{
-		// DEBUG_CLOG_DISPLAY(FColor::Green,"OnTargetPerceptionUpdated %s", *Actor->GetName());
-		// if(Stimulus.WasSuccessfullySensed())
-		// {
-		//
-		// 	DEBUG_CLOG_DISPLAY(FColor::Green,"GetTeamAttitudeTowards %d", GetTeamAttitudeTowards(*Actor));
-		// }
 		if(Stimulus.WasSuccessfullySensed() && Actor && GetTeamAttitudeTowards(*Actor) == ETeamAttitude::Hostile)
 		{
 			BlackboardComponent->SetValueAsObject("TargetActor", Actor);
@@ -70,13 +56,6 @@ void AAIControllerBase::OnTargetPerceptionUpdated(AActor* Actor, FAIStimulus Sti
 void AAIControllerBase::OnPossess(APawn* InPawn)
 {
 	Super::OnPossess(InPawn);
-
-	// Set AbilityComponent
-	if(AMonsterBase* Monster = Cast<AMonsterBase>(InPawn))
-	{
-		AbilityComponent = Monster->GetAbilitySystemComponent();
-		OriginPosition = Monster->GetActorLocation();
-	}
 
 	// Run BehaviorTree
 	if(BehaviorTree && BlackBoardData)

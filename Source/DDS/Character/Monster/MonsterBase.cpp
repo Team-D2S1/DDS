@@ -30,8 +30,7 @@ AMonsterBase::AMonsterBase()
 	GetCharacterMovement()->RotationRate = FRotator(0.0f, 180.0f, 0.0f);
 	GetCharacterMovement()->MaxWalkSpeed = 300.0f;
 	GetCharacterMovement()->BrakingDecelerationWalking = 1000.0f; // 안움직일때 감속
-
-
+	
 	AbilitySystemComponent = CreateDefaultSubobject<UDDSAbilitySystemComponent>(TEXT("AbilitySystemComponent"));
 	AbilitySystemComponent->SetIsReplicated(true);//
 	AbilitySystemComponent->SetReplicationMode(EGameplayEffectReplicationMode::Minimal);
@@ -63,14 +62,6 @@ UMonsterUIComponent* AMonsterBase::GetMonsterUIComponent() const
 {
 	return MonsterUIComponent;
 }
-
-void AMonsterBase::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
-{
-	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
-
-	// DOREPLIFETIME(AMonsterBase, MonsterCombatComponent);
-}
-
 
 void AMonsterBase::BeginPlay()
 {

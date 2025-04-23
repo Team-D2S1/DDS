@@ -3,9 +3,6 @@
 
 #include "Socket/SteamHelper.h"
 #include "steam/steam_api.h"
-#include "Interfaces/OnlineUserInterface.h"
-
-#include "OnlineSubsystem.h"
 
 class IOnlineSubsystem;
 
