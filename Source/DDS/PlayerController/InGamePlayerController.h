@@ -66,6 +66,14 @@ public:
 	// UPROPERTY()
 	// TObjectPtr<UCombatComponent> CombatComponent;
 
+	/**
+	 * 움직임, 스킬 입력 무시.
+	 * UI는 무시하지 않음
+	 * @param bIgnore 무시 여부
+	 */
+	UFUNCTION(BlueprintCallable)
+	void SetIgnoreGameInput(bool bIgnore);
+
 protected:
 	APlayerBase* GetPlayerBase();
 	UDDSAbilitySystemComponent* GetDDSAbilitySystemComponent();
@@ -81,5 +89,5 @@ private:
 	AActor* focusedObject; // TODO: PlayerState로 이관
 	TWeakObjectPtr<APlayerBase> CachedPlayerBase;
 
-
+	bool bIsIgnoringGameInput = false;
 };

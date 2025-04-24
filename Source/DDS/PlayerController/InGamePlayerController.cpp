@@ -90,6 +90,8 @@ void AInGamePlayerController::Input_Move(const FInputActionValue& Value)
 
 void AInGamePlayerController::Input_Jump()
 {
+	if(bIsIgnoringGameInput)
+		 return;
 	ACharacter* MyCharacter = GetCharacter();
 
 	if(!MyCharacter) return;
@@ -122,6 +124,8 @@ void AInGamePlayerController::Input_Look(const FInputActionValue& Value)
 void AInGamePlayerController::Input_LockOn()
 {
 	if (!IsLocalController())
+		return;
+	if (bIsIgnoringGameInput)
 		return;
 	APlayerBase* PlayerBase = GetPlayerBase();
 	if (!PlayerBase) return;
@@ -195,7 +199,8 @@ void AInGamePlayerController::Input_LockOn()
 
 void AInGamePlayerController::Input_UIInputPressed(FGameplayTag InputTag)
 {
-	MY_CLOG_DISPLAY_NET(FColor::Cyan,HasAuthority(), TEXT("UI Input Pressed %s"), *InputTag.ToString());
+	MY_LOG(LogTemp, Type::Log, TEXT("UI Input Pressed %s"), *InputTag.ToString());
+	// MY_CLOG_DISPLAY_NET(FColor::Cyan,HasAuthority(), TEXT("UI Input Pressed %s"), *InputTag.ToString());
 	if (!IsLocalController())
 	{
 		MY_LOG(LogTemp, Type::Warning, TEXT("Not Local Controller"));
@@ -222,6 +227,8 @@ void AInGamePlayerController::Input_UIInputReleased(FGameplayTag InputTag)
 
 void AInGamePlayerController::Input_AbilityInputPressed(FGameplayTag InputTag)
 {
+	if (bIsIgnoringGameInput)
+		return;
 	MY_CLOG_DISPLAY_NET(FColor::Cyan,HasAuthority(), TEXT("Ability Input Pressed %s"), *InputTag.ToString());
 	GetDDSAbilitySystemComponent()->AbilityInputTagPressed(InputTag);
 			
@@ -229,7 +236,26 @@ void AInGamePlayerController::Input_AbilityInputPressed(FGameplayTag InputTag)
 
 void AInGamePlayerController::Input_AbilityInputReleased(FGameplayTag InputTag)
 {
+	if (bIsIgnoringGameInput)
+		return;
 	GetDDSAbilitySystemComponent()->AbilityInputTagReleased(InputTag);
+}
+
+
+void AInGamePlayerController::SetIgnoreGameInput(bool bIgnore)
+{
+	if (bIgnore)
+	{
+		SetIgnoreMoveInput(true);
+		SetIgnoreLookInput(true);
+		bIsIgnoringGameInput = true;
+	}
+	else
+	{
+		SetIgnoreMoveInput(false);
+		SetIgnoreLookInput(false);
+		bIsIgnoringGameInput = false;
+	}
 }
 
 APlayerBase* AInGamePlayerController::GetPlayerBase()
