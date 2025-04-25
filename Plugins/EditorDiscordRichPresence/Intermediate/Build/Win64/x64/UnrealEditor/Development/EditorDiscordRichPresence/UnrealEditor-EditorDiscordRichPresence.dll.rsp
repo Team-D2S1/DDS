@@ -22,7 +22,7 @@
 /DELAYLOAD:"discord_game_sdk.dll"
 /DELAYLOAD:"d3d12.dll"
 /DELAYLOAD:"DBGHELP.DLL"
-/LIBPATH:"C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.38.33130\lib\x64"
+/LIBPATH:"C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.42.34433\lib\x64"
 /LIBPATH:"C:\Program Files (x86)\Windows Kits\10\lib\10.0.22621.0\ucrt\x64"
 /LIBPATH:"C:\Program Files (x86)\Windows Kits\10\lib\10.0.22621.0\um\x64"
 /NODEFAULTLIB:"LIBCMT"
@@ -38,9 +38,9 @@
 /FUNCTIONPADMIN:6
 /NOIMPLIB
 "..\Intermediate\Build\Win64\x64\UnrealEditor\Development\UnrealEd\SharedPCH.UnrealEd.Project.ValApi.Cpp20.h.obj"
-"C:\Users\macham\Documents\Unreal Projects\DDS\Plugins\EditorDiscordRichPresence\Intermediate\Build\Win64\x64\UnrealEditor\Development\EditorDiscordRichPresence\Module.EditorDiscordRichPresence.cpp.obj"
+"D:\Project\DDS\Plugins\EditorDiscordRichPresence\Intermediate\Build\Win64\x64\UnrealEditor\Development\EditorDiscordRichPresence\Module.EditorDiscordRichPresence.cpp.obj"
 "..\Intermediate\Build\Win64\x64\UnrealEditor\Development\Default.rc2.res"
-"C:\Users\macham\Documents\Unreal Projects\DDS\Plugins\EditorDiscordRichPresence\Source\ThirdParty\Discord\x64\Release\discord_game_sdk.dll.lib"
+"D:\Project\DDS\Plugins\EditorDiscordRichPresence\Source\ThirdParty\Discord\x64\Release\discord_game_sdk.dll.lib"
 "..\Intermediate\Build\Win64\x64\UnrealEditor\Development\UnrealEd\UnrealEditor-UnrealEd.lib"
 "..\Intermediate\Build\Win64\x64\UnrealEditor\Development\CoreUObject\UnrealEditor-CoreUObject.lib"
 "..\Intermediate\Build\Win64\x64\UnrealEditor\Development\Engine\UnrealEditor-Engine.lib"
@@ -75,6 +75,6 @@
 "synchronization.lib"
 "dwmapi.lib"
 "imm32.lib"
-/OUT:"C:\Users\macham\Documents\Unreal Projects\DDS\Plugins\EditorDiscordRichPresence\Binaries\Win64\UnrealEditor-EditorDiscordRichPresence.dll"
-/PDB:"C:\Users\macham\Documents\Unreal Projects\DDS\Plugins\EditorDiscordRichPresence\Binaries\Win64\UnrealEditor-EditorDiscordRichPresence.pdb"
+/OUT:"D:\Project\DDS\Plugins\EditorDiscordRichPresence\Binaries\Win64\UnrealEditor-EditorDiscordRichPresence.dll"
+/PDB:"D:\Project\DDS\Plugins\EditorDiscordRichPresence\Binaries\Win64\UnrealEditor-EditorDiscordRichPresence.pdb"
 /ignore:4078
