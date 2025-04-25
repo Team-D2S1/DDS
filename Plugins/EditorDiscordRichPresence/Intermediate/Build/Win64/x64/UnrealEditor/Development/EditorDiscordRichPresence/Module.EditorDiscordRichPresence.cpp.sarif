@@ -10,13 +10,13 @@
                         "text": "'strncpy': This function or variable may be unsafe. Consider using strncpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details."
                     },
                     "analysisTarget": {
-                        "uri": "file:///C:/Users/macham/Documents/Unreal Projects/DDS/Plugins/EditorDiscordRichPresence/Intermediate/Build/Win64/x64/UnrealEditor/Development/EditorDiscordRichPresence/Module.EditorDiscordRichPresence.cpp"
+                        "uri": "file:///D:/Project/DDS/Plugins/EditorDiscordRichPresence/Intermediate/Build/Win64/x64/UnrealEditor/Development/EditorDiscordRichPresence/Module.EditorDiscordRichPresence.cpp"
                     },
                     "locations": [
                         {
                             "physicalLocation": {
                                 "artifactLocation": {
-                                    "uri": "file:///C:/Users/macham/Documents/Unreal Projects/DDS/Plugins/EditorDiscordRichPresence/Source/EditorDiscordRichPresence/Public/discord-files/types.cpp"
+                                    "uri": "file:///D:/Project/DDS/Plugins/EditorDiscordRichPresence/Source/EditorDiscordRichPresence/Public/discord-files/types.cpp"
                                 },
                                 "region": {
                                     "startLine": 24,
@@ -32,13 +32,13 @@
                         "text": "'strncpy': This function or variable may be unsafe. Consider using strncpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details."
                     },
                     "analysisTarget": {
-                        "uri": "file:///C:/Users/macham/Documents/Unreal Projects/DDS/Plugins/EditorDiscordRichPresence/Intermediate/Build/Win64/x64/UnrealEditor/Development/EditorDiscordRichPresence/Module.EditorDiscordRichPresence.cpp"
+                        "uri": "file:///D:/Project/DDS/Plugins/EditorDiscordRichPresence/Intermediate/Build/Win64/x64/UnrealEditor/Development/EditorDiscordRichPresence/Module.EditorDiscordRichPresence.cpp"
                     },
                     "locations": [
                         {
                             "physicalLocation": {
                                 "artifactLocation": {
-                                    "uri": "file:///C:/Users/macham/Documents/Unreal Projects/DDS/Plugins/EditorDiscordRichPresence/Source/EditorDiscordRichPresence/Public/discord-files/types.cpp"
+                                    "uri": "file:///D:/Project/DDS/Plugins/EditorDiscordRichPresence/Source/EditorDiscordRichPresence/Public/discord-files/types.cpp"
                                 },
                                 "region": {
                                     "startLine": 35,
@@ -54,13 +54,13 @@
                         "text": "'strncpy': This function or variable may be unsafe. Consider using strncpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details."
                     },
                     "analysisTarget": {
-                        "uri": "file:///C:/Users/macham/Documents/Unreal Projects/DDS/Plugins/EditorDiscordRichPresence/Intermediate/Build/Win64/x64/UnrealEditor/Development/EditorDiscordRichPresence/Module.EditorDiscordRichPresence.cpp"
+                        "uri": "file:///D:/Project/DDS/Plugins/EditorDiscordRichPresence/Intermediate/Build/Win64/x64/UnrealEditor/Development/EditorDiscordRichPresence/Module.EditorDiscordRichPresence.cpp"
                     },
                     "locations": [
                         {
                             "physicalLocation": {
                                 "artifactLocation": {
-                                    "uri": "file:///C:/Users/macham/Documents/Unreal Projects/DDS/Plugins/EditorDiscordRichPresence/Source/EditorDiscordRichPresence/Public/discord-files/types.cpp"
+                                    "uri": "file:///D:/Project/DDS/Plugins/EditorDiscordRichPresence/Source/EditorDiscordRichPresence/Public/discord-files/types.cpp"
                                 },
                                 "region": {
                                     "startLine": 46,
@@ -76,13 +76,13 @@
                         "text": "'strncpy': This function or variable may be unsafe. Consider using strncpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details."
                     },
                     "analysisTarget": {
-                        "uri": "file:///C:/Users/macham/Documents/Unreal Projects/DDS/Plugins/EditorDiscordRichPresence/Intermediate/Build/Win64/x64/UnrealEditor/Development/EditorDiscordRichPresence/Module.EditorDiscordRichPresence.cpp"
+                        "uri": "file:///D:/Project/DDS/Plugins/EditorDiscordRichPresence/Intermediate/Build/Win64/x64/UnrealEditor/Development/EditorDiscordRichPresence/Module.EditorDiscordRichPresence.cpp"
                     },
                     "locations": [
                         {
                             "physicalLocation": {
                                 "artifactLocation": {
-                                    "uri": "file:///C:/Users/macham/Documents/Unreal Projects/DDS/Plugins/EditorDiscordRichPresence/Source/EditorDiscordRichPresence/Public/discord-files/types.cpp"
+                                    "uri": "file:///D:/Project/DDS/Plugins/EditorDiscordRichPresence/Source/EditorDiscordRichPresence/Public/discord-files/types.cpp"
                                 },
                                 "region": {
                                     "startLine": 67,
@@ -98,13 +98,13 @@
                         "text": "'strncpy': This function or variable may be unsafe. Consider using strncpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details."
                     },
                     "analysisTarget": {
-                        "uri": "file:///C:/Users/macham/Documents/Unreal Projects/DDS/Plugins/EditorDiscordRichPresence/Intermediate/Build/Win64/x64/UnrealEditor/Development/EditorDiscordRichPresence/Module.EditorDiscordRichPresence.cpp"
+                        "uri": "file:///D:/Project/DDS/Plugins/EditorDiscordRichPresence/Intermediate/Build/Win64/x64/UnrealEditor/Development/EditorDiscordRichPresence/Module.EditorDiscordRichPresence.cpp"
                     },
                     "locations": [
                         {
                             "physicalLocation": {
                                 "artifactLocation": {
-                                    "uri": "file:///C:/Users/macham/Documents/Unreal Projects/DDS/Plugins/EditorDiscordRichPresence/Source/EditorDiscordRichPresence/Public/discord-files/types.cpp"
+                                    "uri": "file:///D:/Project/DDS/Plugins/EditorDiscordRichPresence/Source/EditorDiscordRichPresence/Public/discord-files/types.cpp"
                                 },
                                 "region": {
                                     "startLine": 78,
@@ -120,13 +120,13 @@
                         "text": "'strncpy': This function or variable may be unsafe. Consider using strncpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details."
                     },
                     "analysisTarget": {
-                        "uri": "file:///C:/Users/macham/Documents/Unreal Projects/DDS/Plugins/EditorDiscordRichPresence/Intermediate/Build/Win64/x64/UnrealEditor/Development/EditorDiscordRichPresence/Module.EditorDiscordRichPresence.cpp"
+                        "uri": "file:///D:/Project/DDS/Plugins/EditorDiscordRichPresence/Intermediate/Build/Win64/x64/UnrealEditor/Development/EditorDiscordRichPresence/Module.EditorDiscordRichPresence.cpp"
                     },
                     "locations": [
                         {
                             "physicalLocation": {
                                 "artifactLocation": {
-                                    "uri": "file:///C:/Users/macham/Documents/Unreal Projects/DDS/Plugins/EditorDiscordRichPresence/Source/EditorDiscordRichPresence/Public/discord-files/types.cpp"
+                                    "uri": "file:///D:/Project/DDS/Plugins/EditorDiscordRichPresence/Source/EditorDiscordRichPresence/Public/discord-files/types.cpp"
                                 },
                                 "region": {
                                     "startLine": 169,
@@ -142,13 +142,13 @@
                         "text": "'strncpy': This function or variable may be unsafe. Consider using strncpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details."
                     },
                     "analysisTarget": {
-                        "uri": "file:///C:/Users/macham/Documents/Unreal Projects/DDS/Plugins/EditorDiscordRichPresence/Intermediate/Build/Win64/x64/UnrealEditor/Development/EditorDiscordRichPresence/Module.EditorDiscordRichPresence.cpp"
+                        "uri": "file:///D:/Project/DDS/Plugins/EditorDiscordRichPresence/Intermediate/Build/Win64/x64/UnrealEditor/Development/EditorDiscordRichPresence/Module.EditorDiscordRichPresence.cpp"
                     },
                     "locations": [
                         {
                             "physicalLocation": {
                                 "artifactLocation": {
-                                    "uri": "file:///C:/Users/macham/Documents/Unreal Projects/DDS/Plugins/EditorDiscordRichPresence/Source/EditorDiscordRichPresence/Public/discord-files/types.cpp"
+                                    "uri": "file:///D:/Project/DDS/Plugins/EditorDiscordRichPresence/Source/EditorDiscordRichPresence/Public/discord-files/types.cpp"
                                 },
                                 "region": {
                                     "startLine": 180,
@@ -164,13 +164,13 @@
                         "text": "'strncpy': This function or variable may be unsafe. Consider using strncpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details."
                     },
                     "analysisTarget": {
-                        "uri": "file:///C:/Users/macham/Documents/Unreal Projects/DDS/Plugins/EditorDiscordRichPresence/Intermediate/Build/Win64/x64/UnrealEditor/Development/EditorDiscordRichPresence/Module.EditorDiscordRichPresence.cpp"
+                        "uri": "file:///D:/Project/DDS/Plugins/EditorDiscordRichPresence/Intermediate/Build/Win64/x64/UnrealEditor/Development/EditorDiscordRichPresence/Module.EditorDiscordRichPresence.cpp"
                     },
                     "locations": [
                         {
                             "physicalLocation": {
                                 "artifactLocation": {
-                                    "uri": "file:///C:/Users/macham/Documents/Unreal Projects/DDS/Plugins/EditorDiscordRichPresence/Source/EditorDiscordRichPresence/Public/discord-files/types.cpp"
+                                    "uri": "file:///D:/Project/DDS/Plugins/EditorDiscordRichPresence/Source/EditorDiscordRichPresence/Public/discord-files/types.cpp"
                                 },
                                 "region": {
                                     "startLine": 191,
@@ -186,13 +186,13 @@
                         "text": "'strncpy': This function or variable may be unsafe. Consider using strncpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details."
                     },
                     "analysisTarget": {
-                        "uri": "file:///C:/Users/macham/Documents/Unreal Projects/DDS/Plugins/EditorDiscordRichPresence/Intermediate/Build/Win64/x64/UnrealEditor/Development/EditorDiscordRichPresence/Module.EditorDiscordRichPresence.cpp"
+                        "uri": "file:///D:/Project/DDS/Plugins/EditorDiscordRichPresence/Intermediate/Build/Win64/x64/UnrealEditor/Development/EditorDiscordRichPresence/Module.EditorDiscordRichPresence.cpp"
                     },
                     "locations": [
                         {
                             "physicalLocation": {
                                 "artifactLocation": {
-                                    "uri": "file:///C:/Users/macham/Documents/Unreal Projects/DDS/Plugins/EditorDiscordRichPresence/Source/EditorDiscordRichPresence/Public/discord-files/types.cpp"
+                                    "uri": "file:///D:/Project/DDS/Plugins/EditorDiscordRichPresence/Source/EditorDiscordRichPresence/Public/discord-files/types.cpp"
                                 },
                                 "region": {
                                     "startLine": 202,
@@ -208,13 +208,13 @@
                         "text": "'strncpy': This function or variable may be unsafe. Consider using strncpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details."
                     },
                     "analysisTarget": {
-                        "uri": "file:///C:/Users/macham/Documents/Unreal Projects/DDS/Plugins/EditorDiscordRichPresence/Intermediate/Build/Win64/x64/UnrealEditor/Development/EditorDiscordRichPresence/Module.EditorDiscordRichPresence.cpp"
+                        "uri": "file:///D:/Project/DDS/Plugins/EditorDiscordRichPresence/Intermediate/Build/Win64/x64/UnrealEditor/Development/EditorDiscordRichPresence/Module.EditorDiscordRichPresence.cpp"
                     },
                     "locations": [
                         {
                             "physicalLocation": {
                                 "artifactLocation": {
-                                    "uri": "file:///C:/Users/macham/Documents/Unreal Projects/DDS/Plugins/EditorDiscordRichPresence/Source/EditorDiscordRichPresence/Public/discord-files/types.cpp"
+                                    "uri": "file:///D:/Project/DDS/Plugins/EditorDiscordRichPresence/Source/EditorDiscordRichPresence/Public/discord-files/types.cpp"
                                 },
                                 "region": {
                                     "startLine": 233,
@@ -230,13 +230,13 @@
                         "text": "'strncpy': This function or variable may be unsafe. Consider using strncpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details."
                     },
                     "analysisTarget": {
-                        "uri": "file:///C:/Users/macham/Documents/Unreal Projects/DDS/Plugins/EditorDiscordRichPresence/Intermediate/Build/Win64/x64/UnrealEditor/Development/EditorDiscordRichPresence/Module.EditorDiscordRichPresence.cpp"
+                        "uri": "file:///D:/Project/DDS/Plugins/EditorDiscordRichPresence/Intermediate/Build/Win64/x64/UnrealEditor/Development/EditorDiscordRichPresence/Module.EditorDiscordRichPresence.cpp"
                     },
                     "locations": [
                         {
                             "physicalLocation": {
                                 "artifactLocation": {
-                                    "uri": "file:///C:/Users/macham/Documents/Unreal Projects/DDS/Plugins/EditorDiscordRichPresence/Source/EditorDiscordRichPresence/Public/discord-files/types.cpp"
+                                    "uri": "file:///D:/Project/DDS/Plugins/EditorDiscordRichPresence/Source/EditorDiscordRichPresence/Public/discord-files/types.cpp"
                                 },
                                 "region": {
                                     "startLine": 254,
@@ -252,13 +252,13 @@
                         "text": "'strncpy': This function or variable may be unsafe. Consider using strncpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details."
                     },
                     "analysisTarget": {
-                        "uri": "file:///C:/Users/macham/Documents/Unreal Projects/DDS/Plugins/EditorDiscordRichPresence/Intermediate/Build/Win64/x64/UnrealEditor/Development/EditorDiscordRichPresence/Module.EditorDiscordRichPresence.cpp"
+                        "uri": "file:///D:/Project/DDS/Plugins/EditorDiscordRichPresence/Intermediate/Build/Win64/x64/UnrealEditor/Development/EditorDiscordRichPresence/Module.EditorDiscordRichPresence.cpp"
                     },
                     "locations": [
                         {
                             "physicalLocation": {
                                 "artifactLocation": {
-                                    "uri": "file:///C:/Users/macham/Documents/Unreal Projects/DDS/Plugins/EditorDiscordRichPresence/Source/EditorDiscordRichPresence/Public/discord-files/types.cpp"
+                                    "uri": "file:///D:/Project/DDS/Plugins/EditorDiscordRichPresence/Source/EditorDiscordRichPresence/Public/discord-files/types.cpp"
                                 },
                                 "region": {
                                     "startLine": 265,
@@ -274,13 +274,13 @@
                         "text": "'strncpy': This function or variable may be unsafe. Consider using strncpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details."
                     },
                     "analysisTarget": {
-                        "uri": "file:///C:/Users/macham/Documents/Unreal Projects/DDS/Plugins/EditorDiscordRichPresence/Intermediate/Build/Win64/x64/UnrealEditor/Development/EditorDiscordRichPresence/Module.EditorDiscordRichPresence.cpp"
+                        "uri": "file:///D:/Project/DDS/Plugins/EditorDiscordRichPresence/Intermediate/Build/Win64/x64/UnrealEditor/Development/EditorDiscordRichPresence/Module.EditorDiscordRichPresence.cpp"
                     },
                     "locations": [
                         {
                             "physicalLocation": {
                                 "artifactLocation": {
-                                    "uri": "file:///C:/Users/macham/Documents/Unreal Projects/DDS/Plugins/EditorDiscordRichPresence/Source/EditorDiscordRichPresence/Public/discord-files/types.cpp"
+                                    "uri": "file:///D:/Project/DDS/Plugins/EditorDiscordRichPresence/Source/EditorDiscordRichPresence/Public/discord-files/types.cpp"
                                 },
                                 "region": {
                                     "startLine": 276,
@@ -296,13 +296,13 @@
                         "text": "'strncpy': This function or variable may be unsafe. Consider using strncpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details."
                     },
                     "analysisTarget": {
-                        "uri": "file:///C:/Users/macham/Documents/Unreal Projects/DDS/Plugins/EditorDiscordRichPresence/Intermediate/Build/Win64/x64/UnrealEditor/Development/EditorDiscordRichPresence/Module.EditorDiscordRichPresence.cpp"
+                        "uri": "file:///D:/Project/DDS/Plugins/EditorDiscordRichPresence/Intermediate/Build/Win64/x64/UnrealEditor/Development/EditorDiscordRichPresence/Module.EditorDiscordRichPresence.cpp"
                     },
                     "locations": [
                         {
                             "physicalLocation": {
                                 "artifactLocation": {
-                                    "uri": "file:///C:/Users/macham/Documents/Unreal Projects/DDS/Plugins/EditorDiscordRichPresence/Source/EditorDiscordRichPresence/Public/discord-files/types.cpp"
+                                    "uri": "file:///D:/Project/DDS/Plugins/EditorDiscordRichPresence/Source/EditorDiscordRichPresence/Public/discord-files/types.cpp"
                                 },
                                 "region": {
                                     "startLine": 307,
@@ -318,13 +318,13 @@
                         "text": "'strncpy': This function or variable may be unsafe. Consider using strncpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details."
                     },
                     "analysisTarget": {
-                        "uri": "file:///C:/Users/macham/Documents/Unreal Projects/DDS/Plugins/EditorDiscordRichPresence/Intermediate/Build/Win64/x64/UnrealEditor/Development/EditorDiscordRichPresence/Module.EditorDiscordRichPresence.cpp"
+                        "uri": "file:///D:/Project/DDS/Plugins/EditorDiscordRichPresence/Intermediate/Build/Win64/x64/UnrealEditor/Development/EditorDiscordRichPresence/Module.EditorDiscordRichPresence.cpp"
                     },
                     "locations": [
                         {
                             "physicalLocation": {
                                 "artifactLocation": {
-                                    "uri": "file:///C:/Users/macham/Documents/Unreal Projects/DDS/Plugins/EditorDiscordRichPresence/Source/EditorDiscordRichPresence/Public/discord-files/types.cpp"
+                                    "uri": "file:///D:/Project/DDS/Plugins/EditorDiscordRichPresence/Source/EditorDiscordRichPresence/Public/discord-files/types.cpp"
                                 },
                                 "region": {
                                     "startLine": 318,
@@ -340,13 +340,13 @@
                         "text": "'strncpy': This function or variable may be unsafe. Consider using strncpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details."
                     },
                     "analysisTarget": {
-                        "uri": "file:///C:/Users/macham/Documents/Unreal Projects/DDS/Plugins/EditorDiscordRichPresence/Intermediate/Build/Win64/x64/UnrealEditor/Development/EditorDiscordRichPresence/Module.EditorDiscordRichPresence.cpp"
+                        "uri": "file:///D:/Project/DDS/Plugins/EditorDiscordRichPresence/Intermediate/Build/Win64/x64/UnrealEditor/Development/EditorDiscordRichPresence/Module.EditorDiscordRichPresence.cpp"
                     },
                     "locations": [
                         {
                             "physicalLocation": {
                                 "artifactLocation": {
-                                    "uri": "file:///C:/Users/macham/Documents/Unreal Projects/DDS/Plugins/EditorDiscordRichPresence/Source/EditorDiscordRichPresence/Public/discord-files/types.cpp"
+                                    "uri": "file:///D:/Project/DDS/Plugins/EditorDiscordRichPresence/Source/EditorDiscordRichPresence/Public/discord-files/types.cpp"
                                 },
                                 "region": {
                                     "startLine": 329,
@@ -362,13 +362,13 @@
                         "text": "'strncpy': This function or variable may be unsafe. Consider using strncpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details."
                     },
                     "analysisTarget": {
-                        "uri": "file:///C:/Users/macham/Documents/Unreal Projects/DDS/Plugins/EditorDiscordRichPresence/Intermediate/Build/Win64/x64/UnrealEditor/Development/EditorDiscordRichPresence/Module.EditorDiscordRichPresence.cpp"
+                        "uri": "file:///D:/Project/DDS/Plugins/EditorDiscordRichPresence/Intermediate/Build/Win64/x64/UnrealEditor/Development/EditorDiscordRichPresence/Module.EditorDiscordRichPresence.cpp"
                     },
                     "locations": [
                         {
                             "physicalLocation": {
                                 "artifactLocation": {
-                                    "uri": "file:///C:/Users/macham/Documents/Unreal Projects/DDS/Plugins/EditorDiscordRichPresence/Source/EditorDiscordRichPresence/Public/discord-files/types.cpp"
+                                    "uri": "file:///D:/Project/DDS/Plugins/EditorDiscordRichPresence/Source/EditorDiscordRichPresence/Public/discord-files/types.cpp"
                                 },
                                 "region": {
                                     "startLine": 470,
@@ -384,13 +384,13 @@
                         "text": "'strncpy': This function or variable may be unsafe. Consider using strncpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details."
                     },
                     "analysisTarget": {
-                        "uri": "file:///C:/Users/macham/Documents/Unreal Projects/DDS/Plugins/EditorDiscordRichPresence/Intermediate/Build/Win64/x64/UnrealEditor/Development/EditorDiscordRichPresence/Module.EditorDiscordRichPresence.cpp"
+                        "uri": "file:///D:/Project/DDS/Plugins/EditorDiscordRichPresence/Intermediate/Build/Win64/x64/UnrealEditor/Development/EditorDiscordRichPresence/Module.EditorDiscordRichPresence.cpp"
                     },
                     "locations": [
                         {
                             "physicalLocation": {
                                 "artifactLocation": {
-                                    "uri": "file:///C:/Users/macham/Documents/Unreal Projects/DDS/Plugins/EditorDiscordRichPresence/Source/EditorDiscordRichPresence/Public/discord-files/types.cpp"
+                                    "uri": "file:///D:/Project/DDS/Plugins/EditorDiscordRichPresence/Source/EditorDiscordRichPresence/Public/discord-files/types.cpp"
                                 },
                                 "region": {
                                     "startLine": 501,
@@ -406,13 +406,13 @@
                         "text": "'strncpy': This function or variable may be unsafe. Consider using strncpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details."
                     },
                     "analysisTarget": {
-                        "uri": "file:///C:/Users/macham/Documents/Unreal Projects/DDS/Plugins/EditorDiscordRichPresence/Intermediate/Build/Win64/x64/UnrealEditor/Development/EditorDiscordRichPresence/Module.EditorDiscordRichPresence.cpp"
+                        "uri": "file:///D:/Project/DDS/Plugins/EditorDiscordRichPresence/Intermediate/Build/Win64/x64/UnrealEditor/Development/EditorDiscordRichPresence/Module.EditorDiscordRichPresence.cpp"
                     },
                     "locations": [
                         {
                             "physicalLocation": {
                                 "artifactLocation": {
-                                    "uri": "file:///C:/Users/macham/Documents/Unreal Projects/DDS/Plugins/EditorDiscordRichPresence/Source/EditorDiscordRichPresence/Public/discord-files/types.cpp"
+                                    "uri": "file:///D:/Project/DDS/Plugins/EditorDiscordRichPresence/Source/EditorDiscordRichPresence/Public/discord-files/types.cpp"
                                 },
                                 "region": {
                                     "startLine": 572,
@@ -428,13 +428,13 @@
                         "text": "'strncpy': This function or variable may be unsafe. Consider using strncpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details."
                     },
                     "analysisTarget": {
-                        "uri": "file:///C:/Users/macham/Documents/Unreal Projects/DDS/Plugins/EditorDiscordRichPresence/Intermediate/Build/Win64/x64/UnrealEditor/Development/EditorDiscordRichPresence/Module.EditorDiscordRichPresence.cpp"
+                        "uri": "file:///D:/Project/DDS/Plugins/EditorDiscordRichPresence/Intermediate/Build/Win64/x64/UnrealEditor/Development/EditorDiscordRichPresence/Module.EditorDiscordRichPresence.cpp"
                     },
                     "locations": [
                         {
                             "physicalLocation": {
                                 "artifactLocation": {
-                                    "uri": "file:///C:/Users/macham/Documents/Unreal Projects/DDS/Plugins/EditorDiscordRichPresence/Source/EditorDiscordRichPresence/Public/discord-files/types.cpp"
+                                    "uri": "file:///D:/Project/DDS/Plugins/EditorDiscordRichPresence/Source/EditorDiscordRichPresence/Public/discord-files/types.cpp"
                                 },
                                 "region": {
                                     "startLine": 603,
@@ -450,13 +450,13 @@
                         "text": "'strncpy': This function or variable may be unsafe. Consider using strncpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details."
                     },
                     "analysisTarget": {
-                        "uri": "file:///C:/Users/macham/Documents/Unreal Projects/DDS/Plugins/EditorDiscordRichPresence/Intermediate/Build/Win64/x64/UnrealEditor/Development/EditorDiscordRichPresence/Module.EditorDiscordRichPresence.cpp"
+                        "uri": "file:///D:/Project/DDS/Plugins/EditorDiscordRichPresence/Intermediate/Build/Win64/x64/UnrealEditor/Development/EditorDiscordRichPresence/Module.EditorDiscordRichPresence.cpp"
                     },
                     "locations": [
                         {
                             "physicalLocation": {
                                 "artifactLocation": {
-                                    "uri": "file:///C:/Users/macham/Documents/Unreal Projects/DDS/Plugins/EditorDiscordRichPresence/Source/EditorDiscordRichPresence/Public/discord-files/types.cpp"
+                                    "uri": "file:///D:/Project/DDS/Plugins/EditorDiscordRichPresence/Source/EditorDiscordRichPresence/Public/discord-files/types.cpp"
                                 },
                                 "region": {
                                     "startLine": 634,
@@ -472,13 +472,13 @@
                         "text": "'strncpy': This function or variable may be unsafe. Consider using strncpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details."
                     },
                     "analysisTarget": {
-                        "uri": "file:///C:/Users/macham/Documents/Unreal Projects/DDS/Plugins/EditorDiscordRichPresence/Intermediate/Build/Win64/x64/UnrealEditor/Development/EditorDiscordRichPresence/Module.EditorDiscordRichPresence.cpp"
+                        "uri": "file:///D:/Project/DDS/Plugins/EditorDiscordRichPresence/Intermediate/Build/Win64/x64/UnrealEditor/Development/EditorDiscordRichPresence/Module.EditorDiscordRichPresence.cpp"
                     },
                     "locations": [
                         {
                             "physicalLocation": {
                                 "artifactLocation": {
-                                    "uri": "file:///C:/Users/macham/Documents/Unreal Projects/DDS/Plugins/EditorDiscordRichPresence/Source/EditorDiscordRichPresence/Public/discord-files/types.cpp"
+                                    "uri": "file:///D:/Project/DDS/Plugins/EditorDiscordRichPresence/Source/EditorDiscordRichPresence/Public/discord-files/types.cpp"
                                 },
                                 "region": {
                                     "startLine": 675,
