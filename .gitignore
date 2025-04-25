@@ -80,6 +80,11 @@ DerivedDataCache/*
 .idea/.idea.DDS.dir/.idea/workspace.xml
 DDS.uproject
 
-
-#나만쓰는플러그인
+### 1) 플러그인 전체 화이트리스트 (이미 있음)
 !Plugins/EditorDiscordRichPresence/**
+
+### 2) 그 안의 Intermediate 를 다시 무시
+Plugins/EditorDiscordRichPresence/Intermediate/**
+
+### 3) 무시된 경로 중 .lib 만 재포함
+!Plugins/EditorDiscordRichPresence/Intermediate/**/UnrealEditor-EditorDiscordRichPresence.lib
