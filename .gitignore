@@ -80,54 +80,56 @@ DerivedDataCache/*
 .idea/.idea.DDS.dir/.idea/workspace.xml
 DDS.uproject
 
+Plugins/EditorDiscordRichPresence
 
-# ────────────────────────────────────────────
-# EditorDiscordRichPresence : KEEP-LIST ONLY
-#   (everything else remains ignored)
-# ────────────────────────────────────────────
-# ── 예외: 필요한 디렉터리(비워두면 Git이 추적하지 못함)
-!Plugins/EditorDiscordRichPresence/
-!Plugins/EditorDiscordRichPresence/Binaries/
-!Plugins/EditorDiscordRichPresence/Binaries/ThirdParty/
-!Plugins/EditorDiscordRichPresence/Binaries/ThirdParty/Discord/
-!Plugins/EditorDiscordRichPresence/Binaries/ThirdParty/Discord/Mac/Release/
-!Plugins/EditorDiscordRichPresence/Binaries/ThirdParty/Discord/x64/Release/
-!Plugins/EditorDiscordRichPresence/Binaries/Win64/
-!Plugins/EditorDiscordRichPresence/Intermediate/
-!Plugins/EditorDiscordRichPresence/Intermediate/Build/
-!Plugins/EditorDiscordRichPresence/Intermediate/Build/Win64/
-!Plugins/EditorDiscordRichPresence/Intermediate/Build/Win64/x64/
-!Plugins/EditorDiscordRichPresence/Intermediate/Build/Win64/x64/UnrealEditor/
-!Plugins/EditorDiscordRichPresence/Intermediate/Build/Win64/x64/UnrealEditor/Development/
-!Plugins/EditorDiscordRichPresence/Intermediate/Build/Win64/x64/UnrealEditorGPF/
-!Plugins/EditorDiscordRichPresence/Resources/
-!Plugins/EditorDiscordRichPresence/Source/
-!Plugins/EditorDiscordRichPresence/Source/EditorDiscordRichPresence/
-!Plugins/EditorDiscordRichPresence/Source/EditorDiscordRichPresence/Private/
-!Plugins/EditorDiscordRichPresence/Source/EditorDiscordRichPresence/Public/
-!Plugins/EditorDiscordRichPresence/Source/ThirdParty/
-!Plugins/EditorDiscordRichPresence/Source/ThirdParty/Discord/
-!Plugins/EditorDiscordRichPresence/Source/ThirdParty/Discord/x64/Release/
-!Plugins/EditorDiscordRichPresence/ThirdParty/
-!Plugins/EditorDiscordRichPresence/ThirdParty/Discord/
-!Plugins/EditorDiscordRichPresence/ThirdParty/Discord/x64/Release/
 
-# ── 예외: 실제로 Git에 넣을 파일 목록
-!Plugins/EditorDiscordRichPresence/Binaries/ThirdParty/Discord/Mac/Release/discord_game_sdk.dylib
-!Plugins/EditorDiscordRichPresence/Binaries/ThirdParty/Discord/x64/Release/discord_game_sdk.dll
-!Plugins/EditorDiscordRichPresence/Binaries/ThirdParty/Discord/x64/Release/discord_game_sdk.dll.lib
-!Plugins/EditorDiscordRichPresence/Binaries/Win64/UnrealEditor-EditorDiscordRichPresence.dll
-!Plugins/EditorDiscordRichPresence/Binaries/Win64/UnrealEditor-EditorDiscordRichPresence.pdb
-!Plugins/EditorDiscordRichPresence/Binaries/Win64/UnrealEditor.modules
-!Plugins/EditorDiscordRichPresence/EditorDiscordRichPresence.uplugin
-!Plugins/EditorDiscordRichPresence/Intermediate/Build/Win64/x64/UnrealEditor/Development/EditorDiscordRichPresence/UnrealEditor-EditorDiscordRichPresence.lib
-!Plugins/EditorDiscordRichPresence/Intermediate/Build/Win64/x64/UnrealEditorGPF/Development/EditorDiscordRichPresence/Definitions.EditorDiscordRichPresence.h
-!Plugins/EditorDiscordRichPresence/Resources/Icon128.png
-!Plugins/EditorDiscordRichPresence/Source/EditorDiscordRichPresence/EditorDiscordRichPresence.Build.cs
-!Plugins/EditorDiscordRichPresence/Source/EditorDiscordRichPresence/Private/EditorDiscordRichPresence.cpp
-!Plugins/EditorDiscordRichPresence/Source/EditorDiscordRichPresence/Public/EditorDiscordRichPresence.h
-!Plugins/EditorDiscordRichPresence/Source/EditorDiscordRichPresence/Public/discord-files/**   # discord-files 전체 포함
-!Plugins/EditorDiscordRichPresence/Source/ThirdParty/Discord/x64/Release/discord_game_sdk.dll
-!Plugins/EditorDiscordRichPresence/Source/ThirdParty/Discord/x64/Release/discord_game_sdk.dll.lib
-!Plugins/EditorDiscordRichPresence/ThirdParty/Discord/x64/Release/discord_game_sdk.dll
-!Plugins/EditorDiscordRichPresence/ThirdParty/Discord/x64/Release/discord_game_sdk.dll.lib
+# # ────────────────────────────────────────────
+# # EditorDiscordRichPresence : KEEP-LIST ONLY
+# #   (everything else remains ignored)
+# # ────────────────────────────────────────────
+# # ── 예외: 필요한 디렉터리(비워두면 Git이 추적하지 못함)
+# !Plugins/EditorDiscordRichPresence/
+# !Plugins/EditorDiscordRichPresence/Binaries/
+# !Plugins/EditorDiscordRichPresence/Binaries/ThirdParty/
+# !Plugins/EditorDiscordRichPresence/Binaries/ThirdParty/Discord/
+# !Plugins/EditorDiscordRichPresence/Binaries/ThirdParty/Discord/Mac/Release/
+# !Plugins/EditorDiscordRichPresence/Binaries/ThirdParty/Discord/x64/Release/
+# !Plugins/EditorDiscordRichPresence/Binaries/Win64/
+# !Plugins/EditorDiscordRichPresence/Intermediate/
+# !Plugins/EditorDiscordRichPresence/Intermediate/Build/
+# !Plugins/EditorDiscordRichPresence/Intermediate/Build/Win64/
+# !Plugins/EditorDiscordRichPresence/Intermediate/Build/Win64/x64/
+# !Plugins/EditorDiscordRichPresence/Intermediate/Build/Win64/x64/UnrealEditor/
+# !Plugins/EditorDiscordRichPresence/Intermediate/Build/Win64/x64/UnrealEditor/Development/
+# !Plugins/EditorDiscordRichPresence/Intermediate/Build/Win64/x64/UnrealEditorGPF/
+# !Plugins/EditorDiscordRichPresence/Resources/
+# !Plugins/EditorDiscordRichPresence/Source/
+# !Plugins/EditorDiscordRichPresence/Source/EditorDiscordRichPresence/
+# !Plugins/EditorDiscordRichPresence/Source/EditorDiscordRichPresence/Private/
+# !Plugins/EditorDiscordRichPresence/Source/EditorDiscordRichPresence/Public/
+# !Plugins/EditorDiscordRichPresence/Source/ThirdParty/
+# !Plugins/EditorDiscordRichPresence/Source/ThirdParty/Discord/
+# !Plugins/EditorDiscordRichPresence/Source/ThirdParty/Discord/x64/Release/
+# !Plugins/EditorDiscordRichPresence/ThirdParty/
+# !Plugins/EditorDiscordRichPresence/ThirdParty/Discord/
+# !Plugins/EditorDiscordRichPresence/ThirdParty/Discord/x64/Release/
+
+# # ── 예외: 실제로 Git에 넣을 파일 목록
+# !Plugins/EditorDiscordRichPresence/Binaries/ThirdParty/Discord/Mac/Release/discord_game_sdk.dylib
+# !Plugins/EditorDiscordRichPresence/Binaries/ThirdParty/Discord/x64/Release/discord_game_sdk.dll
+# !Plugins/EditorDiscordRichPresence/Binaries/ThirdParty/Discord/x64/Release/discord_game_sdk.dll.lib
+# !Plugins/EditorDiscordRichPresence/Binaries/Win64/UnrealEditor-EditorDiscordRichPresence.dll
+# !Plugins/EditorDiscordRichPresence/Binaries/Win64/UnrealEditor-EditorDiscordRichPresence.pdb
+# !Plugins/EditorDiscordRichPresence/Binaries/Win64/UnrealEditor.modules
+# !Plugins/EditorDiscordRichPresence/EditorDiscordRichPresence.uplugin
+# !Plugins/EditorDiscordRichPresence/Intermediate/Build/Win64/x64/UnrealEditor/Development/EditorDiscordRichPresence/UnrealEditor-EditorDiscordRichPresence.lib
+# !Plugins/EditorDiscordRichPresence/Intermediate/Build/Win64/x64/UnrealEditorGPF/Development/EditorDiscordRichPresence/Definitions.EditorDiscordRichPresence.h
+# !Plugins/EditorDiscordRichPresence/Resources/Icon128.png
+# !Plugins/EditorDiscordRichPresence/Source/EditorDiscordRichPresence/EditorDiscordRichPresence.Build.cs
+# !Plugins/EditorDiscordRichPresence/Source/EditorDiscordRichPresence/Private/EditorDiscordRichPresence.cpp
+# !Plugins/EditorDiscordRichPresence/Source/EditorDiscordRichPresence/Public/EditorDiscordRichPresence.h
+# !Plugins/EditorDiscordRichPresence/Source/EditorDiscordRichPresence/Public/discord-files/**   # discord-files 전체 포함
+# !Plugins/EditorDiscordRichPresence/Source/ThirdParty/Discord/x64/Release/discord_game_sdk.dll
+# !Plugins/EditorDiscordRichPresence/Source/ThirdParty/Discord/x64/Release/discord_game_sdk.dll.lib
+# !Plugins/EditorDiscordRichPresence/ThirdParty/Discord/x64/Release/discord_game_sdk.dll
+# !Plugins/EditorDiscordRichPresence/ThirdParty/Discord/x64/Release/discord_game_sdk.dll.lib
