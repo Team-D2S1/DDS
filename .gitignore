@@ -80,7 +80,9 @@ DerivedDataCache/*
 .idea/.idea.DDS.dir/.idea/workspace.xml
 DDS.uproject
 
+Plugins/EditorDiscordRichPresence
 Plugins/EditorDiscordRichPresence/**
+Plugins/EditorDiscordRichPresence/**/*
 
 
 # # ────────────────────────────────────────────
