@@ -23,6 +23,17 @@ enum class EPlayerType : uint8
 };
 
 UENUM(BlueprintType)
+enum EPartType : uint8
+{
+	None 	UMETA(DisplayName = "None"),
+	Blade,
+	Handle,
+	Pommel,
+	Full,
+};
+
+
+UENUM(BlueprintType)
 enum class EItemRarity : uint8
 {
 	None,

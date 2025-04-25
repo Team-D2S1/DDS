@@ -67,7 +67,20 @@ void FInventoryList::RemoveItem(TSubclassOf<UItemStaticData> InItemClass)
 	}
 }
 
-void FInventoryList::RemoveItem(int32 Index)
+void FInventoryList::RemoveItem(int32 ItemID)
+{
+	for (int32 i = 0; i < Items.Num(); ++i)
+	{
+		if (Items[i].ItemInstance->GetItemId() == ItemID)
+		{
+			Items.RemoveAt(i);
+			MarkArrayDirty();
+			break;
+		}
+	}
+}
+
+void FInventoryList::RemoveItemAt(int32 Index)
 {
 	if (Items.IsValidIndex(Index))
 	{

@@ -44,7 +44,8 @@ public:
 	void AddItem(const TSubclassOf<UItemStaticData>& ItemClass);
 	void AddItem(UInventoryItemInstance* Item);
 	void RemoveItem(TSubclassOf<UItemStaticData> ItemClass);
-	void RemoveItem(int32 Index);
+	void RemoveItem(int32 ItemID);
+	void RemoveItemAt(int32 Index);
 
 	FInventoryItemEvent OnRepItemRemoved;
 	FInventoryItemEvent OnRepItemAdded;
