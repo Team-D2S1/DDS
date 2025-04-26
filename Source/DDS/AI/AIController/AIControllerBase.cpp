@@ -56,7 +56,9 @@ void AAIControllerBase::OnTargetPerceptionUpdated(AActor* Actor, FAIStimulus Sti
 void AAIControllerBase::OnPossess(APawn* InPawn)
 {
 	Super::OnPossess(InPawn);
-
+	
+	OriginLocation = InPawn->GetActorLocation();
+		
 	// Run BehaviorTree
 	if(BehaviorTree && BlackBoardData)
 	{

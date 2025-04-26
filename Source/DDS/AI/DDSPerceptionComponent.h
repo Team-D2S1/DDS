@@ -28,14 +28,10 @@ protected:
 	UPROPERTY(EditDefaultsOnly, Category = "Agressive")
 	float FrontDetectionRange;
 	UPROPERTY(EditDefaultsOnly, Category = "Agressive")
-	float RearDetectionRange;
-	UPROPERTY(EditDefaultsOnly, Category = "Agressive")
 	float SoundDetectionRange;
 
 	UPROPERTY(EditDefaultsOnly, Category = "Agressive")
 	TObjectPtr<UAISenseConfig_Sight> Config_FrontSight;
-	UPROPERTY(EditDefaultsOnly, Category = "Agressive")
-	TObjectPtr<UAISenseConfig_Sight> Config_RearSight;
 	UPROPERTY(EditDefaultsOnly, Category = "Agressive")
 	TObjectPtr<UAISenseConfig_Hearing> Config_Hearing;
 	UPROPERTY(EditDefaultsOnly, Category = "Agressive")
@@ -43,6 +39,5 @@ protected:
 
 public:
 	TObjectPtr<UAISenseConfig_Sight> GetFrontSightConfig() { return Config_FrontSight; }
-	TObjectPtr<UAISenseConfig_Sight> GetRearSightConfig() { return Config_RearSight; }
 	
 };
