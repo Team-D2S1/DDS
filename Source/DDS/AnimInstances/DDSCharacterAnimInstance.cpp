@@ -3,24 +3,59 @@
 
 #include "AnimInstances/DDSCharacterAnimInstance.h"
 
-#include "Character/EntityBase.h"
+#include "GameFramework/Character.h"
 #include "GameFramework/CharacterMovementComponent.h"
+#include "Kismet/KismetMathLibrary.h"
 
 void UDDSCharacterAnimInstance::NativeInitializeAnimation()
 {
-	OwningEntity = Cast<AEntityBase>(TryGetPawnOwner());
-	if (OwningEntity)
+	Super::NativeInitializeAnimation();
+
+	Character = Cast<ACharacter>(TryGetPawnOwner());
+	if(Character)
 	{
-		OwningCharacterMovementComponent = OwningEntity->GetCharacterMovement();
+		CharacterMovement = Character->GetCharacterMovement();
 	}
 }
 
-void UDDSCharacterAnimInstance::NativeThreadSafeUpdateAnimation(float DeltaSeconds)
+void UDDSCharacterAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 {
-	if (!OwningEntity || !OwningCharacterMovementComponent)
+	Super::NativeUpdateAnimation(DeltaSeconds);
+
+	// Set Character
+	if(!Character)
 	{
-		return;
+		Character = Cast<ACharacter>(TryGetPawnOwner());
+		if(Character)
+		{
+			CharacterMovement = Character->GetCharacterMovement();
+		}
+		else return;
 	}
-	GroundSpeed = OwningEntity->GetVelocity().Size2D();
-	bHasAcceleration = OwningCharacterMovementComponent->GetCurrentAcceleration().Size2D() > 0.f;
+
+	// Set Speed
+	FVector Velocity = Character->GetVelocity();
+	Velocity.Z = 0.f;
+	Speed = Velocity.Size();
+
+	// Set Is In Air
+	bIsInAir = CharacterMovement->IsFalling();
+
+	// Set Is Accelerating
+	bIsAccelerating = CharacterMovement->GetCurrentAcceleration().Size() > 0.f;
+
+	// Calculate Character Rotation
+	FRotator AimRotation = Character->GetBaseAimRotation();
+	FRotator ActorRotation = Character->GetActorRotation();
+	FRotator VelocityRotation = UKismetMathLibrary::MakeRotFromX(Velocity);
+
+	// Set Direction
+	FRotator DirectionDeltaRotation = UKismetMathLibrary::NormalizedDeltaRotator(ActorRotation, VelocityRotation);
+	Direction = DirectionDeltaRotation.Yaw * (-1.f);
+
+	// Set Offsets
+	FRotator AimDeltaRotation = UKismetMathLibrary::NormalizedDeltaRotator(AimRotation, ActorRotation);
+	YawOffset = AimDeltaRotation.Yaw;
+	PitchOffset = AimDeltaRotation.Pitch;
+	RollOffset = AimDeltaRotation.Roll;
 }

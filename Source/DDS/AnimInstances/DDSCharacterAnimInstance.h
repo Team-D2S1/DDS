@@ -15,24 +15,34 @@ UCLASS()
 class DDS_API UDDSCharacterAnimInstance : public UDDSBaseAnimInstance
 {
 	GENERATED_BODY()
+
 public:
 	virtual void NativeInitializeAnimation() override;
-	virtual void NativeThreadSafeUpdateAnimation(float DeltaSeconds) override;	
+	virtual void NativeUpdateAnimation(float DeltaSeconds) override;
+
 protected:
-	/*
-	 * Uproperty를 쓰거나 스마트 포인터를 쓰지 않으면
-	 * Garbage Collection이 안되고 메모리 누수가 발생할 수 있음
-	 */
+	UPROPERTY(BlueprintReadWrite, Category = "Character")
+	ACharacter* Character;
+
+	UPROPERTY(BlueprintReadWrite, Category = "Character")
+	UCharacterMovementComponent* CharacterMovement;
 	
-	UPROPERTY()
-	TObjectPtr<AEntityBase> OwningEntity;
+	UPROPERTY(BlueprintReadWrite, Category = "Movement")
+	float Direction;
 
-	UPROPERTY() // 
-	TObjectPtr<UCharacterMovementComponent> OwningCharacterMovementComponent;
+	UPROPERTY(BlueprintReadWrite, Category = "Movement")
+	float Speed;
 
-	UPROPERTY(VisibleDefaultsOnly, BlueprintReadOnly, Category = "AnimData|LocomotionData")
-	float GroundSpeed;
+	UPROPERTY(BlueprintReadWrite, Category = "Movement")
+	bool bIsInAir;
 
-	UPROPERTY(VisibleDefaultsOnly, BlueprintReadOnly, Category = "AnimData|LocomotionData")
-	bool bHasAcceleration;
+	UPROPERTY(BlueprintReadWrite, Category = "Movement")
+	bool bIsAccelerating;
+
+	UPROPERTY(BlueprintReadWrite, Category = "Movement")
+	float YawOffset;
+	UPROPERTY(BlueprintReadWrite, Category = "Movement")
+	float PitchOffset;
+	UPROPERTY(BlueprintReadWrite, Category = "Movement")
+	float RollOffset;
 };

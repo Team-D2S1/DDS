@@ -8,9 +8,9 @@
 void UDDSPlayerAnimInstance::NativeInitializeAnimation()
 {
 	Super::NativeInitializeAnimation();
-	if (OwningEntity)
+	if (Character)
 	{
-		OwningPlayer = Cast<APlayerBase>(OwningEntity);
+		OwningPlayer = Cast<APlayerBase>(Character);
 	}
 }
 
@@ -18,7 +18,7 @@ void UDDSPlayerAnimInstance::NativeThreadSafeUpdateAnimation(float DeltaSeconds)
 {
 	Super::NativeThreadSafeUpdateAnimation(DeltaSeconds);
 
-	if (bHasAcceleration)
+	if (bIsAccelerating)
 	{
 		IdleElapsedTime = 0.f;
 		bShouldEnterRelaxState = false;

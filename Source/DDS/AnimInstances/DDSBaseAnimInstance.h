@@ -6,6 +6,7 @@
 #include "Animation/AnimInstance.h"
 #include "DDSBaseAnimInstance.generated.h"
 
+class UCharacterMovementComponent;
 /**
  * 
  */
@@ -13,31 +14,4 @@ UCLASS()
 class DDS_API UDDSBaseAnimInstance : public UAnimInstance
 {
 	GENERATED_BODY()
-
-public:
-	virtual void NativeInitializeAnimation() override;
-	virtual void NativeUpdateAnimation(float DeltaSeconds) override;
-
-protected:
-	UPROPERTY(BlueprintReadWrite, Category = "Character")
-	ACharacter* Character;
-
-	UPROPERTY(BlueprintReadWrite, Category = "Movement")
-	float Direction;
-
-	UPROPERTY(BlueprintReadWrite, Category = "Movement")
-	float Speed;
-
-	UPROPERTY(BlueprintReadWrite, Category = "Movement")
-	bool bIsInAir;
-
-	UPROPERTY(BlueprintReadWrite, Category = "Movement")
-	bool bIsAccelerating;
-
-	UPROPERTY(BlueprintReadWrite, Category = "Movement")
-	float YawOffset;
-	UPROPERTY(BlueprintReadWrite, Category = "Movement")
-	float PitchOffset;
-	UPROPERTY(BlueprintReadWrite, Category = "Movement")
-	float RollOffset;
 };
