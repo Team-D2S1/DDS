@@ -33,6 +33,20 @@ public:
 	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
 	
 	virtual void PostGameplayEffectExecute(const struct FGameplayEffectModCallbackData &Data) override;
+
+	UPROPERTY(ReplicatedUsing= OnRep_Level, BlueprintReadOnly, Category = "Stat Attributes")
+	FGameplayAttributeData Level;
+
+	UPROPERTY(ReplicatedUsing= OnRep_Exp, BlueprintReadOnly, Category = "Stat Attributes")
+	FGameplayAttributeData Exp;
+
+	UPROPERTY(ReplicatedUsing= OnRep_ExpMax, BlueprintReadOnly, Category = "Stat Attributes")
+	FGameplayAttributeData ExpMax;
+
+	UPROPERTY(ReplicatedUsing= OnRep_Soul, BlueprintReadOnly, Category = "Stat Attributes")
+	FGameplayAttributeData Soul;
+
+
 	
 	UPROPERTY(ReplicatedUsing = OnRep_Health, BlueprintReadOnly, Category = "Vital Attributes")
 	FGameplayAttributeData Health;
@@ -50,6 +64,8 @@ public:
 	FGameplayAttributeData MaxStamina;
 	ATTRIBUTE_ACCESSORS(UDDSAttributeSet, MaxStamina);
 
+
+	
     UPROPERTY(ReplicatedUsing= OnRep_AttackPower, BlueprintReadOnly, Category = "Combat Attributes")
 	FGameplayAttributeData AttackPower;
 	ATTRIBUTE_ACCESSORS(UDDSAttributeSet, AttackPower);
@@ -61,6 +77,20 @@ public:
 	UPROPERTY(ReplicatedUsing= OnRep_DamageTaken, BlueprintReadOnly, Category = "Combat Attributes")
 	FGameplayAttributeData DamageTaken;
 	ATTRIBUTE_ACCESSORS(UDDSAttributeSet, DamageTaken);
+
+
+	UFUNCTION()
+	void OnRep_Level(const FGameplayAttributeData& OldLevel) const;
+
+	UFUNCTION()
+	void OnRep_Exp(const FGameplayAttributeData& OldExp) const;
+
+	UFUNCTION()
+	void OnRep_ExpMax(const FGameplayAttributeData& OldExpMax) const;
+
+	UFUNCTION()
+	void OnRep_Soul(const FGameplayAttributeData& OldSoul) const;
+
 	
 	UFUNCTION()
 	void OnRep_Health(const FGameplayAttributeData& OldHealth) const;
@@ -84,12 +114,13 @@ public:
 	void OnRep_DamageTaken(const FGameplayAttributeData& OldDamageTaken) const;
 
 protected:
-	UPawnUIComponent* GetPawnUIComponent() const;
+	// UPawnUIComponent* GetPawnUIComponent() const;
 private:
 	TWeakInterfacePtr<IPawnUIInterface> CachedPawnUIInterface;
 
 	
 };
+
 
 
 

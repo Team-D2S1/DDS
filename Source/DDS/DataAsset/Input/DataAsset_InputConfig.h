@@ -48,7 +48,7 @@ public:
 	
 	UInputAction* FindInputActionByTag(const FGameplayTag& Tag) const;
 	UInputAction* FindUIActionByTag(const FGameplayTag& Tag) const;
-	UInputAction* FindUIActionByKey(const FKey& Key) const;
+	// UInputAction* FindUIActionByKey(const FKey& Key) const;
 
 
 	UPROPERTY(EditDefaultsOnly,BlueprintReadOnly,meta = (TitleProperty = "InputTag"))

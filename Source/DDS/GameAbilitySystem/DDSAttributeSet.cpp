@@ -30,6 +30,11 @@ void UDDSAttributeSet::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& Out
 	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
 
 	// 각 GAD를 Replicated 되도록 등록
+    DOREPLIFETIME_CONDITION_NOTIFY(UDDSAttributeSet, Level, COND_None, REPNOTIFY_Always);
+	DOREPLIFETIME_CONDITION_NOTIFY(UDDSAttributeSet, Exp, COND_None, REPNOTIFY_Always);
+	DOREPLIFETIME_CONDITION_NOTIFY(UDDSAttributeSet, ExpMax, COND_None, REPNOTIFY_Always);
+	DOREPLIFETIME_CONDITION_NOTIFY(UDDSAttributeSet, Soul, COND_None, REPNOTIFY_Always);
+	
 	DOREPLIFETIME_CONDITION_NOTIFY(UDDSAttributeSet, Health, COND_None, REPNOTIFY_Always);
 	DOREPLIFETIME_CONDITION_NOTIFY(UDDSAttributeSet, MaxHealth, COND_None, REPNOTIFY_Always);
 	DOREPLIFETIME_CONDITION_NOTIFY(UDDSAttributeSet, Stamina, COND_None, REPNOTIFY_Always);
@@ -145,7 +150,28 @@ void UDDSAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCallbac
 			PawnUIComponent->OnMaxHealthChanged.Broadcast(NewMaxHealth);
 		}
 	}
-} 
+}
+
+
+void UDDSAttributeSet::OnRep_Level(const FGameplayAttributeData& OldLevel) const
+{
+	GAMEPLAYATTRIBUTE_REPNOTIFY(UDDSAttributeSet, Level, OldLevel);
+}
+
+void UDDSAttributeSet::OnRep_Exp(const FGameplayAttributeData& OldExp) const
+{
+	GAMEPLAYATTRIBUTE_REPNOTIFY(UDDSAttributeSet, Exp, OldExp);
+}
+
+void UDDSAttributeSet::OnRep_ExpMax(const FGameplayAttributeData& OldExpMax) const
+{
+	GAMEPLAYATTRIBUTE_REPNOTIFY(UDDSAttributeSet, ExpMax, OldExpMax);
+}
+
+void UDDSAttributeSet::OnRep_Soul(const FGameplayAttributeData& OldSoul) const
+{
+  	GAMEPLAYATTRIBUTE_REPNOTIFY(UDDSAttributeSet, Soul, OldSoul);
+}
 
 
 /**

@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "DDSStructTypes.h"
 #include "GameplayTagContainer.h"
 #include "PaperSprite.h"
 #include "DDSClassTypes.generated.h"
@@ -26,4 +27,18 @@ public:
 	
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
 	TObjectPtr<UPaperSprite> ItemIcon;
+
+
+	// 무기 파트 데이터
+	// ItemTypeTag에 따른 파트는 하나지만, 세개다 선언은 해둠.
+	
+    UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
+	FBladePartData BladeData;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
+	FGripPartData GripData;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
+	FPommelPartData PommelData;
+	
 };
