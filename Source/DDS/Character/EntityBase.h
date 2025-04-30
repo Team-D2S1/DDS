@@ -69,7 +69,7 @@ protected:
 	virtual void Server_ClearFocusedObject();
 
 protected:
-	UPROPERTY(ReplicatedUsing=OnRep_FocusedObject,BlueprintReadWrite)
+	UPROPERTY(ReplicatedUsing=OnRep_FocusedObject,BlueprintReadWrite, Category = "Combat", meta = (AllowPrivateAccess = "true"))
 	TObjectPtr<AActor> FocusedObject = nullptr;
 
 	

@@ -12,6 +12,8 @@ class UItemStaticData : public UObject
 {
 	GENERATED_BODY()
 public:
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
+	FGameplayTag ItemTypeTag;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
 	FGameplayTagContainer ItemStaticTags;

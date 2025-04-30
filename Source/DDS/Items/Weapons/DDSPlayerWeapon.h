@@ -28,7 +28,7 @@ public:
 	void AssignGrantedAbilitySpecHandles(const TArray<FGameplayAbilitySpecHandle>& InGrantedAbilitySpecHandles);
 
 	UFUNCTION(BlueprintPure)
-	TArray<FGameplayAbilitySpecHandle> GetGrantedAbilitySpecHandles() ;
+	TArray<FGameplayAbilitySpecHandle> GetGrantedAbilitySpecHandles();
 private:
 	/**
 	 * 무기에 의해 부여된 능력 스펙 핸들.
