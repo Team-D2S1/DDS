@@ -29,6 +29,8 @@ public:
 protected:
 	virtual void OnPossess(APawn* InPawn) override;
 
+	void InitializePerceptionComponent();
+	
 	/** AI의 타겟이 새로 업데이트되었을 때 실행되는 함수 */
 	UFUNCTION(BlueprintCallable)
 	void OnTargetPerceptionUpdated(AActor* Actor, FAIStimulus Stimulus);
@@ -40,7 +42,7 @@ protected:
 	TObjectPtr<UBlackboardData> BlackBoardData;
 	
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "AI")
-	TObjectPtr<UDDSPerceptionComponent> AIPerception;
+	TObjectPtr<UAIPerceptionComponent> AIPerception;
 
 	UPROPERTY(VisibleAnywhere,Category = "Stat")
 	TObjectPtr<UAbilitySystemComponent> AbilityComponent;

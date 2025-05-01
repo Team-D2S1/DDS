@@ -2,8 +2,6 @@
 
 
 #include "AIControllerBase.h"
-
-#include "AI/DDSPerceptionComponent.h"
 #include "BehaviorTree/BlackboardComponent.h"
 #include "Perception/AIPerceptionComponent.h"
 #include "Perception/AISenseConfig_Sight.h"
@@ -12,7 +10,7 @@
 
 AAIControllerBase::AAIControllerBase(FObjectInitializer const& ObjectInitializer)
 {
-	AIPerception = CreateDefaultSubobject<UDDSPerceptionComponent>(TEXT("AI Perception"));
+	AIPerception = CreateDefaultSubobject<UAIPerceptionComponent>(TEXT("AI Perception"));
 	SetPerceptionComponent(*AIPerception);
 
 	AAIController::SetGenericTeamId(FGenericTeamId(static_cast<uint8>(EGameTeam::Monster)));
@@ -64,4 +62,8 @@ void AAIControllerBase::OnPossess(APawn* InPawn)
 	{
 		RunBehaviorTree(BehaviorTree);
 	}
+}
+
+void AAIControllerBase::InitializePerceptionComponent()
+{
 }
