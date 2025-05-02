@@ -61,9 +61,6 @@ protected:
 	/** 몬스터 인식 범위 */
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Behavior");
 	float DetectionRadius;
-	/** 해당 거리 안에서는 몬스터가 플레이어 인식을 잃지 않음 */
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Behavior");
-	float LeashRadius;
 	/** 몬스터 공격 가능한 범위 */
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Behavior");
 	float AttackRange;

@@ -6,7 +6,6 @@
 #include "Perception/AIPerceptionComponent.h"
 #include "Perception/AISenseConfig_Sight.h"
 #include "Character/Player/DDSPlayerState.h"
-#include "ETC/CustomLog.h"
 #include "ETC/Enum.h"
 
 AAIControllerBase::AAIControllerBase(FObjectInitializer const& ObjectInitializer)
