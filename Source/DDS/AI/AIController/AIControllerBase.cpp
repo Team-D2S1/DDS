@@ -6,12 +6,13 @@
 #include "Perception/AIPerceptionComponent.h"
 #include "Perception/AISenseConfig_Sight.h"
 #include "Character/Player/DDSPlayerState.h"
+#include "ETC/CustomLog.h"
 #include "ETC/Enum.h"
 
 AAIControllerBase::AAIControllerBase(FObjectInitializer const& ObjectInitializer)
 {
-	AIPerception = CreateDefaultSubobject<UAIPerceptionComponent>(TEXT("AI Perception"));
-	SetPerceptionComponent(*AIPerception);
+	AIPerceptionComponent = CreateDefaultSubobject<UAIPerceptionComponent>(TEXT("AI Perception"));
+	SetPerceptionComponent(*AIPerceptionComponent);
 
 	AAIController::SetGenericTeamId(FGenericTeamId(static_cast<uint8>(EGameTeam::Monster)));
 }
@@ -36,8 +37,20 @@ ETeamAttitude::Type AAIControllerBase::GetTeamAttitudeTowards(const AActor& Othe
 	return ETeamAttitude::Friendly;
 }
 
+void AAIControllerBase::BeginPlay()
+{
+	Super::BeginPlay();
+
+	if(AIPerceptionComponent)
+	{
+		AIPerceptionComponent->OnTargetPerceptionUpdated.AddDynamic(this, &ThisClass::OnTargetPerceptionUpdated);
+	}
+}
+
 void AAIControllerBase::OnTargetPerceptionUpdated(AActor* Actor, FAIStimulus Stimulus)
 {
+	if(!Actor) return;
+	
 	if (UBlackboardComponent* BlackboardComponent = GetBlackboardComponent())
 	{
 		if(Stimulus.WasSuccessfullySensed() && Actor && GetTeamAttitudeTowards(*Actor) == ETeamAttitude::Hostile)
@@ -46,6 +59,8 @@ void AAIControllerBase::OnTargetPerceptionUpdated(AActor* Actor, FAIStimulus Sti
 		}
 		else
 		{
+			BlackboardComponent->SetValueAsVector("LastSeenLocation", Actor->GetActorLocation());
+			BlackboardComponent->SetValueAsBool("bIsInvestigating", true);
 			BlackboardComponent->SetValueAsObject("TargetActor", nullptr);
 		}
 	}

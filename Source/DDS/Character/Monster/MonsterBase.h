@@ -58,9 +58,7 @@ public:
 	virtual void OnFocusLost() override;
 	// End of IFocusable interface
 
-	/** Get Monster Combat Component */
 	FORCEINLINE UMonsterCombatComponent* GetMonsterCombatComponent() const { return MonsterCombatComponent; }
-	/** Get Pawn Combat Component */ 
 	virtual UPawnCombatComponent* GetCombatComponent() const override;
 
 	/* IPawnUIInterface Begin~ */

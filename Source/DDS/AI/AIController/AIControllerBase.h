@@ -27,6 +27,8 @@ public:
 	virtual ETeamAttitude::Type GetTeamAttitudeTowards(const AActor& Other) const override;
 
 protected:
+	virtual void BeginPlay() override;
+	
 	virtual void OnPossess(APawn* InPawn) override;
 
 	void InitializePerceptionComponent();
@@ -41,8 +43,8 @@ protected:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "AI")
 	TObjectPtr<UBlackboardData> BlackBoardData;
 	
-	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "AI")
-	TObjectPtr<UAIPerceptionComponent> AIPerception;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "AI")
+	TObjectPtr<UAIPerceptionComponent> AIPerceptionComponent;
 
 	UPROPERTY(VisibleAnywhere,Category = "Stat")
 	TObjectPtr<UAbilitySystemComponent> AbilityComponent;
@@ -59,6 +61,9 @@ protected:
 	/** 몬스터 인식 범위 */
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Behavior");
 	float DetectionRadius;
+	/** 해당 거리 안에서는 몬스터가 플레이어 인식을 잃지 않음 */
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Behavior");
+	float LeashRadius;
 	/** 몬스터 공격 가능한 범위 */
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Behavior");
 	float AttackRange;

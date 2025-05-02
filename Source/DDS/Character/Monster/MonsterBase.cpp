@@ -91,19 +91,12 @@ void AMonsterBase::BeginPlay()
 void AMonsterBase::Tick(float DeltaSeconds)
 {
 	Super::Tick(DeltaSeconds);
-	
-	// TODO 테스트용, 삭제해야함
-	if (bIsFocused)
-	{
-		DrawDebugSphere(GetWorld(), GetActorLocation(), 100.0f, 12, FColor::Red, false, 0.2f);
-	}
 }
 
 void AMonsterBase::PossessedBy(AController* NewController)
 {
 	Super::PossessedBy(NewController);
 
-	// Debug::Log(TEXT("AMonsterBase::PossessedBy"));
 	InitMonsterStartUpData();
 }
 void AMonsterBase::InitMonsterStartUpData()
@@ -112,21 +105,17 @@ void AMonsterBase::InitMonsterStartUpData()
 	{
 		return;
 	}
-
-
-	// Debug::Log(TEXT("AMonsterBase::InitMonsterStartUpData"));
+	
 	// 몬스터는 그 수가 많아 게임을 멈출 수 있음. => 비동기 로딩 사용
 	UAssetManager::GetStreamableManager().RequestAsyncLoad(
 		EntityStartUpDataBase.ToSoftObjectPath(),
 		FStreamableDelegate::CreateLambda([this]()
 		{
-			// Debug::Log(TEXT("AMonsterBase::InitMonsterStartUpData AsyncLoad"));
 			UDataAsset_StartUpDataBase* loadedData = EntityStartUpDataBase.Get();
 			if (!loadedData)
 			{
 				return;
 			}
-			// Debug::Log(TEXT("AMonsterBase::InitMonsterStartUpData loadedData"));
 			loadedData->GiveToAbilitySystemComponent(AbilitySystemComponent);
 		})
 	);
