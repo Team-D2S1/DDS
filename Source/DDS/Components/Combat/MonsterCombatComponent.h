@@ -14,7 +14,15 @@ class DDS_API UMonsterCombatComponent : public UPlayerCombatComponent
 {
 	GENERATED_BODY()
 	
+public:
+	UMonsterCombatComponent();
+
+	void Attack();
 	
+protected:
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	UAnimMontage* NormalAttackMontage;
 	
-	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	TArray<UAnimMontage*> SkillMontages;
 };

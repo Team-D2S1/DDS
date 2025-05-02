@@ -7,6 +7,7 @@
 #include "GenericTeamAgentInterface.h"
 #include "AIControllerBase.generated.h"
 
+class UMonsterCombatComponent;
 class UDDSPerceptionComponent;
 class UAISenseConfig_Damage;
 class UAISenseConfig_Hearing;
@@ -46,6 +47,9 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "AI")
 	TObjectPtr<UAIPerceptionComponent> AIPerceptionComponent;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Combat")
+	TObjectPtr<UMonsterCombatComponent> CombatComponent;
+	
 	UPROPERTY(VisibleAnywhere,Category = "Stat")
 	TObjectPtr<UAbilitySystemComponent> AbilityComponent;
 
@@ -64,4 +68,9 @@ protected:
 	/** 몬스터 공격 가능한 범위 */
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Behavior");
 	float AttackRange;
+
+public:
+	FORCEINLINE float GetAttackRange() const { return AttackRange; }
+
+	FORCEINLINE UMonsterCombatComponent* GetCombatComponent() const { return CombatComponent; }
 };

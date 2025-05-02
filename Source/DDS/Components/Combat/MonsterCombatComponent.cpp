@@ -3,6 +3,15 @@
 
 #include "Components/Combat/MonsterCombatComponent.h"
 
+#include "ETC/CustomLog.h"
 
 
+UMonsterCombatComponent::UMonsterCombatComponent()
+{
+	
+}
 
+void UMonsterCombatComponent::Attack()
+{
+	MY_LOG(LogTemp, Error, TEXT("공격!"));
+}
