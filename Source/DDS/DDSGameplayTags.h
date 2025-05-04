@@ -24,6 +24,7 @@ namespace DDSGameplayTags
 	DDS_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(InputTag_HeavyAttack)
 
 	/** Player Tags */
+	DDS_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Ability_Jump)
 	DDS_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Ability_LockOn)
 	DDS_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Ability_Equip_Sword)
 	DDS_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Ability_Unequip_Sword)

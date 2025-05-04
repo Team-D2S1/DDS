@@ -38,8 +38,8 @@ protected:
 	UFUNCTION(BlueprintCallable)
 	void Input_Move(const FInputActionValue& Value);
 
-	UFUNCTION(BlueprintCallable)
-	void Input_Jump();
+	// UFUNCTION(BlueprintCallable)
+	// void Input_Jump();
 
 	UFUNCTION(BlueprintCallable)
 	void Input_Look(const FInputActionValue& Value);

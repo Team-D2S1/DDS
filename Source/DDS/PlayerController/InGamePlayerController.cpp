@@ -58,7 +58,7 @@ void AInGamePlayerController::SetupInputComponent()
 
 	UDDSInputComponent* DDSInputComponent = CastChecked<UDDSInputComponent>(InputComponent);
 	DDSInputComponent->BindNativeAction(InputConfigDataAsset, DDSGameplayTags::InputTag_Move, ETriggerEvent::Triggered, this, &ThisClass::Input_Move);
-	DDSInputComponent->BindNativeAction(InputConfigDataAsset, DDSGameplayTags::InputTag_Jump, ETriggerEvent::Started, this, &ThisClass::Input_Jump);
+	// DDSInputComponent->BindNativeAction(InputConfigDataAsset, DDSGameplayTags::InputTag_Jump, ETriggerEvent::Started, this, &ThisClass::Input_Jump);
 	DDSInputComponent->BindNativeAction(InputConfigDataAsset, DDSGameplayTags::InputTag_Look, ETriggerEvent::Triggered, this, &ThisClass::Input_Look);
 	DDSInputComponent->BindNativeAction(InputConfigDataAsset, DDSGameplayTags::InputTag_LockOn, ETriggerEvent::Started, this, &ThisClass::Input_LockOn);
 	
@@ -88,16 +88,16 @@ void AInGamePlayerController::Input_Move(const FInputActionValue& Value)
 	}
 }
 
-void AInGamePlayerController::Input_Jump()
-{
-	if(bIsIgnoringGameInput)
-		 return;
-	ACharacter* MyCharacter = GetCharacter();
-
-	if(!MyCharacter) return;
-
-	MyCharacter->Jump();
-}
+// void AInGamePlayerController::Input_Jump()
+// {
+// 	if(bIsIgnoringGameInput)
+// 		 return;
+// 	ACharacter* MyCharacter = GetCharacter();
+//
+// 	if(!MyCharacter) return;
+//
+// 	MyCharacter->Jump();
+// }
 
 void AInGamePlayerController::Input_Look(const FInputActionValue& Value)
 {
