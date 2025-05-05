@@ -46,6 +46,20 @@ void UPawnCombatComponent::RegisterSpawnedWeapon(FGameplayTag InWeaponTag, ADDSW
 	MY_LOG_DISPLAY_NET(hasAuthority, TEXT("A Weapon %s (Tag: %s) is registered."), *InWeapon->GetName(), *InWeaponTag.ToString());
 }
 
+void UPawnCombatComponent::UnregisterSpawnedWeaponById(int32 ItemId)
+{
+	for (auto& Pair : CharacterCarriedWeaponMap)
+	{
+		if (Pair.Value->GetItemId() == ItemId)
+		{
+			Pair.Value->OnWeaponHitTarget.Unbind();
+			Pair.Value->OnWeaponPulledFromTarget.Unbind();
+			CharacterCarriedWeaponMap.Remove(Pair.Key);
+			MY_LOG(LogTemp, Log, TEXT("A Weapon %s is unregistered."), *Pair.Value->GetName());
+			return;
+		}
+	}
+}
 
 
 void UPawnCombatComponent::ToggleWeaponCollision(bool bEnable, EToggleCollisionType InDamageType)

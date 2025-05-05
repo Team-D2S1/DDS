@@ -41,6 +41,10 @@ public:
 	UFUNCTION(BlueprintCallable,Category="DDS|Combat")
 	void RegisterSpawnedWeapon(FGameplayTag InWeaponTag, ADDSWeaponBase* InWeapon,bool bRegisterAsEquippedWeapon = false);
 
+	
+	UFUNCTION(BlueprintCallable,Category="DDS|Combat")
+	void UnregisterSpawnedWeaponById(int32 ItemId);
+	
 	/**
 	 * 
 	 * @param InWeaponTag 

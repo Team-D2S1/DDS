@@ -32,6 +32,11 @@ protected:
 
 	UFUNCTION()
 	virtual void OnEndOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex);
+
+	// 이 무기의 아이템 ID
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Replicated,Category="DDS|Weapon")
+	int32 ParentItemId;
+	
 	UPROPERTY(VisibleAnywhere,BlueprintReadOnly,Category="DDS|Weapon")
 	TObjectPtr<UStaticMeshComponent> WeaponMesh;
 
@@ -63,7 +68,10 @@ public:
 
 	UFUNCTION(BlueprintCallable,Category="DDS|Weapon")
 	virtual void OnRep_WeaponTag();
-	
+
+
+	UFUNCTION(BlueprintCallable,Category="DDS|Weapon")
+	int32 GetItemId() const {return ParentItemId;};
 };
 
 

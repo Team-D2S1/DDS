@@ -77,7 +77,7 @@ void ADDSWeaponBase::GetLifetimeReplicatedProps(TArray<class FLifetimeProperty>&
 {
 	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
 
-	
+	DOREPLIFETIME(ADDSWeaponBase, ParentItemId);
 	DOREPLIFETIME(ADDSWeaponBase, OwnerPawn);
 	DOREPLIFETIME(ADDSWeaponBase, WeaponTag);
 }
