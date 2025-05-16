@@ -5,24 +5,26 @@
 #include "CoreMinimal.h"
 #include "GameplayAbilitySpecHandle.h"
 #include "DDSTypes/DDSStructTypes.h"
-#include "Items/Weapons/DDSWeaponBase.h"
-#include "DDSPlayerWeapon.generated.h"
+#include "DDSWeaponBase.h"
+#include "DDSSimplePlayerWeapon.generated.h"
 
 /**
- * 
+ * 조합없이 만들어진 무기
  */
 UCLASS()
-class DDS_API ADDSPlayerWeapon : public ADDSWeaponBase
+class DDS_API ADDSSimplePlayerWeapon : public ADDSWeaponBase
 {
 	GENERATED_BODY()
 public:
-	ADDSPlayerWeapon();
+	ADDSSimplePlayerWeapon();
 
 
 	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
+
+	
 	
 	UPROPERTY(EditDefaultsOnly,BlueprintReadOnly,Category="WeaponData", ReplicatedUsing=OnRep_PlayerWeaponData)
-	FDDSPlayerWeaponData PlayerWeaponData;
+	FDDSSimpleWeaponData PlayerWeaponData;
 
 	UFUNCTION(BlueprintCallable)
 	void AssignGrantedAbilitySpecHandles(const TArray<FGameplayAbilitySpecHandle>& InGrantedAbilitySpecHandles);

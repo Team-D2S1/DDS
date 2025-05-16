@@ -6,7 +6,7 @@
 #include "Components/Inventory/InventoryComponent.h"
 #include "DDS/GameAbilitySystem/DDSAbilitySystemComponent.h"
 #include "DDS/GameAbilitySystem/DDSAttributeSet.h"
-#include "Items/Weapons/DDSWeaponBase.h"
+
 
 
 ADDSPlayerState::ADDSPlayerState()

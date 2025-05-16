@@ -5,7 +5,7 @@
 
 #include "Components/Combat/PawnCombatComponent.h"
 #include "ETC/CustomLog.h"
-#include "Items/Weapons/DDSWeaponBase.h"
+#include "Items/Actor/DDSWeaponBase.h"
 #include "UniversalObjectLocators/UniversalObjectLocatorUtils.h"
 
 void USpawnWeaponAbility::ActivateAbility(const FGameplayAbilitySpecHandle Handle,

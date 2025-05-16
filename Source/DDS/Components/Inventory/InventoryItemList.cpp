@@ -1,5 +1,5 @@
 ﻿#include "InventoryItemList.h"
-#include "InventoryItemInstance.h"
+#include "Items/ItemInstance/ItemInstance.h"
 #include "DDSTypes/DDSClassTypes.h"
 // #include "Net/Serialization/FastArraySerializer.h"
 
@@ -35,7 +35,7 @@ bool FInventoryItemEntry::operator==(const FInventoryItemEntry& Other) const
 void FInventoryList::AddItem(const TSubclassOf<UItemStaticData>& InItemClass)
 {
 	FInventoryItemEntry& NewItem = Items.AddDefaulted_GetRef();
-	NewItem.ItemInstance = NewObject<UInventoryItemInstance>();
+	NewItem.ItemInstance = NewObject<UItemInstance>();
 	if (!NewItem.ItemInstance->Init(InItemClass))
 	{
 		return;
@@ -43,7 +43,7 @@ void FInventoryList::AddItem(const TSubclassOf<UItemStaticData>& InItemClass)
 	MarkItemDirty(NewItem);
 }
 
-void FInventoryList::AddItem(UInventoryItemInstance* Item)
+void FInventoryList::AddItem(UItemInstance* Item)
 {
 	if (!Item)
 	{

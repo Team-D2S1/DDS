@@ -54,6 +54,7 @@ public:
 
 	
 	
+	
 	UFUNCTION(BlueprintCallable,Category="DDS|Weapon")
 	void SetOwnerPawn(APawn* InOwnerPawn);
 

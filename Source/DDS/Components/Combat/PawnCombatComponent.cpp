@@ -4,12 +4,10 @@
 #include "Components/Combat/PawnCombatComponent.h"
 #include "AbilitySystemBlueprintLibrary.h"
 #include "DDSGameplayTags.h"
-#include "Character/EntityBase.h"
 #include "Components/BoxComponent.h"
 #include "ETC/CustomLog.h"
-#include "GameFramework/CharacterMovementComponent.h"
-#include "Items/Weapons/DDSWeaponBase.h"
 #include "Net/UnrealNetwork.h"
+#include "Items/Actor/DDSWeaponBase.h"
 
 void UPawnCombatComponent::GetLifetimeReplicatedProps(TArray<class FLifetimeProperty>& OutLifetimeProps) const
 {

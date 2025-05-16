@@ -2,23 +2,17 @@
 
 
 #include "Components/Combat/PlayerCombatComponent.h"
+#include "Items/Actor/DDSSimplePlayerWeapon.h"
 
-#include "AnimInstances/Player/DDSPlayerLinkedAnimLayer.h"
-#include "Character/Player/PlayerBase.h"
-#include "Camera/CameraComponent.h"
-#include "ETC/CustomLog.h"
-#include "GameFramework/SpringArmComponent.h"
-#include "Items/Weapons/DDSPlayerWeapon.h"
-#include "Kismet/KismetMathLibrary.h"
 
-ADDSPlayerWeapon* UPlayerCombatComponent::GetPlayerCarriedWeaponByTag(FGameplayTag InWeaponTag) const
+ADDSSimplePlayerWeapon* UPlayerCombatComponent::GetPlayerCarriedWeaponByTag(FGameplayTag InWeaponTag) const
 {
-	return Cast<ADDSPlayerWeapon>(GetCharacterCarriedWeapon(InWeaponTag));
+	return Cast<ADDSSimplePlayerWeapon>(GetCharacterCarriedWeapon(InWeaponTag));
 }
 
-ADDSPlayerWeapon* UPlayerCombatComponent::GetPlayerCurrentEquippedWeapon() const
+ADDSSimplePlayerWeapon* UPlayerCombatComponent::GetPlayerCurrentEquippedWeapon() const
 {
-	return Cast<ADDSPlayerWeapon>(GetCurrentEquippedWeapon());
+	return Cast<ADDSSimplePlayerWeapon>(GetCurrentEquippedWeapon());
 }
 
 float UPlayerCombatComponent::GetPlayerCurrentEquippedWeaponDamageAtLevel(float InLevel) const
