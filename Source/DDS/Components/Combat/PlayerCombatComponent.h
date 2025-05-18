@@ -6,7 +6,7 @@
 #include "Components/Combat/PawnCombatComponent.h"
 #include "PlayerCombatComponent.generated.h"
 
-class ADDSPlayerWeapon;
+class ADDSSimplePlayerWeapon;
 /**
  * 
  */
@@ -16,8 +16,8 @@ class DDS_API UPlayerCombatComponent : public UPawnCombatComponent
 	GENERATED_BODY()
 public:
 	UFUNCTION(BlueprintCallable, Category = "DDS|Combat")
-	ADDSPlayerWeapon* GetPlayerCarriedWeaponByTag(FGameplayTag InWeaponTag) const;
-	ADDSPlayerWeapon* GetPlayerCurrentEquippedWeapon() const;
+	ADDSSimplePlayerWeapon* GetPlayerCarriedWeaponByTag(FGameplayTag InWeaponTag) const;
+	ADDSSimplePlayerWeapon* GetPlayerCurrentEquippedWeapon() const;
 
 	UFUNCTION(BlueprintCallable, Category = "DDS|Combat")
 	float GetPlayerCurrentEquippedWeaponDamageAtLevel(float InLevel = 0) const;

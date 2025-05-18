@@ -6,7 +6,7 @@
 
 #include "InventoryItemList.generated.h"
 
-class UInventoryItemInstance;
+class UItemInstance;
 class UItemStaticData;
 struct FInventoryList;
 
@@ -18,7 +18,7 @@ struct FInventoryItemEntry : public FFastArraySerializerItem
 	GENERATED_BODY()
 
 	UPROPERTY()
-	UInventoryItemInstance* ItemInstance = nullptr;
+	UItemInstance* ItemInstance = nullptr;
 
 	/** 자동으로 호출되는 함수들 */
 	void PreReplicatedRemove(const struct FInventoryList& InArraySerializer);
@@ -42,7 +42,7 @@ public:
 	}
 
 	void AddItem(const TSubclassOf<UItemStaticData>& ItemClass);
-	void AddItem(UInventoryItemInstance* Item);
+	void AddItem(UItemInstance* Item);
 	void RemoveItem(TSubclassOf<UItemStaticData> ItemClass);
 	void RemoveItem(int32 ItemID);
 	void RemoveItemAt(int32 Index);

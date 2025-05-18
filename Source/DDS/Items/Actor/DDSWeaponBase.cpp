@@ -1,7 +1,7 @@
 // Copyright © Team DDS 2025. Project DDS™ is a trademark of Team DDS. All Rights Reserved.
 
 
-#include "Items/Weapons/DDSWeaponBase.h"
+#include "DDSWeaponBase.h"
 
 #include "Character/Player/PlayerBase.h"
 #include "Components/BoxComponent.h"
