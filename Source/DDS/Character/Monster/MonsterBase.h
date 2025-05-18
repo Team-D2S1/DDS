@@ -32,7 +32,7 @@ protected:
 
 	/** 몬스터 전투 관리하는 컴포넌트 */
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Combat")
-	TObjectPtr<UMonsterCombatComponent> MonsterCombatComponent;
+	UMonsterCombatComponent* MonsterCombatComponent;
 
 	/** 몬스터와 관련된 UI를 관리하는 컴포넌트 */
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "UI")

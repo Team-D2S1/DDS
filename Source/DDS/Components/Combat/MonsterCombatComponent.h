@@ -20,9 +20,13 @@ public:
 	void Attack();
 	
 protected:
+	UFUNCTION(NetMulticast, Reliable)
+	void NetMulticast_Attack();
+	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	UAnimMontage* NormalAttackMontage;
 	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	TArray<UAnimMontage*> SkillMontages;
+
 };

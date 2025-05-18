@@ -6,29 +6,31 @@
 #include "AIController.h"
 #include "AI/AIController/AIControllerBase.h"
 #include "BehaviorTree/BlackboardComponent.h"
+#include "ETC/CustomLog.h"
 #include "GameFramework/Character.h"
 
 
 UBTDecorator_IsInAttackRange::UBTDecorator_IsInAttackRange()
 {
-	NodeName = "CanAttack";
+	NodeName = "Is In Attack Range";
 }
 
 bool UBTDecorator_IsInAttackRange::CalculateRawConditionValue(UBehaviorTreeComponent& OwnerComp,
 	uint8* NodeMemory) const
 {
+	MY_LOG(LogTemp, Error, TEXT("거리 판정"));
+	
 	APawn* MyPawn = OwnerComp.GetAIOwner()->GetPawn();
 	if(!MyPawn) return false;
 	
 	ACharacter* Target = Cast<ACharacter>(OwnerComp.GetBlackboardComponent()->GetValueAsObject("TargetActor"));
 	if(!Target) return false;
 
-	AAIControllerBase* AIController = Cast<AAIControllerBase>(OwnerComp.GetAIOwner()->GetPawn()->GetController());
-	if(!AIController) return false;
+	float AttackRange = OwnerComp.GetBlackboardComponent()->GetValueAsFloat("AttackRange");
 
 	if(AttackRangeType == EAttackRangeType::Normal)
 	{
-		if(MyPawn->GetDistanceTo(Target) <= AIController->GetAttackRange())
+		if(FVector::Dist(MyPawn->GetActorLocation(), Target->GetActorLocation()) <= AttackRange)
 		{
 			return true;
 		}

@@ -32,7 +32,7 @@ protected:
 	
 	virtual void OnPossess(APawn* InPawn) override;
 
-	void InitializePerceptionComponent();
+	virtual bool InitializeBlackboard(UBlackboardComponent& BlackboardComp, UBlackboardData& BlackboardAsset) override;
 	
 	/** AI의 타겟이 새로 업데이트되었을 때 실행되는 함수 */
 	UFUNCTION(BlueprintCallable)
@@ -47,9 +47,6 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "AI")
 	TObjectPtr<UAIPerceptionComponent> AIPerceptionComponent;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Combat")
-	TObjectPtr<UMonsterCombatComponent> CombatComponent;
-	
 	UPROPERTY(VisibleAnywhere,Category = "Stat")
 	TObjectPtr<UAbilitySystemComponent> AbilityComponent;
 
@@ -71,6 +68,4 @@ protected:
 
 public:
 	FORCEINLINE float GetAttackRange() const { return AttackRange; }
-
-	FORCEINLINE UMonsterCombatComponent* GetCombatComponent() const { return CombatComponent; }
 };

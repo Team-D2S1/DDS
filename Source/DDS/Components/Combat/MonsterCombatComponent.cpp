@@ -3,6 +3,7 @@
 
 #include "Components/Combat/MonsterCombatComponent.h"
 
+#include "Character/Monster/MonsterBase.h"
 #include "ETC/CustomLog.h"
 
 
@@ -13,5 +14,18 @@ UMonsterCombatComponent::UMonsterCombatComponent()
 
 void UMonsterCombatComponent::Attack()
 {
-	MY_LOG(LogTemp, Error, TEXT("공격!"));
+	if(GetOwnerRole() == ROLE_Authority)
+	{
+		NetMulticast_Attack();
+	}
+}
+
+void UMonsterCombatComponent::NetMulticast_Attack_Implementation()
+{
+	AMonsterBase* OwningMonster = Cast<AMonsterBase>(GetOwner());
+	UAnimInstance* AnimInstance = OwningMonster->GetMesh()->GetAnimInstance();
+	if(AnimInstance && NormalAttackMontage)
+	{
+		AnimInstance->Montage_Play(NormalAttackMontage);
+	}
 }

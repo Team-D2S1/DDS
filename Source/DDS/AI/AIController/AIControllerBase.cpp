@@ -39,7 +39,7 @@ ETeamAttitude::Type AAIControllerBase::GetTeamAttitudeTowards(const AActor& Othe
 void AAIControllerBase::BeginPlay()
 {
 	Super::BeginPlay();
-
+	
 	if(AIPerceptionComponent)
 	{
 		AIPerceptionComponent->OnTargetPerceptionUpdated.AddDynamic(this, &ThisClass::OnTargetPerceptionUpdated);
@@ -78,6 +78,17 @@ void AAIControllerBase::OnPossess(APawn* InPawn)
 	}
 }
 
-void AAIControllerBase::InitializePerceptionComponent()
+bool AAIControllerBase::InitializeBlackboard(UBlackboardComponent& BlackboardComp, UBlackboardData& BlackboardAsset)
 {
+	bool bSuccess = Super::InitializeBlackboard(BlackboardComp, BlackboardAsset);
+
+	if(bSuccess)
+	{
+		BlackboardComp.SetValueAsFloat("AttackRange", AttackRange);
+		// TODO
+		// OriginLocation 적용 되는지 확인하기
+		BlackboardComp.SetValueAsVector("OriginLocation", GetPawn()->GetActorLocation());
+	}
+
+	return bSuccess;
 }
