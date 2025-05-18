@@ -16,5 +16,5 @@ void UBTService_CheckAttackRange::TickNode(UBehaviorTreeComponent& OwnerComp, ui
 	if(!OwnerPawn || !Target) return;
 
 	float Distance = FVector::Dist(OwnerPawn->GetActorLocation(), Target->GetActorLocation());
-	float Range = 
+	//float Range = 
 }
