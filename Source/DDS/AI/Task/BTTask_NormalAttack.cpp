@@ -26,7 +26,7 @@ EBTNodeResult::Type UBTTask_NormalAttack::ExecuteTask(UBehaviorTreeComponent& Ow
 	AMonsterBase* OwnerMonster = Cast<AMonsterBase>(OwnerComp.GetAIOwner()->GetPawn());
 	if(!OwnerMonster) return EBTNodeResult::Failed;
 	
-	OwnerMonster->GetMonsterCombatComponent()->Attack();
+	//OwnerMonster->GetMonsterCombatComponent()->Attack();
 	CurrentAttackSequence++;
 
 	return EBTNodeResult::InProgress;
@@ -75,7 +75,7 @@ void UBTTask_NormalAttack::TickTask(UBehaviorTreeComponent& OwnerComp, uint8* No
 
 	// TODO
 	// Attack 함수 수정 필요
-	OwnerMonster->GetMonsterCombatComponent()->Attack();
+	//OwnerMonster->GetMonsterCombatComponent()->Attack();
 	CurrentAttackSequence++;
 
 	if(CurrentAttackSequence >= MaxAttackSequence)

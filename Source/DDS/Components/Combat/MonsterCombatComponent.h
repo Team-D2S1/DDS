@@ -6,6 +6,7 @@
 #include "Components/Combat/PlayerCombatComponent.h"
 #include "MonsterCombatComponent.generated.h"
 
+class UMonsterSkillBase;
 /**
  * 
  */
@@ -17,16 +18,10 @@ class DDS_API UMonsterCombatComponent : public UPlayerCombatComponent
 public:
 	UMonsterCombatComponent();
 
-	void Attack();
-	
-protected:
-	UFUNCTION(NetMulticast, Reliable)
-	void NetMulticast_Attack();
-	
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	UAnimMontage* NormalAttackMontage;
-	
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	TArray<UAnimMontage*> SkillMontages;
+private:
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Skill", meta=(AllowPrivateAccess=true))
+	TArray<UMonsterSkillBase*> MonsterSkills;
 
+public:
+	FORCEINLINE const TArray<UMonsterSkillBase*>& GetMonsterSkills() const { return MonsterSkills; }
 };

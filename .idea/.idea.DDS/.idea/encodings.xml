@@ -3,6 +3,8 @@
   <component name="Encoding">
     <file url="file://$PROJECT_DIR$/Source/DDS/AI/Decorator/BTDecorator_IsInAttackRange.cpp" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/Source/DDS/AI/Decorator/BTDecorator_IsInAttackRange.h" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/Source/DDS/AI/Skills/MonsterSkillBase.cpp" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/Source/DDS/AI/Skills/MonsterSkillBase.h" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/Source/DDS/AI/Task/BTTask_NormalAttack.cpp" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/Source/DDS/AI/Task/BTTask_NormalAttack.h" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/Source/DDS/GameMode/LobbyGameMode.cpp" charset="UTF-8" />

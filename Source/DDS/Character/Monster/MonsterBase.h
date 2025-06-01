@@ -47,7 +47,10 @@ protected:
 	
 	/** 현재 해당 몬스터가 Lock On 중인지를 표시하는 로컬 변수. 복제되면 안됨 */
 	bool bIsFocused = false;
-	
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Combat")
+	float AttackRange;
+
 public:
 	// IFocusable interface
 	/** 플레이어가 몬스터를 타게팅했을 때 호출되는 함수 */
@@ -65,6 +68,8 @@ public:
 	virtual UPawnUIComponent* GetPawnUIComponent() const override;
 	virtual UMonsterUIComponent* GetMonsterUIComponent() const override;
 	/* ~ IPawnUIInterface End */
+
+	FORCEINLINE float GetAttackRange() const { return AttackRange; }
 
 };
 
