@@ -3,11 +3,52 @@
 
 #include "AI/Skills/MonsterSkillBase.h"
 
-
-void UMonsterSkillBase::ActivateSkill()
+UMonsterSkillBase::UMonsterSkillBase()
 {
+	NetExecutionPolicy = EGameplayAbilityNetExecutionPolicy::ServerInitiated;
 }
 
-void UMonsterSkillBase::DeactivateSkill()
+bool UMonsterSkillBase::CanActivateAbility(const FGameplayAbilitySpecHandle Handle,
+                                           const FGameplayAbilityActorInfo* ActorInfo, const FGameplayTagContainer* SourceTags,
+                                           const FGameplayTagContainer* TargetTags, FGameplayTagContainer* OptionalRelevantTags) const
 {
+	return Super::CanActivateAbility(Handle, ActorInfo, SourceTags, TargetTags, OptionalRelevantTags);
+}
+
+void UMonsterSkillBase::ActivateAbility(const FGameplayAbilitySpecHandle Handle,
+	const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilityActivationInfo ActivationInfo,
+	const FGameplayEventData* TriggerEventData)
+{
+	Super::ActivateAbility(Handle, ActorInfo, ActivationInfo, TriggerEventData);
+
+	bIsSkillReady = false;
+	bIsSkillActivate = true;
+	CurrentSkillCooldown = 0.f;
+}
+
+bool UMonsterSkillBase::CommitAbility(const FGameplayAbilitySpecHandle Handle,
+	const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilityActivationInfo ActivationInfo,
+	FGameplayTagContainer* OptionalRelevantTags)
+{
+	return Super::CommitAbility(Handle, ActorInfo, ActivationInfo, OptionalRelevantTags);
+}
+
+void UMonsterSkillBase::EndAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo,
+	const FGameplayAbilityActivationInfo ActivationInfo, bool bReplicateEndAbility, bool bWasCancelled)
+{
+	Super::EndAbility(Handle, ActorInfo, ActivationInfo, bReplicateEndAbility, bWasCancelled);
+	
+	bIsSkillActivate = true;
+}
+
+void UMonsterSkillBase::Tick(float DeltaTime)
+{
+	if(!bIsSkillReady)
+	{
+		CurrentSkillCooldown += DeltaTime;
+		if(CurrentSkillCooldown >= SkillCooldown)
+		{
+			bIsSkillReady = true;
+		}
+	}
 }

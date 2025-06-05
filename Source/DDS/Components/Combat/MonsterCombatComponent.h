@@ -18,6 +18,9 @@ class DDS_API UMonsterCombatComponent : public UPlayerCombatComponent
 public:
 	UMonsterCombatComponent();
 
+protected:
+	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
+	
 private:
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Skill", meta=(AllowPrivateAccess=true))
 	TArray<UMonsterSkillBase*> MonsterSkills;

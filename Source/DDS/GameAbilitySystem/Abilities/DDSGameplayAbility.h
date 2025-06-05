@@ -24,6 +24,7 @@ UCLASS()
 class DDS_API UDDSGameplayAbility : public UGameplayAbility
 {
 	GENERATED_BODY()
+	
 protected:
 	UPROPERTY(EditDefaultsOnly,Category="DDSAbility")
 	EDDSAbilityActivationPolicy AbilityActivationPolicy = EDDSAbilityActivationPolicy::OnTriggered;
