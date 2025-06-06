@@ -57,3 +57,16 @@ enum class EDDSSuccessType : uint8
 	Success,
 	Fail
 };
+
+UENUM(BlueprintType)
+enum class EWeaponNumberProperty : uint8
+{
+	AttackPower UMETA(DisplayName = "AttackPower"), // 공격력
+	AttackSpeedCoefficient UMETA(DisplayName = "AttackSpeedCoefficient"), // 공격속도 보정
+	GuardReductionRate UMETA(DisplayName = "GuardReductionRate"), // 방어력 감소율
+	
+	StrengthFactor UMETA(DisplayName = "StrengthFactor"), // 힘 보정치
+	DexterityFactor UMETA(DisplayName = "DexterityFactor"), // 민첩 보정치
+	FaithFactor UMETA(DisplayName = "FaithFactor"), // 신앙 보정치
+	
+};
