@@ -18,8 +18,8 @@ void UMonsterCombatComponent::TickComponent(float DeltaTime, ELevelTick TickType
 {
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 
-	for(auto Skill : MonsterSkills)
-	{
-		Skill->Tick(DeltaTime);
-	}
+	// for(auto Skill : MonsterSkills)
+	// {
+	// 	Skill->Tick(DeltaTime);
+	// }
 }

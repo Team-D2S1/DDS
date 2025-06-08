@@ -3,6 +3,9 @@
 
 #include "AI/Skills/MonsterSkillBase.h"
 
+#include "AIController.h"
+#include "BehaviorTree/BlackboardComponent.h"
+
 UMonsterSkillBase::UMonsterSkillBase()
 {
 	NetExecutionPolicy = EGameplayAbilityNetExecutionPolicy::ServerInitiated;
@@ -21,9 +24,8 @@ void UMonsterSkillBase::ActivateAbility(const FGameplayAbilitySpecHandle Handle,
 {
 	Super::ActivateAbility(Handle, ActorInfo, ActivationInfo, TriggerEventData);
 
-	bIsSkillReady = false;
 	bIsSkillActivate = true;
-	CurrentSkillCooldown = 0.f;
+	CurrentSkillActivateTime = 0.f;
 }
 
 bool UMonsterSkillBase::CommitAbility(const FGameplayAbilitySpecHandle Handle,
@@ -38,17 +40,10 @@ void UMonsterSkillBase::EndAbility(const FGameplayAbilitySpecHandle Handle, cons
 {
 	Super::EndAbility(Handle, ActorInfo, ActivationInfo, bReplicateEndAbility, bWasCancelled);
 	
-	bIsSkillActivate = true;
-}
-
-void UMonsterSkillBase::Tick(float DeltaTime)
-{
-	if(!bIsSkillReady)
+	bIsSkillActivate = false;
+	AAIController* Controller = Cast<AAIController>(CurrentActorInfo->OwnerActor);
+	if(Controller)
 	{
-		CurrentSkillCooldown += DeltaTime;
-		if(CurrentSkillCooldown >= SkillCooldown)
-		{
-			bIsSkillReady = true;
-		}
+		Controller->GetBlackboardComponent()->SetValueAsObject("SelectedSkill", nullptr);
 	}
 }

@@ -62,8 +62,6 @@ public:
 
 	virtual void EndAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilityActivationInfo ActivationInfo, bool bReplicateEndAbility, bool bWasCancelled) override;
 
-	virtual void Tick(float DeltaTime);
-
 protected:
 	// 스킬 타입
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Skill")
@@ -73,17 +71,13 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Skill")
 	float SkillDistance = 100.f;
 
-	// 스킬 사용 & 쿨타임 관련 변수
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Skill")
-	float SkillCooldown = 1.f;
-	UPROPERTY(VisibleAnywhere, Category = "Skill")
-	float CurrentSkillCooldown = 0.f;
-	UPROPERTY(VisibleAnywhere, Category = "Skill")
-	bool bIsSkillReady = true;
+	// 스킬 사용 관련 변수
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Skill")
 	float SkillActivateTime = 1.f;
 	UPROPERTY(VisibleAnywhere, Category = "Skill")
-	bool bIsSkillActivate = true;
+	float CurrentSkillActivateTime = 0.f;
+	UPROPERTY(VisibleAnywhere, Category = "Skill")
+	bool bIsSkillActivate = false;
 
 	// 스킬 몽타주
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Skill")
@@ -91,6 +85,7 @@ protected:
 
 // Getter & Setters
 public:
-	FORCEINLINE bool IsSkillUsable() const { return bIsSkillReady; }
+	FORCEINLINE bool GetIsSkillUsable() const { return GetCooldownTimeRemaining() == 0.f; }
+	FORCEINLINE bool GetIsSkillActive() const { return bIsSkillActivate; }
 	FORCEINLINE float GetSkillDistance() const { return SkillDistance; }
 };

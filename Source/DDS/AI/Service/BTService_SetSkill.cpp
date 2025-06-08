@@ -21,19 +21,20 @@ void UBTService_SetSkill::TickNode(UBehaviorTreeComponent& OwnerComp, uint8* Nod
 
 	float CurrentDistance = Blackboard->GetValueAsFloat("CurrentDistance");
 
-	//
+	// 사용 가능한 스킬들을 전부 추가한다
 	TArray<UMonsterSkillBase*> UsableSkill;
 	for(auto MonsterSkill : Monster->GetMonsterCombatComponent()->GetMonsterSkills())
 	{
 		if(MonsterSkill->GetSkillDistance() <= CurrentDistance)
 		{
-			if(MonsterSkill->IsSkillUsable())
+			if(MonsterSkill->GetIsSkillUsable())
 			{
 				UsableSkill.Add(MonsterSkill);
 			}
 		}
 	}
 
+	// 사용 가능한 스킬 중 하나 랜덤으로 Set
 	if(UsableSkill.Num() > 0)
 	{
 		int32 RandNum = FMath::RandRange(0, UsableSkill.Num() - 1);
