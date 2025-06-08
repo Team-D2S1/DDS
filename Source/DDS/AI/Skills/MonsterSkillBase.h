@@ -72,12 +72,6 @@ protected:
 	float SkillDistance = 100.f;
 
 	// 스킬 사용 관련 변수
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Skill")
-	float SkillActivateTime = 1.f;
-	UPROPERTY(VisibleAnywhere, Category = "Skill")
-	float CurrentSkillActivateTime = 0.f;
-	UPROPERTY(VisibleAnywhere, Category = "Skill")
-	bool bIsSkillActivate = false;
 
 	// 스킬 몽타주
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Skill")
@@ -86,6 +80,5 @@ protected:
 // Getter & Setters
 public:
 	FORCEINLINE bool GetIsSkillUsable() const { return GetCooldownTimeRemaining() == 0.f; }
-	FORCEINLINE bool GetIsSkillActive() const { return bIsSkillActivate; }
 	FORCEINLINE float GetSkillDistance() const { return SkillDistance; }
 };

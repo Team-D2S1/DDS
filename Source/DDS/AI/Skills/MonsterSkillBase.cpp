@@ -23,9 +23,6 @@ void UMonsterSkillBase::ActivateAbility(const FGameplayAbilitySpecHandle Handle,
 	const FGameplayEventData* TriggerEventData)
 {
 	Super::ActivateAbility(Handle, ActorInfo, ActivationInfo, TriggerEventData);
-
-	bIsSkillActivate = true;
-	CurrentSkillActivateTime = 0.f;
 }
 
 bool UMonsterSkillBase::CommitAbility(const FGameplayAbilitySpecHandle Handle,
@@ -40,7 +37,6 @@ void UMonsterSkillBase::EndAbility(const FGameplayAbilitySpecHandle Handle, cons
 {
 	Super::EndAbility(Handle, ActorInfo, ActivationInfo, bReplicateEndAbility, bWasCancelled);
 	
-	bIsSkillActivate = false;
 	AAIController* Controller = Cast<AAIController>(CurrentActorInfo->OwnerActor);
 	if(Controller)
 	{

@@ -19,7 +19,7 @@ public:
 	UMonsterCombatComponent();
 
 protected:
-	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
+	virtual void BeginPlay() override;
 	
 private:
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Skill", meta=(AllowPrivateAccess=true))

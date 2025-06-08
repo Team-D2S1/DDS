@@ -3,6 +3,7 @@
 
 #include "Components/Combat/MonsterCombatComponent.h"
 
+#include "AbilitySystemComponent.h"
 #include "AI/Skills/MonsterSkillBase.h"
 #include "Character/Monster/MonsterBase.h"
 #include "ETC/CustomLog.h"
@@ -13,13 +14,14 @@ UMonsterCombatComponent::UMonsterCombatComponent()
 	
 }
 
-void UMonsterCombatComponent::TickComponent(float DeltaTime, ELevelTick TickType,
-	FActorComponentTickFunction* ThisTickFunction)
+void UMonsterCombatComponent::BeginPlay()
 {
-	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
+	if(!GetOwner()->HasAuthority()) return;
 
-	// for(auto Skill : MonsterSkills)
-	// {
-	// 	Skill->Tick(DeltaTime);
-	// }
+	AMonsterBase* Monster = Cast<AMonsterBase>(GetOwner());
+	for(auto Skill : MonsterSkills)
+	{
+		FGameplayAbilitySpec Spec(Skill);
+		Monster->GetAbilitySystemComponent()->GiveAbility(Spec);
+	}
 }
