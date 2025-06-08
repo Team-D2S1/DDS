@@ -31,6 +31,10 @@ public:
 
 	// 무기 파트 데이터
 	// ItemTypeTag에 따른 파트는 하나지만, 세개다 선언은 해둠.
+
+	// 무기 메시
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
+	TObjectPtr<UStaticMesh> WeaponMesh;
 	
     UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
 	FBladePartData BladeData;
