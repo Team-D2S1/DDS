@@ -2,7 +2,8 @@
 
 
 #include "ItemData.generated.h"
-
+class UItemStaticData;
+ 
 USTRUCT(BlueprintType)
 struct FItemData
 {
