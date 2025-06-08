@@ -91,5 +91,6 @@ protected:
 
 // Getter & Setters
 public:
+	FORCEINLINE bool IsSkillUsable() const { return bIsSkillReady; }
 	FORCEINLINE float GetSkillDistance() const { return SkillDistance; }
 };

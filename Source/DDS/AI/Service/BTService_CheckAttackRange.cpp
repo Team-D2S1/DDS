@@ -25,6 +25,8 @@ void UBTService_CheckAttackRange::TickNode(UBehaviorTreeComponent& OwnerComp, ui
 		float AttackRange = Monster->GetAttackRange();
 
 		bool bCanAttack = Distance <= AttackRange;
+
+		Blackboard->SetValueAsFloat("CurrentDistance", Distance);
 		Blackboard->SetValueAsBool("bCanAttack", bCanAttack);
 	}
 }
