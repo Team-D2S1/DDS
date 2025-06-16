@@ -38,6 +38,8 @@ GA에는 CooldownGameplayEffectClass라는 내부 변수가 있는데, 여기에
 만약 SelectedSkill이 존재하지 않고, 현재 스킬 사용 중도 아니라면 공격 수단이 없는 상태로 판단하고 플레이어와 거리를 벌린다.
  */
 
+DECLARE_MULTICAST_DELEGATE(TestDDS);
+
 UENUM()
 enum class ESkillType : uint8
 {
@@ -52,6 +54,8 @@ class DDS_API UMonsterSkillBase : public UDDSMonsterGameplayAbility
 	GENERATED_BODY()
 
 public:
+	TestDDS Test;
+	
 	UMonsterSkillBase();
 	
 	virtual bool CanActivateAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo, const FGameplayTagContainer* SourceTags, const FGameplayTagContainer* TargetTags, FGameplayTagContainer* OptionalRelevantTags) const override;
@@ -75,7 +79,11 @@ protected:
 
 	// 스킬 몽타주
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Skill")
-	TObjectPtr<UAnimMontage> SkillMontage;	
+	TObjectPtr<UAnimMontage> SkillMontage;
+
+private:
+	UFUNCTION()
+	void OnSkillMontageEnded(UAnimMontage* Montage, bool bInterrupted);
 
 // Getter & Setters
 public:

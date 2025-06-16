@@ -14,8 +14,6 @@ UBTDecorator_CheckCanMove::UBTDecorator_CheckCanMove()
 
 bool UBTDecorator_CheckCanMove::CalculateRawConditionValue(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory) const
 {
-	MY_LOG(LogTemp, Error, TEXT("거리 판정"));
-
 	UBlackboardComponent* Blackboard = OwnerComp.GetBlackboardComponent();
 	
 	if(Blackboard->GetValueAsBool("bIsUsingSkill") == true)

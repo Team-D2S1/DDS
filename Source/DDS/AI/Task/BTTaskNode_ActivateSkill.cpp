@@ -6,6 +6,7 @@
 #include "AbilitySystemComponent.h"
 #include "AIController.h"
 #include "Abilities/GameplayAbility.h"
+#include "AI/Skills/MonsterSkillBase.h"
 #include "BehaviorTree/BlackboardComponent.h"
 #include "Character/Monster/MonsterBase.h"
 #include "ETC/CustomLog.h"
@@ -15,6 +16,7 @@ UBTTaskNode_ActivateSkill::UBTTaskNode_ActivateSkill()
 {
 	NodeName = "Activate Skill";
 	bNotifyTick = true;
+	MY_LOG(LogTemp, Error, TEXT("3"));
 }
 
 EBTNodeResult::Type UBTTaskNode_ActivateSkill::ExecuteTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory)
@@ -34,9 +36,16 @@ EBTNodeResult::Type UBTTaskNode_ActivateSkill::ExecuteTask(UBehaviorTreeComponen
 	FGameplayAbilitySpec* FoundSpec = ASC->FindAbilitySpecFromClass(CurrentSkill->GetClass());
 	if(!FoundSpec) return EBTNodeResult::Failed;
 	
-	// 스킬 종료시 불릴 콜백함수 바인딩 ( 스킬 종료는 몽타주 내 블루프린트에서 발동시킬 예정)
+	// 스킬 종료시 불릴 콜백함수 바인딩
 	OnAbilityEndDelegateHandle = FoundSpec->Ability->OnGameplayAbilityEnded.AddUObject(this, &ThisClass::OnAbilityEnded);
 
+	if(UMonsterSkillBase* M = Cast<UMonsterSkillBase>(FoundSpec->Ability))
+	{
+		MY_LOG(LogTemp, Warning, TEXT("Cast Success"));
+		M->Test.AddUObject(this, &ThisClass::TestFunc);
+		M->Test.Broadcast();
+	}
+	
 	// 스킬 사용에 성공했다면 InProgress로 노드 대기, 실패했다면 Failed 반환
 	const bool bSuccessful = ASC->TryActivateAbility(FoundSpec->Handle);
 
@@ -48,12 +57,17 @@ EBTNodeResult::Type UBTTaskNode_ActivateSkill::ExecuteTask(UBehaviorTreeComponen
 	}
 	return EBTNodeResult::Failed;
 }
+//
+// void UBTTaskNode_ActivateSkill::TickTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory, float DeltaSeconds)
+// {
+// 	Super::TickTask(OwnerComp, NodeMemory, DeltaSeconds);
+//
+// }
 
 void UBTTaskNode_ActivateSkill::OnAbilityEnded(UGameplayAbility* Ability)
 {
-	Ability->OnGameplayAbilityEnded.Remove(OnAbilityEndDelegateHandle);
+	// Ability->OnGameplayAbilityEnded.Remove(OnAbilityEndDelegateHandle);
 
-	MY_LOG(LogTemp, Warning, TEXT("4"));
 	
 	if(CachedOwnerComp)
 	{
@@ -61,4 +75,9 @@ void UBTTaskNode_ActivateSkill::OnAbilityEnded(UGameplayAbility* Ability)
 		FinishLatentTask(*CachedOwnerComp, EBTNodeResult::Succeeded);
 		CachedOwnerComp = nullptr;
 	}
+}
+
+void UBTTaskNode_ActivateSkill::TestFunc()
+{
+	MY_LOG(LogTemp, Warning, TEXT("Do"));
 }

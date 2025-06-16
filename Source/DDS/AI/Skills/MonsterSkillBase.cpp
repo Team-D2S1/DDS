@@ -3,8 +3,10 @@
 
 #include "AI/Skills/MonsterSkillBase.h"
 
+#include "AbilitySystemComponent.h"
 #include "AIController.h"
 #include "BehaviorTree/BlackboardComponent.h"
+#include "Character/Monster/MonsterBase.h"
 #include "ETC/CustomLog.h"
 
 UMonsterSkillBase::UMonsterSkillBase()
@@ -25,14 +27,33 @@ void UMonsterSkillBase::ActivateAbility(const FGameplayAbilitySpecHandle Handle,
 {
 	Super::ActivateAbility(Handle, ActorInfo, ActivationInfo, TriggerEventData);
 
-	MY_LOG(LogTemp, Error, TEXT(""));
+	// 몽타주 실행
+	if(!SkillMontage) return;
+
+	const AMonsterBase* Monster = Cast<AMonsterBase>(ActorInfo->AvatarActor);
+	if(Monster)
+	{
+		if(UAnimInstance* AnimInstance = Monster->GetMesh()->GetAnimInstance())
+		{
+			AnimInstance->Montage_Play(SkillMontage);
+
+			FOnMontageEnded EndDelegate;
+			EndDelegate.BindUObject(this, &UMonsterSkillBase::OnSkillMontageEnded);
+
+			AnimInstance->Montage_SetEndDelegate(EndDelegate, SkillMontage);
+		}
+	}
 }
 
 bool UMonsterSkillBase::CommitAbility(const FGameplayAbilitySpecHandle Handle,
 	const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilityActivationInfo ActivationInfo,
 	FGameplayTagContainer* OptionalRelevantTags)
 {
-	return Super::CommitAbility(Handle, ActorInfo, ActivationInfo, OptionalRelevantTags);
+	if(Super::CommitAbility(Handle, ActorInfo, ActivationInfo, OptionalRelevantTags) == false) return false;
+
+	MY_LOG(LogTemp, Log, TEXT("Commit Ability"));
+
+	return true;
 }
 
 void UMonsterSkillBase::EndAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo,
@@ -44,5 +65,19 @@ void UMonsterSkillBase::EndAbility(const FGameplayAbilitySpecHandle Handle, cons
 	if(Controller)
 	{
 		Controller->GetBlackboardComponent()->SetValueAsObject("SelectedSkill", nullptr);
+	}
+
+	OnGameplayAbilityEnded.Broadcast(this);
+	
+	Test.Broadcast();
+	
+	MY_LOG(LogTemp, Warning, TEXT("End Ability"));
+}
+
+void UMonsterSkillBase::OnSkillMontageEnded(UAnimMontage* Montage, bool bInterrupted)
+{
+	if(IsActive())
+	{
+		EndAbility(CurrentSpecHandle, CurrentActorInfo, CurrentActivationInfo, true, false);
 	}
 }
