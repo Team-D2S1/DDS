@@ -4,17 +4,18 @@
 
 #include "CoreMinimal.h"
 #include "BehaviorTree/BTService.h"
-#include "BTService_CheckAttackRange.generated.h"
+#include "BTService_UpdateDistance.generated.h"
 
 /**
  * 
  */
 UCLASS()
-class DDS_API UBTService_CheckAttackRange : public UBTService
+class DDS_API UBTService_UpdateDistance : public UBTService
 {
 	GENERATED_BODY()
 	
-	
+public:
+	UBTService_UpdateDistance();
+
 	virtual void TickNode(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory, float DeltaSeconds) override;
-	
 };

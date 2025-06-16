@@ -5,6 +5,7 @@
 
 #include "AIController.h"
 #include "BehaviorTree/BlackboardComponent.h"
+#include "ETC/CustomLog.h"
 
 UMonsterSkillBase::UMonsterSkillBase()
 {
@@ -23,6 +24,8 @@ void UMonsterSkillBase::ActivateAbility(const FGameplayAbilitySpecHandle Handle,
 	const FGameplayEventData* TriggerEventData)
 {
 	Super::ActivateAbility(Handle, ActorInfo, ActivationInfo, TriggerEventData);
+
+	MY_LOG(LogTemp, Error, TEXT(""));
 }
 
 bool UMonsterSkillBase::CommitAbility(const FGameplayAbilitySpecHandle Handle,

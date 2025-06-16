@@ -6,7 +6,7 @@
 #include "AbilitySystemComponent.h"
 #include "AI/Skills/MonsterSkillBase.h"
 #include "Character/Monster/MonsterBase.h"
-#include "ETC/CustomLog.h"
+
 
 
 UMonsterCombatComponent::UMonsterCombatComponent()
@@ -19,9 +19,17 @@ void UMonsterCombatComponent::BeginPlay()
 	if(!GetOwner()->HasAuthority()) return;
 
 	AMonsterBase* Monster = Cast<AMonsterBase>(GetOwner());
-	for(auto Skill : MonsterSkills)
+	for(auto SkillClass : MonsterSkillClass)
 	{
-		FGameplayAbilitySpec Spec(Skill);
-		Monster->GetAbilitySystemComponent()->GiveAbility(Spec);
+		if(SkillClass)
+		{
+			FGameplayAbilitySpec Spec(SkillClass, 1, INDEX_NONE);
+			Monster->GetAbilitySystemComponent()->GiveAbility(Spec);
+
+			if(UMonsterSkillBase* MonsterSkill = Cast<UMonsterSkillBase>(Spec.Ability))
+			{
+				MonsterSkills.Add(MonsterSkill);
+			}
+		}
 	}
 }

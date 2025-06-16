@@ -20,10 +20,12 @@ public:
 
 protected:
 	virtual void BeginPlay() override;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Skill")
+	TArray<TSubclassOf<UMonsterSkillBase>> MonsterSkillClass;
 	
-private:
-	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Skill", meta=(AllowPrivateAccess=true))
-	TArray<UMonsterSkillBase*> MonsterSkills;
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Skill")
+	TArray<TObjectPtr<UMonsterSkillBase>> MonsterSkills;
 
 public:
 	FORCEINLINE const TArray<UMonsterSkillBase*>& GetMonsterSkills() const { return MonsterSkills; }

@@ -4,20 +4,20 @@
 
 #include "CoreMinimal.h"
 #include "BehaviorTree/BTTaskNode.h"
-#include "BTTask_NormalAttack.generated.h"
+#include "BTTaskNode_ActivateSkill.generated.h"
 
 class UGameplayAbility;
 /**
  * 
  */
 UCLASS()
-class DDS_API UBTTask_NormalAttack : public UBTTaskNode
+class DDS_API UBTTaskNode_ActivateSkill : public UBTTaskNode
 {
 	GENERATED_BODY()
 	
 public:
-	UBTTask_NormalAttack();
-	
+	UBTTaskNode_ActivateSkill();
+
 	virtual EBTNodeResult::Type ExecuteTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory) override;
 
 private:
@@ -25,7 +25,7 @@ private:
 	void OnAbilityEnded(UGameplayAbility* Ability);
 
 	UPROPERTY()
-	UBehaviorTreeComponent* CachedOwnerComp = nullptr;
-
+	UBehaviorTreeComponent* CachedOwnerComp;
+	
 	FDelegateHandle OnAbilityEndDelegateHandle;
 };
