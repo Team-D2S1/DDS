@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "GameplayAbilitySpecHandle.h"
 #include "GameplayTagContainer.h"
 #include "GameFramework/Actor.h"
 #include "DDSWeaponBase.generated.h"
@@ -22,6 +23,8 @@ public:
 
 	FOnTargetInteractedDelegate OnWeaponHitTarget;
 	FOnTargetInteractedDelegate OnWeaponPulledFromTarget;
+private:
+
 protected:
 
 	virtual void GetLifetimeReplicatedProps(TArray<class FLifetimeProperty>& OutLifetimeProps) const override;
@@ -44,19 +47,22 @@ protected:
 
 	UPROPERTY(VisibleAnywhere,BlueprintReadOnly,Category="DDS|Weapon",ReplicatedUsing = OnRep_WeaponTag)
 	FGameplayTag WeaponTag;
-
-protected:
+	
 	UPROPERTY(VisibleAnywhere,BlueprintReadOnly,Category="DDS|Weapon")
 	TObjectPtr<UStaticMeshComponent> WeaponMesh;
 
 	UPROPERTY(VisibleAnywhere,BlueprintReadOnly,Category="DDS|Weapon")
 	TObjectPtr<UBoxComponent> WeaponCollisionBox;
+
+	/**
+	 * 무기에 의해 부여된 능력 스펙 핸들.
+	 * 장착 해제시 부여 해제해야함
+	 */
+	UPROPERTY(VisibleAnywhere,BlueprintReadOnly,Category="WeaponData", Replicated, meta=(AllowPrivateAccess=true))
+	TArray<FGameplayAbilitySpecHandle> GrantedAbilitySpecHandles;
 	
 public:
 	virtual UBoxComponent* GetWeaponCollsionBox() const {return WeaponCollisionBox;};
-
-	
-	
 	
 	UFUNCTION(BlueprintCallable,Category="DDS|Weapon")
 	void SetOwnerPawn(APawn* InOwnerPawn);

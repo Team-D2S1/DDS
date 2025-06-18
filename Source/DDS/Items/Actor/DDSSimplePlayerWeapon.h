@@ -34,12 +34,7 @@ protected:
 	// UFUNCTION()
 	virtual void OnEndOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex) override;
 private:
-	/**
-	 * 무기에 의해 부여된 능력 스펙 핸들.
-	 * 장착 해제시 부여 해제해야함
-	 */
-	UPROPERTY(VisibleAnywhere,BlueprintReadOnly,Category="WeaponData", Replicated, meta=(AllowPrivateAccess=true))
-	TArray<FGameplayAbilitySpecHandle> GrantedAbilitySpecHandles;
+
 	
 
 private:
