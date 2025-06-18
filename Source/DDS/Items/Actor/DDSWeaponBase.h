@@ -37,11 +37,6 @@ protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Replicated,Category="DDS|Weapon")
 	int32 ParentItemId;
 	
-	UPROPERTY(VisibleAnywhere,BlueprintReadOnly,Category="DDS|Weapon")
-	TObjectPtr<UStaticMeshComponent> WeaponMesh;
-
-	UPROPERTY(VisibleAnywhere,BlueprintReadOnly,Category="DDS|Weapon")
-	TObjectPtr<UBoxComponent> WeaponCollisionBox;
 
 	// OnRep 용으로 존재함. 해당문제 해결되면 삭제해도됨
 	UPROPERTY(VisibleAnywhere,BlueprintReadOnly,Category="DDS|Weapon",ReplicatedUsing= OnRep_OwnerPawn)
@@ -49,8 +44,16 @@ protected:
 
 	UPROPERTY(VisibleAnywhere,BlueprintReadOnly,Category="DDS|Weapon",ReplicatedUsing = OnRep_WeaponTag)
 	FGameplayTag WeaponTag;
+
+protected:
+	UPROPERTY(VisibleAnywhere,BlueprintReadOnly,Category="DDS|Weapon")
+	TObjectPtr<UStaticMeshComponent> WeaponMesh;
+
+	UPROPERTY(VisibleAnywhere,BlueprintReadOnly,Category="DDS|Weapon")
+	TObjectPtr<UBoxComponent> WeaponCollisionBox;
+	
 public:
-	FORCEINLINE UBoxComponent* GetWeaponCollsionBox() const {return WeaponCollisionBox;};
+	virtual UBoxComponent* GetWeaponCollsionBox() const {return WeaponCollisionBox;};
 
 	
 	

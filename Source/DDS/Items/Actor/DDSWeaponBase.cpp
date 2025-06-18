@@ -17,17 +17,6 @@ ADDSWeaponBase::ADDSWeaponBase()
 	PrimaryActorTick.bCanEverTick = false;
 	bReplicates = true;
 
-	WeaponMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("WeaponMesh"));
-	SetRootComponent(WeaponMesh);
-	WeaponMesh->SetCollisionEnabled(ECollisionEnabled::NoCollision);
-
-	WeaponCollisionBox = CreateDefaultSubobject<UBoxComponent>(TEXT("WeaponCollisionBox"));
-	WeaponCollisionBox-> SetupAttachment(GetRootComponent());
-	WeaponCollisionBox->SetBoxExtent(FVector(20.f));
-	WeaponCollisionBox->SetCollisionEnabled(ECollisionEnabled::NoCollision);
-	WeaponCollisionBox->OnComponentBeginOverlap.AddUniqueDynamic(this, &ADDSWeaponBase::OnBeginOverlap);
-	WeaponCollisionBox->OnComponentEndOverlap.AddUniqueDynamic(this, &ADDSWeaponBase::OnEndOverlap);
-
 }
 void ADDSWeaponBase::OnBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
 	UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)

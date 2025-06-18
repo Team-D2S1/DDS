@@ -8,6 +8,8 @@
 #include "PaperSprite.h"
 #include "DDSClassTypes.generated.h"
 
+class UItemInstance;
+
 UCLASS(BlueprintType, Blueprintable)
 class UItemStaticData : public UObject
 {
@@ -29,20 +31,9 @@ public:
 	TObjectPtr<UPaperSprite> ItemIcon;
 
 
-	// 무기 파트 데이터
-	// ItemTypeTag에 따른 파트는 하나지만, 세개다 선언은 해둠.
+	// UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
+	// UItemInstance* ItemInstance;
 
-	// 무기 메시
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
-	TObjectPtr<UStaticMesh> WeaponMesh;
-	
-    UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
-	FBladePartData BladeData;
-
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
-	FGripPartData GripData;
-
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
-	FPommelPartData PommelData;
+	virtual bool IsSupportedForNetworking() const override { return true; }
 	
 };
