@@ -19,7 +19,8 @@ void UBTService_UpdateDistance::TickNode(UBehaviorTreeComponent& OwnerComp, uint
 	// Initialize
 	UBlackboardComponent* Blackboard = OwnerComp.GetBlackboardComponent();
 	const AActor* Target = Cast<AActor>(Blackboard->GetValueAsObject("TargetActor"));
-
+	if(!Blackboard || !Target) return;
+	
 	// 거리 측정 및 기록
 	const float Distance = FVector::Dist(OwnerComp.GetAIOwner()->GetPawn()->GetActorLocation(), Target->GetActorLocation());
 	Blackboard->SetValueAsFloat("CurrentDistance", Distance);
