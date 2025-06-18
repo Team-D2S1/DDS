@@ -4,8 +4,7 @@
 #include "AI/Skills/MonsterSkillBase.h"
 
 #include "AbilitySystemComponent.h"
-#include "AIController.h"
-#include "BehaviorTree/BlackboardComponent.h"
+#include "Abilities/Tasks/AbilityTask_PlayMontageAndWait.h"
 #include "Character/Monster/MonsterBase.h"
 #include "ETC/CustomLog.h"
 
@@ -35,12 +34,16 @@ void UMonsterSkillBase::ActivateAbility(const FGameplayAbilitySpecHandle Handle,
 	{
 		if(UAnimInstance* AnimInstance = Monster->GetMesh()->GetAnimInstance())
 		{
-			AnimInstance->Montage_Play(SkillMontage);
-
-			FOnMontageEnded EndDelegate;
-			EndDelegate.BindUObject(this, &UMonsterSkillBase::OnSkillMontageEnded);
-
-			AnimInstance->Montage_SetEndDelegate(EndDelegate, SkillMontage);
+			auto* Task = UAbilityTask_PlayMontageAndWait::CreatePlayMontageAndWaitProxy(
+				this,
+				NAME_None,
+				SkillMontage,
+				1.f,
+				NAME_None,
+				true);
+			Task->OnCompleted.AddDynamic(this, &ThisClass::OnSkillMontageEnded);
+			Task->OnInterrupted.AddDynamic(this, &ThisClass::OnSkillMontageInturrupted);
+			Task->ReadyForActivation();
 		}
 	}
 }
@@ -64,7 +67,28 @@ void UMonsterSkillBase::EndAbility(const FGameplayAbilitySpecHandle Handle, cons
 	OnGameplayAbilityEnded.Broadcast(this);
 }
 
-void UMonsterSkillBase::OnSkillMontageEnded(UAnimMontage* Montage, bool bInterrupted)
+
+void UMonsterSkillBase::NM_PlayMontage_Implementation()
+{
+	AEntityBase* Entity = Cast<AEntityBase>(GetActorInfo().AvatarActor);
+	if(Entity)
+	{
+		if(UAnimInstance* AnimInstance = Entity->GetMesh()->GetAnimInstance())
+		{
+			AnimInstance->Montage_Play(SkillMontage);
+		}
+	}
+}
+
+void UMonsterSkillBase::OnSkillMontageEnded()
+{
+	if(IsActive())
+	{
+		EndAbility(CurrentSpecHandle, CurrentActorInfo, CurrentActivationInfo, true, false);
+	}
+}
+
+void UMonsterSkillBase::OnSkillMontageInturrupted()
 {
 	if(IsActive())
 	{

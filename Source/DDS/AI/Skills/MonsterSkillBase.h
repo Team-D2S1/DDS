@@ -83,8 +83,13 @@ protected:
 	TObjectPtr<UAnimMontage> SkillMontage;
 
 private:
+	UFUNCTION(NetMulticast, Reliable)
+	void NM_PlayMontage();
+	
 	UFUNCTION()
-	void OnSkillMontageEnded(UAnimMontage* Montage, bool bInterrupted);
+	void OnSkillMontageEnded();
+	UFUNCTION()
+	void OnSkillMontageInturrupted();
 
 // Getter & Setters
 public:
