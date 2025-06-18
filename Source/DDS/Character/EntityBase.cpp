@@ -78,7 +78,14 @@ void AEntityBase::Multicast_UnlinkAnimLayer_Implementation(TSubclassOf<UAnimInst
 void AEntityBase::BeginPlay()
 {
 	Super::BeginPlay();
-	
+
+	if(UAbilitySystemComponent* ASC = GetAbilitySystemComponent())
+	{
+		ASC->RegisterGameplayTagEvent(FGameplayTag::RequestGameplayTag("State.Dead.Start"),
+			EGameplayTagEventType::NewOrRemoved).AddUObject(this, &ThisClass::OnDeathStartTagChanged);
+		ASC->RegisterGameplayTagEvent(FGameplayTag::RequestGameplayTag("State.Dead.End"),
+			EGameplayTagEventType::NewOrRemoved).AddUObject(this, &ThisClass::OnDeathEndTagChanged);
+	}
 }
 
 void AEntityBase::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
@@ -115,6 +122,16 @@ void AEntityBase::Server_ClearFocusedObject_Implementation()
 }
 
 void AEntityBase::OnRep_FocusedObject()
+{
+	
+}
+
+void AEntityBase::OnDeathStartTagChanged(const FGameplayTag ChangedTag, int32 NumberOfTag)
+{
+	MY_LOG(LogTemp, Warning, TEXT("Death"));
+}
+
+void AEntityBase::OnDeathEndTagChanged(const FGameplayTag ChangedTag, int32 NumberOfTag)
 {
 	
 }

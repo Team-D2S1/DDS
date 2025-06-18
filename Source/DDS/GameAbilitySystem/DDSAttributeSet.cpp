@@ -133,7 +133,10 @@ void UDDSAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCallbac
 
 		if (GetHealth() <= 0.f)
 		{
-			// TODO : 죽음 처리
+			if(UAbilitySystemComponent* ASC = GetOwningAbilitySystemComponent())
+			{
+				ASC->AddLooseGameplayTag(FGameplayTag::RequestGameplayTag("State.Dead.Start"));
+			}
 		}
 	}
 

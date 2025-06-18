@@ -11,6 +11,7 @@
 #include "EntityBase.generated.h"
 
 
+struct FGameplayEffectModCallbackData;
 class UPawnCombatComponent;
 class UDDSAttributeSet;
 class UAttributeSet;
@@ -68,14 +69,20 @@ protected:
 	UFUNCTION(Server,Reliable, Category = "DDS|Combat")
 	virtual void Server_ClearFocusedObject();
 
-protected:
 	UPROPERTY(ReplicatedUsing=OnRep_FocusedObject,BlueprintReadWrite, Category = "Combat", meta = (AllowPrivateAccess = "true"))
 	TObjectPtr<AActor> FocusedObject = nullptr;
 
+	// Death Start Callback - Play Montage, Collision Set ..
+	UFUNCTION()
+	void OnDeathStartTagChanged(const FGameplayTag ChangedTag, int32 NumberOfTag);
+	// Death End Callback - Destroy Actor
+	UFUNCTION()
+	void OnDeathEndTagChanged(const FGameplayTag ChangedTag, int32 NumberOfTag);
 	
 private:
 	UFUNCTION()
 	virtual void OnRep_FocusedObject();
+	
 public:	
 	virtual void Tick(float DeltaTime) override;
 	FORCEINLINE UDDSAbilitySystemComponent* GetDDSAbilitySystemComponent() const {return AbilitySystemComponent;}

@@ -117,8 +117,6 @@ protected:
 	// UPawnUIComponent* GetPawnUIComponent() const;
 private:
 	TWeakInterfacePtr<IPawnUIInterface> CachedPawnUIInterface;
-
-	
 };
 
 
