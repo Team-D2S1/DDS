@@ -60,9 +60,11 @@ void UBTTaskNode_ActivateSkill::OnAbilityEnded(const FAbilityEndedData& EndedDat
 	{
 		if(CachedOwnerComp)
 		{
-			UAbilitySystemComponent* ASC =
-				Cast<AMonsterBase>(CachedOwnerComp->GetAIOwner()->GetPawn())->GetAbilitySystemComponent();
-			ASC->OnAbilityEnded.Remove(OnAbilityEndDelegateHandle);
+			if(AMonsterBase* Monster = Cast<AMonsterBase>(CachedOwnerComp->GetAIOwner()->GetPawn()))
+			{
+				UAbilitySystemComponent* ASC = Monster->GetAbilitySystemComponent();
+				ASC->OnAbilityEnded.Remove(OnAbilityEndDelegateHandle);
+			}
 			
 			CachedOwnerComp->GetBlackboardComponent()->SetValueAsBool("bIsUsingSkill", false);
 			CachedOwnerComp->GetBlackboardComponent()->SetValueAsObject("SelectedSkill", nullptr);

@@ -74,10 +74,10 @@ protected:
 
 	// Death Start Callback - Play Montage, Collision Set ..
 	UFUNCTION()
-	void OnDeathStartTagChanged(const FGameplayTag ChangedTag, int32 NumberOfTag);
+	virtual void OnDeathStartTagChanged(const FGameplayTag ChangedTag, int32 NumberOfTag);
 	// Death End Callback - Destroy Actor
 	UFUNCTION()
-	void OnDeathEndTagChanged(const FGameplayTag ChangedTag, int32 NumberOfTag);
+	virtual void OnDeathEndTagChanged(const FGameplayTag ChangedTag, int32 NumberOfTag);
 	
 private:
 	UFUNCTION()

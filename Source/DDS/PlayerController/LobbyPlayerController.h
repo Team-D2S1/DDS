@@ -15,6 +15,9 @@ struct FLobbyPlayerInfo
 {
 	GENERATED_BODY()
 
+	FLobbyPlayerInfo()
+		: SteamImage(nullptr), SteamID(""), bIsReady(false) {}
+
 	UPROPERTY()
 	UTexture2D* SteamImage;
 

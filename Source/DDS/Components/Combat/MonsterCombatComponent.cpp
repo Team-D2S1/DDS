@@ -16,6 +16,8 @@ UMonsterCombatComponent::UMonsterCombatComponent()
 
 void UMonsterCombatComponent::BeginPlay()
 {
+	Super::BeginPlay();
+	
 	if(!GetOwner()->HasAuthority()) return;
 
 	AMonsterBase* Monster = Cast<AMonsterBase>(GetOwner());
