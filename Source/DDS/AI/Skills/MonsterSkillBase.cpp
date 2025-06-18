@@ -26,7 +26,7 @@ void UMonsterSkillBase::ActivateAbility(const FGameplayAbilitySpecHandle Handle,
 	const FGameplayEventData* TriggerEventData)
 {
 	Super::ActivateAbility(Handle, ActorInfo, ActivationInfo, TriggerEventData);
-
+	
 	// 몽타주 실행
 	if(!SkillMontage) return;
 
@@ -60,18 +60,8 @@ void UMonsterSkillBase::EndAbility(const FGameplayAbilitySpecHandle Handle, cons
 	const FGameplayAbilityActivationInfo ActivationInfo, bool bReplicateEndAbility, bool bWasCancelled)
 {
 	Super::EndAbility(Handle, ActorInfo, ActivationInfo, bReplicateEndAbility, bWasCancelled);
-	
-	AAIController* Controller = Cast<AAIController>(CurrentActorInfo->OwnerActor);
-	if(Controller)
-	{
-		Controller->GetBlackboardComponent()->SetValueAsObject("SelectedSkill", nullptr);
-	}
 
 	OnGameplayAbilityEnded.Broadcast(this);
-	
-	Test.Broadcast();
-	
-	MY_LOG(LogTemp, Warning, TEXT("End Ability"));
 }
 
 void UMonsterSkillBase::OnSkillMontageEnded(UAnimMontage* Montage, bool bInterrupted)

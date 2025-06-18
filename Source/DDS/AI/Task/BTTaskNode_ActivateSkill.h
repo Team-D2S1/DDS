@@ -3,9 +3,11 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "GameplayAbilitySpecHandle.h"
 #include "BehaviorTree/BTTaskNode.h"
 #include "BTTaskNode_ActivateSkill.generated.h"
 
+struct FAbilityEndedData;
 class UGameplayAbility;
 /**
  * 
@@ -24,14 +26,12 @@ public:
 
 private:
 	UFUNCTION()
-	void OnAbilityEnded(UGameplayAbility* Ability);
-
-	// Delete Me
-	UFUNCTION()
-	void TestFunc();
+	void OnAbilityEnded(const FAbilityEndedData& EndedData);
 
 	UPROPERTY()
 	UBehaviorTreeComponent* CachedOwnerComp;
+
+	FGameplayAbilitySpecHandle CachedHandle;
 	
 	FDelegateHandle OnAbilityEndDelegateHandle;
 };

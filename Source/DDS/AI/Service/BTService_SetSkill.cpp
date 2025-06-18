@@ -47,5 +47,6 @@ void UBTService_SetSkill::TickNode(UBehaviorTreeComponent& OwnerComp, uint8* Nod
 	{
 		int32 RandNum = FMath::RandRange(0, UsableSkill.Num() - 1);
 		Blackboard->SetValueAsObject("SelectedSkill", UsableSkill[RandNum]);
+		MY_LOG(LogTemp, Warning, TEXT("Skill Set : %s"), *UsableSkill[RandNum]->SkillName);
 	}
 }

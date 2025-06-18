@@ -14,6 +14,4 @@ class DDS_API UBTService_SetSkill : public UBTService
 	
 public:
 	virtual void TickNode(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory, float DeltaSeconds) override;
-	
-	
 };

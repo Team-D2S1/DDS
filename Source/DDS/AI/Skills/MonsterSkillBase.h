@@ -54,8 +54,6 @@ class DDS_API UMonsterSkillBase : public UDDSMonsterGameplayAbility
 	GENERATED_BODY()
 
 public:
-	TestDDS Test;
-	
 	UMonsterSkillBase();
 	
 	virtual bool CanActivateAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo, const FGameplayTagContainer* SourceTags, const FGameplayTagContainer* TargetTags, FGameplayTagContainer* OptionalRelevantTags) const override;
@@ -66,6 +64,9 @@ public:
 
 	virtual void EndAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilityActivationInfo ActivationInfo, bool bReplicateEndAbility, bool bWasCancelled) override;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Skill")
+	FString SkillName;
+	
 protected:
 	// 스킬 타입
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Skill")
