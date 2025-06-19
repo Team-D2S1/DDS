@@ -31,7 +31,8 @@ AInGamePlayerController::AInGamePlayerController()
 void AInGamePlayerController::Tick(float DeltaSeconds)
 {
 	Super::Tick(DeltaSeconds);
-	
+
+
 }
 
 void AInGamePlayerController::BeginPlay()

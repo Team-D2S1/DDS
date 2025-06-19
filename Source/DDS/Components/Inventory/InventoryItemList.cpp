@@ -8,7 +8,7 @@ void FInventoryItemEntry::PreReplicatedRemove(const struct FInventoryList& InArr
 {
 	if(ItemInstance)
 	{
-		InArraySerializer.OnRepItemAdded.Broadcast(ItemInstance->GetItemId());	
+		InArraySerializer.OnRepItemRemoved.Broadcast(ItemInstance->GetItemId());	
 	}
 }
 
@@ -16,7 +16,7 @@ void FInventoryItemEntry::PostReplicatedAdd(const struct FInventoryList& InArray
 {
 	if(ItemInstance)
 	{
-		InArraySerializer.OnRepItemRemoved.Broadcast(ItemInstance->GetItemId());	
+		InArraySerializer.OnRepItemAdded.Broadcast(ItemInstance->GetItemId());	
 	}
 }
 
@@ -24,7 +24,7 @@ void FInventoryItemEntry::PostReplicatedChange(const struct FInventoryList& InAr
 {
 	if(ItemInstance)
 	{
-		InArraySerializer.OnRepItemRemoved.Broadcast(ItemInstance->GetItemId());	
+		InArraySerializer.OnRepItemChanged.Broadcast(ItemInstance->GetItemId());	
 	}
 }
 

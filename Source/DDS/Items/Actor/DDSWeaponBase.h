@@ -8,6 +8,7 @@
 #include "GameFramework/Actor.h"
 #include "DDSWeaponBase.generated.h"
 
+class UItemInstance;
 class UBoxComponent;
 
 DECLARE_DELEGATE_OneParam(FOnTargetInteractedDelegate, AActor*);
@@ -40,6 +41,8 @@ protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Replicated,Category="DDS|Weapon")
 	int32 ParentItemId;
 	
+	UPROPERTY(Replicated,BlueprintReadWrite,meta = (AllowPrivateAccess = "true"))
+	UItemInstance* WeaponItemInstance;
 
 	// OnRep 용으로 존재함. 해당문제 해결되면 삭제해도됨
 	UPROPERTY(VisibleAnywhere,BlueprintReadOnly,Category="DDS|Weapon",ReplicatedUsing= OnRep_OwnerPawn)

@@ -4,6 +4,8 @@
 #include "DDSSimplePlayerWeapon.h"
 
 #include "Components/BoxComponent.h"
+#include "DDSTypes/DDSClassTypes.h"
+#include "Items/ItemInstance/ItemInstance.h"
 #include "Net/UnrealNetwork.h"
 
 ADDSSimplePlayerWeapon::ADDSSimplePlayerWeapon()
@@ -18,6 +20,18 @@ ADDSSimplePlayerWeapon::ADDSSimplePlayerWeapon()
 	WeaponCollisionBox->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 	WeaponCollisionBox->OnComponentBeginOverlap.AddUniqueDynamic(this, &ADDSSimplePlayerWeapon::OnBeginOverlap);
 	WeaponCollisionBox->OnComponentEndOverlap.AddUniqueDynamic(this, &ADDSSimplePlayerWeapon::OnEndOverlap);
+
+	if (DefaultWeaponItemClass && DefaultWeaponItemClass.Get() && WeaponItemInstance == nullptr)
+	{
+		if (HasAuthority())
+		{
+			WeaponItemInstance = NewObject<UItemInstance>();
+			if (WeaponItemInstance->Init(DefaultWeaponItemClass))
+			{
+				return;
+			}
+		}
+	}
 }
 
 void ADDSSimplePlayerWeapon::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
