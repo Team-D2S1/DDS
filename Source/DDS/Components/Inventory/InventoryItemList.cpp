@@ -1,11 +1,13 @@
 ﻿#include "InventoryItemList.h"
 #include "Items/ItemInstance/ItemInstance.h"
 #include "DDSTypes/DDSClassTypes.h"
+#include "ETC/CustomLog.h"
 // #include "Net/Serialization/FastArraySerializer.h"
 
 
 void FInventoryItemEntry::PreReplicatedRemove(const struct FInventoryList& InArraySerializer)
 {
+	MY_LOG(LogTemp, Log, TEXT("PreReplicatedRemove called for ItemID: %d"), ItemInstance ? ItemInstance->GetItemId() : -1);
 	if(ItemInstance)
 	{
 		InArraySerializer.OnRepItemRemoved.Broadcast(ItemInstance->GetItemId());	
@@ -14,6 +16,7 @@ void FInventoryItemEntry::PreReplicatedRemove(const struct FInventoryList& InArr
 
 void FInventoryItemEntry::PostReplicatedAdd(const struct FInventoryList& InArraySerializer)
 {
+	MY_LOG(LogTemp, Log, TEXT("PostReplicatedAdd called for ItemID: %d"), ItemInstance ? ItemInstance->GetItemId() : -1);
 	if(ItemInstance)
 	{
 		InArraySerializer.OnRepItemAdded.Broadcast(ItemInstance->GetItemId());	
@@ -22,6 +25,7 @@ void FInventoryItemEntry::PostReplicatedAdd(const struct FInventoryList& InArray
 
 void FInventoryItemEntry::PostReplicatedChange(const struct FInventoryList& InArraySerializer)
 {
+	MY_LOG(LogTemp, Log, TEXT("PostReplicatedChange called for ItemID: %d"), ItemInstance ? ItemInstance->GetItemId() : -1);
 	if(ItemInstance)
 	{
 		InArraySerializer.OnRepItemChanged.Broadcast(ItemInstance->GetItemId());	
@@ -49,6 +53,7 @@ void FInventoryList::AddItem(const TSubclassOf<UItemStaticData>& InItemClass)
 	{
 		return;
 	}
+	NewItem.EntryID = NewItem.ItemInstance->GetItemId();
 	MarkItemDirty(NewItem);
 }
 
@@ -60,6 +65,7 @@ void FInventoryList::AddItem(UItemInstance* Item)
 	}
 	FInventoryItemEntry& NewItem = Items.AddDefaulted_GetRef();
 	NewItem.ItemInstance = Item;
+	NewItem.EntryID = Item->GetItemId();
 	MarkItemDirty(NewItem);
 }
 

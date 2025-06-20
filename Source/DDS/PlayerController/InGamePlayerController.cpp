@@ -231,7 +231,15 @@ void AInGamePlayerController::Input_AbilityInputPressed(FGameplayTag InputTag)
 	if (bIsIgnoringGameInput)
 		return;
 	MY_CLOG_DISPLAY_NET(FColor::Cyan,HasAuthority(), TEXT("Ability Input Pressed %s"), *InputTag.ToString());
-	GetDDSAbilitySystemComponent()->AbilityInputTagPressed(InputTag);
+	if (UDDSAbilitySystemComponent * ASC = GetDDSAbilitySystemComponent())
+	{
+		// MY_LOG(LogTemp, Log, TEXT("Ability Input Pressed %s"), *InputTag.ToString());
+		ASC->AbilityInputTagPressed(InputTag);
+	}
+	else
+	{
+		MY_LOG(LogTemp, Warning, TEXT("DDSAbilitySystemComponent is nullptr"));
+	}
 			
 }
 
@@ -239,7 +247,15 @@ void AInGamePlayerController::Input_AbilityInputReleased(FGameplayTag InputTag)
 {
 	if (bIsIgnoringGameInput)
 		return;
-	GetDDSAbilitySystemComponent()->AbilityInputTagReleased(InputTag);
+	if (UDDSAbilitySystemComponent * ASC = GetDDSAbilitySystemComponent())
+	{
+		// MY_LOG(LogTemp, Log, TEXT("Ability Input Released %s"), *InputTag.ToString());
+		ASC->AbilityInputTagReleased(InputTag);
+	}
+	else
+	{
+		MY_LOG(LogTemp, Warning, TEXT("DDSAbilitySystemComponent is nullptr"));
+	}
 }
 
 

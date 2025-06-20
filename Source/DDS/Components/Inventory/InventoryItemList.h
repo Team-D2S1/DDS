@@ -20,6 +20,9 @@ struct FInventoryItemEntry : public FFastArraySerializerItem
 	UPROPERTY()
 	UItemInstance* ItemInstance = nullptr;
 
+	UPROPERTY()
+	int32 EntryID = 0;
+
 	/** 자동으로 호출되는 함수들 */
 	void PreReplicatedRemove(const struct FInventoryList& InArraySerializer);
 	void PostReplicatedAdd(const struct FInventoryList& InArraySerializer);
