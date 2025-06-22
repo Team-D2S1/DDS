@@ -42,10 +42,12 @@ void UMonsterSkillBase::ActivateAbility(const FGameplayAbilitySpecHandle Handle,
 				NAME_None,
 				true);
 			Task->OnCompleted.AddDynamic(this, &ThisClass::OnSkillMontageEnded);
-			Task->OnInterrupted.AddDynamic(this, &ThisClass::OnSkillMontageInturrupted);
+			Task->OnInterrupted.AddDynamic(this, &ThisClass::OnSkillMontageInterrupted);
 			Task->ReadyForActivation();
 		}
 	}
+	
+	CommitAbility(CurrentSpecHandle, CurrentActorInfo, CurrentActivationInfo, nullptr);
 }
 
 bool UMonsterSkillBase::CommitAbility(const FGameplayAbilitySpecHandle Handle,
@@ -53,9 +55,7 @@ bool UMonsterSkillBase::CommitAbility(const FGameplayAbilitySpecHandle Handle,
 	FGameplayTagContainer* OptionalRelevantTags)
 {
 	if(Super::CommitAbility(Handle, ActorInfo, ActivationInfo, OptionalRelevantTags) == false) return false;
-
-	MY_LOG(LogTemp, Log, TEXT("Commit Ability"));
-
+	
 	return true;
 }
 
@@ -67,19 +67,6 @@ void UMonsterSkillBase::EndAbility(const FGameplayAbilitySpecHandle Handle, cons
 	OnGameplayAbilityEnded.Broadcast(this);
 }
 
-
-void UMonsterSkillBase::NM_PlayMontage_Implementation()
-{
-	AEntityBase* Entity = Cast<AEntityBase>(GetActorInfo().AvatarActor);
-	if(Entity)
-	{
-		if(UAnimInstance* AnimInstance = Entity->GetMesh()->GetAnimInstance())
-		{
-			AnimInstance->Montage_Play(SkillMontage);
-		}
-	}
-}
-
 void UMonsterSkillBase::OnSkillMontageEnded()
 {
 	if(IsActive())
@@ -88,7 +75,7 @@ void UMonsterSkillBase::OnSkillMontageEnded()
 	}
 }
 
-void UMonsterSkillBase::OnSkillMontageInturrupted()
+void UMonsterSkillBase::OnSkillMontageInterrupted()
 {
 	if(IsActive())
 	{

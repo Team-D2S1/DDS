@@ -10,6 +10,7 @@
 #include "GameFramework/PlayerState.h"
 #include "DDSPlayerState.generated.h"
 
+struct FGameplayTagContainer;
 class UInventoryComponent;
 class UDDSAttributeSet;
 class UAbilitySystemComponent;
@@ -36,7 +37,6 @@ public:
 	virtual UDDSAbilitySystemComponent* GetDDSAbilitySystemComponent() const override;
 	UAttributeSet* GetAttributeSet() const;
 	UDDSAttributeSet* GetDDSAttribueSet() const;
-
 
 	// ~ Begin IGenericTeamAgentInterface Interface
 	virtual FGenericTeamId GetGenericTeamId() const override;

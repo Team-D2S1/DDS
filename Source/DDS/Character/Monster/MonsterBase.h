@@ -23,6 +23,8 @@ class DDS_API AMonsterBase : public AEntityBase, public IFocusable
 public:
 	AMonsterBase();
 
+	bool GetCooldownRemainingForTag(FGameplayTagContainer CooldownTags, float& TimeRemaining, float& CooldownDuration);
+
 protected:
 	virtual void PossessedBy(AController* NewController) override;
 	
