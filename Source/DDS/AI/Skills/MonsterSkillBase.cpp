@@ -64,6 +64,28 @@ void UMonsterSkillBase::EndAbility(const FGameplayAbilitySpecHandle Handle, cons
 {
 	Super::EndAbility(Handle, ActorInfo, ActivationInfo, bReplicateEndAbility, bWasCancelled);
 
+	if(NextSkill)
+	{
+		// TODO!
+		// 조건 체크 : 플레이어가 다음 스킬의 사정거리 안에 있을 것
+		// 행동 변화 : 플레이어를 향해 방향을 돌릴 것
+		
+		if(AMonsterBase* Monster = Cast<AMonsterBase>(CurrentActorInfo->AvatarActor))
+		{
+			FGameplayAbilitySpec* FoundSpec = Monster->GetAbilitySystemComponent()->FindAbilitySpecFromClass(NextSkill->GetClass());
+			if(FoundSpec)
+			{
+				const bool bSuccessful = Monster->GetAbilitySystemComponent()->TryActivateAbility(FoundSpec->Handle);
+				if(bSuccessful) return;
+			}
+		}
+	}
+	else
+	{
+		OnGameplayAbilityEnded.Broadcast(this);
+		return;
+	}
+	
 	OnGameplayAbilityEnded.Broadcast(this);
 }
 

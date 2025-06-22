@@ -21,16 +21,19 @@ void UMonsterCombatComponent::BeginPlay()
 	if(!GetOwner()->HasAuthority()) return;
 
 	AMonsterBase* Monster = Cast<AMonsterBase>(GetOwner());
-	for(auto SkillClass : MonsterSkillClass)
+	for(auto SkillInfo : MonsterSkillClassInfos)
 	{
-		if(SkillClass)
+		if(SkillInfo.MonsterSkillClass)
 		{
-			FGameplayAbilitySpec Spec(SkillClass, 1, INDEX_NONE);
+			FGameplayAbilitySpec Spec(SkillInfo.MonsterSkillClass, 1, INDEX_NONE);
 			Monster->GetAbilitySystemComponent()->GiveAbility(Spec);
 
-			if(UMonsterSkillBase* MonsterSkill = Cast<UMonsterSkillBase>(Spec.Ability))
+			if(SkillInfo.bIsUsable)
 			{
-				MonsterSkills.Add(MonsterSkill);
+				if(UMonsterSkillBase* MonsterSkill = Cast<UMonsterSkillBase>(Spec.Ability))
+				{
+					MonsterSkills.Add(MonsterSkill);
+				}
 			}
 		}
 	}

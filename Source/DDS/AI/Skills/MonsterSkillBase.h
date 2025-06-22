@@ -80,6 +80,10 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Skill")
 	TObjectPtr<UAnimMontage> SkillMontage;
 
+	// 연계되는 스킬. Null일경우 연계스킬 없음
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Skill")
+	TSubclassOf<UGameplayAbility> NextSkill;
+	
 private:
 	UFUNCTION()
 	void OnSkillMontageEnded();

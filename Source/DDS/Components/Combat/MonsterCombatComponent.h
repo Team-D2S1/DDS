@@ -7,9 +7,19 @@
 #include "MonsterCombatComponent.generated.h"
 
 class UMonsterSkillBase;
-/**
- * 
- */
+
+USTRUCT(BlueprintType)
+struct FMonsterSkillInfo
+{
+	GENERATED_BODY()
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	TSubclassOf<UMonsterSkillBase> MonsterSkillClass;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	bool bIsUsable = false;
+};
+
 UCLASS()
 class DDS_API UMonsterCombatComponent : public UPlayerCombatComponent
 {
@@ -22,9 +32,9 @@ protected:
 	virtual void BeginPlay() override;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Skill")
-	TArray<TSubclassOf<UMonsterSkillBase>> MonsterSkillClass;
+	TArray<FMonsterSkillInfo> MonsterSkillClassInfos;
 	
-	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Skill")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Skill")
 	TArray<TObjectPtr<UMonsterSkillBase>> MonsterSkills;
 
 public:
