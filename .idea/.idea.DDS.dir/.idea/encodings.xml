@@ -25,6 +25,8 @@
     <file url="file://$PROJECT_DIR$/Source/DDS/Components/Combat/PawnCombatComponent.h" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/Source/DDS/Components/Combat/PlayerCombatComponent.cpp" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/Source/DDS/Components/Combat/PlayerCombatComponent.h" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/Source/DDS/Components/Inventory/InventoryComponent.cpp" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/Source/DDS/Components/Inventory/InventoryComponent.h" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/Source/DDS/Components/PawnExtensionComponentBase.cpp" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/Source/DDS/Components/PawnExtensionComponentBase.h" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/Source/DDS/DDSGameplayTags.h" charset="UTF-8" />
@@ -48,13 +50,29 @@
     <file url="file://$PROJECT_DIR$/Source/DDS/GameAbilitySystem/IDDSAbilitySystemInterface.h" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/Source/DDS/Interfaces/IFocusable.cpp" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/Source/DDS/Interfaces/IFocusable.h" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/Source/DDS/Items/Actor/DDSCraftedPlayerWeapon.cpp" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/Source/DDS/Items/Actor/DDSCraftedPlayerWeapon.h" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/Source/DDS/Items/Actor/DDSPlayerWeapon.cpp" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/Source/DDS/Items/Actor/DDSPlayerWeapon.h" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/Source/DDS/Items/Actor/DDSWeaponBase.cpp" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/Source/DDS/Items/Actor/DDSWeaponBase.h" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/Source/DDS/Items/Actor/WeaponBladePart.cpp" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/Source/DDS/Items/Actor/WeaponBladePart.h" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/Source/DDS/Items/ItemInstance/ItemInstance.cpp" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/Source/DDS/Items/ItemInstance/ItemInstance.h" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/Source/DDS/PlayerController/MainMenuPlayerController.cpp" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/Source/DDS/PlayerController/MainMenuPlayerController.h" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/Source/DDS/UI/DDSUserWidget.cpp" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/Source/DDS/UI/DDSUserWidget.h" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/Source/DDS/UI/DDSWidgetController.cpp" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/Source/DDS/UI/DDSWidgetController.h" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/Source/DDS/UI/HUD/DDSHUD.cpp" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/Source/DDS/UI/HUD/DDSHUD.h" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/Source/DDS/UI/MainMenuWidget.cpp" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/Source/DDS/UI/MainMenuWidget.h" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/Source/DDS/UI/WidgetController/CraftingWidgetController.cpp" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/Source/DDS/UI/WidgetController/CraftingWidgetController.h" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/Source/DDS/UI/WidgetController/EquipWidgetController.cpp" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/Source/DDS/UI/WidgetController/EquipWidgetController.h" charset="UTF-8" />
   </component>
 </project>
