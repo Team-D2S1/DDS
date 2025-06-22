@@ -6,6 +6,9 @@
 #include "Components/Combat/PawnCombatComponent.h"
 #include "PlayerCombatComponent.generated.h"
 
+class ADDSCraftedPlayerWeapon;
+class UDDSPlayerGameplayAbility;
+class UItemInstance;
 class ADDSSimplePlayerWeapon;
 /**
  * 
@@ -16,16 +19,32 @@ class DDS_API UPlayerCombatComponent : public UPawnCombatComponent
 	GENERATED_BODY()
 public:
 	UFUNCTION(BlueprintCallable, Category = "DDS|Combat")
-	ADDSSimplePlayerWeapon* GetPlayerCarriedWeaponByTag(FGameplayTag InWeaponTag) const;
-	ADDSSimplePlayerWeapon* GetPlayerCurrentEquippedWeapon() const;
+	ADDSCraftedPlayerWeapon* GetPlayerCarriedWeaponByTag(FGameplayTag InWeaponTag) const;
+	ADDSCraftedPlayerWeapon* GetPlayerCurrentEquippedWeapon() const;
 
 	UFUNCTION(BlueprintCallable, Category = "DDS|Combat")
-	float GetPlayerCurrentEquippedWeaponDamageAtLevel(float InLevel = 0) const;
+	void RegisterSpawnedWeaponById(int32 ItemId);
 
-protected:
+	
+	UFUNCTION(BlueprintCallable, Category = "DDS|Combat")
+	float GetPlayerCurrentEquippedWeaponDamageAtLevel(float InLevel = 0) const;
+	
+	UFUNCTION(BlueprintCallable, Category = "DDS|Combat")
+	void NotifyRightWeaponChanged(UItemInstance* NewWeapon);
+
+	
+	
+	UFUNCTION(BlueprintCallable, Category = "DDS|Combat")
+	UItemInstance* GetRightWeaponItem() const { return rightWeaponItem; }
+protected: 
 	// void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 
+	UItemInstance* rightWeaponItem = nullptr;
 
+	UPROPERTY(EditDefaultsOnly, Category = "DDS|Combat")
+	TSubclassOf<UDDSPlayerGameplayAbility> CreateCraftedWeaponAbilityClass;
 private:
 	
 };
+
+

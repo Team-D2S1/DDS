@@ -4,7 +4,9 @@
 #include "Components/Combat/PawnCombatComponent.h"
 #include "AbilitySystemBlueprintLibrary.h"
 #include "DDSGameplayTags.h"
+#include "Character/Player/PlayerBase.h"
 #include "Components/BoxComponent.h"
+#include "Components/Inventory/InventoryComponent.h"
 #include "ETC/CustomLog.h"
 #include "Net/UnrealNetwork.h"
 #include "Items/Actor/DDSWeaponBase.h"
@@ -43,6 +45,8 @@ void UPawnCombatComponent::RegisterSpawnedWeapon(FGameplayTag InWeaponTag, ADDSW
 	}
 	MY_LOG_DISPLAY_NET(hasAuthority, TEXT("A Weapon %s (Tag: %s) is registered."), *InWeapon->GetName(), *InWeaponTag.ToString());
 }
+
+
 
 void UPawnCombatComponent::UnregisterSpawnedWeaponById(int32 ItemId)
 {

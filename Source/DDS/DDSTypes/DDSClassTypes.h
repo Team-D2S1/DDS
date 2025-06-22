@@ -8,6 +8,8 @@
 #include "PaperSprite.h"
 #include "DDSClassTypes.generated.h"
 
+class ADDSCraftedPlayerWeapon;
+class AWeaponBladePart;
 class UItemInstance;
 
 UCLASS(BlueprintType, Blueprintable)
@@ -31,9 +33,14 @@ public:
 	TObjectPtr<UPaperSprite> ItemIcon;
 
 
-	// UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
-	// UItemInstance* ItemInstance;
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
+	TSubclassOf<AWeaponBladePart> BladePartClass;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
+	TSubclassOf<ADDSCraftedPlayerWeapon> GripPart;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
+	FDDSBaseWeaponData WeaponBaseData;
 
 	virtual bool IsSupportedForNetworking() const override { return true; }
-	
 };
