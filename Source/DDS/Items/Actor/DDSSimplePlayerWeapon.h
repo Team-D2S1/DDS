@@ -22,8 +22,7 @@ public:
 
 
 	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
-	UPROPERTY(EditDefaultsOnly,BlueprintReadOnly,Category="WeaponData", ReplicatedUsing=OnRep_PlayerWeaponData)
-	FDDSSimpleWeaponData PlayerWeaponData;
+
 
 	UFUNCTION(BlueprintCallable)
 	void AssignGrantedAbilitySpecHandles(const TArray<FGameplayAbilitySpecHandle>& InGrantedAbilitySpecHandles);
@@ -45,8 +44,7 @@ protected:
 	TSubclassOf<UItemStaticData> DefaultWeaponItemClass;
 
 private:
-	UFUNCTION()
-	void OnRep_PlayerWeaponData();
+
 
 	
 	

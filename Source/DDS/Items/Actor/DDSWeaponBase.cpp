@@ -3,6 +3,7 @@
 
 #include "DDSWeaponBase.h"
 
+#include "DDSSimplePlayerWeapon.h"
 #include "Character/Player/PlayerBase.h"
 #include "Components/BoxComponent.h"
 #include "Components/Combat/PlayerCombatComponent.h"
@@ -67,6 +68,7 @@ void ADDSWeaponBase::GetLifetimeReplicatedProps(TArray<class FLifetimeProperty>&
 	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
 
 	DOREPLIFETIME(ADDSWeaponBase, ParentItemId);
+	DOREPLIFETIME(ADDSWeaponBase, WeaponItemInstance);
 	DOREPLIFETIME(ADDSWeaponBase, OwnerPawn);
 	DOREPLIFETIME(ADDSWeaponBase, WeaponTag);
 }
@@ -98,6 +100,12 @@ void ADDSWeaponBase::SetWeaponTag(FGameplayTag InWeaponTag)
 void ADDSWeaponBase::OnRep_WeaponTag()
 {
 }
+
+void ADDSWeaponBase::OnRep_PlayerWeaponData()
+{
+	
+}
+
 ADDSWeaponBase* UPawnCombatComponent::GetCharacterCarriedWeapon(FGameplayTag InWeaponTag) const
 {
 	if (CharacterCarriedWeaponMap.Contains(InWeaponTag))

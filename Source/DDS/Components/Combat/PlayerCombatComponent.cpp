@@ -2,7 +2,12 @@
 
 
 #include "Components/Combat/PlayerCombatComponent.h"
+
+#include "Character/Player/PlayerBase.h"
+#include "Components/Inventory/InventoryComponent.h"
+#include "ETC/CustomLog.h"
 #include "Items/Actor/DDSSimplePlayerWeapon.h"
+#include "Items/ItemInstance/ItemInstance.h"
 
 
 ADDSSimplePlayerWeapon* UPlayerCombatComponent::GetPlayerCarriedWeaponByTag(FGameplayTag InWeaponTag) const
@@ -15,9 +20,36 @@ ADDSSimplePlayerWeapon* UPlayerCombatComponent::GetPlayerCurrentEquippedWeapon()
 	return Cast<ADDSSimplePlayerWeapon>(GetCurrentEquippedWeapon());
 }
 
+void UPlayerCombatComponent::RegisterSpawnedWeaponById(int32 ItemId)
+{
+	UItemInstance* ItemInstance = Cast<APlayerBase>(GetOwningPawn())->GetInventoryComponent()->GetItemByID(ItemId);
+	if (!ItemInstance)
+	{
+		MY_LOG(LogTemp, Error, TEXT("Item with ID %d not found."), ItemId);
+		return;
+	}
+	if (!ItemInstance->IsValidCraftedWeapon())
+	{
+		MY_LOG(LogTemp, Error, TEXT("Item with ID %d is not a valid crafted weapon."), ItemId);
+		return;
+	}
+	
+}
+
 float UPlayerCombatComponent::GetPlayerCurrentEquippedWeaponDamageAtLevel(float InLevel) const
 {
-	return GetPlayerCurrentEquippedWeapon()->PlayerWeaponData.WeaponBaseDamage.GetValueAtLevel(InLevel);
+	return GetPlayerCurrentEquippedWeapon()->GetBaseWeaponData().WeaponBaseDamage.GetValueAtLevel(InLevel);
+}
+
+void UPlayerCombatComponent::NotifyRightWeaponChanged(UItemInstance* NewWeapon)
+{
+	if (NewWeapon == nullptr)
+	{
+		MY_LOG(LogTemp, Error, TEXT("NewWeapon is null in NotifyRightWeaponChanged"));
+		return;
+	}
+	rightWeaponItem = NewWeapon;
+	BP_SummonCraftedWeaponAndRegister(NewWeapon->GetItemId());
 }
 
 // void UPlayerCombatComponent::TickComponent(float DeltaTime, ELevelTick TickType,

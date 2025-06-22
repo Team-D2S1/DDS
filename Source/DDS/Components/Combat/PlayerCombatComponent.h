@@ -6,6 +6,7 @@
 #include "Components/Combat/PawnCombatComponent.h"
 #include "PlayerCombatComponent.generated.h"
 
+class UItemInstance;
 class ADDSSimplePlayerWeapon;
 /**
  * 
@@ -20,12 +21,28 @@ public:
 	ADDSSimplePlayerWeapon* GetPlayerCurrentEquippedWeapon() const;
 
 	UFUNCTION(BlueprintCallable, Category = "DDS|Combat")
-	float GetPlayerCurrentEquippedWeaponDamageAtLevel(float InLevel = 0) const;
+	void RegisterSpawnedWeaponById(int32 ItemId);
 
+	
+	UFUNCTION(BlueprintCallable, Category = "DDS|Combat")
+	float GetPlayerCurrentEquippedWeaponDamageAtLevel(float InLevel = 0) const;
+	
+	UFUNCTION(BlueprintCallable, Category = "DDS|Combat")
+	void NotifyRightWeaponChanged(UItemInstance* NewWeapon);
+
+
+	UFUNCTION(BlueprintImplementableEvent, Category = "DDS|Combat")
+	void BP_SummonCraftedWeaponAndRegister(int32 ItemId);
+	
+	UFUNCTION(BlueprintCallable, Category = "DDS|Combat")
+	UItemInstance* GetRightWeaponItem() const { return rightWeaponItem; }
 protected:
 	// void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 
+	UItemInstance* rightWeaponItem = nullptr;
 
 private:
 	
 };
+
+

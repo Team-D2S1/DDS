@@ -74,8 +74,10 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void SetIgnoreGameInput(bool bIgnore);
 
-protected:
+	UFUNCTION(BlueprintCallable)
 	APlayerBase* GetPlayerBase();
+protected:
+	
 	UDDSAbilitySystemComponent* GetDDSAbilitySystemComponent();
 
 

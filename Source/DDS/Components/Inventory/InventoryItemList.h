@@ -50,8 +50,11 @@ public:
 	void RemoveItem(int32 ItemID);
 	void RemoveItemAt(int32 Index);
 
+	UPROPERTY()
 	FInventoryItemEvent OnRepItemRemoved;
+	UPROPERTY()
 	FInventoryItemEvent OnRepItemAdded;
+	UPROPERTY()
 	FInventoryItemEvent OnRepItemChanged;
 };
 

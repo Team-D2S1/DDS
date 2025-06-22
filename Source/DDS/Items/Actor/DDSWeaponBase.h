@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "GameplayAbilitySpecHandle.h"
 #include "GameplayTagContainer.h"
+#include "DDSTypes/DDSStructTypes.h"
 #include "GameFramework/Actor.h"
 #include "DDSWeaponBase.generated.h"
 
@@ -24,7 +25,8 @@ public:
 
 	FOnTargetInteractedDelegate OnWeaponHitTarget;
 	FOnTargetInteractedDelegate OnWeaponPulledFromTarget;
-private:
+
+	
 
 protected:
 
@@ -43,6 +45,9 @@ protected:
 	
 	UPROPERTY(Replicated,BlueprintReadWrite,meta = (AllowPrivateAccess = "true"))
 	UItemInstance* WeaponItemInstance;
+
+	UPROPERTY(EditDefaultsOnly,BlueprintReadOnly,Category="WeaponData", ReplicatedUsing=OnRep_PlayerWeaponData)
+	FDDSBaseWeaponData PlayerWeaponData;
 
 	// OnRep 용으로 존재함. 해당문제 해결되면 삭제해도됨
 	UPROPERTY(VisibleAnywhere,BlueprintReadOnly,Category="DDS|Weapon",ReplicatedUsing= OnRep_OwnerPawn)
@@ -85,6 +90,13 @@ public:
 
 	UFUNCTION(BlueprintCallable,Category="DDS|Weapon")
 	int32 GetItemId() const {return ParentItemId;};
+
+	UFUNCTION(BlueprintCallable, Category="DDS|Weapon")
+	FDDSBaseWeaponData GetBaseWeaponData() const { return PlayerWeaponData; }
+
+private:
+	UFUNCTION()
+	void OnRep_PlayerWeaponData();
 };
 
 

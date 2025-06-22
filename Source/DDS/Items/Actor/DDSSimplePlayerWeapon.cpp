@@ -3,6 +3,7 @@
 
 #include "DDSSimplePlayerWeapon.h"
 
+#include "Character/Player/PlayerBase.h"
 #include "Components/BoxComponent.h"
 #include "DDSTypes/DDSClassTypes.h"
 #include "Items/ItemInstance/ItemInstance.h"
@@ -37,8 +38,6 @@ ADDSSimplePlayerWeapon::ADDSSimplePlayerWeapon()
 void ADDSSimplePlayerWeapon::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
 {
 	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
-
-	DOREPLIFETIME(ADDSSimplePlayerWeapon, PlayerWeaponData);
 	DOREPLIFETIME(ADDSSimplePlayerWeapon, GrantedAbilitySpecHandles);
 }
 
@@ -63,10 +62,5 @@ void ADDSSimplePlayerWeapon::OnEndOverlap(UPrimitiveComponent* OverlappedCompone
 	UPrimitiveComponent* OtherComp, int32 OtherBodyIndex)
 {
 	Super::OnEndOverlap(OverlappedComponent, OtherActor, OtherComp, OtherBodyIndex);
-}
-
-void ADDSSimplePlayerWeapon::OnRep_PlayerWeaponData()
-{
-	
 }
 
