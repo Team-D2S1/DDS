@@ -76,20 +76,15 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Skill")
 	float SkillDistance = 100.f;
 
-	// 스킬 사용 관련 변수
-
 	// 스킬 몽타주
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Skill")
 	TObjectPtr<UAnimMontage> SkillMontage;
 
 private:
-	UFUNCTION(NetMulticast, Reliable)
-	void NM_PlayMontage();
-	
 	UFUNCTION()
 	void OnSkillMontageEnded();
 	UFUNCTION()
-	void OnSkillMontageInturrupted();
+	void OnSkillMontageInterrupted();
 
 // Getter & Setters
 public:
