@@ -18,9 +18,9 @@ UInventoryComponent::UInventoryComponent()
 	bWantsInitializeComponent = true;
 	SetIsReplicatedByDefault(true);
 
-	InventoryList.OnRepItemAdded.AddDynamic(this, &UInventoryComponent::OnRepItemAdded);
-	InventoryList.OnRepItemRemoved.AddDynamic(this, &UInventoryComponent::OnRepItemRemoved);
-	InventoryList.OnRepItemChanged.AddDynamic(this, &UInventoryComponent::OnRepItemChanged);
+	// InventoryList.OnRepItemAdded.AddDynamic(this, &UInventoryComponent::OnRepItemAdded);
+	// InventoryList.OnRepItemRemoved.AddDynamic(this, &UInventoryComponent::OnRepItemRemoved);
+	// InventoryList.OnRepItemChanged.AddDynamic(this, &UInventoryComponent::OnRepItemChanged);
 }
 
 void UInventoryComponent::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
@@ -39,14 +39,22 @@ bool UInventoryComponent::ReplicateSubobjects(UActorChannel* Channel, FOutBunch*
 {
 	bool bWroteSomething = Super::ReplicateSubobjects(Channel, Bunch, RepFlags);
 
+	auto RepObj = [&](UItemInstance* Obj)
+	{
+		if (Obj) bWroteSomething |= Channel->ReplicateSubobject(Obj, *Bunch, *RepFlags);
+	};
+	
 	for (FInventoryItemEntry& Item : InventoryList.Items)
 	{
-		if (Item.ItemInstance && Channel->ReplicateSubobject(Item.ItemInstance, *Bunch, *RepFlags))
-		{
-			bWroteSomething = true;
-		}
+		RepObj(Item.ItemInstance);
 	}
 
+	RepObj(RightWeapon);
+	RepObj(Armor01);
+	RepObj(Armor02);
+	RepObj(Armor03);
+	RepObj(Armor04);
+	
 	return bWroteSomething;
 }
 
@@ -133,6 +141,9 @@ void UInventoryComponent::Server_AddCraftedWeapon_Implementation(TSubclassOf<UIt
 
 void UInventoryComponent::Server_EquipCraftedWeapon_Implementation(int32 ItemID)
 {
+	bool bIsServer = GetOwner()->HasAuthority();
+	MY_LOG(LogTemp, Log, TEXT("[%s] Server_EquipCraftedWeapon called with ItemID: %d"),
+		bIsServer ? TEXT("Server") : TEXT("Client"), ItemID);
 	if (ItemID == 0)
 	{
 		// 해제만 진행
@@ -167,48 +178,50 @@ FInventoryList& UInventoryComponent::GetInventoryList()
 	return InventoryList;
 }
 
-void UInventoryComponent::OnRepItemAdded(int32 ItemID)
-{
-	bool bIsServer = GetOwner()->HasAuthority();
-	MY_LOG(LogTemp, Log, TEXT("[%s] OnRepItemAdded called for ItemID: %d"),
-		bIsServer ? TEXT("Server") : TEXT("Client"), ItemID);
-	if (bIsServer)
-	{
-		OnRepItemAddedEvent.Broadcast(ItemID);
-	}
-	else
-	{
-
-	}
-	
-}
-
-void UInventoryComponent::OnRepItemRemoved(int32 ItemID)
-{
-	bool bIsServer = GetOwner()->HasAuthority();
-	if (bIsServer)
-	{
-		OnRepItemRemovedEvent.Broadcast(ItemID);
-	}
-	else
-	{
-		
-	}
-	
-}
-
-void UInventoryComponent::OnRepItemChanged(int32 ItemID)
-{
-	bool bIsServer = GetOwner()->HasAuthority();
-	if (bIsServer)
-	{
-		OnRepItemChangedEvent.Broadcast(ItemID);
-	}
-	else
-	{
-
-	}
-}
+// void UInventoryComponent::OnRepItemAdded(int32 ItemID)
+// {
+// 	bool bIsServer = GetOwner()->HasAuthority();
+// 	MY_LOG(LogTemp, Log, TEXT("[%s] OnRepItemAdded called for ItemID: %d"),
+// 		bIsServer ? TEXT("Server") : TEXT("Client"), ItemID);
+// 	if (bIsServer)
+// 	{
+// 		OnRepItemAddedEvent.Broadcast(ItemID);
+// 	}
+// 	else
+// 	{
+//
+// 	}
+// 	
+// }
+//
+// void UInventoryComponent::OnRepItemRemoved(int32 ItemID)
+// {
+// 	bool bIsServer = GetOwner()->HasAuthority();
+// 	MY_LOG(LogTemp, Log, TEXT("[%s] OnRepItemRemoved called for ItemID: %d"),
+// 		bIsServer ? TEXT("Server") : TEXT("Client"), ItemID);
+// 	if (bIsServer)
+// 	{
+// 		OnRepItemRemovedEvent.Broadcast(ItemID);
+// 	}
+// 	else
+// 	{
+// 		
+// 	}
+// 	
+// }
+//
+// void UInventoryComponent::OnRepItemChanged(int32 ItemID)
+// {
+// 	bool bIsServer = GetOwner()->HasAuthority();
+// 	if (bIsServer)
+// 	{
+// 		OnRepItemChangedEvent.Broadcast(ItemID);
+// 	}
+// 	else
+// 	{
+//
+// 	}
+// }
 
 void UInventoryComponent::BeginPlay()
 {

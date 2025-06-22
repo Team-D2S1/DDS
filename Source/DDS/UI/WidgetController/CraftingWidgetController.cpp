@@ -29,8 +29,8 @@ void UCraftingWidgetController::BindCallbacksToDependencies()
 	if (UInventoryComponent* InvComp = GetInventoryComponent())
 	{
 		MY_LOG(LogTemp, Log, TEXT("Binding InventoryComponent callbacks"));
-		InvComp->OnRepItemAddedEvent.AddDynamic(this, &UCraftingWidgetController::OnItemAdded);
-		InvComp->OnRepItemRemovedEvent.AddDynamic(this, &UCraftingWidgetController::OnItemRemoved);
+		// InvComp->OnRepItemAddedEvent.AddDynamic(this, &UCraftingWidgetController::OnItemAdded);
+		// InvComp->OnRepItemRemovedEvent.AddDynamic(this, &UCraftingWidgetController::OnItemRemoved);
 	}
 }
 void UCraftingWidgetController::OnPartSlotClicked(EPartType PartType, int32 ItemId)

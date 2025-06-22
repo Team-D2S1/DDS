@@ -78,19 +78,19 @@ public:
 	UItemInstance* GetArmor04() const { return Armor04; }
 	
 	
-	UPROPERTY(BlueprintAssignable)
-	FInventoryItemEvent OnRepItemRemovedEvent;
-	UPROPERTY(BlueprintAssignable)
-	FInventoryItemEvent OnRepItemAddedEvent;
-	UPROPERTY(BlueprintAssignable)
-	FInventoryItemEvent OnRepItemChangedEvent;
+	// UPROPERTY(BlueprintAssignable)
+	// FInventoryItemEvent OnRepItemRemovedEvent;
+	// UPROPERTY(BlueprintAssignable)
+	// FInventoryItemEvent OnRepItemAddedEvent;
+	// UPROPERTY(BlueprintAssignable)
+	// FInventoryItemEvent OnRepItemChangedEvent;
 
-	UFUNCTION()
- 	void OnRepItemAdded(int32 ItemID);
-    UFUNCTION()
-	void OnRepItemRemoved(int32 ItemID);
-	UFUNCTION()
-	void OnRepItemChanged(int32 ItemID);
+	// UFUNCTION()
+ // 	void OnRepItemAdded(int32 ItemID);
+ //    UFUNCTION()
+	// void OnRepItemRemoved(int32 ItemID);
+	// UFUNCTION()
+	// void OnRepItemChanged(int32 ItemID);
 
     UFUNCTION()
   	void OnRep_RightWeapon();

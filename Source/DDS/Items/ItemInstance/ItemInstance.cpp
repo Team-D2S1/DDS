@@ -47,6 +47,7 @@ void UItemInstance::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLif
 	DOREPLIFETIME(UItemInstance, PommelItemInstance);
 }
 
+
 UPaperSprite* UItemInstance::GetItemIcon() const
 {
 	if (ItemClass)

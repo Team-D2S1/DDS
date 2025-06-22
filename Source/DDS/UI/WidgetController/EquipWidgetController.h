@@ -27,7 +27,7 @@ public:
 
 
 	UPROPERTY(BlueprintAssignable, Category = "DDS|WidgetController|Equip")
-	FUpdateUIEvent UpdateUIEvent;
+	FUpdateUIEvent BP_UpdateUIEvent;
 private:
 
 

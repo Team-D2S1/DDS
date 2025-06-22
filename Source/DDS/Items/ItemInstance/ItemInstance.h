@@ -26,6 +26,8 @@ public:
 	
 	virtual bool IsSupportedForNetworking() const override {return true;};
 	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
+
+
 	
 	UFUNCTION(BlueprintPure, Category = "DDS|Item")
     int GetItemId() const { return ItemId; }

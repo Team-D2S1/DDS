@@ -27,6 +27,8 @@
     <file url="file://$PROJECT_DIR$/Source/DDS/Components/Combat/PlayerCombatComponent.h" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/Source/DDS/Components/Inventory/InventoryComponent.cpp" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/Source/DDS/Components/Inventory/InventoryComponent.h" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/Source/DDS/Components/Inventory/InventoryComponentInterface.cpp" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/Source/DDS/Components/Inventory/InventoryComponentInterface.h" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/Source/DDS/Components/PawnExtensionComponentBase.cpp" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/Source/DDS/Components/PawnExtensionComponentBase.h" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/Source/DDS/DDSGameplayTags.h" charset="UTF-8" />
@@ -38,6 +40,8 @@
     <file url="file://$PROJECT_DIR$/Source/DDS/DataAsset/StartUpData/DataAsset_PlayerStartUpData.h" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/Source/DDS/DataAsset/StartUpData/DataAsset_StartUpDataBase.cpp" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/Source/DDS/DataAsset/StartUpData/DataAsset_StartUpDataBase.h" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/Source/DDS/ETC/DDSFunctionLibrary.cpp" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/Source/DDS/ETC/DDSFunctionLibrary.h" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/Source/DDS/GameAbilitySystem/Abilities/DDSGameplayAbility.cpp" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/Source/DDS/GameAbilitySystem/Abilities/DDSGameplayAbility.h" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/Source/DDS/GameAbilitySystem/Abilities/DDSMonsterGameplayAbility.cpp" charset="UTF-8" />
