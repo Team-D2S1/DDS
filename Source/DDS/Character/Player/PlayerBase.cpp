@@ -170,6 +170,7 @@ void APlayerBase::InitAbilityActorInfo()
 {
 	ADDSPlayerState* DDSPlayerState = GetPlayerState<ADDSPlayerState>();
 	// MY_LOG(LogTemp,Log,TEXT("InitAbilityActorInfo"))
+
 	if (!DDSPlayerState)
 	{
 		MY_LOG(LogTemp, Error, TEXT("PlayerState is nullptr"));

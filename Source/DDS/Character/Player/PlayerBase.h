@@ -39,6 +39,7 @@ public:
 	/* IPawnUIInterface End~ */
 
     /* IInventoryComponentInterface Begin~ */
+	UFUNCTION(BlueprintCallable, Category = "DDS|InventoryComponentInterface")
     virtual UInventoryComponent* GetInventoryComponent() override;
 	/* IInventoryComponentInterface End~ */
 	

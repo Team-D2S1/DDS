@@ -50,9 +50,12 @@ public:
 	void RemoveItem(int32 ItemID);
 	void RemoveItemAt(int32 Index);
 
-	FInventoryItemEvent OnRepItemRemoved;
-	FInventoryItemEvent OnRepItemAdded;
-	FInventoryItemEvent OnRepItemChanged;
+	// UPROPERTY()
+	// FInventoryItemEvent OnRepItemRemoved;
+	// UPROPERTY()
+	// FInventoryItemEvent OnRepItemAdded;
+	// UPROPERTY()
+	// FInventoryItemEvent OnRepItemChanged;
 };
 
 template<>
