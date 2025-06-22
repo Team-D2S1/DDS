@@ -94,6 +94,12 @@ public:
 	UFUNCTION(BlueprintCallable, Category="DDS|Weapon")
 	FDDSBaseWeaponData GetBaseWeaponData() const { return PlayerWeaponData; }
 
+	UFUNCTION(BlueprintCallable)
+	virtual void AssignGrantedAbilitySpecHandles(const TArray<FGameplayAbilitySpecHandle>& InGrantedAbilitySpecHandles);
+
+    UFUNCTION(BlueprintPure)
+	virtual TArray<FGameplayAbilitySpecHandle> GetGrantedAbilitySpecHandles();
+
 private:
 	UFUNCTION()
 	void OnRep_PlayerWeaponData();

@@ -11,6 +11,8 @@
 
 
 
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FInventroryUpdateEvent);
+
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
 class DDS_API UInventoryComponent : public UPawnExtensionComponentBase
 {
@@ -77,6 +79,9 @@ public:
 	UFUNCTION(BlueprintPure)
 	UItemInstance* GetArmor04() const { return Armor04; }
 	
+
+	UPROPERTY()
+	FInventroryUpdateEvent InventoryUpdatedEvent;
 	
 	// UPROPERTY(BlueprintAssignable)
 	// FInventoryItemEvent OnRepItemRemovedEvent;
@@ -92,6 +97,9 @@ public:
 	// UFUNCTION()
 	// void OnRepItemChanged(int32 ItemID);
 
+	UFUNCTION()
+	void OnRep_InventoryList();
+
     UFUNCTION()
   	void OnRep_RightWeapon();
 protected:
@@ -99,9 +107,12 @@ protected:
  	// Called when the game starts
 	virtual void BeginPlay() override;
 
-	UPROPERTY(Replicated)
+	UPROPERTY(ReplicatedUsing = OnRep_InventoryList)
 	FInventoryList InventoryList;
 
+	/**
+ 	 * 
+ 	 */
  	UPROPERTY(BlueprintReadOnly, ReplicatedUsing=OnRep_RightWeapon)
 	UItemInstance* RightWeapon;
 	UPROPERTY(BlueprintReadOnly, Replicated)

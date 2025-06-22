@@ -129,3 +129,13 @@ ADDSWeaponBase* UPawnCombatComponent::GetCurrentEquippedWeapon() const
 	return GetCharacterCarriedWeapon(CurrentEquippedWeaponTag);
 }
 
+void ADDSWeaponBase::AssignGrantedAbilitySpecHandles(
+	const TArray<FGameplayAbilitySpecHandle>& InGrantedAbilitySpecHandles)
+{
+	GrantedAbilitySpecHandles = InGrantedAbilitySpecHandles;
+}
+
+TArray<FGameplayAbilitySpecHandle> ADDSWeaponBase::GetGrantedAbilitySpecHandles()
+{
+	return GrantedAbilitySpecHandles;
+}

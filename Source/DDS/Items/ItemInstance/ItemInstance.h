@@ -62,6 +62,8 @@ public:
 	}
 	
 protected:
+	// 만약 기존에 복제되지 않은 아이템 인스턴스라면, InventoryComponent의 ReplicateSubobjects에 수정해줘야함.
+	
 	UPROPERTY(Replicated)
 	UItemInstance* BladeItemInstance;
 	UPROPERTY(Replicated)

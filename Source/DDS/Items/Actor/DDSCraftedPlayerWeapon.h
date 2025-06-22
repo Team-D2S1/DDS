@@ -34,6 +34,8 @@ public:
 
 	void SetWeaponItemInstance(UItemInstance* NewWeaponItemInstance) { WeaponItemInstance = NewWeaponItemInstance; };
 	UItemInstance* GetWeaponItemInstance() const { return WeaponItemInstance; };
+	
+	
 	UFUNCTION(BlueprintCallable)
 	void SetBladeItemInstance(UItemInstance* NewBladeItemInstance);
 	UFUNCTION(BlueprintCallable)

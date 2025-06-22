@@ -3,13 +3,14 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "Components/Inventory/InventoryComponent.h"
 #include "UI/DDSWidgetController.h"
 #include "EquipWidgetController.generated.h"
 
 class UInventoryComponent;
 
 
-DECLARE_DYNAMIC_MULTICAST_DELEGATE(FUpdateUIEvent);
+
 /**
  * 
  */
@@ -22,12 +23,18 @@ private:
 	
 public:
 
+	virtual void BroadcastInitialValue() override;
+	virtual void BindCallbacksToDependencies() override;
+
+	
 	UFUNCTION(BlueprintCallable, Category = "DDS|WidgetController|Equip")
 	UInventoryComponent* GetInventoryComponent();
 
-
+	UFUNCTION(BlueprintCallable, Category = "DDS|WidgetController|Equip")
+	void OnInventoryUpdated();
+	
 	UPROPERTY(BlueprintAssignable, Category = "DDS|WidgetController|Equip")
-	FUpdateUIEvent BP_UpdateUIEvent;
+	FInventroryUpdateEvent BP_UpdateUI;
 private:
 
 

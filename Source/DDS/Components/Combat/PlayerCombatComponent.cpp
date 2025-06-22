@@ -3,21 +3,23 @@
 
 #include "Components/Combat/PlayerCombatComponent.h"
 
+#include "AbilitySystemComponent.h"
 #include "Character/Player/PlayerBase.h"
 #include "Components/Inventory/InventoryComponent.h"
 #include "ETC/CustomLog.h"
+#include "GameAbilitySystem/Abilities/DDSPlayerGameplayAbility.h"
 #include "Items/Actor/DDSSimplePlayerWeapon.h"
 #include "Items/ItemInstance/ItemInstance.h"
 
 
-ADDSSimplePlayerWeapon* UPlayerCombatComponent::GetPlayerCarriedWeaponByTag(FGameplayTag InWeaponTag) const
+ADDSCraftedPlayerWeapon* UPlayerCombatComponent::GetPlayerCarriedWeaponByTag(FGameplayTag InWeaponTag) const
 {
-	return Cast<ADDSSimplePlayerWeapon>(GetCharacterCarriedWeapon(InWeaponTag));
+	return Cast<ADDSCraftedPlayerWeapon>(GetCharacterCarriedWeapon(InWeaponTag));
 }
 
-ADDSSimplePlayerWeapon* UPlayerCombatComponent::GetPlayerCurrentEquippedWeapon() const
+ADDSCraftedPlayerWeapon* UPlayerCombatComponent::GetPlayerCurrentEquippedWeapon() const
 {
-	return Cast<ADDSSimplePlayerWeapon>(GetCurrentEquippedWeapon());
+	return Cast<ADDSCraftedPlayerWeapon>(GetCurrentEquippedWeapon());
 }
 
 void UPlayerCombatComponent::RegisterSpawnedWeaponById(int32 ItemId)
@@ -43,13 +45,50 @@ float UPlayerCombatComponent::GetPlayerCurrentEquippedWeaponDamageAtLevel(float 
 
 void UPlayerCombatComponent::NotifyRightWeaponChanged(UItemInstance* NewWeapon)
 {
+	bool bIsServer = GetOwner()->HasAuthority();
 	if (NewWeapon == nullptr)
 	{
-		MY_LOG(LogTemp, Error, TEXT("NewWeapon is null in NotifyRightWeaponChanged"));
+		MY_LOG(LogTemp, Log, TEXT("NewWeapon is null in NotifyRightWeaponChanged"));
+		rightWeaponItem = NewWeapon;
+		if (bIsServer)
+		{
+			ADDSWeaponBase* CurrentWeapon = GetCurrentEquippedWeapon();
+			if (CurrentWeapon)
+			{
+				// 액터 삭제
+				MY_LOG(LogTemp, Log, TEXT("Destroying current equipped weapon: %s"), *CurrentWeapon->GetName());
+				CurrentWeapon->Destroy();
+			}
+			else
+			{
+				MY_LOG(LogTemp, Log, TEXT("No current equipped weapon to unbind events from"));
+			}
+		}
 		return;
 	}
 	rightWeaponItem = NewWeapon;
-	BP_SummonCraftedWeaponAndRegister(NewWeapon->GetItemId());
+	if (!bIsServer)
+	{
+		return;
+	}
+	if (CreateCraftedWeaponAbilityClass)
+	{
+		APlayerBase* PlayerBase = GetOwningPawn<APlayerBase>();
+		if (!PlayerBase) return;
+		UAbilitySystemComponent* ASC = PlayerBase->GetAbilitySystemComponent();
+		if (!ASC) return;
+
+		FGameplayAbilitySpec spec(CreateCraftedWeaponAbilityClass);
+		spec.SourceObject = ASC->GetAvatarActor();
+		spec.Level  = 1;
+		ASC->GiveAbility(spec);
+		// 플레이어가 소지한 무기 아이템을 능력으로 등록
+		MY_LOG(LogTemp, Log, TEXT("Created crafted weapon ability for %s"), *NewWeapon->GetItemName());
+	}
+	else
+	{
+		MY_LOG(LogTemp, Error, TEXT("CreateCraftedWeaponAbilityClass is not set"));
+	}
 }
 
 // void UPlayerCombatComponent::TickComponent(float DeltaTime, ELevelTick TickType,

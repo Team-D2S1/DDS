@@ -3,6 +3,8 @@
 
 #include "Components/Inventory/InventoryComponent.h"
 
+#include "AbilitySystemComponent.h"
+#include "Character/Player/DDSPlayerState.h"
 #include "Character/Player/PlayerBase.h"
 #include "Components/Combat/PlayerCombatComponent.h"
 #include "Engine/ActorChannel.h"
@@ -50,6 +52,12 @@ bool UInventoryComponent::ReplicateSubobjects(UActorChannel* Channel, FOutBunch*
 	}
 
 	RepObj(RightWeapon);
+	if (RightWeapon)
+	{
+		RepObj(RightWeapon->GetBladeItemInstance());
+		RepObj(RightWeapon->GetGripItemInstance());
+		RepObj(RightWeapon->GetPommelItemInstance());
+	}
 	RepObj(Armor01);
 	RepObj(Armor02);
 	RepObj(Armor03);
@@ -229,20 +237,33 @@ void UInventoryComponent::BeginPlay()
 }
 
 
+void UInventoryComponent::OnRep_InventoryList()
+{
+	InventoryUpdatedEvent.Broadcast();
+}
+
 void UInventoryComponent::OnRep_RightWeapon()
 {
 	// CombatComponent의 현재 무기가 동일하면 무시.
 	// 동일하지 않다면 CombatComponent에 알림
+	bool bIsServer = GetOwner()->HasAuthority();
+	InventoryUpdatedEvent.Broadcast();
 	if (RightWeapon)
 	{
-		MY_LOG(LogTemp, Log, TEXT("RightWeapon changed to %s"), *RightWeapon->GetName());
+		MY_LOG(LogTemp, Log, TEXT("[%s]RightWeapon changed to %s"),
+			bIsServer ? TEXT("Server") : TEXT("Client"), *RightWeapon->GetName());
 	}
 	else
 	{
-		MY_LOG(LogTemp, Log, TEXT("RightWeapon is now null."));
+		MY_LOG(LogTemp, Log, TEXT("[%s]RightWeapon is now nullptr"),
+			bIsServer ? TEXT("Server") : TEXT("Client"));
 	}
-	if (APlayerBase* PlayerBase = Cast<APlayerBase>(GetOwner()))
+
+	if (ADDSPlayerState* PlayerState = Cast<ADDSPlayerState>(GetOwner()))
 	{
+		APlayerBase* PlayerBase = Cast<APlayerBase>(PlayerState->GetPawn());
+			MY_LOG(LogTemp, Log, TEXT("[%s] Owner: %s"), 
+        		bIsServer ? TEXT("Server") : TEXT("Client"), *PlayerBase->GetName());
 		if (UPlayerCombatComponent* CombatComponent = PlayerBase->GetCombatComponent())
 		{
 			if (RightWeapon)

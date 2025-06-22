@@ -22,6 +22,9 @@ void ADDSCraftedPlayerWeapon::GetLifetimeReplicatedProps(TArray<class FLifetimeP
 	DOREPLIFETIME(ADDSCraftedPlayerWeapon, WeaponItemInstance);
 }
 
+
+
+
 void ADDSCraftedPlayerWeapon::SetBladeItemInstance(UItemInstance* NewBladeItemInstance)
 {
 	WeaponItemInstance->SetBladeItemInstance(NewBladeItemInstance);

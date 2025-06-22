@@ -39,5 +39,8 @@ public:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
 	TSubclassOf<ADDSCraftedPlayerWeapon> GripPart;
 
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
+	FDDSBaseWeaponData WeaponBaseData;
+
 	virtual bool IsSupportedForNetworking() const override { return true; }
 };

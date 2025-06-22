@@ -13,9 +13,11 @@ AWeaponBladePart::AWeaponBladePart()
 
 	BladePartMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("BladePartMesh"));
 	SetRootComponent(BladePartMesh);
+	BladePartMesh->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 
 	BladePartCollisionBox = CreateDefaultSubobject<UBoxComponent>(TEXT("BladePartCollisionBox"));
 	BladePartCollisionBox->SetupAttachment(RootComponent);
+	BladePartCollisionBox->SetCollisionEnabled(ECollisionEnabled::Type::QueryOnly);
 	BladePartCollisionBox->SetGenerateOverlapEvents(true);
 	BladePartCollisionBox->OnComponentBeginOverlap.AddDynamic(this, &AWeaponBladePart::OnBeginOverlap);
 	BladePartCollisionBox->OnComponentEndOverlap.AddDynamic(this, &AWeaponBladePart::OnEndOverlap);
