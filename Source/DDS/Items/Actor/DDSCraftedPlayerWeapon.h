@@ -57,7 +57,7 @@ public:
 
 private:
 
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"),Replicated)
 	TObjectPtr<AWeaponBladePart> BladePartActor;
 	
 };

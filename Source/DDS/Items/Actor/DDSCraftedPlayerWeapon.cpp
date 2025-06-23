@@ -23,6 +23,7 @@ void ADDSCraftedPlayerWeapon::GetLifetimeReplicatedProps(TArray<class FLifetimeP
 	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
 
 	DOREPLIFETIME(ADDSCraftedPlayerWeapon, WeaponItemInstance);
+	DOREPLIFETIME(ADDSCraftedPlayerWeapon, BladePartActor);
 }
 
 
@@ -79,7 +80,8 @@ UBoxComponent* ADDSCraftedPlayerWeapon::GetWeaponCollsionBox() const
 	{
 		return BladePartActor->GetBladePartCollisionBox();
 	}
-	MY_LOG(LogTemp, Error, TEXT("BladePartActor is nullptr in GetWeaponCollsionBox"));
+	bool bIsServer = HasAuthority();
+	MY_LOG(LogTemp, Error, TEXT("[%s] BladePartActor is nullptr"), bIsServer ? TEXT("Server") : TEXT("Client"));
 	return WeaponCollisionBox;
 }
 
@@ -87,6 +89,7 @@ void ADDSCraftedPlayerWeapon::SetBladeActor(AWeaponBladePart* NewBladePartActor)
 {
 	if (NewBladePartActor)
 	{
+		MY_LOG(LogTemp, Log, TEXT("Setting BladePartActor %s To %s"), *NewBladePartActor->GetName(), *GetName());
 		BladePartActor = NewBladePartActor;
 		WeaponCollisionBox = BladePartActor->GetBladePartCollisionBox();
 	}
