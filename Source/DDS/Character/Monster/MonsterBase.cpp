@@ -3,6 +3,9 @@
 
 #include "MonsterBase.h"
 
+#include "AIController.h"
+#include "BrainComponent.h"
+#include "Abilities/Tasks/AbilityTask_PlayMontageAndWait.h"
 #include "Components/WidgetComponent.h"
 #include "Components/Combat/MonsterCombatComponent.h"
 #include "Components/UI/MonsterUIComponent.h"
@@ -135,6 +138,56 @@ void AMonsterBase::Tick(float DeltaSeconds)
 {
 	Super::Tick(DeltaSeconds);
 }
+
+void AMonsterBase::OnDeathStartTagChanged(const FGameplayTag ChangedTag, int32 NumberOfTag)
+{
+	Super::OnDeathStartTagChanged(ChangedTag, NumberOfTag);
+	
+	if(HasAuthority())
+	{
+		// BT 종료
+		if(AAIController* AIController = Cast<AAIController>(GetController()))
+		{
+			AIController->BrainComponent->StopLogic(FString("Monster Death"));
+		}
+		NM_MonsterDie();
+	}
+}
+
+void AMonsterBase::NM_MonsterDie_Implementation()
+{
+	MY_LOG(LogTemp, Error, TEXT("Monster Death"))
+
+	UAnimInstance* AnimInstance = GetMesh()->GetAnimInstance();
+	if(AnimInstance)
+	{
+		if(GetMonsterCombatComponent()->DeathMontage)
+		{
+			AnimInstance->Montage_Play(GetMonsterCombatComponent()->DeathMontage);
+		}
+		AnimInstance->OnMontageEnded.AddDynamic(this, &ThisClass::OnDeathMontageEnded);
+	}
+}
+
+void AMonsterBase::OnDeathMontageEnded(UAnimMontage* Montage, bool bInterrupted)
+{
+	if(!HasAuthority()) return;
+	
+	if(Montage == GetMonsterCombatComponent()->DeathMontage)
+	{
+		if(GetAbilitySystemComponent())
+		{
+			GetAbilitySystemComponent()->AddLooseGameplayTag(FGameplayTag::RequestGameplayTag("State.Dead.End"));
+		}
+	}
+}
+
+void AMonsterBase::OnDeathEndTagChanged(const FGameplayTag ChangedTag, int32 NumberOfTag)
+{
+	Super::OnDeathEndTagChanged(ChangedTag, NumberOfTag);
+}
+
+
 
 void AMonsterBase::PossessedBy(AController* NewController)
 {

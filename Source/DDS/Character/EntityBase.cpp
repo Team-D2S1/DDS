@@ -129,9 +129,11 @@ void AEntityBase::OnRep_FocusedObject()
 void AEntityBase::OnDeathStartTagChanged(const FGameplayTag ChangedTag, int32 NumberOfTag)
 {
 	MY_LOG(LogTemp, Warning, TEXT("Death"));
+
 }
 
 void AEntityBase::OnDeathEndTagChanged(const FGameplayTag ChangedTag, int32 NumberOfTag)
 {
-	
+	MY_LOG(LogTemp, Warning, TEXT("Death End"));
+	Destroy();
 }

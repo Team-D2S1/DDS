@@ -28,6 +28,9 @@ class DDS_API UMonsterCombatComponent : public UPlayerCombatComponent
 public:
 	UMonsterCombatComponent();
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Montage")
+	TObjectPtr<UAnimMontage> DeathMontage;
+
 protected:
 	virtual void BeginPlay() override;
 
@@ -36,7 +39,7 @@ protected:
 	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Skill")
 	TArray<TObjectPtr<UMonsterSkillBase>> MonsterSkills;
-
+	
 public:
 	FORCEINLINE const TArray<UMonsterSkillBase*>& GetMonsterSkills() const { return MonsterSkills; }
 };

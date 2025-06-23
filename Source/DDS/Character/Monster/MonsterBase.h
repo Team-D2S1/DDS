@@ -32,7 +32,17 @@ protected:
 	
 	virtual void BeginPlay() override;
 
-	virtual void Tick(float DeltaSeconds) override;	
+	virtual void Tick(float DeltaSeconds) override;
+	
+	virtual void OnDeathStartTagChanged(const FGameplayTag ChangedTag, int32 NumberOfTag) override;
+	
+	virtual void OnDeathEndTagChanged(const FGameplayTag ChangedTag, int32 NumberOfTag) override;
+	
+	UFUNCTION(NetMulticast, Reliable)
+	void NM_MonsterDie();
+
+	UFUNCTION()
+	void OnDeathMontageEnded(UAnimMontage* Montage, bool bInterrupted);
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Weapon")
 	USkeletalMeshComponent* WeaponMesh;
