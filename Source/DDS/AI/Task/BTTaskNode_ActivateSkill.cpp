@@ -73,7 +73,6 @@ void UBTTaskNode_ActivateSkill::TickTask(UBehaviorTreeComponent& OwnerComp, uint
 		FRotator NewRotation = FMath::RInterpConstantTo(CurrentRotation, TargetRotation, DeltaSeconds, RotationSpeed);
 
 		Monster->SetActorRotation(NewRotation);
-		MY_LOG(LogTemp, Error, TEXT("%f"), DeltaSeconds)
 	}
 }
 
@@ -91,7 +90,6 @@ void UBTTaskNode_ActivateSkill::OnAbilityEnded(const FAbilityEndedData& EndedDat
 			
 			CachedOwnerComp->GetBlackboardComponent()->SetValueAsBool("bIsUsingSkill", false);
 			CachedOwnerComp->GetBlackboardComponent()->SetValueAsObject("SelectedSkill", nullptr);
-			MY_LOG(LogTemp, Warning, TEXT("End"))
 
 			FinishLatentTask(*CachedOwnerComp, EBTNodeResult::Succeeded);
 			CachedOwnerComp = nullptr;
