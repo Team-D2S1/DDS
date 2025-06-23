@@ -54,6 +54,29 @@ EBTNodeResult::Type UBTTaskNode_ActivateSkill::ExecuteTask(UBehaviorTreeComponen
 	return EBTNodeResult::Failed;
 }
 
+void UBTTaskNode_ActivateSkill::TickTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory, float DeltaSeconds)
+{
+	Super::TickTask(OwnerComp, NodeMemory, DeltaSeconds);
+
+	if(AActor* TargetActor = Cast<AActor>(OwnerComp.GetBlackboardComponent()->GetValueAsObject("TargetActor")))
+	{
+		AMonsterBase* Monster = Cast<AMonsterBase>(OwnerComp.GetAIOwner()->GetPawn());
+
+		FVector TargetVector = TargetActor->GetActorLocation() - Monster->GetActorLocation();
+		FRotator TargetRotation = TargetVector.Rotation();
+		TargetRotation.Pitch = 0.f; TargetRotation.Roll = 0.f;
+
+		FRotator CurrentRotation = Monster->GetActorRotation();
+
+		float RotationSpeed = 360.f;
+
+		FRotator NewRotation = FMath::RInterpConstantTo(CurrentRotation, TargetRotation, DeltaSeconds, RotationSpeed);
+
+		Monster->SetActorRotation(NewRotation);
+		MY_LOG(LogTemp, Error, TEXT("%f"), DeltaSeconds)
+	}
+}
+
 void UBTTaskNode_ActivateSkill::OnAbilityEnded(const FAbilityEndedData& EndedData)
 {
 	if(EndedData.AbilitySpecHandle == CachedHandle)
@@ -68,7 +91,8 @@ void UBTTaskNode_ActivateSkill::OnAbilityEnded(const FAbilityEndedData& EndedDat
 			
 			CachedOwnerComp->GetBlackboardComponent()->SetValueAsBool("bIsUsingSkill", false);
 			CachedOwnerComp->GetBlackboardComponent()->SetValueAsObject("SelectedSkill", nullptr);
-			
+			MY_LOG(LogTemp, Warning, TEXT("End"))
+
 			FinishLatentTask(*CachedOwnerComp, EBTNodeResult::Succeeded);
 			CachedOwnerComp = nullptr;
 		}

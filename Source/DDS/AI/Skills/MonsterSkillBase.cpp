@@ -38,7 +38,7 @@ void UMonsterSkillBase::ActivateAbility(const FGameplayAbilitySpecHandle Handle,
 		
 		FRotator MonsterRotation = (Target->GetActorLocation() - Monster->GetActorLocation()).Rotation();
 		MonsterRotation.Pitch = 0.f; MonsterRotation.Roll = 0.f;
-		Monster->SetActorRotation(MonsterRotation);
+		//Monster->SetActorRotation(MonsterRotation);
 	}
 	
 	// 몽타주 실행
@@ -79,11 +79,6 @@ void UMonsterSkillBase::EndAbility(const FGameplayAbilitySpecHandle Handle, cons
 	Super::EndAbility(Handle, ActorInfo, ActivationInfo, bReplicateEndAbility, bWasCancelled);
 
 	bool bIsSuccess = TryActivateNextSkill();
-
-	if(!bIsSuccess)
-	{
-		OnGameplayAbilityEnded.Broadcast(this);
-	}
 }
 
 void UMonsterSkillBase::OnSkillMontageEnded()
@@ -126,7 +121,9 @@ bool UMonsterSkillBase::TryActivateNextSkill()
 	FVector ToTarget = Target->GetActorLocation() - Monster->GetActorLocation();
 	if(ToTarget.Length() <= Cast<UMonsterSkillBase>(FoundSpec->Ability)->SkillDistance)
 	{
-		return Monster->GetAbilitySystemComponent()->TryActivateAbility(FoundSpec->Handle);
+		Blackboard->SetValueAsObject("SelectedSkill", FoundSpec->Ability);
+		return true;
+		//return Monster->GetAbilitySystemComponent()->TryActivateAbility(FoundSpec->Handle);
 	}
 	
 	return false;
