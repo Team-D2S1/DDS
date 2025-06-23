@@ -74,6 +74,18 @@ UItemInstance* ADDSCraftedPlayerWeapon::GetPommelItemInstance() const
 	return nullptr;
 }
 
+void ADDSCraftedPlayerWeapon::OnBladeBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
+	UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
+{
+	OnBeginOverlap(OverlappedComponent, OtherActor, OtherComp, OtherBodyIndex, bFromSweep, SweepResult);
+}
+
+void ADDSCraftedPlayerWeapon::OnBladeEndOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
+	UPrimitiveComponent* OtherComp, int32 OtherBodyIndex)
+{
+	OnEndOverlap(OverlappedComponent, OtherActor, OtherComp, OtherBodyIndex);
+}
+
 UBoxComponent* ADDSCraftedPlayerWeapon::GetWeaponCollsionBox() const
 {
 	if (BladePartActor)
@@ -92,6 +104,8 @@ void ADDSCraftedPlayerWeapon::SetBladeActor(AWeaponBladePart* NewBladePartActor)
 		MY_LOG(LogTemp, Log, TEXT("Setting BladePartActor %s To %s"), *NewBladePartActor->GetName(), *GetName());
 		BladePartActor = NewBladePartActor;
 		WeaponCollisionBox = BladePartActor->GetBladePartCollisionBox();
+		BladePartActor->OnWeaponBladePartBeginOverlap.AddDynamic(this, &ADDSCraftedPlayerWeapon::OnBladeBeginOverlap);
+		BladePartActor->OnWeaponBladePartEndOverlap.AddDynamic(this, &ADDSCraftedPlayerWeapon::OnBladeEndOverlap);
 	}
 	else
 	{

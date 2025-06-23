@@ -57,6 +57,7 @@ void UDDSAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCallbac
 		MY_ERROR_DISPLAY(TEXT("PawnUIInterface is not implemented"));
 		return;
 	}
+	MY_LOG(LogTemp, Log, TEXT("PostGameplayEffectExecute called for %s"), *GetName());
 
 	bool hasAuthority = GetOwningAbilitySystemComponent()->GetOwner()->HasAuthority();
 	UPawnUIComponent* PawnUIComponent = CachedPawnUIInterface->GetPawnUIComponent();
@@ -69,6 +70,7 @@ void UDDSAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCallbac
 	if (Data.EvaluatedData.Attribute == GetHealthAttribute())
 	{
 		const float NewHealth = FMath::Clamp( GetHealth(), 0.f, GetMaxHealth());
+		MY_CLOG_DISPLAY_NET(FColor::Green, hasAuthority, TEXT("%s Health changed from %f to %f"), *GetName(), GetHealth(), NewHealth);
 		SetHealth(NewHealth);
 		if (hasAuthority)
 		{

@@ -37,7 +37,7 @@ void AWeaponBladePart::OnBeginOverlap(UPrimitiveComponent* OverlappedComponent, 
 	UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
 	MY_LOG(LogTemp, Log, TEXT("WeaponBladePart BeginOverlap with %s"), *OtherActor->GetName());
-	OnWeaponBladePartBeginOverlap.Broadcast(OverlappedComponent, OtherActor, OtherComp, OtherBodyIndex, SweepResult);
+	OnWeaponBladePartBeginOverlap.Broadcast(OverlappedComponent, OtherActor, OtherComp, OtherBodyIndex, bFromSweep, SweepResult);
 }
 
 void AWeaponBladePart::OnEndOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,

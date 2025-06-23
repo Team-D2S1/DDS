@@ -20,12 +20,15 @@ void UPawnCombatComponent::GetLifetimeReplicatedProps(TArray<class FLifetimeProp
 void UPawnCombatComponent::RegisterSpawnedWeapon(FGameplayTag InWeaponTag, ADDSWeaponBase* InWeapon,
                                                  bool bRegisterAsEquippedWeapon)
 {
+	bool bIsServer = GetOwningPawn()->HasAuthority();
+	MY_LOG(LogTemp, Log, TEXT("[%s] RegisterSpawnedWeapon called with WeaponTag: %s"), 
+	       bIsServer ? TEXT("Server") : TEXT("Client"), *InWeaponTag.ToString());
 	if (CharacterCarriedWeaponMap.Contains(InWeaponTag))
 	{
 		MY_LOG(LogTemp, Error, TEXT("Weapon Tag %s is already registered."), *InWeaponTag.ToString());
 		return;
 	}
-
+  
 	CharacterCarriedWeaponMap.Emplace(InWeaponTag, InWeapon);
 
 	// UFunction() 이면 DynamicDelegate로 해야함
@@ -110,6 +113,9 @@ void UPawnCombatComponent::OnHitTarget(AActor* InTargetActor)
 	{
 		return;
 	}
+	bool bIsServer = GetOwningPawn()->HasAuthority();
+	MY_LOG(LogTemp, Log, TEXT("[%s] OnHitTarget called with Target: %s"), 
+	       bIsServer ? TEXT("Server") : TEXT("Client"), *InTargetActor->GetName());
 	OverlappedActors.Add(InTargetActor); // 어차피 위에서 확인함
 
 	FGameplayEventData EventData;

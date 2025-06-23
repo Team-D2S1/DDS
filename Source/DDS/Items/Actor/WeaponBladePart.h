@@ -7,7 +7,7 @@
 #include "GameFramework/Actor.h"
 #include "WeaponBladePart.generated.h"
 
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_FiveParams(FOnWeaponBladePartBeginOverlapDelegate, UPrimitiveComponent*, OverlappedComponent, AActor*, OtherActor, UPrimitiveComponent*, OtherComp, int32, OtherBodyIndex, const FHitResult&, SweepResult);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_SixParams(FOnWeaponBladePartBeginOverlapDelegate, UPrimitiveComponent*, OverlappedComponent, AActor*, OtherActor, UPrimitiveComponent*, OtherComp, int32, OtherBodyIndex, bool, bFromSweep, const FHitResult&, SweepResult);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_FourParams(FOnWeaponBladePartEndOverlapDelegate, UPrimitiveComponent*, OverlappedComponent, AActor*, OtherActor, UPrimitiveComponent*, OtherComp, int32, OtherBodyIndex);
 
 UCLASS()
