@@ -21,6 +21,8 @@ AWeaponBladePart::AWeaponBladePart()
 	BladePartCollisionBox->SetGenerateOverlapEvents(true);
 	BladePartCollisionBox->OnComponentBeginOverlap.AddDynamic(this, &AWeaponBladePart::OnBeginOverlap);
 	BladePartCollisionBox->OnComponentEndOverlap.AddDynamic(this, &AWeaponBladePart::OnEndOverlap);
+	
+	SetReplicates(true);
 }
 
 // Called when the game starts or when spawned

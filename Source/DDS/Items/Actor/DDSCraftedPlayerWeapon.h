@@ -7,6 +7,7 @@
 #include "Items/Actor/DDSWeaponBase.h"
 #include "DDSCraftedPlayerWeapon.generated.h"
 
+class AWeaponBladePart;
 class UItemInstance;
 class UStaticMeshComponent;
 class UBoxComponent;
@@ -34,7 +35,11 @@ public:
 
 	void SetWeaponItemInstance(UItemInstance* NewWeaponItemInstance) { WeaponItemInstance = NewWeaponItemInstance; };
 	UItemInstance* GetWeaponItemInstance() const { return WeaponItemInstance; };
-	
+
+	virtual UBoxComponent* GetWeaponCollsionBox() const override;
+
+	UFUNCTION(BlueprintCallable)
+	void SetBladeActor(AWeaponBladePart* NewBladePartActor);
 	
 	UFUNCTION(BlueprintCallable)
 	void SetBladeItemInstance(UItemInstance* NewBladeItemInstance);
@@ -52,4 +57,9 @@ public:
 
 private:
 
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
+	TObjectPtr<AWeaponBladePart> BladePartActor;
+	
 };
+
+

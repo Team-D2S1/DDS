@@ -69,16 +69,22 @@ void UPawnCombatComponent::ToggleWeaponCollision(bool bEnable, EToggleCollisionT
 	if (InDamageType == EToggleCollisionType::CurrentEquippedWeapon)
 	{
 		ADDSWeaponBase* CurrentWeapon = GetCurrentEquippedWeapon();
-		if (CurrentWeapon)
+		if (CurrentWeapon && IsValid(CurrentWeapon))
 		{
+			UBoxComponent* CollisionBox = CurrentWeapon->GetWeaponCollsionBox();
+			if (!CollisionBox)
+			{
+				MY_LOG(LogTemp, Error, TEXT("Current Weapon's CollisionBox is nullptr."));
+				return;
+			}
 			if (bEnable)
 			{
-				CurrentWeapon->GetWeaponCollsionBox()->SetCollisionEnabled(ECollisionEnabled::Type::QueryOnly);
+				CollisionBox->SetCollisionEnabled(ECollisionEnabled::Type::QueryOnly);
 				// MY_CLOG_DISPLAY_NET(FColor::Green, GetOwningPawn()->HasAuthority(), TEXT("Current Weapon is enabled."));
 			}
 			else
 			{
-				CurrentWeapon->GetWeaponCollsionBox()->SetCollisionEnabled(ECollisionEnabled::Type::NoCollision);
+				CollisionBox->SetCollisionEnabled(ECollisionEnabled::Type::NoCollision);
 				OverlappedActors.Empty();
 				// MY_CLOG_DISPLAY_NET(FColor::Red, GetOwningPawn()->HasAuthority(), TEXT("Current Weapon is disabled."));
 			}

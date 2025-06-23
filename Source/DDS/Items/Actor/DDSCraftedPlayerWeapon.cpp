@@ -3,6 +3,7 @@
 
 #include "Items/Actor/DDSCraftedPlayerWeapon.h"
 
+#include "WeaponBladePart.h"
 #include "Components/BoxComponent.h"
 #include "ETC/CustomLog.h"
 #include "Items/ItemInstance/ItemInstance.h"
@@ -13,6 +14,8 @@ ADDSCraftedPlayerWeapon::ADDSCraftedPlayerWeapon()
 	WeaponMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("WeaponMesh"));
 	SetRootComponent(WeaponMesh);
 	WeaponMesh->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+
+	SetReplicates(true);
 }
 
 void ADDSCraftedPlayerWeapon::GetLifetimeReplicatedProps(TArray<class FLifetimeProperty>& OutLifetimeProps) const
@@ -70,3 +73,25 @@ UItemInstance* ADDSCraftedPlayerWeapon::GetPommelItemInstance() const
 	return nullptr;
 }
 
+UBoxComponent* ADDSCraftedPlayerWeapon::GetWeaponCollsionBox() const
+{
+	if (BladePartActor)
+	{
+		return BladePartActor->GetBladePartCollisionBox();
+	}
+	MY_LOG(LogTemp, Error, TEXT("BladePartActor is nullptr in GetWeaponCollsionBox"));
+	return WeaponCollisionBox;
+}
+
+void ADDSCraftedPlayerWeapon::SetBladeActor(AWeaponBladePart* NewBladePartActor)
+{
+	if (NewBladePartActor)
+	{
+		BladePartActor = NewBladePartActor;
+		WeaponCollisionBox = BladePartActor->GetBladePartCollisionBox();
+	}
+	else
+	{
+		MY_ERROR_DISPLAY(TEXT("NewBladePartActor is nullptr"));
+	}
+}
