@@ -6,15 +6,6 @@
 #include "Actor/PatrolRoute.h"
 #include "Components/SplineComponent.h"
 
-
-void UPatrolComponent::TickComponent(float DeltaTime, ELevelTick TickType,
-                                     FActorComponentTickFunction* ThisTickFunction)
-{
-	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
-
-	if(!bIsPatrol || !PatrolRoute) return;
-
-}
 bool UPatrolComponent::GetNextDestination(FVector& NextDestination)
 {
 	if(PatrolRoute)

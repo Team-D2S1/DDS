@@ -7,6 +7,8 @@
 #include "Interfaces//Focusable.h"
 #include "MonsterBase.generated.h"
 
+class UPatrolComponent;
+class APatrolRoute;
 class UWidgetComponent;
 class UMonsterUIComponent;
 class UMonsterCombatComponent;
@@ -39,6 +41,10 @@ protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Combat")
 	UMonsterCombatComponent* MonsterCombatComponent;
 
+	/** 몬스터 이동 정의하는 PatrolRoute **/
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Patrol")
+	TObjectPtr<UPatrolComponent> PatrolComponent;
+	
 	/** 몬스터와 관련된 UI를 관리하는 컴포넌트 */
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "UI")
 	TObjectPtr<UMonsterUIComponent> MonsterUIComponent;
@@ -66,6 +72,8 @@ public:
 	virtual void OnFocusLost() override;
 	// End of IFocusable interface
 
+	UPatrolComponent* GetPatrolComponent() { return PatrolComponent; }
+	
 	FORCEINLINE UMonsterCombatComponent* GetMonsterCombatComponent() const { return MonsterCombatComponent; }
 	virtual UPawnCombatComponent* GetCombatComponent() const override;
 

@@ -15,15 +15,18 @@ class DDS_API UPatrolComponent : public UActorComponent
 	GENERATED_BODY()
 
 public:	
-	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 	bool GetNextDestination(FVector& NextDestination);
 	
 protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Route")
 	APatrolRoute* PatrolRoute;
 
-	float DestIdx = 0;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Route")
+	int32 DestIdx = 0;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Route")
 	bool bReverse = false;
+	
 	bool bIsPatrol = false;
 
 private:

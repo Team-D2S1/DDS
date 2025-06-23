@@ -6,6 +6,7 @@
 #include "Components/WidgetComponent.h"
 #include "Components/Combat/MonsterCombatComponent.h"
 #include "Components/UI/MonsterUIComponent.h"
+#include "Components/Utils/PatrolComponent.h"
 #include "DataAsset/StartUpData/DataAsset_StartUpDataBase.h"
 #include "DDS/GameAbilitySystem/DDSAbilitySystemComponent.h"
 #include "DDS/GameAbilitySystem/DDSAttributeSet.h"
@@ -33,6 +34,8 @@ AMonsterBase::AMonsterBase()
 	GetCharacterMovement()->bUseRVOAvoidance;
 	GetCharacterMovement()->AvoidanceConsiderationRadius = 50.f;
 
+	PatrolComponent = CreateDefaultSubobject<UPatrolComponent>(TEXT("Patrol Component"));
+	
 	WeaponMesh = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("Weapon Mesh"));
 	WeaponMesh->SetupAttachment(GetMesh());
 	
