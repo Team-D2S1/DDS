@@ -4,7 +4,9 @@
 #include "AI/Skills/MonsterSkillBase.h"
 
 #include "AbilitySystemComponent.h"
+#include "AIController.h"
 #include "Abilities/Tasks/AbilityTask_PlayMontageAndWait.h"
+#include "BehaviorTree/BlackboardComponent.h"
 #include "Character/Monster/MonsterBase.h"
 #include "ETC/CustomLog.h"
 
@@ -25,26 +27,38 @@ void UMonsterSkillBase::ActivateAbility(const FGameplayAbilitySpecHandle Handle,
 	const FGameplayEventData* TriggerEventData)
 {
 	Super::ActivateAbility(Handle, ActorInfo, ActivationInfo, TriggerEventData);
+
+	AMonsterBase* Monster = Cast<AMonsterBase>(ActorInfo->AvatarActor);
+	if(!Monster) return;
+
+	// 몬스터 방향 돌리기
+	if(UBlackboardComponent* Blackboard = Cast<AAIController>(Monster->GetController())->GetBlackboardComponent())
+	{
+		const AActor* Target = Cast<AActor>(Blackboard->GetValueAsObject("TargetActor"));
+		
+		FRotator MonsterRotation = (Target->GetActorLocation() - Monster->GetActorLocation()).Rotation();
+		MonsterRotation.Pitch = 0.f; MonsterRotation.Roll = 0.f;
+		Monster->SetActorRotation(MonsterRotation);
+	}
 	
 	// 몽타주 실행
-	if(!SkillMontage) return;
-
-	const AMonsterBase* Monster = Cast<AMonsterBase>(ActorInfo->AvatarActor);
-	if(Monster)
+	if(SkillMontage)
 	{
-		if(UAnimInstance* AnimInstance = Monster->GetMesh()->GetAnimInstance())
-		{
-			auto* Task = UAbilityTask_PlayMontageAndWait::CreatePlayMontageAndWaitProxy(
-				this,
-				NAME_None,
-				SkillMontage,
-				1.f,
-				NAME_None,
-				true);
-			Task->OnCompleted.AddDynamic(this, &ThisClass::OnSkillMontageEnded);
-			Task->OnInterrupted.AddDynamic(this, &ThisClass::OnSkillMontageInterrupted);
-			Task->ReadyForActivation();
-		}
+		auto* Task = UAbilityTask_PlayMontageAndWait::CreatePlayMontageAndWaitProxy(
+			this,
+			NAME_None,
+			SkillMontage,
+			1.f,
+			NAME_None,
+			true);
+		Task->OnCompleted.AddDynamic(this, &ThisClass::OnSkillMontageEnded);
+		Task->OnInterrupted.AddDynamic(this, &ThisClass::OnSkillMontageInterrupted);
+		Task->ReadyForActivation();
+	}
+	
+	for(auto Effect : SkillEffects)
+	{
+		BP_ApplyGameplayEffectToOwner(Effect);
 	}
 	
 	CommitAbility(CurrentSpecHandle, CurrentActorInfo, CurrentActivationInfo, nullptr);
@@ -64,29 +78,12 @@ void UMonsterSkillBase::EndAbility(const FGameplayAbilitySpecHandle Handle, cons
 {
 	Super::EndAbility(Handle, ActorInfo, ActivationInfo, bReplicateEndAbility, bWasCancelled);
 
-	if(NextSkill)
-	{
-		// TODO!
-		// 조건 체크 : 플레이어가 다음 스킬의 사정거리 안에 있을 것
-		// 행동 변화 : 플레이어를 향해 방향을 돌릴 것
-		
-		if(AMonsterBase* Monster = Cast<AMonsterBase>(CurrentActorInfo->AvatarActor))
-		{
-			FGameplayAbilitySpec* FoundSpec = Monster->GetAbilitySystemComponent()->FindAbilitySpecFromClass(NextSkill->GetClass());
-			if(FoundSpec)
-			{
-				const bool bSuccessful = Monster->GetAbilitySystemComponent()->TryActivateAbility(FoundSpec->Handle);
-				if(bSuccessful) return;
-			}
-		}
-	}
-	else
+	bool bIsSuccess = TryActivateNextSkill();
+
+	if(!bIsSuccess)
 	{
 		OnGameplayAbilityEnded.Broadcast(this);
-		return;
 	}
-	
-	OnGameplayAbilityEnded.Broadcast(this);
 }
 
 void UMonsterSkillBase::OnSkillMontageEnded()
@@ -103,4 +100,34 @@ void UMonsterSkillBase::OnSkillMontageInterrupted()
 	{
 		EndAbility(CurrentSpecHandle, CurrentActorInfo, CurrentActivationInfo, true, false);
 	}
+}
+
+bool UMonsterSkillBase::TryActivateNextSkill()
+{
+	if(!NextSkill) return false;
+	
+	AMonsterBase* Monster = Cast<AMonsterBase>(CurrentActorInfo->AvatarActor);
+	if(!Monster) return false;
+
+	UBlackboardComponent* Blackboard;
+	if(Monster->GetController())
+	{
+		 Blackboard = Cast<AAIController>(Monster->GetController())->GetBlackboardComponent();
+	}else return false;
+
+
+	const AActor* Target = Cast<AActor>(Blackboard->GetValueAsObject("TargetActor"));
+	if(!Target) return false;
+
+	const FGameplayAbilitySpec* FoundSpec = Monster->GetAbilitySystemComponent()->FindAbilitySpecFromClass(NextSkill);
+	if(!FoundSpec) return false;
+	
+	// 거리가 스킬 사정거리보다 가까울 경우에만 스킬 실행
+	FVector ToTarget = Target->GetActorLocation() - Monster->GetActorLocation();
+	if(ToTarget.Length() <= Cast<UMonsterSkillBase>(FoundSpec->Ability)->SkillDistance)
+	{
+		return Monster->GetAbilitySystemComponent()->TryActivateAbility(FoundSpec->Handle);
+	}
+	
+	return false;
 }

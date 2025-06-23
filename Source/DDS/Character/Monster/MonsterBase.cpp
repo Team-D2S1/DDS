@@ -30,9 +30,14 @@ AMonsterBase::AMonsterBase()
 	GetCharacterMovement()->RotationRate = FRotator(0.0f, 180.0f, 0.0f);
 	GetCharacterMovement()->MaxWalkSpeed = 300.0f;
 	GetCharacterMovement()->BrakingDecelerationWalking = 1000.0f; // 안움직일때 감속
+	GetCharacterMovement()->bUseRVOAvoidance;
+	GetCharacterMovement()->AvoidanceConsiderationRadius = 50.f;
+
+	WeaponMesh = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("Weapon Mesh"));
+	WeaponMesh->SetupAttachment(GetMesh());
 	
 	AbilitySystemComponent = CreateDefaultSubobject<UDDSAbilitySystemComponent>(TEXT("AbilitySystemComponent"));
-	AbilitySystemComponent->SetIsReplicated(true);//
+	AbilitySystemComponent->SetIsReplicated(true);
 	AbilitySystemComponent->SetReplicationMode(EGameplayEffectReplicationMode::Minimal);
 	
 	AttributeSet = CreateDefaultSubobject<UDDSAttributeSet>(TEXT("AttributeSet"));
@@ -77,7 +82,7 @@ bool AMonsterBase::GetCooldownRemainingForTag(FGameplayTagContainer CooldownTags
 			return true;
 		}
 	}
-
+	
 	return false;
 }
 
@@ -100,6 +105,8 @@ void AMonsterBase::BeginPlay()
 {
 	Super::BeginPlay();
 
+	WeaponMesh->AttachToComponent(GetMesh(), FAttachmentTransformRules::KeepRelativeTransform, FName("WeaponSocket"));
+	
 	if (!AbilitySystemComponent)
 	{
 		MY_ERROR_DISPLAY(TEXT("AbilitySystemComponent is null"));

@@ -37,7 +37,7 @@ protected:
 	/** AI의 타겟이 새로 업데이트되었을 때 실행되는 함수 */
 	UFUNCTION(BlueprintCallable)
 	void OnTargetPerceptionUpdated(AActor* Actor, FAIStimulus Stimulus);
-
+	
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "AI")
 	TObjectPtr<UBehaviorTree> BehaviorTree;
 	

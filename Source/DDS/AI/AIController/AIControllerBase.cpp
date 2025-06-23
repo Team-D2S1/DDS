@@ -3,9 +3,11 @@
 
 #include "AIControllerBase.h"
 #include "BehaviorTree/BlackboardComponent.h"
+#include "Character/Monster/MonsterBase.h"
 #include "Perception/AIPerceptionComponent.h"
 #include "Perception/AISenseConfig_Sight.h"
 #include "Character/Player/DDSPlayerState.h"
+#include "ETC/CustomLog.h"
 #include "ETC/Enum.h"
 
 AAIControllerBase::AAIControllerBase(FObjectInitializer const& ObjectInitializer)
@@ -55,12 +57,15 @@ void AAIControllerBase::OnTargetPerceptionUpdated(AActor* Actor, FAIStimulus Sti
 		if(Stimulus.WasSuccessfullySensed() && Actor && GetTeamAttitudeTowards(*Actor) == ETeamAttitude::Hostile)
 		{
 			BlackboardComponent->SetValueAsObject("TargetActor", Actor);
+			
 		}
 		else
 		{
 			BlackboardComponent->SetValueAsVector("LastSeenLocation", Actor->GetActorLocation());
 			BlackboardComponent->SetValueAsBool("bIsInvestigating", true);
 			BlackboardComponent->SetValueAsObject("TargetActor", nullptr);
+
+			MY_LOG(LogTemp, Error, TEXT("Lost Target"));
 		}
 	}
 }

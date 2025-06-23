@@ -32,6 +32,9 @@ protected:
 
 	virtual void Tick(float DeltaSeconds) override;	
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Weapon")
+	USkeletalMeshComponent* WeaponMesh;
+	
 	/** 몬스터 전투 관리하는 컴포넌트 */
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Combat")
 	UMonsterCombatComponent* MonsterCombatComponent;

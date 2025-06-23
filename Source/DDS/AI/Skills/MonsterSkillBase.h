@@ -82,13 +82,18 @@ protected:
 
 	// 연계되는 스킬. Null일경우 연계스킬 없음
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Skill")
-	TSubclassOf<UGameplayAbility> NextSkill;
+	TSubclassOf<UDDSGameplayAbility> NextSkill;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Skill")
+	TArray<TSubclassOf<UGameplayEffect>> SkillEffects;
 	
 private:
 	UFUNCTION()
 	void OnSkillMontageEnded();
 	UFUNCTION()
 	void OnSkillMontageInterrupted();
+
+	bool TryActivateNextSkill();
 
 // Getter & Setters
 public:
