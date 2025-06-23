@@ -19,6 +19,10 @@ public:
 	// Sets default values for this actor's properties
 	AWeaponBladePart();
 
+
+	UFUNCTION(BlueprintCallable, Category = "WeaponBladePart")
+	UBoxComponent* GetBladePartCollisionBox() const { return BladePartCollisionBox; }
+
     UPROPERTY(BlueprintAssignable, Category = "WeaponBladePart")
 	FOnWeaponBladePartBeginOverlapDelegate OnWeaponBladePartBeginOverlap;
 	UPROPERTY(BlueprintAssignable, Category = "WeaponBladePart")
