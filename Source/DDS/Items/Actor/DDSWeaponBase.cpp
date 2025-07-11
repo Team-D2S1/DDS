@@ -73,6 +73,17 @@ void ADDSWeaponBase::GetLifetimeReplicatedProps(TArray<class FLifetimeProperty>&
 	DOREPLIFETIME(ADDSWeaponBase, WeaponTag);
 }
 
+void ADDSWeaponBase::SetParentItemId(int32 InItemId)
+{
+	if (HasAuthority())
+	{
+		ParentItemId = InItemId;
+	}
+	else
+	{
+		MY_ERROR_DISPLAY_NET(true, TEXT("SetParentItemId can only be called on the server."));
+	}
+}
 
 
 void ADDSWeaponBase::SetOwnerPawn(APawn* InOwnerPawn)

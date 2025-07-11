@@ -31,6 +31,7 @@ public:
 protected:
 
 	virtual void GetLifetimeReplicatedProps(TArray<class FLifetimeProperty>& OutLifetimeProps) const override;
+	
 
 
 	UFUNCTION()
@@ -70,7 +71,10 @@ protected:
 	TArray<FGameplayAbilitySpecHandle> GrantedAbilitySpecHandles;
 	
 public:
-	virtual UBoxComponent* GetWeaponCollsionBox() const {return WeaponCollisionBox;};
+	virtual UBoxComponent* GetWeaponCollsionBox() const {return WeaponCollisionBox;}
+
+	UFUNCTION(BlueprintCallable,Category="DDS|Weapon")
+	void SetParentItemId(int32 InItemId);
 	
 	UFUNCTION(BlueprintCallable,Category="DDS|Weapon")
 	void SetOwnerPawn(APawn* InOwnerPawn);

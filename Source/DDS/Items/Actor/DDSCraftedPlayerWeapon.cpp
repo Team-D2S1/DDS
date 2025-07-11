@@ -26,7 +26,16 @@ void ADDSCraftedPlayerWeapon::GetLifetimeReplicatedProps(TArray<class FLifetimeP
 	DOREPLIFETIME(ADDSCraftedPlayerWeapon, BladePartActor);
 }
 
-
+void ADDSCraftedPlayerWeapon::EndPlay(const EEndPlayReason::Type EndPlayReason)
+{
+	Super::EndPlay(EndPlayReason);
+	if (BladePartActor)
+	{
+		BladePartActor->OnWeaponBladePartBeginOverlap.RemoveDynamic(this, &ADDSCraftedPlayerWeapon::OnBladeBeginOverlap);
+		BladePartActor->OnWeaponBladePartEndOverlap.RemoveDynamic(this, &ADDSCraftedPlayerWeapon::OnBladeEndOverlap);
+		BladePartActor->Destroy();
+	}
+}
 
 
 void ADDSCraftedPlayerWeapon::SetBladeItemInstance(UItemInstance* NewBladeItemInstance)

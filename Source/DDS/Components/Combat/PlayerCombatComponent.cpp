@@ -4,12 +4,16 @@
 #include "Components/Combat/PlayerCombatComponent.h"
 
 #include "AbilitySystemComponent.h"
+#include "AnimInstances/Player/DDSPlayerLinkedAnimLayer.h"
 #include "Character/Player/PlayerBase.h"
 #include "Components/Inventory/InventoryComponent.h"
 #include "ETC/CustomLog.h"
 #include "GameAbilitySystem/Abilities/DDSPlayerGameplayAbility.h"
 #include "Items/Actor/DDSSimplePlayerWeapon.h"
 #include "Items/ItemInstance/ItemInstance.h"
+#include "Items/Actor/DDSCraftedPlayerWeapon.h"
+#include "Net/UnrealNetwork.h"
+
 
 
 ADDSCraftedPlayerWeapon* UPlayerCombatComponent::GetPlayerCarriedWeaponByTag(FGameplayTag InWeaponTag) const
@@ -46,39 +50,52 @@ float UPlayerCombatComponent::GetPlayerCurrentEquippedWeaponDamageAtLevel(float 
 void UPlayerCombatComponent::NotifyRightWeaponChanged(UItemInstance* NewWeapon)
 {
 	bool bIsServer = GetOwner()->HasAuthority();
+
+	// 무기 제거 혹은 등륵과정 진행
+	// 따로 함수 만드는게 낫지만 c++은 함수 새로 만들기 번거로우므로 일단 이렇게
+	
+	
 	if (NewWeapon == nullptr)
 	{
+		if (rightWeaponItem == nullptr)
+		{
+			MY_LOG(LogTemp, Log, TEXT("NewWeapon is null in NotifyRightWeaponChanged but rightWeaponItem is also null"));
+			return; // 이미 무기가 없는 상태
+		}
+		// 무기 제거 과정
 		MY_LOG(LogTemp, Log, TEXT("NewWeapon is null in NotifyRightWeaponChanged"));
-		rightWeaponItem = NewWeapon;
+		APlayerBase* PlayerBase = GetOwningPawn<APlayerBase>();
+		if (!PlayerBase) return;
+		UAbilitySystemComponent* ASC = PlayerBase->GetAbilitySystemComponent();
+		if (!ASC) return;
+
+		// 해당능력에서 해야하는것들
+		// 1. (장착중이었던 경우) 무기 능력 제거
+		// 2. 무기 액터 제거
 		if (bIsServer)
 		{
-			ADDSWeaponBase* CurrentWeapon = GetCurrentEquippedWeapon();
-			if (CurrentWeapon)
-			{
-				// 액터 삭제
-				MY_LOG(LogTemp, Log, TEXT("Destroying current equipped weapon: %s"), *CurrentWeapon->GetName());
-				CurrentWeapon->Destroy();
+			FGameplayAbilitySpec spec(DespawnCraftedWeaponAbilityClass);
+			spec.SourceObject = ASC->GetAvatarActor();
+			spec.Level  = 1;
+			ASC->GiveAbility(spec);
+			rightWeaponItem = nullptr; // 무기 아이템을 nullptr로 설정(미리 null로 하면 Ability에서 접근 불가)
 			}
-			else
-			{
-				MY_LOG(LogTemp, Log, TEXT("No current equipped weapon to unbind events from"));
-			}
-		}
 		return;
 	}
-	rightWeaponItem = NewWeapon;
+	
+	rightWeaponItem = NewWeapon; // 현재 장착된 무기 아이템을 업데이트(생성할때는 미리 설정)
 	if (!bIsServer)
 	{
 		return;
 	}
-	if (CreateCraftedWeaponAbilityClass)
+	if (SpawnCraftedWeaponAbilityClass)
 	{
 		APlayerBase* PlayerBase = GetOwningPawn<APlayerBase>();
 		if (!PlayerBase) return;
 		UAbilitySystemComponent* ASC = PlayerBase->GetAbilitySystemComponent();
 		if (!ASC) return;
 
-		FGameplayAbilitySpec spec(CreateCraftedWeaponAbilityClass);
+		FGameplayAbilitySpec spec(SpawnCraftedWeaponAbilityClass);
 		spec.SourceObject = ASC->GetAvatarActor();
 		spec.Level  = 1;
 		ASC->GiveAbility(spec);

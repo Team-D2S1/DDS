@@ -26,11 +26,12 @@ private:
 
 
 protected:
-
+    
 	
 public:
 	ADDSCraftedPlayerWeapon();
 	virtual void GetLifetimeReplicatedProps(TArray<class FLifetimeProperty>& OutLifetimeProps) const override;
+	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
 	
 
 	void SetWeaponItemInstance(UItemInstance* NewWeaponItemInstance) { WeaponItemInstance = NewWeaponItemInstance; };

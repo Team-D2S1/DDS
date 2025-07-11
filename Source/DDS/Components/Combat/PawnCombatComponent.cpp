@@ -64,6 +64,7 @@ void UPawnCombatComponent::UnregisterSpawnedWeaponById(int32 ItemId)
 			return;
 		}
 	}
+	MY_LOG(LogTemp, Error, TEXT("Weapon with ItemId %d is not registered."), ItemId);
 }
 
 

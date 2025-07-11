@@ -156,11 +156,16 @@ void UInventoryComponent::Server_EquipCraftedWeapon_Implementation(int32 ItemID)
 	{
 		// 해제만 진행
 		RightWeapon = nullptr;
+		if (bIsServer)
+		{
+			MY_LOG(LogTemp, Log, TEXT("RightWeapon is set to nullptr on server."));
+			OnRep_RightWeapon();
+		}
 	}
 	else
 	{
 		RightWeapon = GetItemByID(ItemID);
-		if (GetOwner()->HasAuthority())
+		if (bIsServer)
 		{
 			OnRep_RightWeapon();
 		}

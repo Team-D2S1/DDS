@@ -4,7 +4,9 @@
 
 #include "CoreMinimal.h"
 #include "Components/Combat/PawnCombatComponent.h"
+#include "DDSTypes/DDSStructTypes.h"
 #include "PlayerCombatComponent.generated.h"
+
 
 class ADDSCraftedPlayerWeapon;
 class UDDSPlayerGameplayAbility;
@@ -42,7 +44,11 @@ protected:
 	UItemInstance* rightWeaponItem = nullptr;
 
 	UPROPERTY(EditDefaultsOnly, Category = "DDS|Combat")
-	TSubclassOf<UDDSPlayerGameplayAbility> CreateCraftedWeaponAbilityClass;
+	TSubclassOf<UDDSPlayerGameplayAbility> SpawnCraftedWeaponAbilityClass;
+
+	UPROPERTY(EditDefaultsOnly, Category = "DDS|Combat")
+ 	TSubclassOf<UDDSPlayerGameplayAbility> DespawnCraftedWeaponAbilityClass;
+	
 private:
 	
 };
