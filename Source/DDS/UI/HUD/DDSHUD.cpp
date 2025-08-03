@@ -852,10 +852,18 @@ bool ADDSHUD::HandleInputAction(const FGameplayTag& InputTag)
 		}
 	}
 
-	if (InputTag.MatchesTagExact(CraftingWidgetSpec.InputTag))
+	if (InputTag.MatchesTagExact(DDSGameplayTags::InputTag_UI_Escape))
 	{
-		ToggleCraftingWidget();
-		return true;
+		if (CurrentOpeningWidget)
+		{
+			CurrentOpeningWidget->BP_HandleInputAction(InputTag);
+			return true;
+		}
+		else
+		{
+			MY_ERROR_DISPLAY(TEXT("CurrentOpeningWidget is nullptr"));
+			return false;
+		}
 	}
 	// if (InputTag.MatchesTagExact(DDSGameplayTags::InputTag_UI_Crafting_RemoveItem))
 	// {
