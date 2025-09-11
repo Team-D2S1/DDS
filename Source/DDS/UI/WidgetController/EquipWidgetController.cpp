@@ -22,10 +22,7 @@ void UEquipWidgetController::BindCallbacksToDependencies()
 	}
 }
 
-UInventoryComponent* UEquipWidgetController::GetInventoryComponent()
-{
-	return DDSPlayerState->GetInventoryComponent();
-}
+
 
 void UEquipWidgetController::OnInventoryUpdated()
 {

@@ -457,7 +457,7 @@ void ADDSHUD::CloseWeaponCraftWidget()
 		CurrentWeaponCraftWidget->RemoveFromParent();
 		CurrentWeaponCraftWidget = nullptr;
 		CurrentOpeningWidget = nullptr;
-
+	
 		OwningPlayerController->bShowMouseCursor = false;
 		OwningPlayerController->SetIgnoreGameInput(false);
 		return;

@@ -101,9 +101,6 @@ public:
 	
 	// void OnWidgetClosed();
 protected:
-	UFUNCTION(BlueprintCallable, Category = "DDS|WidgetController|Crafting")
-	UInventoryComponent* GetInventoryComponent();
-
 	UItemInstance* NativeGetItemByID(int32 ItemID);
 	UFUNCTION(BlueprintCallable, Category = "DDS|WidgetController|Crafting", meta = (DisplayName = "GetItemByID", ExpandEnumAsExecs = "OutSuccessType"))
 	UItemInstance* BP_GetItemByID(int32 ItemID,EDDSSuccessType& OutSuccessType);

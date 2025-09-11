@@ -28,9 +28,6 @@ public:
 
 	
 	UFUNCTION(BlueprintCallable, Category = "DDS|WidgetController|Equip")
-	UInventoryComponent* GetInventoryComponent();
-
-	UFUNCTION(BlueprintCallable, Category = "DDS|WidgetController|Equip")
 	void OnInventoryUpdated();
 	
 	UPROPERTY(BlueprintAssignable, Category = "DDS|WidgetController|Equip")

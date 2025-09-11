@@ -104,8 +104,6 @@ FGameplayEffectSpecHandle UDDSGameplayAbility::MakeGameplayEffectSpecHandle(TSub
 	FGameplayEffectContextHandle ContextHandle = GetDDSAbilitySystemComponentFromActorInfo()->MakeEffectContext();
 	ContextHandle.SetAbility(this);
 	ContextHandle.AddSourceObject(GetAvatarActorFromActorInfo());
-	ContextHandle.AddInstigator(GetAvatarActorFromActorInfo(), GetAvatarActorFromActorInfo());
-	
 	
 	FGameplayEffectSpecHandle EffectSpecHandle = GetDDSAbilitySystemComponentFromActorInfo()->MakeOutgoingSpec(
 		EffectClass,

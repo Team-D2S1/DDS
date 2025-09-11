@@ -71,6 +71,10 @@ void ADDSWeaponBase::GetLifetimeReplicatedProps(TArray<class FLifetimeProperty>&
 	DOREPLIFETIME(ADDSWeaponBase, WeaponItemInstance);
 	DOREPLIFETIME(ADDSWeaponBase, OwnerPawn);
 	DOREPLIFETIME(ADDSWeaponBase, WeaponTag);
+	DOREPLIFETIME(ADDSWeaponBase, PlayerWeaponData);
+	DOREPLIFETIME(ADDSWeaponBase, GrantedAbilitySpecHandles);
+	
+	
 }
 
 void ADDSWeaponBase::SetParentItemId(int32 InItemId)

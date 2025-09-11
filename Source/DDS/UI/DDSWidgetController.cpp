@@ -96,3 +96,8 @@ UPlayerCombatComponent* UDDSWidgetController::GetPlayerCombatComponent()
 {
 	return GetDDSPlayerController()->GetPlayerBase()->GetCombatComponent();
 }
+
+UInventoryComponent* UDDSWidgetController::GetInventoryComponent() const
+{
+	return DDSPlayerState->GetInventoryComponent();
+}

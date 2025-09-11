@@ -84,10 +84,7 @@ void UCraftingWidgetController::InvokeItemMovedToInventorySlot(int32 ItemID)
 	OnInventoryUpdatedEvent.Broadcast(); 
 }
 
-UInventoryComponent* UCraftingWidgetController::GetInventoryComponent()
-{
-	return DDSPlayerState->GetInventoryComponent();
-}
+
 
 UItemInstance* UCraftingWidgetController::NativeGetItemByID(int32 ItemID)
 {

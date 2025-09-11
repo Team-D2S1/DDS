@@ -83,6 +83,9 @@ public:
 
 	UFUNCTION(BlueprintPure)
     UPlayerCombatComponent* GetPlayerCombatComponent();
+
+	UFUNCTION(BlueprintPure, Category = "DDS|WidgetController|Crafting")
+	UInventoryComponent* GetInventoryComponent() const;
 protected:
 	UPROPERTY(BlueprintReadOnly, Category="DDS|WidgetController")
 	TObjectPtr<APlayerController> PlayerController;
