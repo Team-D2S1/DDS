@@ -4,46 +4,105 @@
 #include "DDSAttributeSet.h"
 
 #include "AbilitySystemComponent.h"
+#include "DDSGameplayTags.h"
 #include "Net/UnrealNetwork.h"
 #include  "GameplayEffectExtension.h"
+#include "NativeGameplayTags.h"
 #include "Components/UI/PawnUIComponent.h"
 #include "ETC/CustomLog.h"
 #include "Interfaces/PawnUIInterface.h"
 #include "Components/UI/PlayerUIComponent.h"
 
+
+
 UDDSAttributeSet::UDDSAttributeSet()
 {
-
-	// 어차피 이 값들은 GE_Player_Startup과 GE_Player_Static 에 의해 처음에 덮어씌워짐 
-	InitHealth(50.f);
-	InitMaxHealth(100.f);
-
-	InitStamina(50.f);
-	InitMaxStamina(100.f);
-
-	InitAttackPower(1.f);
-	InitDefensePower(1.f);
+    // 기본값 설정
+    InitLevel(1.0f);
+    InitEnergy(0.0f);
+    InitRequireEnergy(0.0f);
+    InitSoul(0.0f);
+    
+    InitVitality(10.0f);
+    InitEndurance(10.0f);
+    InitDexterity(10.0f);
+    InitMagic(10.0f);
+    
+    InitHealth(100.0f);
+    InitHealthMax(100.0f);
+    InitStamina(100.0f);
+    InitStaminaMax(100.0f);
+    InitMana(100.0f);
+    InitManaMax(100.0f);
+    
+    InitAttackPower(10.0f);
+    InitMagicPower(10.0f);
+    
+    InitPhysicalDefense(5.0f);
+    InitMagicDefense(5.0f);
+    InitPhysicalResist(0.0f);
+    InitFireResist(0.0f);
+    
+    InitDamageTaken(0.0f);
+ 
+	using namespace DDSGameplayTags;
+    
+    TagToAttributeMap.Add(Attribute_Default_Level, GetLevelAttribute);
+    TagToAttributeMap.Add(Attribute_Default_Energy, GetEnergyAttribute);
+    TagToAttributeMap.Add(Attribute_Default_RequireEnergy, GetRequireEnergyAttribute);
+    TagToAttributeMap.Add(Attribute_Default_Soul, GetSoulAttribute);
+    
+    TagToAttributeMap.Add(Attribute_Primary_Vitality, GetVitalityAttribute);
+    TagToAttributeMap.Add(Attribute_Primary_Endurance, GetEnduranceAttribute);
+    TagToAttributeMap.Add(Attribute_Primary_Dexterity, GetDexterityAttribute);
+    TagToAttributeMap.Add(Attribute_Primary_Magic, GetMagicAttribute);
+    
+    TagToAttributeMap.Add(Attribute_Status_Health, GetHealthAttribute);
+    TagToAttributeMap.Add(Attribute_Status_Stamina, GetStaminaAttribute);
+    TagToAttributeMap.Add(Attribute_Status_Mana, GetManaAttribute);
+    TagToAttributeMap.Add(Attribute_Status_HealthMax, GetHealthMaxAttribute);
+    TagToAttributeMap.Add(Attribute_Status_StaminaMax, GetStaminaMaxAttribute);
+    TagToAttributeMap.Add(Attribute_Status_ManaMax, GetManaMaxAttribute);
+    
+    TagToAttributeMap.Add(Attribute_Offense_AttackPower, GetAttackPowerAttribute);
+    TagToAttributeMap.Add(Attribute_Offense_MagicPower, GetMagicPowerAttribute);
+    
+    TagToAttributeMap.Add(Attribute_Defense_PhysicalDefense, GetPhysicalDefenseAttribute);
+    TagToAttributeMap.Add(Attribute_Defense_MagicDefense, GetMagicDefenseAttribute);
+    TagToAttributeMap.Add(Attribute_Defense_PhysicalResist, GetPhysicalResistAttribute);
+    TagToAttributeMap.Add(Attribute_Defense_FireResist, GetFireResistAttribute);
 }
 
 void UDDSAttributeSet::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
 {
-	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
+    Super::GetLifetimeReplicatedProps(OutLifetimeProps);
 
-	// 각 GAD를 Replicated 되도록 등록
     DOREPLIFETIME_CONDITION_NOTIFY(UDDSAttributeSet, Level, COND_None, REPNOTIFY_Always);
-	DOREPLIFETIME_CONDITION_NOTIFY(UDDSAttributeSet, Exp, COND_None, REPNOTIFY_Always);
-	DOREPLIFETIME_CONDITION_NOTIFY(UDDSAttributeSet, ExpMax, COND_None, REPNOTIFY_Always);
-	DOREPLIFETIME_CONDITION_NOTIFY(UDDSAttributeSet, Soul, COND_None, REPNOTIFY_Always);
-	
-	DOREPLIFETIME_CONDITION_NOTIFY(UDDSAttributeSet, Health, COND_None, REPNOTIFY_Always);
-	DOREPLIFETIME_CONDITION_NOTIFY(UDDSAttributeSet, MaxHealth, COND_None, REPNOTIFY_Always);
-	DOREPLIFETIME_CONDITION_NOTIFY(UDDSAttributeSet, Stamina, COND_None, REPNOTIFY_Always);
-	DOREPLIFETIME_CONDITION_NOTIFY(UDDSAttributeSet, MaxStamina, COND_None, REPNOTIFY_Always);
-	
-	DOREPLIFETIME_CONDITION_NOTIFY(UDDSAttributeSet, AttackPower, COND_None, REPNOTIFY_Always);
-	DOREPLIFETIME_CONDITION_NOTIFY(UDDSAttributeSet, DefensePower, COND_None, REPNOTIFY_Always);
-	
-	DOREPLIFETIME_CONDITION_NOTIFY(UDDSAttributeSet, DamageTaken, COND_None, REPNOTIFY_Always);
+    DOREPLIFETIME_CONDITION_NOTIFY(UDDSAttributeSet, Energy, COND_None, REPNOTIFY_Always);
+    DOREPLIFETIME_CONDITION_NOTIFY(UDDSAttributeSet, RequireEnergy, COND_None, REPNOTIFY_Always);
+    DOREPLIFETIME_CONDITION_NOTIFY(UDDSAttributeSet, Soul, COND_None, REPNOTIFY_Always);
+    
+    DOREPLIFETIME_CONDITION_NOTIFY(UDDSAttributeSet, Vitality, COND_None, REPNOTIFY_Always);
+    DOREPLIFETIME_CONDITION_NOTIFY(UDDSAttributeSet, Endurance, COND_None, REPNOTIFY_Always);
+    DOREPLIFETIME_CONDITION_NOTIFY(UDDSAttributeSet, Dexterity, COND_None, REPNOTIFY_Always);
+    DOREPLIFETIME_CONDITION_NOTIFY(UDDSAttributeSet, Magic, COND_None, REPNOTIFY_Always);
+    
+    DOREPLIFETIME_CONDITION_NOTIFY(UDDSAttributeSet, Health, COND_None, REPNOTIFY_Always);
+    DOREPLIFETIME_CONDITION_NOTIFY(UDDSAttributeSet, Stamina, COND_None, REPNOTIFY_Always);
+    DOREPLIFETIME_CONDITION_NOTIFY(UDDSAttributeSet, Mana, COND_None, REPNOTIFY_Always);
+    DOREPLIFETIME_CONDITION_NOTIFY(UDDSAttributeSet, HealthMax, COND_None, REPNOTIFY_Always);
+    DOREPLIFETIME_CONDITION_NOTIFY(UDDSAttributeSet, StaminaMax, COND_None, REPNOTIFY_Always);
+    DOREPLIFETIME_CONDITION_NOTIFY(UDDSAttributeSet, ManaMax, COND_None, REPNOTIFY_Always);
+    
+    DOREPLIFETIME_CONDITION_NOTIFY(UDDSAttributeSet, AttackPower, COND_None, REPNOTIFY_Always);
+    DOREPLIFETIME_CONDITION_NOTIFY(UDDSAttributeSet, MagicPower, COND_None, REPNOTIFY_Always);
+    
+    DOREPLIFETIME_CONDITION_NOTIFY(UDDSAttributeSet, PhysicalDefense, COND_None, REPNOTIFY_Always);
+    DOREPLIFETIME_CONDITION_NOTIFY(UDDSAttributeSet, MagicDefense, COND_None, REPNOTIFY_Always);
+    DOREPLIFETIME_CONDITION_NOTIFY(UDDSAttributeSet, PhysicalResist, COND_None, REPNOTIFY_Always);
+    DOREPLIFETIME_CONDITION_NOTIFY(UDDSAttributeSet, FireResist, COND_None, REPNOTIFY_Always);
+    
+    DOREPLIFETIME_CONDITION_NOTIFY(UDDSAttributeSet, DamageTaken, COND_None, REPNOTIFY_Always);
 }
 
 void UDDSAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCallbackData& Data)
@@ -69,12 +128,12 @@ void UDDSAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCallbac
 	
 	if (Data.EvaluatedData.Attribute == GetHealthAttribute())
 	{
-		const float NewHealth = FMath::Clamp( GetHealth(), 0.f, GetMaxHealth());
+		const float NewHealth = FMath::Clamp( GetHealth(), 0.f, GetHealthMax());
 		MY_CLOG_DISPLAY_NET(FColor::Green, hasAuthority, TEXT("%s Health changed from %f to %f"), *GetName(), GetHealth(), NewHealth);
 		SetHealth(NewHealth);
 		if (hasAuthority)
 		{
-			PawnUIComponent->Multicast_OnHealthChanged(NewHealth, GetMaxHealth());
+			PawnUIComponent->Multicast_OnHealthChanged(NewHealth, GetHealthMax());
 		}
 		else
 		{
@@ -85,7 +144,7 @@ void UDDSAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCallbac
 
 	if (Data.EvaluatedData.Attribute == GetStaminaAttribute())
 	{
-		const float NewStamina = FMath::Clamp( GetStamina(), 0.f, GetMaxStamina());
+		const float NewStamina = FMath::Clamp( GetStamina(), 0.f, GetStaminaMax());
 		SetStamina(NewStamina);
 
 		UPlayerUIComponent* PlayerUIComponent = CachedPawnUIInterface->GetPlayerUIComponent();
@@ -99,15 +158,15 @@ void UDDSAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCallbac
 		}
 	}
 
-	if (Data.EvaluatedData.Attribute == GetMaxStaminaAttribute())
+	if (Data.EvaluatedData.Attribute == GetStaminaMaxAttribute())
 	{
-		const float NewMaxStamina = FMath::Clamp( GetMaxStamina(), 0.f, GetMaxStamina());
-		SetMaxStamina(NewMaxStamina);
+		const float NewMaxStamina = FMath::Clamp( GetStaminaMax(), 0.f, GetStaminaMax());
+		SetStaminaMax(NewMaxStamina);
 
 		UPlayerUIComponent* PlayerUIComponent = CachedPawnUIInterface->GetPlayerUIComponent();
 		if (PlayerUIComponent)
 		{
-			PlayerUIComponent->Multicast_OnMaxStaminaChanged(NewMaxStamina, GetMaxStamina());
+			PlayerUIComponent->Multicast_OnMaxStaminaChanged(NewMaxStamina, GetStaminaMax());
 		}
 		else
 		{
@@ -119,7 +178,7 @@ void UDDSAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCallbac
 	{
 		const float OldHealth = GetHealth();
 		const float TakenDamage = GetDamageTaken();
-		const float NewHealth = FMath::Clamp(OldHealth - TakenDamage, 0.f, GetMaxHealth());
+		const float NewHealth = FMath::Clamp(OldHealth - TakenDamage, 0.f, GetHealthMax());
 		SetHealth(NewHealth);
 		if (hasAuthority)
 		{
@@ -142,13 +201,13 @@ void UDDSAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCallbac
 		}
 	}
 
-	if (Data.EvaluatedData.Attribute == GetMaxHealthAttribute())
+	if (Data.EvaluatedData.Attribute == GetHealthMaxAttribute())
 	{
-		const float NewMaxHealth = FMath::Clamp( GetMaxHealth(), 0.f, GetMaxHealth());
-		SetMaxHealth(NewMaxHealth);
+		const float NewMaxHealth = FMath::Clamp( GetHealthMax(), 0.f, GetHealthMax());
+		SetHealthMax(NewMaxHealth);
 		if (hasAuthority)
 		{
-			PawnUIComponent->Multicast_OnMaxHealthChanged(NewMaxHealth, GetMaxHealth());
+			PawnUIComponent->Multicast_OnMaxHealthChanged(NewMaxHealth, GetHealthMax());
 		}
 		else
 		{
@@ -160,60 +219,105 @@ void UDDSAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCallbac
 
 void UDDSAttributeSet::OnRep_Level(const FGameplayAttributeData& OldLevel) const
 {
-	GAMEPLAYATTRIBUTE_REPNOTIFY(UDDSAttributeSet, Level, OldLevel);
+    GAMEPLAYATTRIBUTE_REPNOTIFY(UDDSAttributeSet, Level, OldLevel);
 }
 
-void UDDSAttributeSet::OnRep_Exp(const FGameplayAttributeData& OldExp) const
+void UDDSAttributeSet::OnRep_Energy(const FGameplayAttributeData& OldEnergy) const
 {
-	GAMEPLAYATTRIBUTE_REPNOTIFY(UDDSAttributeSet, Exp, OldExp);
+    GAMEPLAYATTRIBUTE_REPNOTIFY(UDDSAttributeSet, Energy, OldEnergy);
 }
 
-void UDDSAttributeSet::OnRep_ExpMax(const FGameplayAttributeData& OldExpMax) const
+void UDDSAttributeSet::OnRep_RequireEnergy(const FGameplayAttributeData& OldRequireEnergy) const
 {
-	GAMEPLAYATTRIBUTE_REPNOTIFY(UDDSAttributeSet, ExpMax, OldExpMax);
+    GAMEPLAYATTRIBUTE_REPNOTIFY(UDDSAttributeSet, RequireEnergy, OldRequireEnergy);
 }
 
 void UDDSAttributeSet::OnRep_Soul(const FGameplayAttributeData& OldSoul) const
 {
-  	GAMEPLAYATTRIBUTE_REPNOTIFY(UDDSAttributeSet, Soul, OldSoul);
+    GAMEPLAYATTRIBUTE_REPNOTIFY(UDDSAttributeSet, Soul, OldSoul);
 }
 
+void UDDSAttributeSet::OnRep_Vitality(const FGameplayAttributeData& OldVitality) const
+{
+    GAMEPLAYATTRIBUTE_REPNOTIFY(UDDSAttributeSet, Vitality, OldVitality);
+}
 
-/**
- * @brief 데이터가 서버에서 클라이언트로 전달될 때 호출됨.
- */
+void UDDSAttributeSet::OnRep_Endurance(const FGameplayAttributeData& OldEndurance) const
+{
+    GAMEPLAYATTRIBUTE_REPNOTIFY(UDDSAttributeSet, Endurance, OldEndurance);
+}
+
+void UDDSAttributeSet::OnRep_Dexterity(const FGameplayAttributeData& OldDexterity) const
+{
+    GAMEPLAYATTRIBUTE_REPNOTIFY(UDDSAttributeSet, Dexterity, OldDexterity);
+}
+
+void UDDSAttributeSet::OnRep_Magic(const FGameplayAttributeData& OldMagic) const
+{
+    GAMEPLAYATTRIBUTE_REPNOTIFY(UDDSAttributeSet, Magic, OldMagic);
+}
+
 void UDDSAttributeSet::OnRep_Health(const FGameplayAttributeData& OldHealth) const
 {
-	// AbilitySystem에게 알려주기
-	GAMEPLAYATTRIBUTE_REPNOTIFY(UDDSAttributeSet, Health, OldHealth);
-}
-
-void UDDSAttributeSet::OnRep_MaxHealth(const FGameplayAttributeData& OldMaxHealth) const
-{
-	GAMEPLAYATTRIBUTE_REPNOTIFY(UDDSAttributeSet, MaxHealth, OldMaxHealth);
+    GAMEPLAYATTRIBUTE_REPNOTIFY(UDDSAttributeSet, Health, OldHealth);
 }
 
 void UDDSAttributeSet::OnRep_Stamina(const FGameplayAttributeData& OldStamina) const
 {
-	GAMEPLAYATTRIBUTE_REPNOTIFY(UDDSAttributeSet, Stamina, OldStamina);
+    GAMEPLAYATTRIBUTE_REPNOTIFY(UDDSAttributeSet, Stamina, OldStamina);
 }
 
-void UDDSAttributeSet::OnRep_MaxStamina(const FGameplayAttributeData& OldMaxStamina) const
+void UDDSAttributeSet::OnRep_Mana(const FGameplayAttributeData& OldMana) const
 {
-	GAMEPLAYATTRIBUTE_REPNOTIFY(UDDSAttributeSet, MaxStamina, OldMaxStamina);
+    GAMEPLAYATTRIBUTE_REPNOTIFY(UDDSAttributeSet, Mana, OldMana);
+}
+
+void UDDSAttributeSet::OnRep_HealthMax(const FGameplayAttributeData& OldHealthMax) const
+{
+    GAMEPLAYATTRIBUTE_REPNOTIFY(UDDSAttributeSet, HealthMax, OldHealthMax);
+}
+
+void UDDSAttributeSet::OnRep_StaminaMax(const FGameplayAttributeData& OldStaminaMax) const
+{
+    GAMEPLAYATTRIBUTE_REPNOTIFY(UDDSAttributeSet, StaminaMax, OldStaminaMax);
+}
+
+void UDDSAttributeSet::OnRep_ManaMax(const FGameplayAttributeData& OldManaMax) const
+{
+    GAMEPLAYATTRIBUTE_REPNOTIFY(UDDSAttributeSet, ManaMax, OldManaMax);
 }
 
 void UDDSAttributeSet::OnRep_AttackPower(const FGameplayAttributeData& OldAttackPower) const
 {
-	GAMEPLAYATTRIBUTE_REPNOTIFY(UDDSAttributeSet, AttackPower, OldAttackPower);
+    GAMEPLAYATTRIBUTE_REPNOTIFY(UDDSAttributeSet, AttackPower, OldAttackPower);
 }
 
-void UDDSAttributeSet::OnRep_DefensePower(const FGameplayAttributeData& OldDefensePower) const
+void UDDSAttributeSet::OnRep_MagicPower(const FGameplayAttributeData& OldMagicPower) const
 {
-	GAMEPLAYATTRIBUTE_REPNOTIFY(UDDSAttributeSet, DefensePower, OldDefensePower);
+    GAMEPLAYATTRIBUTE_REPNOTIFY(UDDSAttributeSet, MagicPower, OldMagicPower);
+}
+
+void UDDSAttributeSet::OnRep_PhysicalDefense(const FGameplayAttributeData& OldPhysicalDefense) const
+{
+    GAMEPLAYATTRIBUTE_REPNOTIFY(UDDSAttributeSet, PhysicalDefense, OldPhysicalDefense);
+}
+
+void UDDSAttributeSet::OnRep_MagicDefense(const FGameplayAttributeData& OldMagicDefense) const
+{
+    GAMEPLAYATTRIBUTE_REPNOTIFY(UDDSAttributeSet, MagicDefense, OldMagicDefense);
+}
+
+void UDDSAttributeSet::OnRep_PhysicalResist(const FGameplayAttributeData& OldPhysicalResist) const
+{
+    GAMEPLAYATTRIBUTE_REPNOTIFY(UDDSAttributeSet, PhysicalResist, OldPhysicalResist);
+}
+
+void UDDSAttributeSet::OnRep_FireResist(const FGameplayAttributeData& OldFireResist) const
+{
+    GAMEPLAYATTRIBUTE_REPNOTIFY(UDDSAttributeSet, FireResist, OldFireResist);
 }
 
 void UDDSAttributeSet::OnRep_DamageTaken(const FGameplayAttributeData& OldDamageTaken) const
 {
-	GAMEPLAYATTRIBUTE_REPNOTIFY(UDDSAttributeSet, DamageTaken, OldDamageTaken);
+    GAMEPLAYATTRIBUTE_REPNOTIFY(UDDSAttributeSet, DamageTaken, OldDamageTaken);
 }

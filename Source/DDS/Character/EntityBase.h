@@ -11,6 +11,7 @@
 #include "EntityBase.generated.h"
 
 
+class UDDSPlayerAttributeSet;
 struct FGameplayEffectModCallbackData;
 class UPawnCombatComponent;
 class UDDSAttributeSet;
@@ -39,8 +40,11 @@ public:
 	/* IPawnUIInterface Begin~ */
 	virtual UPawnUIComponent* GetPawnUIComponent() const override;
 	/* ~ IPawnUIInterface End */
-	
+
+
 	UAttributeSet* GetAttributeSet() const;
+	UFUNCTION(BlueprintCallable,Category="DDS|AbilitySystem")
+	UDDSPlayerAttributeSet* GetPlayerAttributeSet() const;
 
 	UFUNCTION(BlueprintCallable,Category="DDS|Combat")
 	AActor* GetFocusedObject() const { return FocusedObject; }

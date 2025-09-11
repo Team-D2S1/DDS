@@ -36,6 +36,34 @@ namespace DDSGameplayTags
 	DDS_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(UI_Widget_Status)
 	DDS_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(UI_Widget_System)
 
+	/** Attribute Tags */
+	DDS_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Attribute_Default_Level)
+	DDS_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Attribute_Default_Energy)
+	DDS_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Attribute_Default_RequireEnergy)
+	DDS_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Attribute_Default_Soul)
+	
+	DDS_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Attribute_Primary_Vitality)
+	DDS_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Attribute_Primary_Endurance)
+	DDS_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Attribute_Primary_Dexterity)
+	DDS_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Attribute_Primary_Magic)
+
+	DDS_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Attribute_Status_Health)
+	DDS_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Attribute_Status_Stamina)
+	DDS_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Attribute_Status_Mana)
+	DDS_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Attribute_Status_HealthMax)
+	DDS_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Attribute_Status_StaminaMax)
+	DDS_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Attribute_Status_ManaMax)
+
+	DDS_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Attribute_Offense_AttackPower)
+	DDS_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Attribute_Offense_MagicPower)
+
+	DDS_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Attribute_Defense_PhysicalDefense)
+	DDS_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Attribute_Defense_MagicDefense)
+
+	DDS_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Attribute_Defense_PhysicalResist)
+	DDS_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Attribute_Defense_FireResist)
+	
+	
 	/** Player Tags */
 	DDS_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Ability_Jump)
 	DDS_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Ability_LockOn)

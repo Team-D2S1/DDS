@@ -13,6 +13,7 @@
 struct FGameplayTagContainer;
 class UInventoryComponent;
 class UDDSAttributeSet;
+class UDDSPlayerAttributeSet;
 class UAbilitySystemComponent;
 class UAttributeSet;
 
@@ -37,6 +38,7 @@ public:
 	virtual UDDSAbilitySystemComponent* GetDDSAbilitySystemComponent() const override;
 	UAttributeSet* GetAttributeSet() const;
 	UDDSAttributeSet* GetDDSAttribueSet() const;
+
 
 	// ~ Begin IGenericTeamAgentInterface Interface
 	virtual FGenericTeamId GetGenericTeamId() const override;

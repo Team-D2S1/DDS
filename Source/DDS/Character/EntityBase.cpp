@@ -7,6 +7,7 @@
 #include "ETC/CustomLog.h"
 #include "GameAbilitySystem/DDSAbilitySystemComponent.h"
 #include "GameAbilitySystem/DDSAttributeSet.h"
+#include "GameAbilitySystem/DDSPlayerAttributeSet.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "Net/UnrealNetwork.h"
 
@@ -47,6 +48,11 @@ UPawnUIComponent* AEntityBase::GetPawnUIComponent() const
 UAttributeSet* AEntityBase::GetAttributeSet() const
 {
 	return AttributeSet;
+}
+
+UDDSPlayerAttributeSet* AEntityBase::GetPlayerAttributeSet() const
+{
+	return Cast<UDDSPlayerAttributeSet>(AttributeSet);
 }
 
 void AEntityBase::Multicast_LinkAnimLayer_Implementation(TSubclassOf<UAnimInstance> InAnimLayerClass)

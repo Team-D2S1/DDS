@@ -50,6 +50,9 @@
     <file url="file://$PROJECT_DIR$/Source/DDS/GameAbilitySystem/Abilities/Shared/SpawnWeaponAbility.h" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/Source/DDS/GameAbilitySystem/DDSAttributeSet.cpp" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/Source/DDS/GameAbilitySystem/DDSAttributeSet.h" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/Source/DDS/GameAbilitySystem/DDSPlayerAttributeSet.cpp" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/Source/DDS/GameAbilitySystem/DDSPlayerAttributeSet.h" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/Source/DDS/GameAbilitySystem/Data/AttributeInfo.h" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/Source/DDS/GameAbilitySystem/IDDSAbilitySystemInterface.cpp" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/Source/DDS/GameAbilitySystem/IDDSAbilitySystemInterface.h" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/Source/DDS/Interfaces/IFocusable.cpp" charset="UTF-8" />

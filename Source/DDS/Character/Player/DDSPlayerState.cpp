@@ -6,6 +6,7 @@
 #include "Components/Inventory/InventoryComponent.h"
 #include "DDS/GameAbilitySystem/DDSAbilitySystemComponent.h"
 #include "DDS/GameAbilitySystem/DDSAttributeSet.h"
+#include "DDS/GameAbilitySystem/DDSPlayerAttributeSet.h"
 
 
 
@@ -23,9 +24,9 @@ ADDSPlayerState::ADDSPlayerState()
 
 	InventoryComponent = CreateDefaultSubobject<UInventoryComponent>(TEXT("InventoryComponent"));
 	InventoryComponent->SetIsReplicated(true);
-	
 
-	SetGenericTeamId(FGenericTeamId(0));
+
+	ADDSPlayerState::SetGenericTeamId(FGenericTeamId(0));
 }
 
 // void ADDSPlayerState::PrintAllAbilities() const
