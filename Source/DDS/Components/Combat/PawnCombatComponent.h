@@ -69,6 +69,9 @@ public:
 	UFUNCTION(BlueprintCallable,Category="DDS|Combat")
 	void ToggleWeaponCollision(bool bEnable,EToggleCollisionType InDamageType = EToggleCollisionType::CurrentEquippedWeapon);
 
+	UFUNCTION(BlueprintCallable,Category="DDS|Combat")
+	bool IsParrying() const;
+	
 	UFUNCTION()
 	virtual void OnRep_CurrentEquippedWeaponTag();
 protected:

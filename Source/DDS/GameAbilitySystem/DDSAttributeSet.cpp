@@ -101,8 +101,7 @@ void UDDSAttributeSet::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& Out
     DOREPLIFETIME_CONDITION_NOTIFY(UDDSAttributeSet, MagicDefense, COND_None, REPNOTIFY_Always);
     DOREPLIFETIME_CONDITION_NOTIFY(UDDSAttributeSet, PhysicalResist, COND_None, REPNOTIFY_Always);
     DOREPLIFETIME_CONDITION_NOTIFY(UDDSAttributeSet, FireResist, COND_None, REPNOTIFY_Always);
-    
-    DOREPLIFETIME_CONDITION_NOTIFY(UDDSAttributeSet, DamageTaken, COND_None, REPNOTIFY_Always);
+
 }
 
 void UDDSAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCallbackData& Data)
@@ -214,6 +213,7 @@ void UDDSAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCallbac
 			PawnUIComponent->OnMaxHealthChanged.Broadcast(NewMaxHealth);
 		}
 	}
+	
 }
 
 

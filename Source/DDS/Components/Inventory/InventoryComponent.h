@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "ActiveGameplayEffectHandle.h"
 #include "InventoryItemList.h"
 #include "Components/ActorComponent.h"
 #include "Components/PawnExtensionComponentBase.h"
@@ -12,6 +13,8 @@
 
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FInventroryUpdateEvent);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnItemEquippedInvetory, UItemInstance*, ItemInstance, int32, SlotIndex);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnItemUnequippedInvetory, int32, SlotIndex);
 
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
 class DDS_API UInventoryComponent : public UPawnExtensionComponentBase
@@ -49,12 +52,30 @@ public:
 
 	UFUNCTION(BlueprintCallable, Server, Reliable)
 	void Server_EquipCraftedWeapon(int32 ItemID);
+
+	UFUNCTION(BlueprintCallable, Server, Reliable)
+	void Server_EquipArmor(int32 ItemID, int32 ArmorIndex);
 	
 	UFUNCTION(BlueprintCallable)
 	UItemInstance* GetItemByID(int32 ItemID);
 
 	UFUNCTION(BlueprintCallable)
 	FInventoryList& GetInventoryList();
+
+	/**
+	 * 아이템 장착 시 이펙트를 적용합니다.
+	 * @param ItemInstance 장착할 아이템 인스턴스
+	 * @param SlotIndex 장착 슬롯 인덱스 (0: 무기, 1-4: 방어구)
+	 */
+	UFUNCTION(BlueprintCallable)
+	void ApplyItemEffect(UItemInstance* ItemInstance, int32 SlotIndex);
+
+	/**
+	 * 아이템 해제 시 이펙트를 제거합니다.
+	 * @param SlotIndex 해제할 슬롯 인덱스
+	 */
+	UFUNCTION(BlueprintCallable)
+	void RemoveItemEffect(int32 SlotIndex);
 
 	UFUNCTION(BlueprintPure)
 	UItemInstance* GetRightWeaponItem() const { return RightWeapon; }
@@ -80,8 +101,14 @@ public:
 	UItemInstance* GetArmor04() const { return Armor04; }
 	
 
-	UPROPERTY()
+	UPROPERTY(BlueprintAssignable)
 	FInventroryUpdateEvent InventoryUpdatedEvent;
+	
+	UPROPERTY(BlueprintAssignable)
+	FOnItemEquippedInvetory OnItemEquippedEvent;
+	
+	UPROPERTY(BlueprintAssignable)
+	FOnItemUnequippedInvetory OnItemUnequippedEvent;
 	
 	// UPROPERTY(BlueprintAssignable)
 	// FInventoryItemEvent OnRepItemRemovedEvent;
@@ -102,6 +129,16 @@ public:
 
     UFUNCTION()
   	void OnRep_RightWeapon();
+
+    UFUNCTION()
+	void OnRep_Armor01();
+	UFUNCTION()
+	void OnRep_Armor02();
+ 	UFUNCTION()
+	void OnRep_Armor03();
+ 	UFUNCTION()
+	void OnRep_Armor04();
+	
 protected:
 
  	// Called when the game starts
@@ -115,14 +152,19 @@ protected:
  	 */
  	UPROPERTY(BlueprintReadOnly, ReplicatedUsing=OnRep_RightWeapon)
 	UItemInstance* RightWeapon;
-	UPROPERTY(BlueprintReadOnly, Replicated)
+	UPROPERTY(BlueprintReadOnly, ReplicatedUsing=OnRep_Armor01)
 	UItemInstance* Armor01;
-	UPROPERTY(BlueprintReadOnly, Replicated)
+	UPROPERTY(BlueprintReadOnly, ReplicatedUsing=OnRep_Armor02)
 	UItemInstance* Armor02;
-	UPROPERTY(BlueprintReadOnly, Replicated)
+	UPROPERTY(BlueprintReadOnly, ReplicatedUsing=OnRep_Armor03)
 	UItemInstance* Armor03;
-	UPROPERTY(BlueprintReadOnly, Replicated)
+	UPROPERTY(BlueprintReadOnly, ReplicatedUsing=OnRep_Armor04)
 	UItemInstance* Armor04;
+
+	// 활성 아이템 이펙트들을 슬롯별로 저장 (서버에서만 사용)
+	UPROPERTY()
+	TMap<int32, FActiveGameplayEffectHandle> ActiveItemEffects;
+	
 public:	
 
 };

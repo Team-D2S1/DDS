@@ -8,6 +8,7 @@
 #include "Components/BoxComponent.h"
 #include "Components/Inventory/InventoryComponent.h"
 #include "ETC/CustomLog.h"
+#include "ETC/DDSFunctionLibrary.h"
 #include "Net/UnrealNetwork.h"
 #include "Items/Actor/DDSWeaponBase.h"
 
@@ -101,6 +102,11 @@ void UPawnCombatComponent::ToggleWeaponCollision(bool bEnable, EToggleCollisionT
 	//TODO : 무기가 없는 경우 처리
 }
 
+bool UPawnCombatComponent::IsParrying() const
+{
+	return UDDSFunctionLibrary::NativeDoesActorHasTag(GetOwningPawn(), DDSGameplayTags::Shared_State_Parrying);
+}
+
 void UPawnCombatComponent::OnRep_CurrentEquippedWeaponTag()
 {
 	if (CurrentEquippedWeaponTag.IsValid())
@@ -119,16 +125,40 @@ void UPawnCombatComponent::OnHitTarget(AActor* InTargetActor)
 	       bIsServer ? TEXT("Server") : TEXT("Client"), *InTargetActor->GetName());
 	OverlappedActors.Add(InTargetActor); // 어차피 위에서 확인함
 
+	const bool bIsTargetParrying = UDDSFunctionLibrary::NativeDoesActorHasTag(InTargetActor, DDSGameplayTags::Shared_State_Parrying);
+	const bool bIsAttackerUnparryable = UDDSFunctionLibrary::NativeDoesActorHasTag(GetOwningPawn(), DDSGameplayTags::Shared_State_CanNotBeParried);
+	bool bIsValidHit = true;
+	if (bIsTargetParrying && !bIsAttackerUnparryable)
+	{
+		bIsValidHit = false;
+	}
+
 	FGameplayEventData EventData;
 	EventData.Instigator = GetOwningPawn();
 	EventData.Target = InTargetActor;
 	// TODO : 무기 정보도 넘기기
 
-	UAbilitySystemBlueprintLibrary::SendGameplayEventToActor(
+	if (bIsValidHit)
+	{
+		UAbilitySystemBlueprintLibrary::SendGameplayEventToActor(
 		GetOwningPawn(),
 		DDSGameplayTags::Shared_Event_MeleeHit_Start,
 		EventData);
-	MY_LOG(LogTemp, Log, TEXT("Hit Target %s"), *InTargetActor->GetName());
+		MY_LOG(LogTemp, Log, TEXT("Hit Target %s"), *InTargetActor->GetName());
+	}
+	else
+	{
+		UAbilitySystemBlueprintLibrary::SendGameplayEventToActor(
+			InTargetActor,
+			DDSGameplayTags::Shared_Event_Parry_Success,
+			EventData);
+		UAbilitySystemBlueprintLibrary::SendGameplayEventToActor(
+		 	GetOwningPawn(),
+			DDSGameplayTags::Shared_Event_AttackParried,
+			EventData);
+		MY_LOG(LogTemp, Log, TEXT("Target %s parried the attack!"), *InTargetActor->GetName());
+	}
+	
 }
 
 void UPawnCombatComponent::OnPulledFromTarget(AActor* InTargetActor)

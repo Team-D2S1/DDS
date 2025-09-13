@@ -66,6 +66,20 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "DDS|FunctionLibrary", meta = (DisplayName = "Get Pawn Combat Component From Actor", ExpandEnumAsExecs = "OutValid"))
 	static UPawnCombatComponent* BP_GetCombatComponent(AActor* InActor, EDDSValidType& OutValid);
 
+	static bool NativeDoesActorHasTag(AActor* InActor, FGameplayTag InTag);
+
+	UFUNCTION(BlueprintCallable, Category = "DDS|FunctionLibrary")
+	static void BP_DoesActorHasTag(AActor* InActor, FGameplayTag InTag, EDDSConfirmType& OutConfirm);
+
+	/**
+	 * 패링의 방향만 확인한다.
+	 * @param InAttacker 
+	 * @param InDefender 
+	 * @return 유효한 패링이면 true
+	 */
+	UFUNCTION(BlueprintPure, Category = "DDS|FunctionLibrary")	
+	static bool IsValidParry(AActor* InAttacker, AActor* InDefender);
+	
 	/// <summary>
 	/// QueryPawn이 TargetPawn을 적으로 인식하는지 여부를 반환
 	/// 주의! 서버에서만 됨(플레이어 컨트롤러는 서버에서만 생성됨)

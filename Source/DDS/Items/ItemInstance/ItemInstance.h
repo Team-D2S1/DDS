@@ -8,6 +8,7 @@
 #include "Items/Actor/DDSCraftedPlayerWeapon.h"
 #include "ItemInstance.generated.h"
 
+class UGameplayEffect;
 class UPaperSprite;
 class UItemStaticData;
 /**111
@@ -41,6 +42,8 @@ public:
 	FGameplayTag GetItemTypeTag() const { return ItemTypeTag; }
 	UFUNCTION(BlueprintPure, Category = "DDS|Item")
 	FGameplayTagContainer GetItemTags() const { return ItemTags; }
+	UFUNCTION(BlueprintPure, Category = "DDS|Item")
+	TSubclassOf<UGameplayEffect> GetItemEffectClass() const;
 
 	UFUNCTION(BlueprintCallable)
 	void SetBladeItemInstance(UItemInstance* NewBladeItemInstance);

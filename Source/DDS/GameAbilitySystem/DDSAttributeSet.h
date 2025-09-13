@@ -119,7 +119,8 @@ public:
 	ATTRIBUTE_ACCESSORS(UDDSAttributeSet, FireResist);
 
 	// Combat Attributes
-	UPROPERTY(ReplicatedUsing= OnRep_DamageTaken, BlueprintReadOnly, Category = "Combat Attributes")
+	// Damage Taken은 복제되면 안됨. 서버에서만 관리
+	UPROPERTY(BlueprintReadOnly, Category = "Combat Attributes")
 	FGameplayAttributeData DamageTaken;
 	ATTRIBUTE_ACCESSORS(UDDSAttributeSet, DamageTaken);
 	

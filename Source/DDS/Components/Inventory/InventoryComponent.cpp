@@ -12,6 +12,8 @@
 #include "ETC/CustomLog.h"
 #include "Kismet/KismetTextLibrary.h"
 #include "Net/UnrealNetwork.h"
+#include "GameAbilitySystem/DDSAbilitySystemComponent.h"
+#include "AbilitySystemBlueprintLibrary.h"
 
 
 // Sets default values for this component's properties
@@ -155,6 +157,8 @@ void UInventoryComponent::Server_EquipCraftedWeapon_Implementation(int32 ItemID)
 	if (ItemID == 0)
 	{
 		// 해제만 진행
+		// 기존 무기 이펙트 제거
+		RemoveItemEffect(0); // 0은 무기 슬롯
 		RightWeapon = nullptr;
 		if (bIsServer)
 		{
@@ -164,10 +168,53 @@ void UInventoryComponent::Server_EquipCraftedWeapon_Implementation(int32 ItemID)
 	}
 	else
 	{
+		// 기존 무기 이펙트 제거
+		RemoveItemEffect(0); // 0은 무기 슬롯
+		
 		RightWeapon = GetItemByID(ItemID);
 		if (bIsServer)
 		{
+			// 새 무기 이펙트 적용
+			if (RightWeapon)
+			{
+				ApplyItemEffect(RightWeapon, 0); // 0은 무기 슬롯
+			}
 			OnRep_RightWeapon();
+		}
+	}
+}
+
+void UInventoryComponent::Server_EquipArmor_Implementation(int32 ItemID, int32 ArmorIndex)
+{
+	UItemInstance*& TargetArmor = (ArmorIndex == 0) ? Armor01 :
+									(ArmorIndex == 1) ? Armor02 :
+									(ArmorIndex == 2) ? Armor03 :
+									 Armor04;
+
+	bool bIsServer = GetOwner()->HasAuthority();
+	MY_LOG(LogTemp, Log, TEXT("[%s] Server_EquipArmor called with ItemID: %d, ArmorIndex: %d"),
+		bIsServer ? TEXT("Server") : TEXT("Client"), ItemID, ArmorIndex);
+	if (ItemID == 0)
+	{
+		// 해제만 진행
+		// 기존 방어구 이펙트 제거 (1-4는 방어구 슬롯)
+		RemoveItemEffect(ArmorIndex + 1);
+		MY_LOG_DISPLAY_NET(bIsServer, TEXT("ArmorIndex %d is set to nullptr"), ArmorIndex);
+		TargetArmor = nullptr;
+		
+	}
+	else
+	{
+		// 기존 방어구 이펙트 제거
+		RemoveItemEffect(ArmorIndex + 1);
+		
+		MY_LOG_DISPLAY_NET(bIsServer, TEXT("Equipping ArmorIndex %d with ItemID %d"), ArmorIndex, ItemID);
+		TargetArmor = GetItemByID(ItemID);
+		
+		// 새 방어구 이펙트 적용
+		if (bIsServer && TargetArmor)
+		{
+			ApplyItemEffect(TargetArmor, ArmorIndex + 1); // 1-4는 방어구 슬롯
 		}
 	}
 }
@@ -257,11 +304,17 @@ void UInventoryComponent::OnRep_RightWeapon()
 	{
 		MY_LOG(LogTemp, Log, TEXT("[%s]RightWeapon changed to %s"),
 			bIsServer ? TEXT("Server") : TEXT("Client"), *RightWeapon->GetName());
+		
+		// 이벤트 호출 (서버와 클라이언트 모두)
+		OnItemEquippedEvent.Broadcast(RightWeapon, 0); // 0은 무기 슬롯
 	}
 	else
 	{
 		MY_LOG(LogTemp, Log, TEXT("[%s]RightWeapon is now nullptr"),
 			bIsServer ? TEXT("Server") : TEXT("Client"));
+		
+		// 이벤트 호출 (서버와 클라이언트 모두)
+		OnItemUnequippedEvent.Broadcast(0); // 0은 무기 슬롯
 	}
 
 	if (ADDSPlayerState* PlayerState = Cast<ADDSPlayerState>(GetOwner()))
@@ -291,5 +344,140 @@ void UInventoryComponent::OnRep_RightWeapon()
 	else
 	{
 		MY_ERROR_DISPLAY_NET(true, TEXT("Owner is not a valid APlayerBase."));
+	}
+}
+
+void UInventoryComponent::OnRep_Armor01()
+{
+	InventoryUpdatedEvent.Broadcast();
+	
+	// 클라이언트 이벤트 호출 (서버는 함수에서 직접 호출)
+	if (Armor01)
+	{
+		OnItemEquippedEvent.Broadcast(Armor01, 1); // 1은 Armor01 슬롯
+	}
+	else
+	{
+		OnItemUnequippedEvent.Broadcast(1); // 1은 Armor01 슬롯
+	}
+}
+
+void UInventoryComponent::OnRep_Armor02()
+{
+	InventoryUpdatedEvent.Broadcast();
+	
+	// 클라이언트 이벤트 호출 (서버는 함수에서 직접 호출)
+	if (Armor02)
+	{
+		OnItemEquippedEvent.Broadcast(Armor02, 2); // 2는 Armor02 슬롯
+	}
+	else
+	{
+		OnItemUnequippedEvent.Broadcast(2); // 2는 Armor02 슬롯
+	}
+}
+
+void UInventoryComponent::OnRep_Armor03()
+{
+	InventoryUpdatedEvent.Broadcast();
+	
+	// 클라이언트 이벤트 호출 (서버는 함수에서 직접 호출)
+	if (Armor03)
+	{
+		OnItemEquippedEvent.Broadcast(Armor03, 3); // 3은 Armor03 슬롯
+	}
+	else
+	{
+		OnItemUnequippedEvent.Broadcast(3); // 3은 Armor03 슬롯
+	}
+}
+
+void UInventoryComponent::OnRep_Armor04()
+{
+	InventoryUpdatedEvent.Broadcast();
+	
+	// 클라이언트 이벤트 호출 (서버는 함수에서 직접 호출)
+	if (Armor04)
+	{
+		OnItemEquippedEvent.Broadcast(Armor04, 4); // 4는 Armor04 슬롯
+	}
+	else
+	{
+		OnItemUnequippedEvent.Broadcast(4); // 4는 Armor04 슬롯
+	}
+}
+
+void UInventoryComponent::ApplyItemEffect(UItemInstance* ItemInstance, int32 SlotIndex)
+{
+	if (!ItemInstance)
+	{
+		MY_ERROR_DISPLAY(TEXT("ItemInstance is nullptr"));
+		return;
+	}
+
+	// AbilitySystemComponent 가져오기
+	UAbilitySystemComponent* ASC = UAbilitySystemBlueprintLibrary::GetAbilitySystemComponent(GetOwner());
+	if (!ASC)
+	{
+		MY_ERROR_DISPLAY(TEXT("AbilitySystemComponent not found"));
+		return;
+	}
+
+	// 아이템의 이펙트 클래스 가져오기
+	TSubclassOf<UGameplayEffect> EffectClass = ItemInstance->GetItemEffectClass();
+	if (!EffectClass)
+	{
+		MY_LOG(LogTemp, Log, TEXT("No effect class found for item: %s"), *ItemInstance->GetItemName());
+		return;
+	}
+
+	// 이펙트 적용
+	FGameplayEffectContextHandle EffectContext = ASC->MakeEffectContext();
+	EffectContext.AddSourceObject(ItemInstance);
+	
+	FGameplayEffectSpecHandle EffectSpecHandle = ASC->MakeOutgoingSpec(EffectClass, 1.0f, EffectContext);
+	if (EffectSpecHandle.IsValid())
+	{
+		FActiveGameplayEffectHandle ActiveEffectHandle = ASC->ApplyGameplayEffectSpecToSelf(*EffectSpecHandle.Data.Get());
+		if (ActiveEffectHandle.IsValid())
+		{
+			// 슬롯별로 활성 이펙트 저장 (나중에 제거할 때 사용)
+			ActiveItemEffects.Add(SlotIndex, ActiveEffectHandle);
+			MY_LOG(LogTemp, Log, TEXT("Applied effect for item: %s in slot: %d"), *ItemInstance->GetItemName(), SlotIndex);
+		}
+		else
+		{
+			MY_ERROR_DISPLAY(TEXT("Failed to apply gameplay effect"));
+		}
+	}
+	else
+	{
+		MY_ERROR_DISPLAY(TEXT("Failed to create effect spec handle"));
+	}
+}
+
+void UInventoryComponent::RemoveItemEffect(int32 SlotIndex)
+{
+	// AbilitySystemComponent 가져오기
+	UAbilitySystemComponent* ASC = UAbilitySystemBlueprintLibrary::GetAbilitySystemComponent(GetOwner());
+	if (!ASC)
+	{
+		MY_ERROR_DISPLAY(TEXT("AbilitySystemComponent not found"));
+		return;
+	}
+
+	// 해당 슬롯의 활성 이펙트 찾기
+	if (FActiveGameplayEffectHandle* EffectHandle = ActiveItemEffects.Find(SlotIndex))
+	{
+		if (EffectHandle->IsValid())
+		{
+			ASC->RemoveActiveGameplayEffect(*EffectHandle);
+			MY_LOG(LogTemp, Log, TEXT("Removed effect for slot: %d"), SlotIndex);
+		}
+		ActiveItemEffects.Remove(SlotIndex);
+	}
+	else
+	{
+		MY_LOG(LogTemp, Log, TEXT("No active effect found for slot: %d"), SlotIndex);
 	}
 }
