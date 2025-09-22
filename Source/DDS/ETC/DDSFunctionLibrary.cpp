@@ -194,7 +194,7 @@ bool UDDSFunctionLibrary::IsValidParry(AActor* InAttacker, AActor* InDefender)
 	MY_CLOG_DISPLAY_NET(FColor::Purple,bIsServer,TEXT("Parry Check : Attacker %s, Defender %s, DotResult : %f, bIsValidBlock : %s"),
 	                   *InAttacker->GetName(),*InDefender->GetName(),DotResult,bIsValidBlock ? TEXT("true") : TEXT("false"));
 
-	return bIsValidBlock<-0.1f;
+	return bIsValidBlock;
 }
 
 bool UDDSFunctionLibrary::IsTargetHostile(APawn* QueryPawn, APawn* TargetPawn)
