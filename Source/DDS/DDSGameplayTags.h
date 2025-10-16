@@ -44,6 +44,7 @@ namespace DDSGameplayTags
 	
 	DDS_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Attribute_Primary_Vitality)
 	DDS_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Attribute_Primary_Endurance)
+	DDS_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Attribute_Primary_Strength)
 	DDS_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Attribute_Primary_Dexterity)
 	DDS_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Attribute_Primary_Magic)
 

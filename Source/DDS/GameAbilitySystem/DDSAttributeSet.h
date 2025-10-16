@@ -59,6 +59,10 @@ public:
 	FGameplayAttributeData Endurance;
 	ATTRIBUTE_ACCESSORS(UDDSAttributeSet, Endurance);
 
+	UPROPERTY(ReplicatedUsing= OnRep_Strength, BlueprintReadOnly, Category = "Primary Attributes")
+	FGameplayAttributeData Strength;
+	ATTRIBUTE_ACCESSORS(UDDSAttributeSet, Strength);
+
 	UPROPERTY(ReplicatedUsing= OnRep_Dexterity, BlueprintReadOnly, Category = "Primary Attributes")
 	FGameplayAttributeData Dexterity;
 	ATTRIBUTE_ACCESSORS(UDDSAttributeSet, Dexterity);
@@ -137,6 +141,8 @@ public:
 	void OnRep_Soul(const FGameplayAttributeData& OldSoul) const;
 	UFUNCTION()
 	void OnRep_Vitality(const FGameplayAttributeData& OldVitality) const;
+	UFUNCTION()
+	void OnRep_Strength(const FGameplayAttributeData& OldStrength) const;
 	UFUNCTION()
 	void OnRep_Endurance(const FGameplayAttributeData& OldEndurance) const;
 	UFUNCTION()
