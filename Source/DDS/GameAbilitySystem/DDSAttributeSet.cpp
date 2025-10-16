@@ -25,6 +25,7 @@ UDDSAttributeSet::UDDSAttributeSet()
     
     InitVitality(10.0f);
     InitEndurance(10.0f);
+	InitStrength(10.0f);
     InitDexterity(10.0f);
     InitMagic(10.0f);
     
@@ -54,6 +55,7 @@ UDDSAttributeSet::UDDSAttributeSet()
     
     TagToAttributeMap.Add(Attribute_Primary_Vitality, GetVitalityAttribute);
     TagToAttributeMap.Add(Attribute_Primary_Endurance, GetEnduranceAttribute);
+	TagToAttributeMap.Add(Attribute_Primary_Strength, GetStrengthAttribute);
     TagToAttributeMap.Add(Attribute_Primary_Dexterity, GetDexterityAttribute);
     TagToAttributeMap.Add(Attribute_Primary_Magic, GetMagicAttribute);
     
@@ -84,6 +86,7 @@ void UDDSAttributeSet::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& Out
     
     DOREPLIFETIME_CONDITION_NOTIFY(UDDSAttributeSet, Vitality, COND_None, REPNOTIFY_Always);
     DOREPLIFETIME_CONDITION_NOTIFY(UDDSAttributeSet, Endurance, COND_None, REPNOTIFY_Always);
+	DOREPLIFETIME_CONDITION_NOTIFY(UDDSAttributeSet, Strength, COND_None, REPNOTIFY_Always);
     DOREPLIFETIME_CONDITION_NOTIFY(UDDSAttributeSet, Dexterity, COND_None, REPNOTIFY_Always);
     DOREPLIFETIME_CONDITION_NOTIFY(UDDSAttributeSet, Magic, COND_None, REPNOTIFY_Always);
     
@@ -240,6 +243,11 @@ void UDDSAttributeSet::OnRep_Soul(const FGameplayAttributeData& OldSoul) const
 void UDDSAttributeSet::OnRep_Vitality(const FGameplayAttributeData& OldVitality) const
 {
     GAMEPLAYATTRIBUTE_REPNOTIFY(UDDSAttributeSet, Vitality, OldVitality);
+}
+
+void UDDSAttributeSet::OnRep_Strength(const FGameplayAttributeData& OldStrength) const
+{
+	GAMEPLAYATTRIBUTE_REPNOTIFY(UDDSAttributeSet, Strength, OldStrength);
 }
 
 void UDDSAttributeSet::OnRep_Endurance(const FGameplayAttributeData& OldEndurance) const
