@@ -14,6 +14,8 @@
 #include "GameFramework/SpringArmComponent.h"
 #include "Components/UI/PlayerUIComponent.h"
 #include "Components/Inventory/InventoryComponent.h"
+#include "GameAbilitySystem/DDSAbilitySystemComponent.h"
+#include "GameAbilitySystem/Abilities/DDSGameplayAbility.h"
 
 APlayerBase::APlayerBase()
 {

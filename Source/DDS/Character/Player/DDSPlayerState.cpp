@@ -7,7 +7,7 @@
 #include "DDS/GameAbilitySystem/DDSAbilitySystemComponent.h"
 #include "DDS/GameAbilitySystem/DDSAttributeSet.h"
 #include "DDS/GameAbilitySystem/DDSPlayerAttributeSet.h"
-
+#include "ETC/CustomLog.h"
 
 
 ADDSPlayerState::ADDSPlayerState()
@@ -21,10 +21,10 @@ ADDSPlayerState::ADDSPlayerState()
 	AbilitySystemComponent->SetReplicationMode(EGameplayEffectReplicationMode::Mixed);
 
 	AttributeSet = CreateDefaultSubobject<UDDSAttributeSet>(TEXT("AttributeSet"));
+	
 
 	InventoryComponent = CreateDefaultSubobject<UInventoryComponent>(TEXT("InventoryComponent"));
 	InventoryComponent->SetIsReplicated(true);
-
 
 	ADDSPlayerState::SetGenericTeamId(FGenericTeamId(0));
 }

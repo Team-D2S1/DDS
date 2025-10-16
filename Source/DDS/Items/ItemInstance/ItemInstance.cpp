@@ -9,6 +9,7 @@
 #include "Net/UnrealNetwork.h"
 
 
+
 UItemInstance::UItemInstance()
 {
 	
@@ -85,6 +86,19 @@ FString UItemInstance::GetItemName() const
 	{
 		return ItemName;
 	}
+}
+
+TSubclassOf<UGameplayEffect> UItemInstance::GetItemEffectClass() const
+{
+	if (ItemClass)
+	{
+		if (UItemStaticData* ItemData = ItemClass.GetDefaultObject())
+		{
+			return ItemData->ItemEffectClass;
+		}
+	}
+	MY_ERROR_DISPLAY(TEXT("ItemClass is nullptr or ItemData is nullptr"));
+	return nullptr;
 }
 
 void UItemInstance::SetBladeItemInstance(UItemInstance* NewBladeItemInstance)

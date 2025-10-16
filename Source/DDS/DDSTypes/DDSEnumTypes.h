@@ -58,6 +58,13 @@ enum class EDDSSuccessType : uint8
 	Fail
 };
 
+UENUM()
+enum class EDDSConfirmType : uint8
+{
+	Yes,
+	No
+};
+
 UENUM(BlueprintType)
 enum class EWeaponNumberProperty : uint8
 {

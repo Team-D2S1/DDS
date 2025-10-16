@@ -3,6 +3,8 @@
 
 #include "ETC/DDSFunctionLibrary.h"
 
+#include "AbilitySystemBlueprintLibrary.h"
+#include "AbilitySystemComponent.h"
 #include "CustomLog.h"
 #include "DDSGameplayTags.h"
 #include "GenericTeamAgentInterface.h"
@@ -14,6 +16,7 @@
 #include "UI/DDSWidgetController.h"
 #include "Items/ItemInstance/ItemInstance.h"
 #include "UI/WidgetController/CraftingWidgetController.h"
+ 
 
 bool UDDSFunctionLibrary::MakeWidgetControllerParams(const UObject* WorldContextObject,
                                                      FWidgetControllerParams& OutParams, const ADDSHUD* OutHUD)
@@ -151,6 +154,47 @@ UPawnCombatComponent* UDDSFunctionLibrary::BP_GetCombatComponent(AActor* InActor
 	UPawnCombatComponent* CombatComponent = NativeGetCombatComponent(InActor);
 	OutValid = CombatComponent ? EDDSValidType::Valid : EDDSValidType::Invalid;
 	return CombatComponent;
+}
+
+bool UDDSFunctionLibrary::NativeDoesActorHasTag(AActor* InActor, FGameplayTag InTag)
+{
+	UAbilitySystemComponent* ASC = UAbilitySystemBlueprintLibrary::GetAbilitySystemComponent(InActor);
+	if (ASC)
+	{
+		return ASC->HasMatchingGameplayTag(InTag);
+	}
+	return false;
+}
+
+
+void UDDSFunctionLibrary::BP_DoesActorHasTag(AActor* InActor, FGameplayTag InTag, EDDSConfirmType& OutConfirm)
+{
+	if (NativeDoesActorHasTag(InActor, InTag))
+	{
+		OutConfirm = EDDSConfirmType::Yes;
+	}
+	else
+	{
+		OutConfirm = EDDSConfirmType::No;
+	}
+}
+
+bool UDDSFunctionLibrary::IsValidParry(AActor* InAttacker, AActor* InDefender)
+{   
+	if (!InAttacker || !InDefender)
+	{
+		MY_ERROR_DISPLAY(TEXT("InAttacker or InDefender is nullptr"));
+		return false;
+	}
+
+	const float DotResult = FVector::DotProduct(InAttacker->GetActorForwardVector(),InDefender->GetActorForwardVector());
+	const bool bIsServer = InDefender->HasAuthority();
+	const bool bIsValidBlock = DotResult < -0.1f;
+
+	MY_CLOG_DISPLAY_NET(FColor::Purple,bIsServer,TEXT("Parry Check : Attacker %s, Defender %s, DotResult : %f, bIsValidBlock : %s"),
+	                   *InAttacker->GetName(),*InDefender->GetName(),DotResult,bIsValidBlock ? TEXT("true") : TEXT("false"));
+
+	return bIsValidBlock;
 }
 
 bool UDDSFunctionLibrary::IsTargetHostile(APawn* QueryPawn, APawn* TargetPawn)
