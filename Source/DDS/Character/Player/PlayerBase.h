@@ -6,6 +6,7 @@
 #include "Components/Inventory/InventoryComponentInterface.h"
 #include "DDS/Character/EntityBase.h"
 #include "Interfaces/PawnUIInterface.h"
+#include "Perception/AISightTargetInterface.h"
 #include "PlayerBase.generated.h"
 
 class IFocusable;
@@ -17,7 +18,7 @@ class UPawnCombatComponent;
  * 
  */
 UCLASS()
-class DDS_API APlayerBase : public AEntityBase, public IInventoryComponentInterface
+class DDS_API APlayerBase : public AEntityBase, public IInventoryComponentInterface, public IAISightTargetInterface
 {
 	GENERATED_BODY()
 
@@ -37,6 +38,12 @@ public:
 	virtual UPawnUIComponent* GetPawnUIComponent() const override;
 	virtual UPlayerUIComponent* GetPlayerUIComponent() const override;
 	/* IPawnUIInterface End~ */
+
+	/*
+	 * Implement IAISightTargetInterface
+	 */
+	virtual UAISense_Sight::EVisibilityResult CanBeSeenFrom(const FCanBeSeenFromContext& Context, FVector& OutSeenLocation, int32& OutNumberOfLoSChecksPerformed, int32& OutNumberOfAsyncLosCheckRequested, float& OutSightStrength, int32* UserData = nullptr, const FOnPendingVisibilityQueryProcessedDelegate* Delegate = nullptr);
+	
 
     /* IInventoryComponentInterface Begin~ */
 	UFUNCTION(BlueprintCallable, Category = "DDS|InventoryComponentInterface")

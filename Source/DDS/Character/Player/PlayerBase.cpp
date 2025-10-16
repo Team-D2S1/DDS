@@ -96,6 +96,17 @@ UPlayerUIComponent* APlayerBase::GetPlayerUIComponent() const
 	return PlayerUIComponent;
 }
 
+UAISense_Sight::EVisibilityResult APlayerBase::CanBeSeenFrom(const FCanBeSeenFromContext& Context,
+	FVector& OutSeenLocation, int32& OutNumberOfLoSChecksPerformed, int32& OutNumberOfAsyncLosCheckRequested,
+	float& OutSightStrength, int32* UserData, const FOnPendingVisibilityQueryProcessedDelegate* Delegate)
+{
+	// TODO
+	// 만약 몬스터 뒤에 있고 수구리는 상태라면 -> Invisible (보이지 않음) 
+	// Crouch 상태일 때 Tag 검색으로 판단하도록 하자
+	
+	return UAISense_Sight::EVisibilityResult::Visible;
+}
+
 UInventoryComponent* APlayerBase::GetInventoryComponent()
 {
 	if (CachedInventoryComponent.IsValid())
