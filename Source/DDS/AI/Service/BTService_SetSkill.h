@@ -4,8 +4,12 @@
 
 #include "CoreMinimal.h"
 #include "BehaviorTree/BTService.h"
+#include "Components/Combat/MonsterCombatComponent.h"
 #include "BTService_SetSkill.generated.h"
 
+
+struct FCurrentSkillInfo;
+class UMonsterSkillBase;
 
 UCLASS()
 class DDS_API UBTService_SetSkill : public UBTService
@@ -14,4 +18,7 @@ class DDS_API UBTService_SetSkill : public UBTService
 	
 public:
 	virtual void TickNode(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory, float DeltaSeconds) override;
+
+private:
+	UMonsterSkillBase* GetRandomMonsterSkillWithWeight(const TArray<FCurrentSkillInfo>& UsableSkills);
 };

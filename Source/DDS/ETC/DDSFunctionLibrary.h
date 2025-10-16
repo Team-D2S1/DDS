@@ -91,5 +91,4 @@ public:
 
 	UFUNCTION(BlueprintPure, Category = "DDS|FunctionLibrary")
 	static EPartType GetPartTypeByTag(FGameplayTag TypeTag);
-
 };

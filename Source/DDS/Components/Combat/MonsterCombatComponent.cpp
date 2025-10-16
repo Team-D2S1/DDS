@@ -21,7 +21,7 @@ void UMonsterCombatComponent::BeginPlay()
 	if(!GetOwner()->HasAuthority()) return;
 
 	AMonsterBase* Monster = Cast<AMonsterBase>(GetOwner());
-	for(auto SkillInfo : MonsterSkillClassInfos)
+	for(auto& SkillInfo : MonsterSkillClassInfos)
 	{
 		if(SkillInfo.MonsterSkillClass)
 		{
@@ -32,7 +32,7 @@ void UMonsterCombatComponent::BeginPlay()
 			{
 				if(UMonsterSkillBase* MonsterSkill = Cast<UMonsterSkillBase>(Spec.Ability))
 				{
-					MonsterSkills.Add(MonsterSkill);
+					MonsterSkills.Add(FCurrentSkillInfo(MonsterSkill, SkillInfo.BaseSkillWeight));
 				}
 			}
 		}

@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "Components/Combat/PlayerCombatComponent.h"
+#include "ETC/CustomLog.h"
 #include "MonsterCombatComponent.generated.h"
 
 class UMonsterSkillBase;
@@ -18,6 +19,47 @@ struct FMonsterSkillInfo
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	bool bIsUsable = false;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	float BaseSkillWeight = 1.f;
+};
+
+USTRUCT(BlueprintType)
+struct FCurrentSkillInfo
+{
+	GENERATED_BODY()
+
+private:
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = true))
+	TObjectPtr<UMonsterSkillBase> Skill;
+	
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = true))
+	float SkillWeight;
+
+public:
+	FCurrentSkillInfo() : Skill(nullptr), SkillWeight(0.f) {};
+	
+	FCurrentSkillInfo(const TObjectPtr<UMonsterSkillBase>& NewSkill, const float NewSkillWeight)
+		: Skill(NewSkill), SkillWeight(NewSkillWeight)
+	{
+		if(NewSkill == nullptr || NewSkillWeight < 0.f)
+		{
+			MY_LOG(LogTemp,	Error, TEXT("스킬이 제대로 할당되지 않음! 혹은 가중치가 0 미만임!"));
+		}
+	}
+
+	void SetSkillWeight(float NewSkillWeight)
+	{
+		if(NewSkillWeight < 0.f)
+		{
+			MY_LOG(LogTemp,	Error, TEXT("가중치가 0 미만임!"));
+			return;
+		}
+		SkillWeight = NewSkillWeight;
+	}
+
+	TObjectPtr<UMonsterSkillBase> GetSkill() const { return Skill; }
+	float GetSkillWeight() const { return SkillWeight; }
 };
 
 UCLASS()
@@ -34,12 +76,13 @@ public:
 protected:
 	virtual void BeginPlay() override;
 
+	// 몬스터가 가지고 있는 스킬들
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Skill")
 	TArray<FMonsterSkillInfo> MonsterSkillClassInfos;
-	
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Skill")
-	TArray<TObjectPtr<UMonsterSkillBase>> MonsterSkills;
+
+	// 몬스터가 현재 사용 가능한 스킬
+	TArray<FCurrentSkillInfo> MonsterSkills;
 	
 public:
-	FORCEINLINE const TArray<UMonsterSkillBase*>& GetMonsterSkills() const { return MonsterSkills; }
+	FORCEINLINE const TArray<FCurrentSkillInfo>& GetMonsterSkills() const { return MonsterSkills; }
 };

@@ -5,6 +5,8 @@
     <file url="file://$PROJECT_DIR$/Source/DDS/AI/Decorator/BTDecorator_CheckCanMove.h" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/Source/DDS/AI/Decorator/BTDecorator_IsInAttackRange.cpp" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/Source/DDS/AI/Decorator/BTDecorator_IsInAttackRange.h" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/Source/DDS/AI/Perception/DDSSenseConfig_Damage.cpp" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/Source/DDS/AI/Perception/DDSSenseConfig_Damage.h" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/Source/DDS/AI/Service/BTService_SetSkill.cpp" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/Source/DDS/AI/Service/BTService_SetSkill.h" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/Source/DDS/AI/Service/BTService_UpdateDistance.cpp" charset="UTF-8" />
