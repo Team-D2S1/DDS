@@ -1,0 +1,11 @@
+Content/Brushify/DistanceMeshes/Desert_Mountain_01/Textures/T_DesertMountains_D.uasset filter=lfs diff=lfs merge=lfs -text
+Content/Brushify/DistanceMeshes/Desert_Mountain_02/Textures/T_DesertMountains_D.uasset filter=lfs diff=lfs merge=lfs -text
+Content/Brushify/DistanceMeshes/Desert_Mountain_04/Textures/T_DesertMountains_D.uasset filter=lfs diff=lfs merge=lfs -text
+Content/Env_DDSProject/Fab/Megascans/3D/Huge_Nordic_Coastal_Cliff_ullqbb1ga/Raw/T_ullqbb1ga_8K_B.uasset filter=lfs diff=lfs merge=lfs -text
+Content/Env_DDSProject/Fab/Megascans/3D/Huge_Nordic_Coastal_Cliff_ullqbb1ga/Raw/T_ullqbb1ga_8K_N.uasset filter=lfs diff=lfs merge=lfs -text
+Content/Env_DDSProject/Fab/Megascans/3D/Huge_Nordic_Coastal_Cliff_ullqbb1ga/Raw/ullqbb1ga_tier_0.uasset filter=lfs diff=lfs merge=lfs -text
+Content/Env_DDSProject/Fab/Megascans/3D/Large_Nordic_Coastal_Cliff_ulkiejkva/Raw/T_ulkiejkva_8K_N.uasset filter=lfs diff=lfs merge=lfs -text
+Content/Env_DDSProject/Fab/Megascans/3D/Large_Nordic_Coastal_Cliff_ulkiejkva/Raw/ulkiejkva_tier_0.uasset filter=lfs diff=lfs merge=lfs -text
+Content/Env_DDSProject/Fab/Megascans/3D/Large_Nordic_Coastal_Cliff_ulujfanga/Raw/T_ulujfanga_8K_B.uasset filter=lfs diff=lfs merge=lfs -text
+Content/Env_DDSProject/Fab/Megascans/3D/Large_Nordic_Coastal_Cliff_ulujfanga/Raw/T_ulujfanga_8K_N.uasset filter=lfs diff=lfs merge=lfs -text
+Content/Env_DDSProject/Fab/Megascans/3D/Nordic_Beach_Rock_Formation_vjunffdfa/Raw/T_vjunffdfa_8K_N.uasset filter=lfs diff=lfs merge=lfs -text
