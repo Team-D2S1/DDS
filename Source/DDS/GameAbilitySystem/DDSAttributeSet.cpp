@@ -42,7 +42,7 @@ UDDSAttributeSet::UDDSAttributeSet()
     InitPhysicalDefense(5.0f);
     InitMagicDefense(5.0f);
     InitPhysicalResist(0.0f);
-    InitFireResist(0.0f);
+	InitMagicResist(0.0f);
     
     InitDamageTaken(0.0f);
  
@@ -72,7 +72,7 @@ UDDSAttributeSet::UDDSAttributeSet()
     TagToAttributeMap.Add(Attribute_Defense_PhysicalDefense, GetPhysicalDefenseAttribute);
     TagToAttributeMap.Add(Attribute_Defense_MagicDefense, GetMagicDefenseAttribute);
     TagToAttributeMap.Add(Attribute_Defense_PhysicalResist, GetPhysicalResistAttribute);
-    TagToAttributeMap.Add(Attribute_Defense_FireResist, GetFireResistAttribute);
+	TagToAttributeMap.Add(Attribute_Defense_MagicResist, GetMagicResistAttribute);
 }
 
 void UDDSAttributeSet::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
@@ -103,8 +103,24 @@ void UDDSAttributeSet::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& Out
     DOREPLIFETIME_CONDITION_NOTIFY(UDDSAttributeSet, PhysicalDefense, COND_None, REPNOTIFY_Always);
     DOREPLIFETIME_CONDITION_NOTIFY(UDDSAttributeSet, MagicDefense, COND_None, REPNOTIFY_Always);
     DOREPLIFETIME_CONDITION_NOTIFY(UDDSAttributeSet, PhysicalResist, COND_None, REPNOTIFY_Always);
-    DOREPLIFETIME_CONDITION_NOTIFY(UDDSAttributeSet, FireResist, COND_None, REPNOTIFY_Always);
+    DOREPLIFETIME_CONDITION_NOTIFY(UDDSAttributeSet, MagicResist, COND_None, REPNOTIFY_Always);
 
+}
+
+void UDDSAttributeSet::PreAttributeChange(const FGameplayAttribute& Attribute, float& NewValue)
+{
+	Super::PreAttributeChange(Attribute, NewValue);
+
+	// 1차 능력치 최소/최대는 1,99
+	// 어차피 base만 바뀌는 거라 PostGameplayEffectExecute에서 실행해도 무방
+	if (Attribute == GetVitalityAttribute() ||
+		Attribute == GetEnduranceAttribute() ||
+		Attribute == GetStrengthAttribute() ||
+		Attribute == GetDexterityAttribute() ||
+		Attribute == GetMagicAttribute())
+	{
+		NewValue = FMath::Clamp(NewValue, 0.f, 99.f);
+	}
 }
 
 void UDDSAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCallbackData& Data)
@@ -320,10 +336,11 @@ void UDDSAttributeSet::OnRep_PhysicalResist(const FGameplayAttributeData& OldPhy
     GAMEPLAYATTRIBUTE_REPNOTIFY(UDDSAttributeSet, PhysicalResist, OldPhysicalResist);
 }
 
-void UDDSAttributeSet::OnRep_FireResist(const FGameplayAttributeData& OldFireResist) const
+void UDDSAttributeSet::OnRep_MagicResist(const FGameplayAttributeData& OldMagicResist) const
 {
-    GAMEPLAYATTRIBUTE_REPNOTIFY(UDDSAttributeSet, FireResist, OldFireResist);
+	GAMEPLAYATTRIBUTE_REPNOTIFY(UDDSAttributeSet, MagicResist, OldMagicResist);
 }
+
 
 void UDDSAttributeSet::OnRep_DamageTaken(const FGameplayAttributeData& OldDamageTaken) const
 {

@@ -27,6 +27,7 @@ public:
 	UDDSAttributeSet();
 
 	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
+	virtual void PreAttributeChange(const FGameplayAttribute& Attribute, float& NewValue) override;
 	virtual void PostGameplayEffectExecute(const struct FGameplayEffectModCallbackData &Data) override;
 
 	// virtual void PostInitProperties() override;
@@ -34,93 +35,139 @@ public:
 	TMap<FGameplayTag, TStaticFuncPtr<FGameplayAttribute()>> TagToAttributeMap;
 
 	// Default Attributes
+
+	// 레벨
 	UPROPERTY(ReplicatedUsing= OnRep_Level, BlueprintReadOnly, Category = "Default Attributes")
 	FGameplayAttributeData Level;
 	ATTRIBUTE_ACCESSORS(UDDSAttributeSet, Level);
 
+	// 에너지
 	UPROPERTY(ReplicatedUsing= OnRep_Energy, BlueprintReadOnly, Category = "Default Attributes")
 	FGameplayAttributeData Energy;
 	ATTRIBUTE_ACCESSORS(UDDSAttributeSet, Energy);
 
+	// 필요 에너지(경험치 필요량)
 	UPROPERTY(ReplicatedUsing= OnRep_RequireEnergy, BlueprintReadOnly, Category = "Default Attributes")
 	FGameplayAttributeData RequireEnergy;
 	ATTRIBUTE_ACCESSORS(UDDSAttributeSet, RequireEnergy);
 
+	// 소울 (돈)
 	UPROPERTY(ReplicatedUsing= OnRep_Soul, BlueprintReadOnly, Category = "Default Attributes")
 	FGameplayAttributeData Soul;
 	ATTRIBUTE_ACCESSORS(UDDSAttributeSet, Soul);
 	
 	// Primary Attributes
+	// 1차 능력치는 레벨업시 부여하여 증가 가능
+
+	// (1차) 체력
 	UPROPERTY(ReplicatedUsing= OnRep_Vitality, BlueprintReadOnly, Category = "Primary Attributes")
 	FGameplayAttributeData Vitality;
 	ATTRIBUTE_ACCESSORS(UDDSAttributeSet, Vitality);
 
+	// (1차) 지구력
 	UPROPERTY(ReplicatedUsing= OnRep_Endurance, BlueprintReadOnly, Category = "Primary Attributes")
 	FGameplayAttributeData Endurance;
 	ATTRIBUTE_ACCESSORS(UDDSAttributeSet, Endurance);
 
+	// (1차) 힘
 	UPROPERTY(ReplicatedUsing= OnRep_Strength, BlueprintReadOnly, Category = "Primary Attributes")
 	FGameplayAttributeData Strength;
 	ATTRIBUTE_ACCESSORS(UDDSAttributeSet, Strength);
 
+	// (1차) 기량
 	UPROPERTY(ReplicatedUsing= OnRep_Dexterity, BlueprintReadOnly, Category = "Primary Attributes")
 	FGameplayAttributeData Dexterity;
 	ATTRIBUTE_ACCESSORS(UDDSAttributeSet, Dexterity);
 
+	// (1차) 마력
 	UPROPERTY(ReplicatedUsing= OnRep_Magic, BlueprintReadOnly, Category = "Primary Attributes")
 	FGameplayAttributeData Magic;
 	ATTRIBUTE_ACCESSORS(UDDSAttributeSet, Magic);
 
 	// Status Attributes
+
+	// (상태) 체력
 	UPROPERTY(ReplicatedUsing = OnRep_Health, BlueprintReadOnly, Category = "Status Attributes")
 	FGameplayAttributeData Health;
 	ATTRIBUTE_ACCESSORS(UDDSAttributeSet, Health);
 
+	// (상태) 스태미나
 	UPROPERTY(ReplicatedUsing = OnRep_Stamina, BlueprintReadOnly, Category = "Status Attributes")
 	FGameplayAttributeData Stamina;
 	ATTRIBUTE_ACCESSORS(UDDSAttributeSet, Stamina);
 
+	// (상태) 마나
 	UPROPERTY(ReplicatedUsing = OnRep_Mana, BlueprintReadOnly, Category = "Status Attributes")
 	FGameplayAttributeData Mana;
 	ATTRIBUTE_ACCESSORS(UDDSAttributeSet, Mana);
 
+	// (상태, 2차) 최대 체력
 	UPROPERTY(ReplicatedUsing = OnRep_HealthMax, BlueprintReadOnly, Category = "Status Attributes")
 	FGameplayAttributeData HealthMax;
 	ATTRIBUTE_ACCESSORS(UDDSAttributeSet, HealthMax);
 
+	// (상태, 2차) 최대 스태미나
 	UPROPERTY(ReplicatedUsing= OnRep_StaminaMax, BlueprintReadOnly, Category = "Status Attributes")
 	FGameplayAttributeData StaminaMax;
 	ATTRIBUTE_ACCESSORS(UDDSAttributeSet, StaminaMax);
 
+	// (상태, 2차) 최대 마나
 	UPROPERTY(ReplicatedUsing= OnRep_ManaMax, BlueprintReadOnly, Category = "Status Attributes")
 	FGameplayAttributeData ManaMax;
 	ATTRIBUTE_ACCESSORS(UDDSAttributeSet, ManaMax);
 
 	// Offense Attributes
+
+	// (공격력, 2차) 물리 공격력
 	UPROPERTY(ReplicatedUsing= OnRep_AttackPower, BlueprintReadOnly, Category = "Offense Attributes")
 	FGameplayAttributeData AttackPower;
 	ATTRIBUTE_ACCESSORS(UDDSAttributeSet, AttackPower);
 
+	// (공격력, 2차) 마법 공격력
 	UPROPERTY(ReplicatedUsing= OnRep_MagicPower, BlueprintReadOnly, Category = "Offense Attributes")
 	FGameplayAttributeData MagicPower;
 	ATTRIBUTE_ACCESSORS(UDDSAttributeSet, MagicPower);
 
 	// Defense Attributes
+
+	// (방어력, 2차) 물리 방어력
 	UPROPERTY(ReplicatedUsing= OnRep_PhysicalDefense, BlueprintReadOnly, Category = "Defense Attributes")
 	FGameplayAttributeData PhysicalDefense;
 	ATTRIBUTE_ACCESSORS(UDDSAttributeSet, PhysicalDefense);
 
+	// (방어력, 2차) 마법 방어력
 	UPROPERTY(ReplicatedUsing= OnRep_MagicDefense, BlueprintReadOnly, Category = "Defense Attributes")
 	FGameplayAttributeData MagicDefense;
 	ATTRIBUTE_ACCESSORS(UDDSAttributeSet, MagicDefense);
 
+	// (방어력, 2차) 물리 저항력
 	UPROPERTY(ReplicatedUsing= OnRep_PhysicalResist, BlueprintReadOnly, Category = "Defense Attributes")
 	FGameplayAttributeData PhysicalResist;
 	ATTRIBUTE_ACCESSORS(UDDSAttributeSet, PhysicalResist);
 
-	UPROPERTY(ReplicatedUsing= OnRep_FireResist, BlueprintReadOnly, Category = "Defense Attributes")
-	FGameplayAttributeData FireResist;
-	ATTRIBUTE_ACCESSORS(UDDSAttributeSet, FireResist);
+	// (방어력, 2차) 마법 저항력
+	UPROPERTY(ReplicatedUsing= OnRep_MagicResist, BlueprintReadOnly, Category = "Defense Attributes")
+	FGameplayAttributeData MagicResist;
+	ATTRIBUTE_ACCESSORS(UDDSAttributeSet, MagicResist);
+
+
+	// Equip Attributes
+	// 장비 보정 전용 (합산 대상)
+	// 서버에서만 관리, 복제 안함 (어차피 Effect가 복제되므로)
+	
+	UPROPERTY(BlueprintReadOnly) FGameplayAttributeData Equip_HealthMax;
+	UPROPERTY(BlueprintReadOnly) FGameplayAttributeData Equip_StaminaMax;
+	UPROPERTY(BlueprintReadOnly) FGameplayAttributeData Equip_ManaMax;
+
+	UPROPERTY(BlueprintReadOnly) FGameplayAttributeData Equip_AttackPower;
+	UPROPERTY(BlueprintReadOnly) FGameplayAttributeData Equip_MagicPower;
+
+	UPROPERTY(BlueprintReadOnly) FGameplayAttributeData Equip_PhysicalDefense;
+	UPROPERTY(BlueprintReadOnly) FGameplayAttributeData Equip_MagicDefense;
+	UPROPERTY(BlueprintReadOnly) FGameplayAttributeData Equip_PhysicalResist;
+	UPROPERTY(BlueprintReadOnly) FGameplayAttributeData Equip_MagicResist;
+
+	
 
 	// Combat Attributes
 	// Damage Taken은 복제되면 안됨. 서버에서만 관리
@@ -172,7 +219,7 @@ public:
 	UFUNCTION()
 	void OnRep_PhysicalResist(const FGameplayAttributeData& OldPhysicalResist) const;
 	UFUNCTION()
-	void OnRep_FireResist(const FGameplayAttributeData& OldFireResist) const;
+	void OnRep_MagicResist(const FGameplayAttributeData& OldMagicResist) const;
 	UFUNCTION()
 	void OnRep_DamageTaken(const FGameplayAttributeData& OldDamageTaken) const;
 

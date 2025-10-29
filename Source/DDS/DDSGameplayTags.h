@@ -62,7 +62,7 @@ namespace DDSGameplayTags
 	DDS_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Attribute_Defense_MagicDefense)
 
 	DDS_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Attribute_Defense_PhysicalResist)
-	DDS_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Attribute_Defense_FireResist)
+	DDS_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Attribute_Defense_MagicResist)
 	
 	
 	/** Player Tags */
