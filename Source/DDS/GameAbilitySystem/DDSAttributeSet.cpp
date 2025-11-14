@@ -36,6 +36,10 @@ UDDSAttributeSet::UDDSAttributeSet()
     InitMana(100.0f);
     InitManaMax(100.0f);
     
+    InitStrengthAR(1.0f);
+    InitDexterityAR(1.0f);
+    InitMagicAR(1.0f);
+    
     InitAttackPower(10.0f);
     InitMagicPower(10.0f);
     
@@ -66,7 +70,10 @@ UDDSAttributeSet::UDDSAttributeSet()
     TagToAttributeMap.Add(Attribute_Status_StaminaMax, GetStaminaMaxAttribute);
     TagToAttributeMap.Add(Attribute_Status_ManaMax, GetManaMaxAttribute);
     
-    TagToAttributeMap.Add(Attribute_Offense_AttackPower, GetAttackPowerAttribute);
+    TagToAttributeMap.Add(Attribute_Offense_StrengthAR, GetStrengthARAttribute);
+    TagToAttributeMap.Add(Attribute_Offense_DexterityAR, GetDexterityARAttribute);
+    TagToAttributeMap.Add(Attribute_Offense_MagicAR, GetMagicARAttribute);
+    TagToAttributeMap.Add(Attribute_Offense_PhysicalPower, GetAttackPowerAttribute);
     TagToAttributeMap.Add(Attribute_Offense_MagicPower, GetMagicPowerAttribute);
     
     TagToAttributeMap.Add(Attribute_Defense_PhysicalDefense, GetPhysicalDefenseAttribute);
@@ -96,6 +103,10 @@ void UDDSAttributeSet::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& Out
     DOREPLIFETIME_CONDITION_NOTIFY(UDDSAttributeSet, HealthMax, COND_None, REPNOTIFY_Always);
     DOREPLIFETIME_CONDITION_NOTIFY(UDDSAttributeSet, StaminaMax, COND_None, REPNOTIFY_Always);
     DOREPLIFETIME_CONDITION_NOTIFY(UDDSAttributeSet, ManaMax, COND_None, REPNOTIFY_Always);
+    
+    DOREPLIFETIME_CONDITION_NOTIFY(UDDSAttributeSet, StrengthAR, COND_None, REPNOTIFY_Always);
+    DOREPLIFETIME_CONDITION_NOTIFY(UDDSAttributeSet, DexterityAR, COND_None, REPNOTIFY_Always);
+    DOREPLIFETIME_CONDITION_NOTIFY(UDDSAttributeSet, MagicAR, COND_None, REPNOTIFY_Always);
     
     DOREPLIFETIME_CONDITION_NOTIFY(UDDSAttributeSet, AttackPower, COND_None, REPNOTIFY_Always);
     DOREPLIFETIME_CONDITION_NOTIFY(UDDSAttributeSet, MagicPower, COND_None, REPNOTIFY_Always);
@@ -341,8 +352,56 @@ void UDDSAttributeSet::OnRep_MagicResist(const FGameplayAttributeData& OldMagicR
 	GAMEPLAYATTRIBUTE_REPNOTIFY(UDDSAttributeSet, MagicResist, OldMagicResist);
 }
 
+void UDDSAttributeSet::OnRep_StrengthAR(const FGameplayAttributeData& OldStrengthAR) const
+{
+	GAMEPLAYATTRIBUTE_REPNOTIFY(UDDSAttributeSet, StrengthAR, OldStrengthAR);
+}
+
+void UDDSAttributeSet::OnRep_DexterityAR(const FGameplayAttributeData& OldDexterityAR) const
+{
+	GAMEPLAYATTRIBUTE_REPNOTIFY(UDDSAttributeSet, DexterityAR, OldDexterityAR);
+}
+
+void UDDSAttributeSet::OnRep_MagicAR(const FGameplayAttributeData& OldMagicAR) const
+{
+	GAMEPLAYATTRIBUTE_REPNOTIFY(UDDSAttributeSet, MagicAR, OldMagicAR);
+}
+
 
 void UDDSAttributeSet::OnRep_DamageTaken(const FGameplayAttributeData& OldDamageTaken) const
 {
     GAMEPLAYATTRIBUTE_REPNOTIFY(UDDSAttributeSet, DamageTaken, OldDamageTaken);
+}
+
+void UDDSAttributeSet::PrintAllAttributes() const
+{
+	MY_LOG(LogTemp, Log, TEXT("---- Attributes of %s ----"), *GetName());
+	MY_LOG(LogTemp, Log, TEXT("Level: %f"), GetLevel());
+	MY_LOG(LogTemp, Log, TEXT("Energy: %f"), GetEnergy());
+	MY_LOG(LogTemp, Log, TEXT("RequireEnergy: %f"), GetRequireEnergy());
+	MY_LOG(LogTemp, Log, TEXT("Soul: %f"), GetSoul());
+	
+	MY_LOG(LogTemp, Log, TEXT("Vitality: %f"), GetVitality());
+	MY_LOG(LogTemp, Log, TEXT("Endurance: %f"), GetEndurance());
+	MY_LOG(LogTemp, Log, TEXT("Strength: %f"), GetStrength());
+	MY_LOG(LogTemp, Log, TEXT("Dexterity: %f"), GetDexterity());
+	MY_LOG(LogTemp, Log, TEXT("Magic: %f"), GetMagic());
+	
+	MY_LOG(LogTemp, Log, TEXT("Health: %f / %f"), GetHealth(), GetHealthMax());
+	MY_LOG(LogTemp, Log, TEXT("Stamina: %f / %f"), GetStamina(), GetStaminaMax());
+	MY_LOG(LogTemp, Log, TEXT("Mana: %f / %f"), GetMana(), GetManaMax());
+	
+	MY_LOG(LogTemp, Log, TEXT("StrengthAR: %f"), GetStrengthAR());
+	MY_LOG(LogTemp, Log, TEXT("DexterityAR: %f"), GetDexterityAR());
+	MY_LOG(LogTemp, Log, TEXT("MagicAR: %f"), GetMagicAR());
+	
+	MY_LOG(LogTemp, Log, TEXT("AttackPower: %f"), GetAttackPower());
+	MY_LOG(LogTemp, Log, TEXT("MagicPower: %f"), GetMagicPower());
+	
+	MY_LOG(LogTemp, Log, TEXT("PhysicalDefense: %f"), GetPhysicalDefense());
+	MY_LOG(LogTemp, Log, TEXT("MagicDefense: %f"), GetMagicDefense());
+	MY_LOG(LogTemp, Log, TEXT("PhysicalResist: %f"), GetPhysicalResist());
+	MY_LOG(LogTemp, Log, TEXT("MagicResist: %f"), GetMagicResist());
+	
+	MY_LOG(LogTemp, Log, TEXT("DamageTaken: %f"), GetDamageTaken());
 }

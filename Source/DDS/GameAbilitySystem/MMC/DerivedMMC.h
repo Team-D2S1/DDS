@@ -8,29 +8,29 @@
 
 // Status Attributes MMC
 UCLASS()
-class UMMC_HealthMax : public UGameplayModMagnitudeCalculation
+class UMMC_MaxHealth : public UGameplayModMagnitudeCalculation
 {
 	GENERATED_BODY()
 public:
-	UMMC_HealthMax();
+	UMMC_MaxHealth();
 	virtual float CalculateBaseMagnitude_Implementation(const FGameplayEffectSpec& Spec) const override;
 };
 
 UCLASS()
-class UMMC_StaminaMax : public UGameplayModMagnitudeCalculation
+class UMMC_MaxStamina : public UGameplayModMagnitudeCalculation
 {
 	GENERATED_BODY()
 public:
-	UMMC_StaminaMax();
+	UMMC_MaxStamina();
 	virtual float CalculateBaseMagnitude_Implementation(const FGameplayEffectSpec& Spec) const override;
 };
 
 UCLASS()
-class UMMC_ManaMax : public UGameplayModMagnitudeCalculation
+class UMMC_MaxMana : public UGameplayModMagnitudeCalculation
 {
 	GENERATED_BODY()
 public:
-	UMMC_ManaMax();
+	UMMC_MaxMana();
 	virtual float CalculateBaseMagnitude_Implementation(const FGameplayEffectSpec& Spec) const override;
 };
 
@@ -89,4 +89,3 @@ public:
 	UMMC_MagicResist();
 	virtual float CalculateBaseMagnitude_Implementation(const FGameplayEffectSpec& Spec) const override;
 };
-

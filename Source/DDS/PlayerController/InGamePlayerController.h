@@ -61,7 +61,10 @@ protected:
 	//
 	// UFUNCTION(BlueprintCallable)
 	// void Input_Dash();
-	
+
+
+	UFUNCTION(BlueprintCallable)
+	void Input_Debug_PrintAttributes();
 public:
 	// UPROPERTY()
 	// TObjectPtr<UCombatComponent> CombatComponent;

@@ -118,6 +118,19 @@ public:
 
 	// Offense Attributes
 
+	// (공격력, 2차) StrAR
+	UPROPERTY(ReplicatedUsing= OnRep_StrengthAR, BlueprintReadOnly, Category = "Offense Attributes")
+	FGameplayAttributeData StrengthAR;
+	ATTRIBUTE_ACCESSORS(UDDSAttributeSet, StrengthAR);
+	// (공격력, 2차) DexAR
+	UPROPERTY(ReplicatedUsing= OnRep_DexterityAR, BlueprintReadOnly, Category = "Offense Attributes")
+	FGameplayAttributeData DexterityAR;
+	ATTRIBUTE_ACCESSORS(UDDSAttributeSet, DexterityAR);
+	// (공격력, 2차) MagicAR
+	UPROPERTY(ReplicatedUsing= OnRep_MagicAR, BlueprintReadOnly, Category = "Offense Attributes")
+	FGameplayAttributeData MagicAR;
+	ATTRIBUTE_ACCESSORS(UDDSAttributeSet, MagicAR);
+
 	// (공격력, 2차) 물리 공격력
 	UPROPERTY(ReplicatedUsing= OnRep_AttackPower, BlueprintReadOnly, Category = "Offense Attributes")
 	FGameplayAttributeData AttackPower;
@@ -222,7 +235,18 @@ public:
 	void OnRep_MagicResist(const FGameplayAttributeData& OldMagicResist) const;
 	UFUNCTION()
 	void OnRep_DamageTaken(const FGameplayAttributeData& OldDamageTaken) const;
+	UFUNCTION()
+	void OnRep_StrengthAR(const FGameplayAttributeData& OldStrengthAR) const;
+	UFUNCTION()
+	void OnRep_DexterityAR(const FGameplayAttributeData& OldDexterityAR) const;
+	UFUNCTION()
+	void OnRep_MagicAR(const FGameplayAttributeData& OldMagicAR) const;
 
+
+	// 디버깅용
+	UFUNCTION(BlueprintCallable, Category = "DDS|Attributes")
+	void PrintAllAttributes() const;
+	
 protected:
 	// UPawnUIComponent* GetPawnUIComponent() const;
 private:

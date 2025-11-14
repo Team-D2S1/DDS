@@ -13,6 +13,7 @@
 #include "DDS/DDSGameplayTags.h"
 #include "DDS/Components/Input/DDSInputComponent.h"
 #include "GameAbilitySystem/DDSAbilitySystemComponent.h"
+#include "GameAbilitySystem/DDSAttributeSet.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "Interfaces/Focusable.h"
@@ -66,6 +67,9 @@ void AInGamePlayerController::SetupInputComponent()
  	DDSInputComponent->BindUIActions(InputConfigDataAsset, this, &ThisClass::Input_UIInputPressed, &ThisClass::Input_UIInputReleased);
 	DDSInputComponent->BindAbilityInputActions(InputConfigDataAsset,this, &ThisClass::Input_AbilityInputPressed, &ThisClass::Input_AbilityInputReleased);
 
+
+	DDSInputComponent->BindNativeAction(InputConfigDataAsset, DDSGameplayTags::InputTag_Debug_PrintAttributes, ETriggerEvent::Started, this, &ThisClass::Input_Debug_PrintAttributes);
+	
 	MY_LOG(LogTemp, Log, TEXT("Setup Input Complete"));
 }
 
@@ -251,6 +255,26 @@ void AInGamePlayerController::Input_AbilityInputReleased(FGameplayTag InputTag)
 	{
 		// MY_LOG(LogTemp, Log, TEXT("Ability Input Released %s"), *InputTag.ToString());
 		ASC->AbilityInputTagReleased(InputTag);
+	}
+	else
+	{
+		MY_LOG(LogTemp, Warning, TEXT("DDSAbilitySystemComponent is nullptr"));
+	}
+}
+
+void AInGamePlayerController::Input_Debug_PrintAttributes()
+{
+	if (UDDSAbilitySystemComponent * ASC = GetDDSAbilitySystemComponent())
+	{
+		const UDDSAttributeSet* AttributeSet = ASC->GetSet<UDDSAttributeSet>();
+		if (AttributeSet)
+		{
+			AttributeSet->PrintAllAttributes();
+		}
+		else
+		{
+			MY_LOG(LogTemp, Warning, TEXT("AttributeSet is nullptr"));
+		}
 	}
 	else
 	{

@@ -16,6 +16,10 @@ struct FDDSAttributeCapture
 	DECLARE_ATTRIBUTE_CAPTUREDEF(HealthMax);
 	DECLARE_ATTRIBUTE_CAPTUREDEF(StaminaMax);
 	DECLARE_ATTRIBUTE_CAPTUREDEF(ManaMax);
+	
+	DECLARE_ATTRIBUTE_CAPTUREDEF(StrengthAR);
+	DECLARE_ATTRIBUTE_CAPTUREDEF(DexterityAR);
+	DECLARE_ATTRIBUTE_CAPTUREDEF(MagicAR);
 
 	DECLARE_ATTRIBUTE_CAPTUREDEF(AttackPower);
 	DECLARE_ATTRIBUTE_CAPTUREDEF(MagicPower);
@@ -45,6 +49,10 @@ struct FDDSAttributeCapture
 		DEFINE_ATTRIBUTE_CAPTUREDEF(UDDSAttributeSet, HealthMax, Target, false);
 		DEFINE_ATTRIBUTE_CAPTUREDEF(UDDSAttributeSet, StaminaMax, Target, false);
 		DEFINE_ATTRIBUTE_CAPTUREDEF(UDDSAttributeSet, ManaMax, Target, false);
+		
+		DEFINE_ATTRIBUTE_CAPTUREDEF(UDDSAttributeSet, StrengthAR, Target, false);
+		DEFINE_ATTRIBUTE_CAPTUREDEF(UDDSAttributeSet, DexterityAR, Target, false);
+		DEFINE_ATTRIBUTE_CAPTUREDEF(UDDSAttributeSet, MagicAR, Target, false);
 
 		DEFINE_ATTRIBUTE_CAPTUREDEF(UDDSAttributeSet, AttackPower, Target, false);
 		DEFINE_ATTRIBUTE_CAPTUREDEF(UDDSAttributeSet, MagicPower, Target, false);
@@ -75,14 +83,14 @@ static const FDDSAttributeCapture& GetDDSAttributeCapture()
 
 // ===== Status Attributes MMC =====
 
-UMMC_HealthMax::UMMC_HealthMax()
+UMMC_MaxHealth::UMMC_MaxHealth()
 {
 	RelevantAttributesToCapture.Add(GetDDSAttributeCapture().VitalityDef);
 	RelevantAttributesToCapture.Add(GetDDSAttributeCapture().HealthMaxDef);
 	RelevantAttributesToCapture.Add(GetDDSAttributeCapture().Equip_HealthMaxDef);
 }
 
-float UMMC_HealthMax::CalculateBaseMagnitude_Implementation(const FGameplayEffectSpec& Spec) const
+float UMMC_MaxHealth::CalculateBaseMagnitude_Implementation(const FGameplayEffectSpec& Spec) const
 {
 	FAggregatorEvaluateParameters EvaluationParameters;
 	EvaluationParameters.SourceTags = Spec.CapturedSourceTags.GetAggregatedTags();
@@ -102,14 +110,14 @@ float UMMC_HealthMax::CalculateBaseMagnitude_Implementation(const FGameplayEffec
 	return CalculatedHealthMax;
 }
 
-UMMC_StaminaMax::UMMC_StaminaMax()
+UMMC_MaxStamina::UMMC_MaxStamina()
 {
 	RelevantAttributesToCapture.Add(GetDDSAttributeCapture().EnduranceDef);
 	RelevantAttributesToCapture.Add(GetDDSAttributeCapture().StaminaMaxDef);
 	RelevantAttributesToCapture.Add(GetDDSAttributeCapture().Equip_StaminaMaxDef);
 }
 
-float UMMC_StaminaMax::CalculateBaseMagnitude_Implementation(const FGameplayEffectSpec& Spec) const
+float UMMC_MaxStamina::CalculateBaseMagnitude_Implementation(const FGameplayEffectSpec& Spec) const
 {
 	FAggregatorEvaluateParameters EvaluationParameters;
 	EvaluationParameters.SourceTags = Spec.CapturedSourceTags.GetAggregatedTags();
@@ -124,19 +132,20 @@ float UMMC_StaminaMax::CalculateBaseMagnitude_Implementation(const FGameplayEffe
 	GetCapturedAttributeMagnitude(GetDDSAttributeCapture().StaminaMaxDef, Spec, EvaluationParameters, StaminaMax);
 	
 	// 공식: 스태미나 = 100 + (Endurance * 5) + EquipStaminaMax
+	// 지구력: 스태미나, 장비중량(장비 스태미나 보너스)
 	float CalculatedStaminaMax = 100.f + (Endurance * 5.f) + EquipStaminaMax;
 
 	return CalculatedStaminaMax;
 }
 
-UMMC_ManaMax::UMMC_ManaMax()
+UMMC_MaxMana::UMMC_MaxMana()
 {
 	RelevantAttributesToCapture.Add(GetDDSAttributeCapture().MagicDef);
 	RelevantAttributesToCapture.Add(GetDDSAttributeCapture().ManaMaxDef);
 	RelevantAttributesToCapture.Add(GetDDSAttributeCapture().Equip_ManaMaxDef);
 }
 
-float UMMC_ManaMax::CalculateBaseMagnitude_Implementation(const FGameplayEffectSpec& Spec) const
+float UMMC_MaxMana::CalculateBaseMagnitude_Implementation(const FGameplayEffectSpec& Spec) const
 {
 	FAggregatorEvaluateParameters EvaluationParameters;
 	EvaluationParameters.SourceTags = Spec.CapturedSourceTags.GetAggregatedTags();
@@ -162,6 +171,8 @@ UMMC_AttackPower::UMMC_AttackPower()
 {
 	RelevantAttributesToCapture.Add(GetDDSAttributeCapture().StrengthDef);
 	RelevantAttributesToCapture.Add(GetDDSAttributeCapture().DexterityDef);
+	RelevantAttributesToCapture.Add(GetDDSAttributeCapture().StrengthARDef);
+	RelevantAttributesToCapture.Add(GetDDSAttributeCapture().DexterityARDef);
 	RelevantAttributesToCapture.Add(GetDDSAttributeCapture().AttackPowerDef);
 	RelevantAttributesToCapture.Add(GetDDSAttributeCapture().Equip_AttackPowerDef);
 }
@@ -174,16 +185,22 @@ float UMMC_AttackPower::CalculateBaseMagnitude_Implementation(const FGameplayEff
 	
 	float Strength = 0.f;
 	float Dexterity = 0.f;
+	float StrengthAR = 0.f;
+	float DexterityAR = 0.f;
 	float EquipAttackPower = 0.f;
 	float AttackPower = 0.f;
 
 	GetCapturedAttributeMagnitude(GetDDSAttributeCapture().StrengthDef, Spec, EvaluationParameters, Strength);
 	GetCapturedAttributeMagnitude(GetDDSAttributeCapture().DexterityDef, Spec, EvaluationParameters, Dexterity);
+	GetCapturedAttributeMagnitude(GetDDSAttributeCapture().StrengthARDef, Spec, EvaluationParameters, StrengthAR);
+	GetCapturedAttributeMagnitude(GetDDSAttributeCapture().DexterityARDef, Spec, EvaluationParameters, DexterityAR);
 	GetCapturedAttributeMagnitude(GetDDSAttributeCapture().Equip_AttackPowerDef, Spec, EvaluationParameters, EquipAttackPower);
 	GetCapturedAttributeMagnitude(GetDDSAttributeCapture().AttackPowerDef, Spec, EvaluationParameters, AttackPower);
 	
-	// 공식: 물리 공격력 = (Strength * 2) + (Dexterity * 1.5) + EquipAttackPower
-	float CalculatedAttackPower = (Strength * 2.f) + (Dexterity * 1.5f) + EquipAttackPower;
+	// 공식: 물리 공격력 = (Strength * StrengthAR) + (Dexterity * DexterityAR) + EquipAttackPower
+	// 근력: 물리 공격력, 물리 방어력
+	// 기량: 물리 공격력
+	float CalculatedAttackPower = (Strength * StrengthAR) + (Dexterity * DexterityAR) + EquipAttackPower;
 
 	return CalculatedAttackPower;
 }
@@ -191,6 +208,7 @@ float UMMC_AttackPower::CalculateBaseMagnitude_Implementation(const FGameplayEff
 UMMC_MagicPower::UMMC_MagicPower()
 {
 	RelevantAttributesToCapture.Add(GetDDSAttributeCapture().MagicDef);
+	RelevantAttributesToCapture.Add(GetDDSAttributeCapture().MagicARDef);
 	RelevantAttributesToCapture.Add(GetDDSAttributeCapture().MagicPowerDef);
 	RelevantAttributesToCapture.Add(GetDDSAttributeCapture().Equip_MagicPowerDef);
 }
@@ -202,15 +220,18 @@ float UMMC_MagicPower::CalculateBaseMagnitude_Implementation(const FGameplayEffe
 	EvaluationParameters.TargetTags = Spec.CapturedTargetTags.GetAggregatedTags();
 	
 	float Magic = 0.f;
+	float MagicAR = 0.f;
 	float EquipMagicPower = 0.f;
 	float MagicPower = 0.f;
 
 	GetCapturedAttributeMagnitude(GetDDSAttributeCapture().MagicDef, Spec, EvaluationParameters, Magic);
+	GetCapturedAttributeMagnitude(GetDDSAttributeCapture().MagicARDef, Spec, EvaluationParameters, MagicAR);
 	GetCapturedAttributeMagnitude(GetDDSAttributeCapture().Equip_MagicPowerDef, Spec, EvaluationParameters, EquipMagicPower);
 	GetCapturedAttributeMagnitude(GetDDSAttributeCapture().MagicPowerDef, Spec, EvaluationParameters, MagicPower);
 	
-	// 공식: 마법 공격력 = (Magic * 3) + EquipMagicPower
-	float CalculatedMagicPower = (Magic * 3.f) + EquipMagicPower;
+	// 공식: 마법 공격력 = (Magic * MagicAR) + EquipMagicPower
+	// 지성: 마법 공격력, 마법 방어력
+	float CalculatedMagicPower = (Magic * MagicAR) + EquipMagicPower;
 
 	return CalculatedMagicPower;
 }
@@ -220,6 +241,7 @@ float UMMC_MagicPower::CalculateBaseMagnitude_Implementation(const FGameplayEffe
 UMMC_PhysicalDefense::UMMC_PhysicalDefense()
 {
 	RelevantAttributesToCapture.Add(GetDDSAttributeCapture().StrengthDef);
+	RelevantAttributesToCapture.Add(GetDDSAttributeCapture().StrengthARDef);
 	RelevantAttributesToCapture.Add(GetDDSAttributeCapture().PhysicalDefenseDef);
 	RelevantAttributesToCapture.Add(GetDDSAttributeCapture().Equip_PhysicalDefenseDef);
 }
@@ -231,15 +253,18 @@ float UMMC_PhysicalDefense::CalculateBaseMagnitude_Implementation(const FGamepla
 	EvaluationParameters.TargetTags = Spec.CapturedTargetTags.GetAggregatedTags();
 	
 	float Strength = 0.f;
+	float StrengthAR = 0.f;
 	float EquipPhysicalDefense = 0.f;
 	float PhysicalDefense = 0.f;
 
 	GetCapturedAttributeMagnitude(GetDDSAttributeCapture().StrengthDef, Spec, EvaluationParameters, Strength);
+	GetCapturedAttributeMagnitude(GetDDSAttributeCapture().StrengthARDef, Spec, EvaluationParameters, StrengthAR);
 	GetCapturedAttributeMagnitude(GetDDSAttributeCapture().Equip_PhysicalDefenseDef, Spec, EvaluationParameters, EquipPhysicalDefense);
 	GetCapturedAttributeMagnitude(GetDDSAttributeCapture().PhysicalDefenseDef, Spec, EvaluationParameters, PhysicalDefense);
 	
-	// 공식: 물리 방어력 = (Strength * 1.5) + EquipPhysicalDefense
-	float CalculatedPhysicalDefense = (Strength * 1.5f) + EquipPhysicalDefense;
+	// 공식: 물리 방어력 = (Strength * StrengthAR * 0.5) + EquipPhysicalDefense
+	// 근력: 물리 공격력, 물리 방어력
+	float CalculatedPhysicalDefense = (Strength * StrengthAR * 0.5f) + EquipPhysicalDefense;
 
 	return CalculatedPhysicalDefense;
 }
@@ -247,6 +272,7 @@ float UMMC_PhysicalDefense::CalculateBaseMagnitude_Implementation(const FGamepla
 UMMC_MagicDefense::UMMC_MagicDefense()
 {
 	RelevantAttributesToCapture.Add(GetDDSAttributeCapture().MagicDef);
+	RelevantAttributesToCapture.Add(GetDDSAttributeCapture().MagicARDef);
 	RelevantAttributesToCapture.Add(GetDDSAttributeCapture().MagicDefenseDef);
 	RelevantAttributesToCapture.Add(GetDDSAttributeCapture().Equip_MagicDefenseDef);
 }
@@ -258,15 +284,18 @@ float UMMC_MagicDefense::CalculateBaseMagnitude_Implementation(const FGameplayEf
 	EvaluationParameters.TargetTags = Spec.CapturedTargetTags.GetAggregatedTags();
 	
 	float Magic = 0.f;
+	float MagicAR = 0.f;
 	float EquipMagicDefense = 0.f;
 	float MagicDefense = 0.f;
 
 	GetCapturedAttributeMagnitude(GetDDSAttributeCapture().MagicDef, Spec, EvaluationParameters, Magic);
+	GetCapturedAttributeMagnitude(GetDDSAttributeCapture().MagicARDef, Spec, EvaluationParameters, MagicAR);
 	GetCapturedAttributeMagnitude(GetDDSAttributeCapture().Equip_MagicDefenseDef, Spec, EvaluationParameters, EquipMagicDefense);
 	GetCapturedAttributeMagnitude(GetDDSAttributeCapture().MagicDefenseDef, Spec, EvaluationParameters, MagicDefense);
 	
-	// 공식: 마법 방어력 = (Magic * 1.5) + EquipMagicDefense
-	float CalculatedMagicDefense = (Magic * 1.5f) + EquipMagicDefense;
+	// 공식: 마법 방어력 = (Magic * MagicAR * 0.5) + EquipMagicDefense
+	// 지성: 마법 공격력, 마법 방어력
+	float CalculatedMagicDefense = (Magic * MagicAR * 0.5f) + EquipMagicDefense;
 
 	return CalculatedMagicDefense;
 }
