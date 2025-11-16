@@ -9,7 +9,7 @@ UGE_PlayerStats_Naive::UGE_PlayerStats_Naive()
     // Status Attributes - MMC 사용
     FGameplayModifierInfo HealthMaxModifier;
     FCustomCalculationBasedFloat HealthMaxMagnitude;
-    HealthMaxMagnitude.CalculationClassMagnitude = UMMC_HealthMax::StaticClass();
+    HealthMaxMagnitude.CalculationClassMagnitude = UMMC_MaxHealth::StaticClass();
     HealthMaxModifier.ModifierMagnitude = HealthMaxMagnitude;
     HealthMaxModifier.ModifierOp = EGameplayModOp::Override;
     HealthMaxModifier.Attribute = UDDSAttributeSet::GetHealthMaxAttribute();
@@ -17,7 +17,7 @@ UGE_PlayerStats_Naive::UGE_PlayerStats_Naive()
 
     FGameplayModifierInfo StaminaMaxModifier;
     FCustomCalculationBasedFloat StaminaMaxMagnitude;
-    StaminaMaxMagnitude.CalculationClassMagnitude = UMMC_StaminaMax::StaticClass();
+    StaminaMaxMagnitude.CalculationClassMagnitude = UMMC_MaxStamina::StaticClass();
     StaminaMaxModifier.ModifierMagnitude = StaminaMaxMagnitude;
     StaminaMaxModifier.ModifierOp = EGameplayModOp::Override;
     StaminaMaxModifier.Attribute = UDDSAttributeSet::GetStaminaMaxAttribute();
@@ -25,7 +25,7 @@ UGE_PlayerStats_Naive::UGE_PlayerStats_Naive()
 
     FGameplayModifierInfo ManaMaxModifier;
     FCustomCalculationBasedFloat ManaMaxMagnitude;
-    ManaMaxMagnitude.CalculationClassMagnitude = UMMC_ManaMax::StaticClass();
+    ManaMaxMagnitude.CalculationClassMagnitude = UMMC_MaxMana::StaticClass();
     ManaMaxModifier.ModifierMagnitude = ManaMaxMagnitude;
     ManaMaxModifier.ModifierOp = EGameplayModOp::Override;
     ManaMaxModifier.Attribute = UDDSAttributeSet::GetManaMaxAttribute();
