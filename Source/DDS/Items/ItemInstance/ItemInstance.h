@@ -49,19 +49,20 @@ public:
 	void SetBladeItemInstance(UItemInstance* NewBladeItemInstance);
 	UFUNCTION(BlueprintCallable)
 	void SetGripItemInstance(UItemInstance* NewGripItemInstance);
-	UFUNCTION(BlueprintCallable)
-	void SetPommelItemInstance(UItemInstance* NewPommelItemInstance);
+	// Pommel 은 더 이상 사용하지 않음
+	// UFUNCTION(BlueprintCallable)
+	// void SetPommelItemInstance(UItemInstance* NewPommelItemInstance);
 	UFUNCTION(BlueprintCallable)
 	UItemInstance* GetBladeItemInstance() const { return BladeItemInstance; }
 	UFUNCTION(BlueprintCallable)
 	UItemInstance* GetGripItemInstance() const { return GripItemInstance; }
-	UFUNCTION(BlueprintCallable)
-	UItemInstance* GetPommelItemInstance() const { return PommelItemInstance; }
+	// UFUNCTION(BlueprintCallable)
+	// UItemInstance* GetPommelItemInstance() const { return PommelItemInstance; }
 
 	UFUNCTION(BlueprintCallable)
 	bool IsValidCraftedWeapon() const
 	{
-		return BladeItemInstance != nullptr && GripItemInstance != nullptr && PommelItemInstance != nullptr;
+		return BladeItemInstance != nullptr && GripItemInstance != nullptr;// && PommelItemInstance != nullptr;
 	}
 	
 protected:
@@ -71,8 +72,8 @@ protected:
 	UItemInstance* BladeItemInstance;
 	UPROPERTY(Replicated)
 	UItemInstance* GripItemInstance;
-	UPROPERTY(Replicated)
-	UItemInstance* PommelItemInstance;
+	// UPROPERTY(Replicated)
+	// UItemInstance* PommelItemInstance;
 private:
 	UPROPERTY(Replicated,BlueprintReadOnly, EditDefaultsOnly,Category = "DDS|Item", meta = (AllowPrivateAccess = "true"))
 	TSubclassOf<UItemStaticData> ItemClass;

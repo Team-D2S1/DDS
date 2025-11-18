@@ -25,6 +25,8 @@ namespace DDSGameplayTags
 	DDS_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(InputTag_LightAttack)
 	DDS_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(InputTag_HeavyAttack)
 
+
+	DDS_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(InputTag_Debug_PrintAttributes)
 	/** UI Widget Tags */
 	DDS_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(UI_Widget_MainMenu)
 	DDS_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(UI_Widget_Equip)
@@ -55,7 +57,17 @@ namespace DDSGameplayTags
 	DDS_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Attribute_Status_StaminaMax)
 	DDS_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Attribute_Status_ManaMax)
 
-	DDS_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Attribute_Offense_AttackPower)
+	DDS_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Attribute_Weapon_BaseAttack)
+	DDS_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Attribute_Weapon_BaseAttackPlus)
+
+	DDS_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Attribute_Offense_StrengthAR)
+	DDS_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Attribute_Offense_StrengthARPlus)
+	DDS_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Attribute_Offense_DexterityAR)
+	DDS_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Attribute_Offense_DexterityARPlus)
+	DDS_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Attribute_Offense_MagicAR)
+	DDS_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Attribute_Offense_MagicARPlus)
+
+	DDS_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Attribute_Offense_PhysicalPower)
 	DDS_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Attribute_Offense_MagicPower)
 
 	DDS_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Attribute_Defense_PhysicalDefense)
@@ -132,7 +144,7 @@ namespace DDSGameplayTags
 	DDS_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Item_WeaponPart)
 	DDS_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Item_WeaponPart_Blade)
 	DDS_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Item_WeaponPart_Grip)
-	DDS_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Item_WeaponPart_Pommel)
+	// DDS_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Item_WeaponPart_Pommel)
 
 
 
@@ -140,4 +152,3 @@ namespace DDSGameplayTags
 	
 	
 }
- 
