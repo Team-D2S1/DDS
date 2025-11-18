@@ -48,10 +48,11 @@ void ADDSCraftedPlayerWeapon::SetGripItemInstance(UItemInstance* NewGripItemInst
 	WeaponItemInstance->SetGripItemInstance(NewGripItemInstance);
 }
 
-void ADDSCraftedPlayerWeapon::SetPommelItemInstance(UItemInstance* NewPommelItemInstance)
-{
-	WeaponItemInstance->SetPommelItemInstance(NewPommelItemInstance);
-}
+// Pommel 은 더 이상 사용하지 않음
+// void ADDSCraftedPlayerWeapon::SetPommelItemInstance(UItemInstance* NewPommelItemInstance)
+// {
+// 	WeaponItemInstance->SetPommelItemInstance(NewPommelItemInstance);
+// }
 
 UItemInstance* ADDSCraftedPlayerWeapon::GetBladeItemInstance() const
 {
@@ -73,15 +74,15 @@ UItemInstance* ADDSCraftedPlayerWeapon::GetGripItemInstance() const
 	return nullptr;
 }
 
-UItemInstance* ADDSCraftedPlayerWeapon::GetPommelItemInstance() const
-{
-	if (WeaponItemInstance)
-	{
-		return WeaponItemInstance->GetPommelItemInstance();
-	}
-	MY_ERROR_DISPLAY_NET(HasAuthority(), TEXT("WeaponItemInstance is nullptr"));
-	return nullptr;
-}
+// UItemInstance* ADDSCraftedPlayerWeapon::GetPommelItemInstance() const
+// {
+// 	if (WeaponItemInstance)
+// 	{
+// 		return WeaponItemInstance->GetPommelItemInstance();
+// 	}
+// 	MY_ERROR_DISPLAY_NET(HasAuthority(), TEXT("WeaponItemInstance is nullptr"));
+// 	return nullptr;
+// }
 
 void ADDSCraftedPlayerWeapon::OnBladeBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
 	UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)

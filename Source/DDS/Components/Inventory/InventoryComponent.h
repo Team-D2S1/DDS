@@ -45,10 +45,9 @@ public:
 	 * @param WeaponItemClass 조합 아이템 기본 클래스 
 	 * @param BladeItemID 칼날
 	 * @param GripItemID 손잡이
-	 * @param PommelItemID 무기장식
 	 */
 	UFUNCTION(BlueprintCallable, Server, Reliable)
-	void Server_AddCraftedWeapon(TSubclassOf<UItemStaticData> WeaponItemClass,int32 BladeItemID, int32 GripItemID, int32 PommelItemID);
+	void Server_AddCraftedWeapon(TSubclassOf<UItemStaticData> WeaponItemClass,int32 BladeItemID, int32 GripItemID);
 
 	UFUNCTION(BlueprintCallable, Server, Reliable)
 	void Server_EquipCraftedWeapon(int32 ItemID);
@@ -168,7 +167,3 @@ protected:
 public:	
 
 };
-
-
-
-

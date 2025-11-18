@@ -61,8 +61,11 @@ namespace DDSGameplayTags
 	DDS_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Attribute_Weapon_BaseAttackPlus)
 
 	DDS_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Attribute_Offense_StrengthAR)
+	DDS_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Attribute_Offense_StrengthARPlus)
 	DDS_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Attribute_Offense_DexterityAR)
+	DDS_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Attribute_Offense_DexterityARPlus)
 	DDS_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Attribute_Offense_MagicAR)
+	DDS_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Attribute_Offense_MagicARPlus)
 
 	DDS_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Attribute_Offense_PhysicalPower)
 	DDS_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Attribute_Offense_MagicPower)
@@ -141,7 +144,7 @@ namespace DDSGameplayTags
 	DDS_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Item_WeaponPart)
 	DDS_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Item_WeaponPart_Blade)
 	DDS_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Item_WeaponPart_Grip)
-	DDS_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Item_WeaponPart_Pommel)
+	// DDS_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Item_WeaponPart_Pommel)
 
 
 
@@ -149,4 +152,3 @@ namespace DDSGameplayTags
 	
 	
 }
- 

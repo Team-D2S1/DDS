@@ -277,10 +277,8 @@ EPartType UDDSFunctionLibrary::GetPartTypeByTag(FGameplayTag TypeTag)
 	}else if (TypeTag.MatchesTag(DDSGameplayTags::Item_WeaponPart_Grip))
 	{
 		return EPartType::Handle;
-	}else if (TypeTag.MatchesTag(DDSGameplayTags::Item_WeaponPart_Pommel))
-	{
-		return EPartType::Pommel;
-	}else 	if (TypeTag.MatchesTag(DDSGameplayTags::Item_Weapon))
+	}
+	else 	if (TypeTag.MatchesTag(DDSGameplayTags::Item_Weapon))
 	{
 		return EPartType::Full;
 	}

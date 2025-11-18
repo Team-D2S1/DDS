@@ -58,7 +58,7 @@ bool UInventoryComponent::ReplicateSubobjects(UActorChannel* Channel, FOutBunch*
 	{
 		RepObj(RightWeapon->GetBladeItemInstance());
 		RepObj(RightWeapon->GetGripItemInstance());
-		RepObj(RightWeapon->GetPommelItemInstance());
+		// RepObj(RightWeapon->GetPommelItemInstance());
 	}
 	RepObj(Armor01);
 	RepObj(Armor02);
@@ -119,31 +119,28 @@ TArray<UItemInstance*> UInventoryComponent::GetAllItems()
 }
 
 void UInventoryComponent::Server_AddCraftedWeapon_Implementation(TSubclassOf<UItemStaticData> WeaponItemClass,
-                                                                 int32 BladeItemID, int32 GripItemID, int32 PommelItemID)
+                                                                 int32 BladeItemID, int32 GripItemID)
 {
 	if (GetOwner()->HasAuthority())
 	{
-		MY_LOG(LogTemp, Log, TEXT("Server_AddCraftedWeapon called. BladeItemID: %d, GripItemID: %d, PommelItemID: %d")	,BladeItemID, GripItemID, PommelItemID);
+		MY_LOG(LogTemp, Log, TEXT("Server_AddCraftedWeapon called. BladeItemID: %d, GripItemID: %d"), BladeItemID, GripItemID);
 		UItemInstance* WeaponItemInstance = NewObject<UItemInstance>();
 		if (WeaponItemInstance->Init(WeaponItemClass))
 		{
 			UItemInstance* BladeItemInstance = GetItemByID(BladeItemID);
 			UItemInstance* GripItemInstance = GetItemByID(GripItemID);
-			UItemInstance* PommelItemInstance = GetItemByID(PommelItemID);
-			if (!(BladeItemInstance && GripItemInstance && PommelItemInstance))
+			if (!(BladeItemInstance && GripItemInstance))
 			{
-				MY_ERROR_DISPLAY_NET(true, TEXT("One or more item instances are null. Blade: %d, Grip: %d, Pommel: %d"),
-					BladeItemID, GripItemID, PommelItemID);
+				MY_ERROR_DISPLAY_NET(true, TEXT("One or more item instances are null. Blade: %d, Grip: %d"),
+					BladeItemID, GripItemID);
 				return;
 			}
 			WeaponItemInstance->SetBladeItemInstance(BladeItemInstance);
 			WeaponItemInstance->SetGripItemInstance(GripItemInstance);
-			WeaponItemInstance->SetPommelItemInstance(PommelItemInstance);
 			AddItemInstance(WeaponItemInstance);
 			
 			RemoveItem(BladeItemID);
 			RemoveItem(GripItemID);
-			RemoveItem(PommelItemID);
 		}
 	}
 }

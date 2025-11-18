@@ -37,8 +37,11 @@ UDDSAttributeSet::UDDSAttributeSet()
     InitManaMax(100.0f);
     
     InitStrengthAR(1.0f);
+    InitStrengthARPlus(0.0f);
     InitDexterityAR(1.0f);
+    InitDexterityARPlus(0.0f);
     InitMagicAR(1.0f);
+    InitMagicARPlus(0.0f);
     
     InitAttackPower(10.0f);
     InitMagicPower(10.0f);
@@ -71,8 +74,11 @@ UDDSAttributeSet::UDDSAttributeSet()
     TagToAttributeMap.Add(Attribute_Status_ManaMax, GetManaMaxAttribute);
     
     TagToAttributeMap.Add(Attribute_Offense_StrengthAR, GetStrengthARAttribute);
+    TagToAttributeMap.Add(Attribute_Offense_StrengthARPlus, GetStrengthARPlusAttribute);
     TagToAttributeMap.Add(Attribute_Offense_DexterityAR, GetDexterityARAttribute);
+    TagToAttributeMap.Add(Attribute_Offense_DexterityARPlus, GetDexterityARPlusAttribute);
     TagToAttributeMap.Add(Attribute_Offense_MagicAR, GetMagicARAttribute);
+    TagToAttributeMap.Add(Attribute_Offense_MagicARPlus, GetMagicARPlusAttribute);
     TagToAttributeMap.Add(Attribute_Offense_PhysicalPower, GetAttackPowerAttribute);
     TagToAttributeMap.Add(Attribute_Offense_MagicPower, GetMagicPowerAttribute);
     
@@ -105,8 +111,11 @@ void UDDSAttributeSet::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& Out
     DOREPLIFETIME_CONDITION_NOTIFY(UDDSAttributeSet, ManaMax, COND_None, REPNOTIFY_Always);
     
     DOREPLIFETIME_CONDITION_NOTIFY(UDDSAttributeSet, StrengthAR, COND_None, REPNOTIFY_Always);
+    DOREPLIFETIME_CONDITION_NOTIFY(UDDSAttributeSet, StrengthARPlus, COND_None, REPNOTIFY_Always);
     DOREPLIFETIME_CONDITION_NOTIFY(UDDSAttributeSet, DexterityAR, COND_None, REPNOTIFY_Always);
+    DOREPLIFETIME_CONDITION_NOTIFY(UDDSAttributeSet, DexterityARPlus, COND_None, REPNOTIFY_Always);
     DOREPLIFETIME_CONDITION_NOTIFY(UDDSAttributeSet, MagicAR, COND_None, REPNOTIFY_Always);
+    DOREPLIFETIME_CONDITION_NOTIFY(UDDSAttributeSet, MagicARPlus, COND_None, REPNOTIFY_Always);
     
     DOREPLIFETIME_CONDITION_NOTIFY(UDDSAttributeSet, AttackPower, COND_None, REPNOTIFY_Always);
     DOREPLIFETIME_CONDITION_NOTIFY(UDDSAttributeSet, MagicPower, COND_None, REPNOTIFY_Always);
@@ -357,9 +366,19 @@ void UDDSAttributeSet::OnRep_StrengthAR(const FGameplayAttributeData& OldStrengt
 	GAMEPLAYATTRIBUTE_REPNOTIFY(UDDSAttributeSet, StrengthAR, OldStrengthAR);
 }
 
+void UDDSAttributeSet::OnRep_StrengthARPlus(const FGameplayAttributeData& OldStrengthARPlus) const
+{
+	GAMEPLAYATTRIBUTE_REPNOTIFY(UDDSAttributeSet, StrengthARPlus, OldStrengthARPlus);
+}
+
 void UDDSAttributeSet::OnRep_DexterityAR(const FGameplayAttributeData& OldDexterityAR) const
 {
 	GAMEPLAYATTRIBUTE_REPNOTIFY(UDDSAttributeSet, DexterityAR, OldDexterityAR);
+}
+
+void UDDSAttributeSet::OnRep_DexterityARPlus(const FGameplayAttributeData& OldDexterityARPlus) const
+{
+	GAMEPLAYATTRIBUTE_REPNOTIFY(UDDSAttributeSet, DexterityARPlus, OldDexterityARPlus);
 }
 
 void UDDSAttributeSet::OnRep_MagicAR(const FGameplayAttributeData& OldMagicAR) const
@@ -367,6 +386,10 @@ void UDDSAttributeSet::OnRep_MagicAR(const FGameplayAttributeData& OldMagicAR) c
 	GAMEPLAYATTRIBUTE_REPNOTIFY(UDDSAttributeSet, MagicAR, OldMagicAR);
 }
 
+void UDDSAttributeSet::OnRep_MagicARPlus(const FGameplayAttributeData& OldMagicARPlus) const
+{
+	GAMEPLAYATTRIBUTE_REPNOTIFY(UDDSAttributeSet, MagicARPlus, OldMagicARPlus);
+}
 
 void UDDSAttributeSet::OnRep_DamageTaken(const FGameplayAttributeData& OldDamageTaken) const
 {
@@ -392,8 +415,11 @@ void UDDSAttributeSet::PrintAllAttributes() const
 	MY_LOG(LogTemp, Log, TEXT("Mana: %f / %f"), GetMana(), GetManaMax());
 	
 	MY_LOG(LogTemp, Log, TEXT("StrengthAR: %f"), GetStrengthAR());
+	MY_LOG(LogTemp, Log, TEXT("StrengthARPlus: %f"), GetStrengthARPlus());
 	MY_LOG(LogTemp, Log, TEXT("DexterityAR: %f"), GetDexterityAR());
+	MY_LOG(LogTemp, Log, TEXT("DexterityARPlus: %f"), GetDexterityARPlus());
 	MY_LOG(LogTemp, Log, TEXT("MagicAR: %f"), GetMagicAR());
+	MY_LOG(LogTemp, Log, TEXT("MagicARPlus: %f"), GetMagicARPlus());
 	
 	MY_LOG(LogTemp, Log, TEXT("AttackPower: %f"), GetAttackPower());
 	MY_LOG(LogTemp, Log, TEXT("MagicPower: %f"), GetMagicPower());

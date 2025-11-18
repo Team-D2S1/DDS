@@ -122,14 +122,31 @@ public:
 	UPROPERTY(ReplicatedUsing= OnRep_StrengthAR, BlueprintReadOnly, Category = "Offense Attributes")
 	FGameplayAttributeData StrengthAR;
 	ATTRIBUTE_ACCESSORS(UDDSAttributeSet, StrengthAR);
+	
+	// (공격력, 2차) StrAR Plus (증가량)
+	UPROPERTY(ReplicatedUsing= OnRep_StrengthARPlus, BlueprintReadOnly, Category = "Offense Attributes")
+	FGameplayAttributeData StrengthARPlus;
+	ATTRIBUTE_ACCESSORS(UDDSAttributeSet, StrengthARPlus);
+	
 	// (공격력, 2차) DexAR
 	UPROPERTY(ReplicatedUsing= OnRep_DexterityAR, BlueprintReadOnly, Category = "Offense Attributes")
 	FGameplayAttributeData DexterityAR;
 	ATTRIBUTE_ACCESSORS(UDDSAttributeSet, DexterityAR);
+	
+	// (공격력, 2차) DexAR Plus (증가량)
+	UPROPERTY(ReplicatedUsing= OnRep_DexterityARPlus, BlueprintReadOnly, Category = "Offense Attributes")
+	FGameplayAttributeData DexterityARPlus;
+	ATTRIBUTE_ACCESSORS(UDDSAttributeSet, DexterityARPlus);
+	
 	// (공격력, 2차) MagicAR
 	UPROPERTY(ReplicatedUsing= OnRep_MagicAR, BlueprintReadOnly, Category = "Offense Attributes")
 	FGameplayAttributeData MagicAR;
 	ATTRIBUTE_ACCESSORS(UDDSAttributeSet, MagicAR);
+	
+	// (공격력, 2차) MagicAR Plus (증가량)
+	UPROPERTY(ReplicatedUsing= OnRep_MagicARPlus, BlueprintReadOnly, Category = "Offense Attributes")
+	FGameplayAttributeData MagicARPlus;
+	ATTRIBUTE_ACCESSORS(UDDSAttributeSet, MagicARPlus);
 
 	// (공격력, 2차) 물리 공격력
 	UPROPERTY(ReplicatedUsing= OnRep_AttackPower, BlueprintReadOnly, Category = "Offense Attributes")
@@ -238,9 +255,15 @@ public:
 	UFUNCTION()
 	void OnRep_StrengthAR(const FGameplayAttributeData& OldStrengthAR) const;
 	UFUNCTION()
+	void OnRep_StrengthARPlus(const FGameplayAttributeData& OldStrengthARPlus) const;
+	UFUNCTION()
 	void OnRep_DexterityAR(const FGameplayAttributeData& OldDexterityAR) const;
 	UFUNCTION()
+	void OnRep_DexterityARPlus(const FGameplayAttributeData& OldDexterityARPlus) const;
+	UFUNCTION()
 	void OnRep_MagicAR(const FGameplayAttributeData& OldMagicAR) const;
+	UFUNCTION()
+	void OnRep_MagicARPlus(const FGameplayAttributeData& OldMagicARPlus) const;
 
 
 	// 디버깅용

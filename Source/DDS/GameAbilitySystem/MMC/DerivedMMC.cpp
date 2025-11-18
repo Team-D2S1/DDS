@@ -196,6 +196,13 @@ float UMMC_AttackPower::CalculateBaseMagnitude_Implementation(const FGameplayEff
 	GetCapturedAttributeMagnitude(GetDDSAttributeCapture().DexterityARDef, Spec, EvaluationParameters, DexterityAR);
 	GetCapturedAttributeMagnitude(GetDDSAttributeCapture().Equip_AttackPowerDef, Spec, EvaluationParameters, EquipAttackPower);
 	GetCapturedAttributeMagnitude(GetDDSAttributeCapture().AttackPowerDef, Spec, EvaluationParameters, AttackPower);
+
+
+	/*
+	 * ATK=BaseATK*[1+{(ASR1+X)*AR1+{(ASR2+X)*AR2}]*(1+A)+Add 
+	 * ASR2, AR2는 같은 속성에 두개의 스탯이 보정될때 추가
+	 *
+	 */
 	
 	// 공식: 물리 공격력 = (Strength * StrengthAR) + (Dexterity * DexterityAR) + EquipAttackPower
 	// 근력: 물리 공격력, 물리 방어력

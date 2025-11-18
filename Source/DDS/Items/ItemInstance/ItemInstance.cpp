@@ -45,9 +45,8 @@ void UItemInstance::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLif
 
 	DOREPLIFETIME(UItemInstance, BladeItemInstance);
 	DOREPLIFETIME(UItemInstance, GripItemInstance);
-	DOREPLIFETIME(UItemInstance, PommelItemInstance);
+	// DOREPLIFETIME(UItemInstance, PommelItemInstance);
 }
-
 
 UPaperSprite* UItemInstance::GetItemIcon() const
 {
@@ -69,17 +68,19 @@ FString UItemInstance::GetItemName() const
 	{
 		FString BladeName = BladeItemInstance ? BladeItemInstance->GetItemName() : FString();
 		FString GripName = GripItemInstance ? GripItemInstance->GetItemName() : FString();
-		FString PommelName = PommelItemInstance ? PommelItemInstance->GetItemName() : FString();
-		if (BladeName.IsEmpty() && GripName.IsEmpty() && PommelName.IsEmpty())
+		// FString PommelName = PommelItemInstance ? PommelItemInstance->GetItemName() : FString();
+		// if (BladeName.IsEmpty() && GripName.IsEmpty() && PommelName.IsEmpty())
+		if (BladeName.IsEmpty() && GripName.IsEmpty())
 		{
 			return ItemName; // 기본 아이템 이름 반환
 		}
-		if (PommelName.IsEmpty())
-		{
-			FString FullName = FString::Printf(TEXT("장식되지 않은 %s %s"), *BladeName, *GripName);
-			return FullName;
-		}
-		FString FullName = FString::Printf(TEXT("%s으로 장식된 %s %s"), *PommelName, *BladeName, *GripName);
+		// if (PommelName.IsEmpty())
+		// {
+		// 	FString FullName = FString::Printf(TEXT("장식되지 않은 %s %s"), *BladeName, *GripName);
+		// 	return FullName;
+		// }
+		// FString FullName = FString::Printf(TEXT("%s으로 장식된 %s %s"), *PommelName, *BladeName, *GripName);
+		FString FullName = FString::Printf(TEXT("%s %s"), *BladeName, *GripName);
 		return FullName;
 	}
 	else
@@ -111,7 +112,8 @@ void UItemInstance::SetGripItemInstance(UItemInstance* NewGripItemInstance)
 	GripItemInstance = NewGripItemInstance;
 }
 
-void UItemInstance::SetPommelItemInstance(UItemInstance* NewPommelItemInstance)
-{
- 	PommelItemInstance = NewPommelItemInstance;
-}
+// void UItemInstance::SetPommelItemInstance(UItemInstance* NewPommelItemInstance)
+// {
+// 	// Pommel 은 더 이상 사용하지 않음
+// 	// PommelItemInstance = NewPommelItemInstance;
+// }
