@@ -118,6 +118,11 @@ public:
 
 	// Offense Attributes
 
+	// (공격력, 무기) BaseAttack
+	UPROPERTY(ReplicatedUsing= OnRep_BaseAttack, BlueprintReadOnly, Category = "Offense Attributes")
+	FGameplayAttributeData BaseAttack;
+	ATTRIBUTE_ACCESSORS(UDDSAttributeSet, BaseAttack);
+
 	// (공격력, 2차) StrAR
 	UPROPERTY(ReplicatedUsing= OnRep_StrengthAR, BlueprintReadOnly, Category = "Offense Attributes")
 	FGameplayAttributeData StrengthAR;
@@ -147,6 +152,21 @@ public:
 	UPROPERTY(ReplicatedUsing= OnRep_MagicARPlus, BlueprintReadOnly, Category = "Offense Attributes")
 	FGameplayAttributeData MagicARPlus;
 	ATTRIBUTE_ACCESSORS(UDDSAttributeSet, MagicARPlus);
+
+	// (공격력, 2차) 물리 ASR (Physical Attack Skill Ratio)
+	UPROPERTY(ReplicatedUsing= OnRep_PhysicalASR, BlueprintReadOnly, Category = "Offense Attributes")
+	FGameplayAttributeData PhysicalASR;
+	ATTRIBUTE_ACCESSORS(UDDSAttributeSet, PhysicalASR);
+	
+	// (공격력, 2차) 기량 ASR (Dexterity Attack Skill Ratio)
+	UPROPERTY(ReplicatedUsing= OnRep_DexterityASR, BlueprintReadOnly, Category = "Offense Attributes")
+	FGameplayAttributeData DexterityASR;
+	ATTRIBUTE_ACCESSORS(UDDSAttributeSet, DexterityASR);
+	
+	// (공격력, 2차) 마법 ASR (Magic Attack Skill Ratio)
+	UPROPERTY(ReplicatedUsing= OnRep_MagicASR, BlueprintReadOnly, Category = "Offense Attributes")
+	FGameplayAttributeData MagicASR;
+	ATTRIBUTE_ACCESSORS(UDDSAttributeSet, MagicASR);
 
 	// (공격력, 2차) 물리 공격력
 	UPROPERTY(ReplicatedUsing= OnRep_AttackPower, BlueprintReadOnly, Category = "Offense Attributes")
@@ -204,7 +224,15 @@ public:
 	UPROPERTY(BlueprintReadOnly, Category = "Combat Attributes")
 	FGameplayAttributeData DamageTaken;
 	ATTRIBUTE_ACCESSORS(UDDSAttributeSet, DamageTaken);
+
+	// Weapon Attributes
+	// 무기 장착으로 인한 스탯 (무기별 스태미나 소모량 등)
 	
+	// 공격 시 필요한 스태미나
+	UPROPERTY(ReplicatedUsing=OnRep_AttackRequireStamina, BlueprintReadOnly, Category = "Weapon Attributes")
+	FGameplayAttributeData AttackRequireStamina;
+	ATTRIBUTE_ACCESSORS(UDDSAttributeSet, AttackRequireStamina);
+
 
 
 	// OnRep Functions
@@ -239,6 +267,8 @@ public:
 	UFUNCTION()
 	void OnRep_ManaMax(const FGameplayAttributeData& OldManaMax) const;
 	UFUNCTION()
+	void OnRep_BaseAttack(const FGameplayAttributeData& OldBaseAttack) const;
+	UFUNCTION()
 	void OnRep_AttackPower(const FGameplayAttributeData& OldAttackPower) const;
 	UFUNCTION()
 	void OnRep_MagicPower(const FGameplayAttributeData& OldMagicPower) const;
@@ -264,7 +294,14 @@ public:
 	void OnRep_MagicAR(const FGameplayAttributeData& OldMagicAR) const;
 	UFUNCTION()
 	void OnRep_MagicARPlus(const FGameplayAttributeData& OldMagicARPlus) const;
-
+	UFUNCTION()
+	void OnRep_PhysicalASR(const FGameplayAttributeData& OldPhysicalASR) const;
+	UFUNCTION()
+	void OnRep_DexterityASR(const FGameplayAttributeData& OldDexterityASR) const;
+	UFUNCTION()
+	void OnRep_MagicASR(const FGameplayAttributeData& OldMagicASR) const;
+	UFUNCTION()
+	void OnRep_AttackRequireStamina(const FGameplayAttributeData& OldAttackRequireStamina) const;
 
 	// 디버깅용
 	UFUNCTION(BlueprintCallable, Category = "DDS|Attributes")

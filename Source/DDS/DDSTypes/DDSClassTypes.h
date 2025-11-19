@@ -7,6 +7,7 @@
 #include "GameplayEffectTypes.h"
 #include "GameplayTagContainer.h"
 #include "PaperSprite.h"
+#include "GameAbilitySystem/Effects/GE_WeaponEquip.h"
 #include "DDSClassTypes.generated.h"
 
 class UGameplayEffect;
@@ -27,6 +28,9 @@ public:
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
 	FGameplayTagContainer ItemStaticTags;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
+	FName ItemTypeID;
 	
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
 	FString ItemName;
@@ -47,7 +51,7 @@ public:
 	FOnItemEquipped OnItemEquipped;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
-	TSubclassOf<UGameplayEffect> ItemEffectClass;
+	TSubclassOf<UGameplayEffect> ItemEffectClass;//= UGE_WeaponEquip::StaticClass();
 	
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
 	FDDSBaseWeaponData WeaponBaseData;

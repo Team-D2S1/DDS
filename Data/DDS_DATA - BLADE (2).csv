@@ -1,0 +1,10 @@
+ID,ID,statID,BaseATK,BaseATKplus,powASR,powASRplus,aglASR,aglASRplus,mgcASR,mgcASRplus,useSTA,asTime,stanceATK
+straightSwordBlade,straightSwordBlade, 직검날,115,9,0.33,0.01,0.50,0.01,0,0,17,1.00,90
+greatSwordBlade,greatSwordBlade,대검날,135,12,0.36,0.03,0.50,0.01,0,0,26,0.85,130
+collosalSwordBlade,collosalSwordBlade,특대검날,148,14,0.46,0.04,0.40,0.01,0,0,36,0.75,150
+onehandSpearBlade,onehandSpearBlade,한손창날,102,8,0.35,0.01,0.51,0.01,0,0,18,1.40,88
+twohandSpearBlade,twohandSpearBlade,양손창날,134,11,0.35,0.02,0.50,0.02,0,0,30,1.00,120
+onehandAxeBlade,onehandAxeBlade,한손도끼날,124,10,0.40,0.01,0.33,0.01,0,0,20,1.10,100
+twohandAxeBlade,twohandAxeBlade,양손도끼날,152,16,0.50,0.04,0.30,0.01,0,0,40,0.75,170
+hammerBlade,hammerBlade,망치머리,122,10,0.45,0.01,0.30,0.01,0,0,20,1.10,110
+sledgeBlade,sledgeBlade,슬렛지해머 머리,150,15,0.55,0.03,0.27,0.01,0,0,40,0.75,190

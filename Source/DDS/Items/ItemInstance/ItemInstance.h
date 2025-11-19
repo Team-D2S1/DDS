@@ -4,9 +4,11 @@
 
 #include "CoreMinimal.h"
 #include "GameplayTagContainer.h"
+#include "DataTable/BladeData.h"
+#include "DataTable/GripData.h"
 #include "DDSTypes/DDSEnumTypes.h"
-#include "Items/Actor/DDSCraftedPlayerWeapon.h"
 #include "ItemInstance.generated.h"
+
 
 class UGameplayEffect;
 class UPaperSprite;
@@ -25,10 +27,13 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "DDS|Item")
 	virtual bool Init(TSubclassOf<UItemStaticData> ItemClass);
 	
-	virtual bool IsSupportedForNetworking() const override {return true;};
+	virtual bool IsSupportedForNetworking() const override {return true;}
+	float GetItemLevel() const { return ItemLevel; }
 	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
 
 
+	UFUNCTION(BlueprintPure, Category = "DDS|Item")
+	FName GetItemTypeID() const;
 	
 	UFUNCTION(BlueprintPure, Category = "DDS|Item")
     int GetItemId() const { return ItemId; }
@@ -64,6 +69,10 @@ public:
 	{
 		return BladeItemInstance != nullptr && GripItemInstance != nullptr;// && PommelItemInstance != nullptr;
 	}
+
+	FBladeData* GetBladeData() const;
+	
+	FGripData* GetGripData() const;
 	
 protected:
 	// 만약 기존에 복제되지 않은 아이템 인스턴스라면, InventoryComponent의 ReplicateSubobjects에 수정해줘야함.
@@ -89,6 +98,43 @@ private:
 
 	UPROPERTY(Replicated, BlueprintReadOnly, Category = "DDS|Item", meta = (AllowPrivateAccess = "true"))
 	FGameplayTag ItemTypeTag;
+
+	UPROPERTY(Replicated, BlueprintReadOnly, Category = "DDS|Item", meta = (AllowPrivateAccess = "true"))
+	int32 ItemLevel = 0;
+
+	UFUNCTION(BlueprintCallable, Category = "DDS|Item",meta = (DisplayName = "Get Blade Data",ExpandEnumAsExecs = "OutSuccessType"))
+	FBladeData BP_GetBladeData(EDDSSuccessType& OutSuccessType) const
+	{
+		FBladeData* BladeData = GetBladeData();
+		if (BladeData)
+		{
+			OutSuccessType = EDDSSuccessType::Success;
+			return *BladeData;
+		}
+		else
+		{
+			OutSuccessType = EDDSSuccessType::Fail;
+			return FBladeData();
+		}
+	}
+
+	UFUNCTION(BlueprintCallable, Category = "DDS|Item",meta = (DisplayName = "Get Grip Data",ExpandEnumAsExecs = "OutSuccessType"))
+	FGripData BP_GetGripData(EDDSSuccessType& OutSuccessType) const
+	{
+		FGripData* GripData = GetGripData();
+		if (GripData)
+		{
+			OutSuccessType = EDDSSuccessType::Success;
+			return *GripData;
+		}
+		else
+		{
+			OutSuccessType = EDDSSuccessType::Fail;
+			return FGripData();
+		}
+	}
+	
+
 	
 	
 	// 게임플레이 태그

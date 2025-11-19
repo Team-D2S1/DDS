@@ -1,0 +1,5 @@
+name,ID,statID,gripmoveset,attackspeed,stanceATKtime
+straightGrip,straightGrip,직검자루,ex,1.0,1.0
+greatGrip,greatGrip,대검자루,ex,1.0,1.1
+spearGrip,spearGrip,창자루,ex,1.0,0.9
+hammerGrip,hammerGrip,둔기자루,ex,1.0,1.0

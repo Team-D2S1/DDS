@@ -21,6 +21,10 @@ struct FDDSAttributeCapture
 	DECLARE_ATTRIBUTE_CAPTUREDEF(DexterityAR);
 	DECLARE_ATTRIBUTE_CAPTUREDEF(MagicAR);
 
+	DECLARE_ATTRIBUTE_CAPTUREDEF(PhysicalASR);
+	DECLARE_ATTRIBUTE_CAPTUREDEF(DexterityASR);
+	DECLARE_ATTRIBUTE_CAPTUREDEF(MagicASR);
+
 	DECLARE_ATTRIBUTE_CAPTUREDEF(AttackPower);
 	DECLARE_ATTRIBUTE_CAPTUREDEF(MagicPower);
 	DECLARE_ATTRIBUTE_CAPTUREDEF(PhysicalDefense);
@@ -53,6 +57,9 @@ struct FDDSAttributeCapture
 		DEFINE_ATTRIBUTE_CAPTUREDEF(UDDSAttributeSet, StrengthAR, Target, false);
 		DEFINE_ATTRIBUTE_CAPTUREDEF(UDDSAttributeSet, DexterityAR, Target, false);
 		DEFINE_ATTRIBUTE_CAPTUREDEF(UDDSAttributeSet, MagicAR, Target, false);
+		DEFINE_ATTRIBUTE_CAPTUREDEF(UDDSAttributeSet, PhysicalASR, Target, false);
+		DEFINE_ATTRIBUTE_CAPTUREDEF(UDDSAttributeSet, DexterityASR, Target, false);
+		DEFINE_ATTRIBUTE_CAPTUREDEF(UDDSAttributeSet, MagicASR, Target, false);
 
 		DEFINE_ATTRIBUTE_CAPTUREDEF(UDDSAttributeSet, AttackPower, Target, false);
 		DEFINE_ATTRIBUTE_CAPTUREDEF(UDDSAttributeSet, MagicPower, Target, false);
@@ -187,27 +194,32 @@ float UMMC_AttackPower::CalculateBaseMagnitude_Implementation(const FGameplayEff
 	float Dexterity = 0.f;
 	float StrengthAR = 0.f;
 	float DexterityAR = 0.f;
+	float StrenghtASR = 0.f;
+	float DexterityASR = 0.f;
 	float EquipAttackPower = 0.f;
 	float AttackPower = 0.f;
+	float BaseATK = 1.f;
 
 	GetCapturedAttributeMagnitude(GetDDSAttributeCapture().StrengthDef, Spec, EvaluationParameters, Strength);
 	GetCapturedAttributeMagnitude(GetDDSAttributeCapture().DexterityDef, Spec, EvaluationParameters, Dexterity);
 	GetCapturedAttributeMagnitude(GetDDSAttributeCapture().StrengthARDef, Spec, EvaluationParameters, StrengthAR);
 	GetCapturedAttributeMagnitude(GetDDSAttributeCapture().DexterityARDef, Spec, EvaluationParameters, DexterityAR);
+	GetCapturedAttributeMagnitude(GetDDSAttributeCapture().PhysicalASRDef, Spec, EvaluationParameters, StrenghtASR);
+	GetCapturedAttributeMagnitude(GetDDSAttributeCapture().DexterityASRDef, Spec, EvaluationParameters, DexterityASR);
 	GetCapturedAttributeMagnitude(GetDDSAttributeCapture().Equip_AttackPowerDef, Spec, EvaluationParameters, EquipAttackPower);
 	GetCapturedAttributeMagnitude(GetDDSAttributeCapture().AttackPowerDef, Spec, EvaluationParameters, AttackPower);
 
 
 	/*
-	 * ATK=BaseATK*[1+{(ASR1+X)*AR1+{(ASR2+X)*AR2}]*(1+A)+Add 
+	 * ATK=BaseATK*[1+{(ASR1)*AR1+{(ASR2)*AR2}]
 	 * ASR2, AR2는 같은 속성에 두개의 스탯이 보정될때 추가
 	 *
 	 */
 	
-	// 공식: 물리 공격력 = (Strength * StrengthAR) + (Dexterity * DexterityAR) + EquipAttackPower
+	// 공식: 물리 공격력 = 
 	// 근력: 물리 공격력, 물리 방어력
 	// 기량: 물리 공격력
-	float CalculatedAttackPower = (Strength * StrengthAR) + (Dexterity * DexterityAR) + EquipAttackPower;
+	float CalculatedAttackPower = BaseATK * (1 +  ((StrenghtASR * StrengthAR) + (DexterityASR * DexterityAR))) + EquipAttackPower;
 
 	return CalculatedAttackPower;
 }

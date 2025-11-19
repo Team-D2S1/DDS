@@ -23,6 +23,7 @@
     <file url="file://$PROJECT_DIR$/Source/DDS/Actor/PatrolRoute.h" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/Source/DDS/Components/Utils/PatrolComponent.cpp" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/Source/DDS/Components/Utils/PatrolComponent.h" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/Source/DDS/DDSGameplayTags.cpp" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/Source/DDS/GameAbilitySystem/Effects/GE_PlayerStats_Naive.cpp" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/Source/DDS/GameAbilitySystem/Effects/GE_PlayerStats_Naive.h" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/Source/DDS/GameMode/LobbyGameMode.cpp" charset="UTF-8" />

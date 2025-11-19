@@ -43,6 +43,10 @@ UDDSAttributeSet::UDDSAttributeSet()
     InitMagicAR(1.0f);
     InitMagicARPlus(0.0f);
     
+    InitPhysicalASR(0.0f);
+    InitDexterityASR(0.0f);
+    InitMagicASR(0.0f);
+    
     InitAttackPower(10.0f);
     InitMagicPower(10.0f);
     
@@ -52,6 +56,7 @@ UDDSAttributeSet::UDDSAttributeSet()
 	InitMagicResist(0.0f);
     
     InitDamageTaken(0.0f);
+    InitAttackRequireStamina(0.0f);
  
 	using namespace DDSGameplayTags;
     
@@ -79,6 +84,9 @@ UDDSAttributeSet::UDDSAttributeSet()
     TagToAttributeMap.Add(Attribute_Offense_DexterityARPlus, GetDexterityARPlusAttribute);
     TagToAttributeMap.Add(Attribute_Offense_MagicAR, GetMagicARAttribute);
     TagToAttributeMap.Add(Attribute_Offense_MagicARPlus, GetMagicARPlusAttribute);
+    TagToAttributeMap.Add(Attribute_Offense_PhysicalASR, GetPhysicalASRAttribute);
+    TagToAttributeMap.Add(Attribute_Offense_DexterityASR, GetDexterityASRAttribute);
+    TagToAttributeMap.Add(Attribute_Offense_MagicASR, GetMagicASRAttribute);
     TagToAttributeMap.Add(Attribute_Offense_PhysicalPower, GetAttackPowerAttribute);
     TagToAttributeMap.Add(Attribute_Offense_MagicPower, GetMagicPowerAttribute);
     
@@ -117,6 +125,10 @@ void UDDSAttributeSet::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& Out
     DOREPLIFETIME_CONDITION_NOTIFY(UDDSAttributeSet, MagicAR, COND_None, REPNOTIFY_Always);
     DOREPLIFETIME_CONDITION_NOTIFY(UDDSAttributeSet, MagicARPlus, COND_None, REPNOTIFY_Always);
     
+    DOREPLIFETIME_CONDITION_NOTIFY(UDDSAttributeSet, PhysicalASR, COND_None, REPNOTIFY_Always);
+    DOREPLIFETIME_CONDITION_NOTIFY(UDDSAttributeSet, DexterityASR, COND_None, REPNOTIFY_Always);
+    DOREPLIFETIME_CONDITION_NOTIFY(UDDSAttributeSet, MagicASR, COND_None, REPNOTIFY_Always);
+    
     DOREPLIFETIME_CONDITION_NOTIFY(UDDSAttributeSet, AttackPower, COND_None, REPNOTIFY_Always);
     DOREPLIFETIME_CONDITION_NOTIFY(UDDSAttributeSet, MagicPower, COND_None, REPNOTIFY_Always);
     
@@ -124,7 +136,8 @@ void UDDSAttributeSet::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& Out
     DOREPLIFETIME_CONDITION_NOTIFY(UDDSAttributeSet, MagicDefense, COND_None, REPNOTIFY_Always);
     DOREPLIFETIME_CONDITION_NOTIFY(UDDSAttributeSet, PhysicalResist, COND_None, REPNOTIFY_Always);
     DOREPLIFETIME_CONDITION_NOTIFY(UDDSAttributeSet, MagicResist, COND_None, REPNOTIFY_Always);
-
+    
+    DOREPLIFETIME_CONDITION_NOTIFY(UDDSAttributeSet, AttackRequireStamina, COND_None, REPNOTIFY_Always);
 }
 
 void UDDSAttributeSet::PreAttributeChange(const FGameplayAttribute& Attribute, float& NewValue)
@@ -281,6 +294,11 @@ void UDDSAttributeSet::OnRep_ManaMax(const FGameplayAttributeData& OldManaMax) c
     GAMEPLAYATTRIBUTE_REPNOTIFY(UDDSAttributeSet, ManaMax, OldManaMax);
 }
 
+void UDDSAttributeSet::OnRep_BaseAttack(const FGameplayAttributeData& OldBaseAttack) const
+{
+	GAMEPLAYATTRIBUTE_REPNOTIFY(UDDSAttributeSet, BaseAttack, OldBaseAttack);
+}
+
 void UDDSAttributeSet::OnRep_AttackPower(const FGameplayAttributeData& OldAttackPower) const
 {
     GAMEPLAYATTRIBUTE_REPNOTIFY(UDDSAttributeSet, AttackPower, OldAttackPower);
@@ -341,6 +359,26 @@ void UDDSAttributeSet::OnRep_MagicARPlus(const FGameplayAttributeData& OldMagicA
 	GAMEPLAYATTRIBUTE_REPNOTIFY(UDDSAttributeSet, MagicARPlus, OldMagicARPlus);
 }
 
+void UDDSAttributeSet::OnRep_PhysicalASR(const FGameplayAttributeData& OldPhysicalASR) const
+{
+	GAMEPLAYATTRIBUTE_REPNOTIFY(UDDSAttributeSet, PhysicalASR, OldPhysicalASR);
+}
+
+void UDDSAttributeSet::OnRep_DexterityASR(const FGameplayAttributeData& OldDexterityASR) const
+{
+	GAMEPLAYATTRIBUTE_REPNOTIFY(UDDSAttributeSet, DexterityASR, OldDexterityASR);
+}
+
+void UDDSAttributeSet::OnRep_MagicASR(const FGameplayAttributeData& OldMagicASR) const
+{
+	GAMEPLAYATTRIBUTE_REPNOTIFY(UDDSAttributeSet, MagicASR, OldMagicASR);
+}
+
+void UDDSAttributeSet::OnRep_AttackRequireStamina(const FGameplayAttributeData& OldAttackRequireStamina) const
+{
+	GAMEPLAYATTRIBUTE_REPNOTIFY(UDDSAttributeSet, AttackRequireStamina, OldAttackRequireStamina);
+}
+
 void UDDSAttributeSet::OnRep_DamageTaken(const FGameplayAttributeData& OldDamageTaken) const
 {
     GAMEPLAYATTRIBUTE_REPNOTIFY(UDDSAttributeSet, DamageTaken, OldDamageTaken);
@@ -370,6 +408,11 @@ void UDDSAttributeSet::PrintAllAttributes() const
 	MY_LOG(LogTemp, Log, TEXT("DexterityARPlus: %f"), GetDexterityARPlus());
 	MY_LOG(LogTemp, Log, TEXT("MagicAR: %f"), GetMagicAR());
 	MY_LOG(LogTemp, Log, TEXT("MagicARPlus: %f"), GetMagicARPlus());
+
+	MY_LOG(LogTemp, Log, TEXT("PhysicalASR: %f"), GetPhysicalASR());
+	MY_LOG(LogTemp, Log, TEXT("DexterityASR: %f"), GetDexterityASR());
+	MY_LOG(LogTemp, Log, TEXT("MagicASR: %f"), GetMagicASR());
+	
 	
 	MY_LOG(LogTemp, Log, TEXT("AttackPower: %f"), GetAttackPower());
 	MY_LOG(LogTemp, Log, TEXT("MagicPower: %f"), GetMagicPower());

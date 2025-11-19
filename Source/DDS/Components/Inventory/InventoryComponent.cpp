@@ -14,6 +14,7 @@
 #include "Net/UnrealNetwork.h"
 #include "GameAbilitySystem/DDSAbilitySystemComponent.h"
 #include "AbilitySystemBlueprintLibrary.h"
+#include "DDSGameplayTags.h"
 
 
 // Sets default values for this component's properties
@@ -433,23 +434,62 @@ void UInventoryComponent::ApplyItemEffect(UItemInstance* ItemInstance, int32 Slo
 	EffectContext.AddSourceObject(ItemInstance);
 	
 	FGameplayEffectSpecHandle EffectSpecHandle = ASC->MakeOutgoingSpec(EffectClass, 1.0f, EffectContext);
-	if (EffectSpecHandle.IsValid())
+
+	if (!EffectSpecHandle.IsValid())
 	{
-		FActiveGameplayEffectHandle ActiveEffectHandle = ASC->ApplyGameplayEffectSpecToSelf(*EffectSpecHandle.Data.Get());
-		if (ActiveEffectHandle.IsValid())
-		{
-			// 슬롯별로 활성 이펙트 저장 (나중에 제거할 때 사용)
-			ActiveItemEffects.Add(SlotIndex, ActiveEffectHandle);
-			MY_LOG(LogTemp, Log, TEXT("Applied effect for item: %s in slot: %d"), *ItemInstance->GetItemName(), SlotIndex);
-		}
-		else
-		{
-			MY_ERROR_DISPLAY(TEXT("Failed to apply gameplay effect"));
-		}
+		MY_ERROR_DISPLAY(TEXT("Failed to create effect spec handle"));
+		return;
+	}
+
+	// SetByCaller로 아이템 관련 데이터 전달
+	
+	// Blade 데이터 처리 (무기인 경우)
+	FBladeData* BladeData = ItemInstance->GetBladeData();
+	if (BladeData)
+	{
+		EffectSpecHandle.Data->SetSetByCallerMagnitude(DDSGameplayTags::Weapon_SetByCaller_Level, ItemInstance->GetBladeItemInstance()->GetItemLevel());
+		EffectSpecHandle.Data->SetSetByCallerMagnitude(DDSGameplayTags::Weapon_SetByCaller_BaseATK, BladeData->BaseATK);
+		EffectSpecHandle.Data->SetSetByCallerMagnitude(DDSGameplayTags::Weapon_SetByCaller_BaseATKPlus, BladeData->BaseATKplus);
+		EffectSpecHandle.Data->SetSetByCallerMagnitude(DDSGameplayTags::Weapon_SetByCaller_PowASR, BladeData->PowASR);
+		EffectSpecHandle.Data->SetSetByCallerMagnitude(DDSGameplayTags::Weapon_SetByCaller_PowASRPlus, BladeData->PowASRplus);
+		EffectSpecHandle.Data->SetSetByCallerMagnitude(DDSGameplayTags::Weapon_SetByCaller_DexASR, BladeData->AglASR);
+		EffectSpecHandle.Data->SetSetByCallerMagnitude(DDSGameplayTags::Weapon_SetByCaller_DexASRPlus, BladeData->AglASRplus);
+		EffectSpecHandle.Data->SetSetByCallerMagnitude(DDSGameplayTags::Weapon_SetByCaller_MgcASR, BladeData->MgcASR);
+		EffectSpecHandle.Data->SetSetByCallerMagnitude(DDSGameplayTags::Weapon_SetByCaller_MgcASRPlus, BladeData->MgcASRplus);
+		EffectSpecHandle.Data->SetSetByCallerMagnitude(DDSGameplayTags::Weapon_SetByCaller_UseSTA, BladeData->UseSTA);
+		EffectSpecHandle.Data->SetSetByCallerMagnitude(DDSGameplayTags::Weapon_SetByCaller_AttackSpeed, BladeData->AsTime);
+		EffectSpecHandle.Data->SetSetByCallerMagnitude(DDSGameplayTags::Weapon_SetByCaller_StanceATK, BladeData->StanceATK);
+		EffectSpecHandle.Data->SetSetByCallerMagnitude(DDSGameplayTags::Weapon_SetByCaller_UseSTA, BladeData->UseSTA);
+		
+		MY_LOG(LogTemp, Log, TEXT("Blade stats applied - BaseATK: %d, PowASR: %.2f, UseSTA: %d"), 
+			BladeData->BaseATK, BladeData->PowASR, BladeData->UseSTA);
+	}
+
+	// Grip 데이터 처리 (무기인 경우)
+	FGripData* GripData = ItemInstance->GetGripData();
+	if (GripData)
+	{
+		EffectSpecHandle.Data->SetSetByCallerMagnitude(DDSGameplayTags::Weapon_SetByCaller_GripAttackSpeed, GripData->AttackSpeed);
+		EffectSpecHandle.Data->SetSetByCallerMagnitude(DDSGameplayTags::Weapon_SetByCaller_GripStanceATKTime, GripData->StanceATKTime);
+		
+		MY_LOG(LogTemp, Log, TEXT("Grip stats applied - AttackSpeed: %.2f, StanceATKTime: %.2f"), 
+			GripData->AttackSpeed, GripData->StanceATKTime);
+	}
+
+	// 방어구나 다른 아이템의 경우 여기에 추가 처리 가능
+	// 예: ArmorData가 있다면 방어력, 저항력 등을 SetByCaller로 전달
+	
+	// 이펙트 적용
+	FActiveGameplayEffectHandle ActiveEffectHandle = ASC->ApplyGameplayEffectSpecToSelf(*EffectSpecHandle.Data.Get());
+	if (ActiveEffectHandle.IsValid())
+	{
+		// 슬롯별로 활성 이펙트 저장 (나중에 제거할 때 사용)
+		ActiveItemEffects.Add(SlotIndex, ActiveEffectHandle);
+		MY_LOG(LogTemp, Log, TEXT("Applied effect for item: %s in slot: %d"), *ItemInstance->GetItemName(), SlotIndex);
 	}
 	else
 	{
-		MY_ERROR_DISPLAY(TEXT("Failed to create effect spec handle"));
+		MY_ERROR_DISPLAY(TEXT("Failed to apply gameplay effect"));
 	}
 }
 
