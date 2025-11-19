@@ -10,7 +10,9 @@
 #include "AI/Skills/MonsterSkillBase.h"
 #include "BehaviorTree/BlackboardComponent.h"
 #include "Character/Monster/MonsterBase.h"
+#include "Components/CapsuleComponent.h"
 #include "ETC/CustomLog.h"
+#include "GameFramework/CharacterMovementComponent.h"
 
 
 UBTTaskNode_ActivateSkill::UBTTaskNode_ActivateSkill()
@@ -54,6 +56,19 @@ EBTNodeResult::Type UBTTaskNode_ActivateSkill::ExecuteTask(UBehaviorTreeComponen
 		MY_LOG(LogTemp, Warning, TEXT("Skill Activated Successfully!"));
 		Blackboard->SetValueAsBool("bIsUsingSkill", true);
 		// 스킬 종료시 불릴 콜백함수 바인딩
+
+		// 점프하는 RootMotion이면 FlyMode 켜준다
+		if(CurrentSkill->IsA(UMonsterSkillBase::StaticClass()))
+		{
+			if(UMonsterSkillBase* MonsterSkill = Cast<UMonsterSkillBase>(CurrentSkill))
+			{
+				if(MonsterSkill->GetIsJumpSKill())
+				{
+					UCharacterMovementComponent* MovementComponent = Monster->GetCharacterMovement();
+					MovementComponent->SetMovementMode(MOVE_Flying);
+				}
+			}
+		}
 		
 		OnAbilityEndDelegateHandle = ASC->OnAbilityEnded.AddUObject(this, &ThisClass::OnAbilityEnded);
 
@@ -86,7 +101,6 @@ void UBTTaskNode_ActivateSkill::TickTask(UBehaviorTreeComponent& OwnerComp, uint
 
 void UBTTaskNode_ActivateSkill::OnAbilityEnded(const FAbilityEndedData& EndedData)
 {
-	MY_LOG(LogTemp, Error, "0")
 	if(EndedData.AbilitySpecHandle == CachedHandle)
 	{
 		if(CachedOwnerComp)
@@ -95,6 +109,15 @@ void UBTTaskNode_ActivateSkill::OnAbilityEnded(const FAbilityEndedData& EndedDat
 			{
 				UAbilitySystemComponent* ASC = Monster->GetAbilitySystemComponent();
 				ASC->OnAbilityEnded.Remove(OnAbilityEndDelegateHandle);
+
+				// FlyMode 켜져있다면 꺼준다
+				if(UCharacterMovementComponent* MovementComponent = Monster->GetCharacterMovement())
+				{
+					if(MovementComponent->MovementMode == MOVE_Flying)
+					{
+						MovementComponent->SetMovementMode(MOVE_Walking);
+					}
+				}
 			}
 			
 			CachedOwnerComp->GetBlackboardComponent()->SetValueAsBool("bIsUsingSkill", false);

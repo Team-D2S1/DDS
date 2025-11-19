@@ -38,7 +38,7 @@ void UMonsterSkillBase::ActivateAbility(const FGameplayAbilitySpecHandle Handle,
 		
 		FRotator MonsterRotation = (Target->GetActorLocation() - Monster->GetActorLocation()).Rotation();
 		MonsterRotation.Pitch = 0.f; MonsterRotation.Roll = 0.f;
-		//Monster->SetActorRotation(MonsterRotation);
+		Monster->SetActorRotation(MonsterRotation);
 	}
 	
 	// 몽타주 실행

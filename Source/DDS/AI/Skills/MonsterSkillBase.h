@@ -68,6 +68,10 @@ public:
 	FString SkillName;
 	
 protected:
+	// Z축 루트모션 포함하는 경우 true
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, meta=(AllowPrivateAccess=true))
+	bool bIsJumpSKill = false;
+	
 	// 스킬 타입
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Skill")
 	ESkillType SkillType = ESkillType::NormalAttack;
@@ -99,4 +103,5 @@ private:
 public:
 	FORCEINLINE bool GetIsSkillUsable() const { return GetCooldownTimeRemaining() == 0.f; }
 	FORCEINLINE float GetSkillDistance() const { return SkillDistance; }
+	FORCEINLINE bool GetIsJumpSKill() const { return bIsJumpSKill; }
 };
