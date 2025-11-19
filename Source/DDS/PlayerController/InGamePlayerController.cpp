@@ -33,7 +33,11 @@ void AInGamePlayerController::Tick(float DeltaSeconds)
 {
 	Super::Tick(DeltaSeconds);
 
-
+	// B 버튼이 눌려있는 동안 누른 시간 누적
+	if (bBPressed)
+	{
+		BPressedTime += DeltaSeconds;
+	}
 }
 
 void AInGamePlayerController::BeginPlay()
@@ -63,6 +67,9 @@ void AInGamePlayerController::SetupInputComponent()
 	// DDSInputComponent->BindNativeAction(InputConfigDataAsset, DDSGameplayTags::InputTag_Jump, ETriggerEvent::Started, this, &ThisClass::Input_Jump);
 	DDSInputComponent->BindNativeAction(InputConfigDataAsset, DDSGameplayTags::InputTag_Look, ETriggerEvent::Triggered, this, &ThisClass::Input_Look);
 	DDSInputComponent->BindNativeAction(InputConfigDataAsset, DDSGameplayTags::InputTag_LockOn, ETriggerEvent::Started, this, &ThisClass::Input_LockOn);
+	// B 버튼 (패드 B / Space) 입력 바인딩
+	DDSInputComponent->BindNativeAction(InputConfigDataAsset, DDSGameplayTags::InputTag_DodgeB, ETriggerEvent::Started, this, &ThisClass::Input_B_Pressed);
+	DDSInputComponent->BindNativeAction(InputConfigDataAsset, DDSGameplayTags::InputTag_DodgeB, ETriggerEvent::Completed, this, &ThisClass::Input_B_Released);
 	
  	DDSInputComponent->BindUIActions(InputConfigDataAsset, this, &ThisClass::Input_UIInputPressed, &ThisClass::Input_UIInputReleased);
 	DDSInputComponent->BindAbilityInputActions(InputConfigDataAsset,this, &ThisClass::Input_AbilityInputPressed, &ThisClass::Input_AbilityInputReleased);
@@ -77,6 +84,11 @@ void AInGamePlayerController::Input_Move(const FInputActionValue& Value)
 {
 	// MY_LOG_DISPLAY("Move %s", *Value.ToString());
 	FVector2D MoveVector = Value.Get<FVector2D>();
+	CachedMoveVector = MoveVector;
+
+	UpdateMovementSpeedFromInput(MoveVector);
+	ApplyMoveSpeedMode();
+
 	FRotator YawRotator(0.f, GetControlRotation().Yaw, 0.f);
 	FVector ForwardVector = FRotationMatrix(YawRotator).GetUnitAxis(EAxis::X);
 	FVector RightVector = FRotationMatrix(YawRotator).GetUnitAxis(EAxis::Y);
@@ -93,16 +105,27 @@ void AInGamePlayerController::Input_Move(const FInputActionValue& Value)
 	}
 }
 
-// void AInGamePlayerController::Input_Jump()
-// {
-// 	if(bIsIgnoringGameInput)
-// 		 return;
-// 	ACharacter* MyCharacter = GetCharacter();
-//
-// 	if(!MyCharacter) return;
-//
-// 	MyCharacter->Jump();
-// }
+void AInGamePlayerController::Input_B_Pressed(const FInputActionValue& Value)
+{
+	// B 버튼이 눌리기 시작한 시점
+	bBPressed = true;
+	BPressedTime = 0.f;
+}
+
+void AInGamePlayerController::Input_B_Released(const FInputActionValue& Value)
+{
+	// 짧게/길게 여부는 Tick에서 BPressedTime으로 판별
+	if (!bBPressed)
+	{
+		return;
+	}
+
+	// 눌렀다가 뗀 시점에서 구르기/백스텝 시도
+	TryExecuteDodgeOrBackstep();
+
+	bBPressed = false;
+	BPressedTime = 0.f;
+}
 
 void AInGamePlayerController::Input_Look(const FInputActionValue& Value)
 {
@@ -234,7 +257,8 @@ void AInGamePlayerController::Input_AbilityInputPressed(FGameplayTag InputTag)
 {
 	if (bIsIgnoringGameInput)
 		return;
-	MY_CLOG_DISPLAY_NET(FColor::Cyan,HasAuthority(), TEXT("Ability Input Pressed %s"), *InputTag.ToString());
+	// MY_CLOG_DISPLAY_NET(FColor::Cyan,HasAuthority(), TEXT("Ability Input Pressed %s"), *InputTag.ToString());
+	MY_LOG(LogTemp, Log, TEXT("Ability Input Pressed %s"), *InputTag.ToString());
 	if (UDDSAbilitySystemComponent * ASC = GetDDSAbilitySystemComponent())
 	{
 		// MY_LOG(LogTemp, Log, TEXT("Ability Input Pressed %s"), *InputTag.ToString());
@@ -339,3 +363,99 @@ TArray<AActor*> AInGamePlayerController::GetFocusables() const
 // 	}
 // 	return res;
 // }
+
+void AInGamePlayerController::UpdateMovementSpeedFromInput(const FVector2D& MoveVector)
+{
+	// L 스틱 입력의 크기(길이)에 따라 Normal / Slow 결정
+	const float Magnitude = MoveVector.Size();
+
+	// 임계값 예시: 0.7 이상은 "길게" (정확히는 강하게 기울인 상태), 그 이하는 "짧게"로 간주
+	const float LongStickThreshold = 0.7f;
+	const float DeadZone = 0.1f;
+
+	if (Magnitude < DeadZone)
+	{
+		// 입력이 거의 없으면 기본 속도 유지
+		CurrentMoveSpeedMode = AInGamePlayerController::EMoveSpeedMode::Normal;
+		return;
+	}
+
+	if (Magnitude >= LongStickThreshold)
+	{
+		// L 스틱을 크게(길게) 기울임 -> 기본 속도 혹은 B와 함께면 스프린트
+		if (bBPressed && BPressedTime >= BLongPressThreshold)
+		{
+			CurrentMoveSpeedMode = AInGamePlayerController::EMoveSpeedMode::Sprint;
+		}
+		else
+		{
+			CurrentMoveSpeedMode = AInGamePlayerController::EMoveSpeedMode::Normal;
+		}
+	}
+	else
+	{
+		// L 스틱을 살짝(짧게) 기울임 -> 느린 속도
+		CurrentMoveSpeedMode = AInGamePlayerController::EMoveSpeedMode::Slow;
+	}
+}
+
+void AInGamePlayerController::ApplyMoveSpeedMode()
+{
+	ACharacter* MyCharacter = Cast<ACharacter>(GetPawn());
+	if (!MyCharacter)
+	{
+		return;
+	}
+	UCharacterMovementComponent* MoveComp = MyCharacter->GetCharacterMovement();
+	if (!MoveComp)
+	{
+		return;
+	}
+
+	switch (CurrentMoveSpeedMode)
+	{
+	case AInGamePlayerController::EMoveSpeedMode::Normal:
+		MoveComp->MaxWalkSpeed = BaseMoveSpeed;
+		break;
+	case AInGamePlayerController::EMoveSpeedMode::Slow:
+		MoveComp->MaxWalkSpeed = SlowMoveSpeed;
+		break;
+	case AInGamePlayerController::EMoveSpeedMode::Sprint:
+		MoveComp->MaxWalkSpeed = BaseMoveSpeed * SprintMultiplier;
+		break;
+	default:
+		break;
+	}
+}
+
+void AInGamePlayerController::TryExecuteDodgeOrBackstep()
+{
+	APlayerBase* PlayerBase = GetPlayerBase();
+	if (!PlayerBase)
+	{
+		return;
+	}
+
+	// 이동 입력이 있는지 여부
+	const bool bHasMoveInput = !CachedMoveVector.IsNearlyZero(0.1f);
+
+	// B 버튼이 짧게 눌렸다가 떼어졌다면 (press~release 사이 시간이 짧음)
+	const bool bShortPress = (BPressedTime < BLongPressThreshold);
+
+	UPlayerCombatComponent* CombatComp = PlayerBase->GetCombatComponent() ? Cast<UPlayerCombatComponent>(PlayerBase->GetCombatComponent()) : nullptr;
+	if (!CombatComp)
+	{
+		return;
+	}
+
+	if (bHasMoveInput)
+	{
+		// L스틱 + B 입력 -> 해당 방향 구르기
+		CombatComp->TriggerDodge(CachedMoveVector);
+	}
+	else if (bShortPress)
+	{
+		// B 단독 짧은 입력 -> 백스텝
+		CombatComp->TriggerBackstep();
+	}
+}

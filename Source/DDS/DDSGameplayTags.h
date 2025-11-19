@@ -24,6 +24,8 @@ namespace DDSGameplayTags
 
 	DDS_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(InputTag_LightAttack)
 	DDS_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(InputTag_HeavyAttack)
+	// B 버튼 (패드 B / Space) - 달리기/구르기/백스텝 입력
+	DDS_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(InputTag_DodgeB);
 
 
 	DDS_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(InputTag_Debug_PrintAttributes)
@@ -93,9 +95,14 @@ namespace DDSGameplayTags
 	
 	DDS_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Ability_Attack_LightAttack_Sword)
 	DDS_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Ability_Attack_HeavyAttack_Sword)
+	DDS_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Ability_Dodge)
+	
 	
 	DDS_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Weapon_Sword)
 	DDS_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Weapon_Crafted)
+
+	DDS_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_State_StopStaminaRegen)
+	DDS_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_State_Dodging)
 	
 	DDS_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Event_Equip_Sword)
 	DDS_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Event_Unequip_Sword)
@@ -123,6 +130,9 @@ namespace DDSGameplayTags
 	DDS_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Weapon_SetByCaller_GripAttackSpeed)
 	DDS_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Weapon_SetByCaller_GripStanceATKTime)
 
+	// Ablity SetByCaller
+	DDS_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Ability_SetByCaller_CooldownTime)
+	
 	/** Monster Tags */
 	DDS_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Monster_Weapon)
 

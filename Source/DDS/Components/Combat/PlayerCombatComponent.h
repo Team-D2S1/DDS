@@ -12,6 +12,7 @@ class ADDSCraftedPlayerWeapon;
 class UDDSPlayerGameplayAbility;
 class UItemInstance;
 class ADDSSimplePlayerWeapon;
+class UGameplayEffect;
 /**
  * 
  */
@@ -38,6 +39,20 @@ public:
 	
 	UFUNCTION(BlueprintCallable, Category = "DDS|Combat")
 	UItemInstance* GetRightWeaponItem() const { return rightWeaponItem; }
+
+	UFUNCTION(BlueprintCallable, Category = "DDS|Combat")
+	void TriggerStopStaminaRegen();
+
+	// 구르기(회피) 및 백스텝 트리거용 헬퍼 함수
+	UFUNCTION(BlueprintCallable, Category = "DDS|Combat")
+	void TriggerDodge(const FVector2D& MoveInput);
+
+	UFUNCTION(BlueprintCallable, Category = "DDS|Combat")
+	void TriggerBackstep();
+
+	// GameplayEffect class to apply when stopping actions to block stamina regen for 3 seconds
+	UPROPERTY(EditDefaultsOnly, Category = "DDS|Combat")
+	TSubclassOf<UGameplayEffect> StopStaminaRegenEffectClass;
 protected: 
 	// void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 
@@ -52,5 +67,3 @@ protected:
 private:
 	
 };
-
-

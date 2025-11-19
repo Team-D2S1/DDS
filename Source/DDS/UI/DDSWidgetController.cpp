@@ -5,6 +5,7 @@
 
 #include "Character/Player/DDSPlayerState.h"
 #include "Character/Player/PlayerBase.h"
+#include "Components/Inventory/InventoryComponent.h"
 #include "GameAbilitySystem/DDSAbilitySystemComponent.h"
 #include "GameAbilitySystem/DDSAttributeSet.h"
 #include "PlayerController/InGamePlayerController.h"

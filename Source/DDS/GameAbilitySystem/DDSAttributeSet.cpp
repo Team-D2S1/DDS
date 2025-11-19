@@ -401,6 +401,8 @@ void UDDSAttributeSet::PrintAllAttributes() const
 	MY_LOG(LogTemp, Log, TEXT("Health: %f / %f"), GetHealth(), GetHealthMax());
 	MY_LOG(LogTemp, Log, TEXT("Stamina: %f / %f"), GetStamina(), GetStaminaMax());
 	MY_LOG(LogTemp, Log, TEXT("Mana: %f / %f"), GetMana(), GetManaMax());
+
+	MY_LOG(LogTemp, Log, TEXT("AttackRequireStamina: %f"), GetAttackRequireStamina());
 	
 	MY_LOG(LogTemp, Log, TEXT("StrengthAR: %f"), GetStrengthAR());
 	MY_LOG(LogTemp, Log, TEXT("StrengthARPlus: %f"), GetStrengthARPlus());
