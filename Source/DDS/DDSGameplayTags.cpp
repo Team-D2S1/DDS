@@ -22,6 +22,7 @@ namespace DDSGameplayTags
 
 	UE_DEFINE_GAMEPLAY_TAG_COMMENT(InputTag_LightAttack, "Input.LightAttack", "Input : performing a light attack.");
 	UE_DEFINE_GAMEPLAY_TAG_COMMENT(InputTag_HeavyAttack, "Input.HeavyAttack", "Input : performing a heavy attack.");
+	UE_DEFINE_GAMEPLAY_TAG_COMMENT(InputTag_DodgeB, "Input.DodgeB", "Input : B button for dodge/backstep/sprint modifier.");
 
 	UE_DEFINE_GAMEPLAY_TAG(InputTag_Debug_PrintAttributes, "Input.Debug.PrintAttributes");
 	/** UI Widget Tags */
@@ -90,9 +91,13 @@ namespace DDSGameplayTags
 
 	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Player_Ability_Attack_LightAttack_Sword, "Player.Ability.Attack.LightAttack.Sword", "Player : player performs a light attack ability with a sword.");
 	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Player_Ability_Attack_HeavyAttack_Sword, "Player.Ability.Attack.HeavyAttack.Sword", "Player : player performs a heavy attack ability with a sword.");
-
+	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Player_Ability_Attack_Dodge, "Player.Ability.Attack.Dodge", "Player : player performs a dodge ability.");
+	
 	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Player_Weapon_Sword, "Player.Weapon.Sword", "Player : player's sword weapon.");
 	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Player_Weapon_Crafted, "Player.Weapon.Crafted", "Player : player's crafted weapon.");
+
+	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Player_State_StopStaminaRegen, "Player.State.StopStaminaRegen", "Player : player's stamina regeneration is stopped.");
+	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Player_State_Dodging, "Player.State.Dodging", "Player : player is dodging.");
 
 	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Player_Event_Equip_Sword, "Player.Event.Equip.Sword", "Player : player equips a sword.");
 	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Player_Event_Unequip_Sword, "Player.Event.Unequip.Sword", "Player : player unequips a sword.");
@@ -120,6 +125,10 @@ namespace DDSGameplayTags
 	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Weapon_SetByCaller_GripAttackSpeed, "Weapon.SetByCaller.GripAttackSpeed", "Weapon : grip attack speed modifier (attackspeed).");
 	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Weapon_SetByCaller_GripStanceATKTime, "Weapon.SetByCaller.GripStanceATKTime", "Weapon : grip stance attack time (stanceATKtime).");
 
+	// Ability SetByCaller
+	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Ability_SetByCaller_CooldownTime, "Ability.SetByCaller.CooldownTime", "Ability : ability cooldown time set by caller.");
+	
+	
 	/** Monster Tags */
 	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Monster_Weapon, "Monster.Weapon", "Monster : monster's weapon.");
 	

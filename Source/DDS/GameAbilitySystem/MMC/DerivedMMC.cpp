@@ -32,6 +32,8 @@ struct FDDSAttributeCapture
 	DECLARE_ATTRIBUTE_CAPTUREDEF(PhysicalResist);
 	DECLARE_ATTRIBUTE_CAPTUREDEF(MagicResist);
 
+	DECLARE_ATTRIBUTE_CAPTUREDEF(AttackRequireStamina);
+
 	DECLARE_ATTRIBUTE_CAPTUREDEF(Equip_HealthMax);
 	DECLARE_ATTRIBUTE_CAPTUREDEF(Equip_StaminaMax);
 	DECLARE_ATTRIBUTE_CAPTUREDEF(Equip_ManaMax);
@@ -67,6 +69,8 @@ struct FDDSAttributeCapture
 		DEFINE_ATTRIBUTE_CAPTUREDEF(UDDSAttributeSet, MagicDefense, Target, false);
 		DEFINE_ATTRIBUTE_CAPTUREDEF(UDDSAttributeSet, PhysicalResist, Target, false);
 		DEFINE_ATTRIBUTE_CAPTUREDEF(UDDSAttributeSet, MagicResist, Target, false);
+
+		DEFINE_ATTRIBUTE_CAPTUREDEF(UDDSAttributeSet, AttackRequireStamina, Target, false);
 
 		DEFINE_ATTRIBUTE_CAPTUREDEF(UDDSAttributeSet, Equip_HealthMax, Target, false);
 		DEFINE_ATTRIBUTE_CAPTUREDEF(UDDSAttributeSet, Equip_StaminaMax, Target, false);

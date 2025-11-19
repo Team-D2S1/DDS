@@ -13,6 +13,8 @@
 #include "Items/ItemInstance/ItemInstance.h"
 #include "Items/Actor/DDSCraftedPlayerWeapon.h"
 #include "Net/UnrealNetwork.h"
+#include "DDS/GameAbilitySystem/DDSAbilitySystemComponent.h"
+#include "DDSGameplayTags.h"
 
 
 
@@ -108,6 +110,75 @@ void UPlayerCombatComponent::NotifyRightWeaponChanged(UItemInstance* NewWeapon)
 	}
 }
 
+void UPlayerCombatComponent::TriggerStopStaminaRegen()
+{
+    APlayerBase* PlayerBase = GetOwningPawn<APlayerBase>();
+    if (!PlayerBase) return;
+
+    UDDSAbilitySystemComponent* ASC = PlayerBase->GetDDSAbilitySystemComponent();
+    if (!ASC) return;
+
+    if (!StopStaminaRegenEffectClass) return;
+
+    // Use the gameplay tag as the matching key so existing effects with the tag will be removed and refreshed
+    const FGameplayTag StopTag = DDSGameplayTags::Player_State_StopStaminaRegen;
+    FActiveGameplayEffectHandle Handle = ASC->ApplyOrRefreshGameplayEffectToSelf(StopStaminaRegenEffectClass, 1.0f, StopTag);
+    if (Handle.IsValid())
+    {
+        MY_LOG(LogTemp, Log, TEXT("Triggered StopStaminaRegen GE on %s."), *PlayerBase->GetName());
+    }
+    else
+    {
+        MY_LOG(LogTemp, Warning, TEXT("Failed to apply StopStaminaRegen GE on %s."), *PlayerBase->GetName());
+    }
+}
+
+void UPlayerCombatComponent::TriggerDodge(const FVector2D& MoveInput)
+{
+	APlayerBase* PlayerBase = GetOwningPawn<APlayerBase>();
+	if (!PlayerBase) return;
+
+	UDDSAbilitySystemComponent* ASC = PlayerBase->GetDDSAbilitySystemComponent();
+	if (!ASC) return;
+
+	// 2D 입력을 월드 기준 방향 벡터로 변환 (컨트롤러 Yaw 기준)
+	const FRotator ControlRot(0.f, PlayerBase->GetControlRotation().Yaw, 0.f);
+	const FVector Forward = FRotationMatrix(ControlRot).GetUnitAxis(EAxis::X);
+	const FVector Right   = FRotationMatrix(ControlRot).GetUnitAxis(EAxis::Y);
+
+	FVector WorldDir = Forward * MoveInput.Y + Right * MoveInput.X;
+	WorldDir = WorldDir.GetSafeNormal();
+
+	if (!WorldDir.IsNearlyZero())
+	{
+		ASC->SetLastDodgeInputDirection(WorldDir);
+	}
+
+	MY_LOG(LogTemp, Log, TEXT("TriggerDodge: MoveInput=%s, WorldDir=%s"), *MoveInput.ToString(), *WorldDir.ToString());
+
+	// 실제 구르기 GA는 블루프린트로 구현: 여기서는 방향 캐시만 하고 GA 활성화는
+	// 입력 태그 기반 또는 블루프린트에서 처리하도록 남겨둔다.
+}
+
+void UPlayerCombatComponent::TriggerBackstep()
+{
+	APlayerBase* PlayerBase = GetOwningPawn<APlayerBase>();
+	if (!PlayerBase) return;
+
+	UDDSAbilitySystemComponent* ASC = PlayerBase->GetDDSAbilitySystemComponent();
+	if (!ASC) return;
+
+	// 컨트롤러가 보고 있는 방향의 반대 방향(뒤로)
+	const FRotator ControlRot(0.f, PlayerBase->GetControlRotation().Yaw, 0.f);
+	const FVector Backward = -FRotationMatrix(ControlRot).GetUnitAxis(EAxis::X);
+
+	ASC->SetLastDodgeInputDirection(Backward.GetSafeNormal());
+
+	MY_LOG(LogTemp, Log, TEXT("TriggerBackstep: WorldDir=%s"), *Backward.ToString());
+
+	// 실제 백스텝 GA는 블루프린트로 구현 예정
+}
+
 // void UPlayerCombatComponent::TickComponent(float DeltaTime, ELevelTick TickType,
 // 	FActorComponentTickFunction* ThisTickFunction)
 // {
@@ -138,4 +209,3 @@ void UPlayerCombatComponent::NotifyRightWeaponChanged(UItemInstance* NewWeapon)
 // 		Cam->SetWorldRotation(LookAtRotation);
 // 	}
 // }
-//

@@ -81,4 +81,24 @@ protected:
 	void HandleStaminaMaxChanged(const FOnAttributeChangeData& Data);
 	void HandleManaMaxChanged(const FOnAttributeChangeData& Data);
 	void HandleDamageTakenChanged(const FOnAttributeChangeData& Data);
+
+	// 마지막 구르기 입력 방향(월드 기준, 정규화 벡터)
+	UPROPERTY(BlueprintReadOnly, Category="DDS|Ability", meta=(AllowPrivateAccess="true"))
+	FVector LastDodgeInputDirection = FVector::ForwardVector;
+
+public:
+	/**
+	 * Applies a GameplayEffect to self. If there are existing active effects that match the
+	 * provided TagToMatch or are instances of EffectClass, they will be removed first so the
+	 * new effect replaces/refreshes the duration.
+	 */
+	UFUNCTION(BlueprintCallable, Category="DDS|Ability")
+	FActiveGameplayEffectHandle ApplyOrRefreshGameplayEffectToSelf(TSubclassOf<UGameplayEffect> EffectClass, float Level = 1.0f, const FGameplayTag& TagToMatch = FGameplayTag());
+
+	// 구르기 방향 캐시 세터/게터 (블루프린트에서도 사용 가능)
+	UFUNCTION(BlueprintCallable, Category="DDS|Ability")
+	void SetLastDodgeInputDirection(const FVector& InDirection) { LastDodgeInputDirection = InDirection; }
+
+	UFUNCTION(BlueprintCallable, Category="DDS|Ability")
+	FVector GetLastDodgeInputDirection() const { return LastDodgeInputDirection; }
 };

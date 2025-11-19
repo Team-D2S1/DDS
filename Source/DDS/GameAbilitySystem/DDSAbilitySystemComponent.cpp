@@ -7,6 +7,8 @@
 #include "DDSTypes/DDSStructTypes.h"
 #include "ETC/CustomLog.h"
 #include "GameAbilitySystem/DDSAttributeSet.h"
+#include "GameplayEffect.h"
+#include "GameplayEffectTypes.h"
 
 void UDDSAbilitySystemComponent::AbilityActorInfoSet()
 {
@@ -17,7 +19,8 @@ void UDDSAbilitySystemComponent::AbilityActorInfoSet()
 
 void UDDSAbilitySystemComponent::AddCharacterAbilities(const TArray<TSubclassOf<UDDSGameplayAbility>>& StartupAbilities)
 {
-	MY_LOG_DISPLAY("%s AddCharacterAbilities",*GetOwner()->GetName());
+	// MY_LOG_DISPLAY("%s AddCharacterAbilities",*GetOwner()->GetName());
+	MY_LOG(LogTemp,Type::Log,"%s AddCharacterAbilities",*GetOwner()->GetName());
 	for (const TSubclassOf<UDDSGameplayAbility>& Ability : StartupAbilities)
 	{
 		if (!Ability)
@@ -54,7 +57,8 @@ void UDDSAbilitySystemComponent::AbilityInputTagPressed(const FGameplayTag& Inpu
 		{
 			// spec 이름 출력
 			bool isServer = GetOwner()->HasAuthority();
-			MY_CLOG_DISPLAY_NET(FColor::Emerald,isServer,TEXT("Try to Activate Ability : %s "),*spec.Ability->GetName());
+			// MY_CLOG_DISPLAY_NET(FColor::Emerald,isServer,TEXT("Try to Activate Ability : %s "),*spec.Ability->GetName());
+			MY_LOG(LogTemp,Type::Log,"Try to Activate Ability : %s ",*spec.Ability->GetName());
 			TryActivateAbility(spec.Handle);
 		}
 	}
@@ -157,7 +161,11 @@ void UDDSAbilitySystemComponent::HandleStaminaChanged(const FOnAttributeChangeDa
 	OnStaminaChanged.Broadcast(Data.NewValue);
 
 	bool bIsServer = GetOwner() && GetOwner()->HasAuthority();
-	MY_CLOG_DISPLAY_NET(FColor::Yellow, bIsServer, TEXT("[ASC] Stamina Changed: %.2f -> %.2f"), Data.OldValue, Data.NewValue);
+	bool bIsReduce = Data.NewValue < Data.OldValue;
+	if (bIsReduce)
+	{
+		// MY_CLOG_DISPLAY_NET(FColor::Orange, bIsServer, TEXT("[ASC] Stamina Reduced: %.2f -> %.2f"), Data.OldValue, Data.NewValue);
+	}
 }
 
 void UDDSAbilitySystemComponent::HandleManaChanged(const FOnAttributeChangeData& Data)
@@ -198,4 +206,48 @@ void UDDSAbilitySystemComponent::HandleDamageTakenChanged(const FOnAttributeChan
 
 	bool bIsServer = GetOwner() && GetOwner()->HasAuthority();
 	MY_CLOG_DISPLAY_NET(FColor::Red, bIsServer, TEXT("[ASC] DamageTaken Changed: %.2f -> %.2f"), Data.OldValue, Data.NewValue);
+}
+
+FActiveGameplayEffectHandle UDDSAbilitySystemComponent::ApplyOrRefreshGameplayEffectToSelf(TSubclassOf<UGameplayEffect> EffectClass, float Level, const FGameplayTag& TagToMatch)
+{
+    if (!EffectClass)
+    {
+        MY_LOG(LogTemp, Error, TEXT("ApplyOrRefreshGameplayEffectToSelf called with null EffectClass"));
+        return FActiveGameplayEffectHandle();
+    }
+
+    // Collect active handles to remove
+    TArray<FActiveGameplayEffectHandle> HandlesToRemove;
+
+    if (TagToMatch.IsValid())
+    {
+        FGameplayEffectQuery Query = FGameplayEffectQuery::MakeQuery_MatchAnyOwningTags(FGameplayTagContainer(TagToMatch));
+        HandlesToRemove = GetActiveEffects(Query);
+    }
+    else
+    {
+        // If no tag provided, we don't attempt to find matching effects here. The caller should provide a tag
+        // for reliable refresh behavior. Just apply the effect.
+        MY_LOG(LogTemp, Warning, TEXT("ApplyOrRefreshGameplayEffectToSelf called without TagToMatch; will simply apply effect without refreshing existing ones."));
+    }
+
+    // Remove collected handles
+    for (const FActiveGameplayEffectHandle& H : HandlesToRemove)
+    {
+        if (H.IsValid())
+        {
+            RemoveActiveGameplayEffect(H);
+        }
+    }
+
+    // Apply new effect
+    FGameplayEffectContextHandle EffectContext = MakeEffectContext();
+    FGameplayEffectSpecHandle SpecHandle = MakeOutgoingSpec(EffectClass, Level, EffectContext);
+    if (!SpecHandle.IsValid())
+    {
+        MY_LOG(LogTemp, Error, TEXT("Failed to make outgoing spec for effect %s"), *EffectClass->GetName());
+        return FActiveGameplayEffectHandle();
+    }
+
+    return ApplyGameplayEffectSpecToSelf(*SpecHandle.Data.Get());
 }
