@@ -145,114 +145,64 @@ void UDDSAttributeSet::PreAttributeChange(const FGameplayAttribute& Attribute, f
 
 void UDDSAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCallbackData& Data)
 {
-	if (!CachedPawnUIInterface.IsValid())
-	{
-		CachedPawnUIInterface = TWeakInterfacePtr<IPawnUIInterface>(Data.Target.GetAvatarActor());
-	}
-	if (!CachedPawnUIInterface.IsValid())
-	{
-		MY_ERROR_DISPLAY(TEXT("PawnUIInterface is not implemented"));
-		return;
-	}
-	MY_LOG(LogTemp, Log, TEXT("PostGameplayEffectExecute called for %s"), *GetName());
+	Super::PostGameplayEffectExecute(Data);
 
-	bool hasAuthority = GetOwningAbilitySystemComponent()->GetOwner()->HasAuthority();
-	UPawnUIComponent* PawnUIComponent = CachedPawnUIInterface->GetPawnUIComponent();
-	if (!PawnUIComponent)
+	bool bHasAuthority = false;
+	if (const UAbilitySystemComponent* ASC = GetOwningAbilitySystemComponent())
 	{
-		MY_ERROR_DISPLAY(TEXT("Couldn't get PawnUIComponent from %s"), *GetName());
-		return;
+		if (const AActor* OwnerActor = ASC->GetOwner())
+		{
+			bHasAuthority = OwnerActor->HasAuthority();
+		}
 	}
-	
+
+	// Health: 클램프 및 죽음 태그 처리만 수행 (UI는 ASC 델리게이트로 처리)
 	if (Data.EvaluatedData.Attribute == GetHealthAttribute())
 	{
-		const float NewHealth = FMath::Clamp( GetHealth(), 0.f, GetHealthMax());
-		MY_CLOG_DISPLAY_NET(FColor::Green, hasAuthority, TEXT("%s Health changed from %f to %f"), *GetName(), GetHealth(), NewHealth);
+		const float NewHealth = FMath::Clamp(GetHealth(), 0.f, GetHealthMax());
 		SetHealth(NewHealth);
-		if (hasAuthority)
-		{
-			PawnUIComponent->Multicast_OnHealthChanged(NewHealth, GetHealthMax());
-		}
-		else
-		{
-			PawnUIComponent->OnHealthChanged.Broadcast(NewHealth);
-		}
-		// PawnUIComponent->OnHealthChanged.Broadcast(NewHealth);
+		MY_CLOG_DISPLAY_NET(FColor::Green, bHasAuthority, TEXT("%s Health clamped to %f"), *GetName(), NewHealth);
 	}
 
+	// Stamina: 값 클램프만 수행
 	if (Data.EvaluatedData.Attribute == GetStaminaAttribute())
 	{
-		const float NewStamina = FMath::Clamp( GetStamina(), 0.f, GetStaminaMax());
+		const float NewStamina = FMath::Clamp(GetStamina(), 0.f, GetStaminaMax());
 		SetStamina(NewStamina);
-
-		UPlayerUIComponent* PlayerUIComponent = CachedPawnUIInterface->GetPlayerUIComponent();
-		if (PlayerUIComponent)
-		{
-			PlayerUIComponent->OnStaminaChanged.Broadcast(NewStamina);
-		}
-		else
-		{
-			MY_ERROR_DISPLAY(TEXT("Couldn't get PlayerUIComponent from %s"), *GetName());
-		}
 	}
 
+	// StaminaMax: 값 클램프만 수행
 	if (Data.EvaluatedData.Attribute == GetStaminaMaxAttribute())
 	{
-		const float NewMaxStamina = FMath::Clamp( GetStaminaMax(), 0.f, GetStaminaMax());
+		const float NewMaxStamina = FMath::Clamp(GetStaminaMax(), 0.f, GetStaminaMax());
 		SetStaminaMax(NewMaxStamina);
-
-		UPlayerUIComponent* PlayerUIComponent = CachedPawnUIInterface->GetPlayerUIComponent();
-		if (PlayerUIComponent)
-		{
-			PlayerUIComponent->Multicast_OnMaxStaminaChanged(NewMaxStamina, GetStaminaMax());
-		}
-		else
-		{
-			MY_ERROR_DISPLAY(TEXT("Couldn't get PlayerUIComponent from %s"), *GetName());
-		}
 	}
 
+	// DamageTaken: 데미지 계산 + 죽음 태그 처리 (UI는 델리게이트에 맡김)
 	if (Data.EvaluatedData.Attribute == GetDamageTakenAttribute())
 	{
 		const float OldHealth = GetHealth();
 		const float TakenDamage = GetDamageTaken();
 		const float NewHealth = FMath::Clamp(OldHealth - TakenDamage, 0.f, GetHealthMax());
 		SetHealth(NewHealth);
-		if (hasAuthority)
-		{
-			PawnUIComponent->Multicast_OnHealthChanged(NewHealth, OldHealth);
-		}
-		else
-		{
-			PawnUIComponent->OnHealthChanged.Broadcast(NewHealth);
-		}
 
-		bool authority = GetOwningAbilitySystemComponent()->GetOwner()->HasAuthority();
-		MY_CLOG_DISPLAY_NET(FColor::Red,authority, TEXT("OldHealth: %f, TakenDamage: %f, NewHealth: %f"), OldHealth, TakenDamage, NewHealth);
+		MY_CLOG_DISPLAY_NET(FColor::Red, bHasAuthority, TEXT("OldHealth: %f, TakenDamage: %f, NewHealth: %f"), OldHealth, TakenDamage, NewHealth);
 
 		if (GetHealth() <= 0.f)
 		{
-			if(UAbilitySystemComponent* ASC = GetOwningAbilitySystemComponent())
+			if (UAbilitySystemComponent* ASC = GetOwningAbilitySystemComponent())
 			{
 				ASC->AddLooseGameplayTag(FGameplayTag::RequestGameplayTag("State.Dead.Start"));
 			}
 		}
 	}
 
+	// HealthMax: 값 클램프만 수행 (UI 갱신은 ASC 델리게이트가 처리)
 	if (Data.EvaluatedData.Attribute == GetHealthMaxAttribute())
 	{
-		const float NewMaxHealth = FMath::Clamp( GetHealthMax(), 0.f, GetHealthMax());
+		const float NewMaxHealth = FMath::Clamp(GetHealthMax(), 0.f, GetHealthMax());
 		SetHealthMax(NewMaxHealth);
-		if (hasAuthority)
-		{
-			PawnUIComponent->Multicast_OnMaxHealthChanged(NewMaxHealth, GetHealthMax());
-		}
-		else
-		{
-			PawnUIComponent->OnMaxHealthChanged.Broadcast(NewMaxHealth);
-		}
 	}
-	
 }
 
 

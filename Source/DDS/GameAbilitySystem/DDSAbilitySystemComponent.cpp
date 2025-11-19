@@ -6,6 +6,7 @@
 #include "Abilities/DDSGameplayAbility.h"
 #include "DDSTypes/DDSStructTypes.h"
 #include "ETC/CustomLog.h"
+#include "GameAbilitySystem/DDSAttributeSet.h"
 
 void UDDSAbilitySystemComponent::AbilityActorInfoSet()
 {
@@ -110,4 +111,91 @@ void UDDSAbilitySystemComponent::Multicast_RemoveLooseGameplayTag_Implementation
 	bool isServer = GetOwner()->HasAuthority();
 	MY_CLOG_DISPLAY_NET(FColor::White,isServer,TEXT("RemoveLooseGameplayTag : %s"),*InTag.ToString());
 	RemoveLooseGameplayTag(InTag);
+}
+
+void UDDSAbilitySystemComponent::BindAttributeValueChangeDelegates(UDDSAttributeSet* InAttributeSet)
+{
+	if (!InAttributeSet)
+	{
+		return;
+	}
+
+	// Health / HealthMax / DamageTaken 등 Attribute 값 변경을 Listen
+	GetGameplayAttributeValueChangeDelegate(InAttributeSet->GetHealthAttribute())
+		.AddUObject(this, &UDDSAbilitySystemComponent::HandleHealthChanged);
+
+	GetGameplayAttributeValueChangeDelegate(InAttributeSet->GetStaminaAttribute())
+		.AddUObject(this, &UDDSAbilitySystemComponent::HandleStaminaChanged);
+
+	GetGameplayAttributeValueChangeDelegate(InAttributeSet->GetManaAttribute())
+		.AddUObject(this, &UDDSAbilitySystemComponent::HandleManaChanged);
+
+	GetGameplayAttributeValueChangeDelegate(InAttributeSet->GetHealthMaxAttribute())
+		.AddUObject(this, &UDDSAbilitySystemComponent::HandleHealthMaxChanged);
+
+	GetGameplayAttributeValueChangeDelegate(InAttributeSet->GetStaminaMaxAttribute())
+		.AddUObject(this, &UDDSAbilitySystemComponent::HandleStaminaMaxChanged);
+
+	GetGameplayAttributeValueChangeDelegate(InAttributeSet->GetManaMaxAttribute())
+		.AddUObject(this, &UDDSAbilitySystemComponent::HandleManaMaxChanged);
+
+	GetGameplayAttributeValueChangeDelegate(InAttributeSet->GetDamageTakenAttribute())
+		.AddUObject(this, &UDDSAbilitySystemComponent::HandleDamageTakenChanged);
+}
+
+void UDDSAbilitySystemComponent::HandleHealthChanged(const FOnAttributeChangeData& Data)
+{
+	OnHealthChanged.Broadcast(Data.NewValue);
+
+	// 디버그 메시지
+	bool bIsServer = GetOwner() && GetOwner()->HasAuthority();
+	MY_CLOG_DISPLAY_NET(FColor::Green, bIsServer, TEXT("[ASC] Health Changed: %.2f -> %.2f"), Data.OldValue, Data.NewValue);
+}
+
+void UDDSAbilitySystemComponent::HandleStaminaChanged(const FOnAttributeChangeData& Data)
+{
+	OnStaminaChanged.Broadcast(Data.NewValue);
+
+	bool bIsServer = GetOwner() && GetOwner()->HasAuthority();
+	MY_CLOG_DISPLAY_NET(FColor::Yellow, bIsServer, TEXT("[ASC] Stamina Changed: %.2f -> %.2f"), Data.OldValue, Data.NewValue);
+}
+
+void UDDSAbilitySystemComponent::HandleManaChanged(const FOnAttributeChangeData& Data)
+{
+	OnManaChanged.Broadcast(Data.NewValue);
+
+	bool bIsServer = GetOwner() && GetOwner()->HasAuthority();
+	MY_CLOG_DISPLAY_NET(FColor::Cyan, bIsServer, TEXT("[ASC] Mana Changed: %.2f -> %.2f"), Data.OldValue, Data.NewValue);
+}
+
+void UDDSAbilitySystemComponent::HandleHealthMaxChanged(const FOnAttributeChangeData& Data)
+{
+	OnMaxHealthChanged.Broadcast(Data.NewValue);
+
+	bool bIsServer = GetOwner() && GetOwner()->HasAuthority();
+	MY_CLOG_DISPLAY_NET(FColor::Emerald, bIsServer, TEXT("[ASC] HealthMax Changed: %.2f -> %.2f"), Data.OldValue, Data.NewValue);
+}
+
+void UDDSAbilitySystemComponent::HandleStaminaMaxChanged(const FOnAttributeChangeData& Data)
+{
+	OnMaxStaminaChanged.Broadcast(Data.NewValue);
+
+	bool bIsServer = GetOwner() && GetOwner()->HasAuthority();
+	MY_CLOG_DISPLAY_NET(FColor::Silver, bIsServer, TEXT("[ASC] StaminaMax Changed: %.2f -> %.2f"), Data.OldValue, Data.NewValue);
+}
+
+void UDDSAbilitySystemComponent::HandleManaMaxChanged(const FOnAttributeChangeData& Data)
+{
+	OnMaxManaChanged.Broadcast(Data.NewValue);
+
+	bool bIsServer = GetOwner() && GetOwner()->HasAuthority();
+	MY_CLOG_DISPLAY_NET(FColor::Blue, bIsServer, TEXT("[ASC] ManaMax Changed: %.2f -> %.2f"), Data.OldValue, Data.NewValue);
+}
+
+void UDDSAbilitySystemComponent::HandleDamageTakenChanged(const FOnAttributeChangeData& Data)
+{
+	OnDamageTakenChanged.Broadcast(Data.NewValue);
+
+	bool bIsServer = GetOwner() && GetOwner()->HasAuthority();
+	MY_CLOG_DISPLAY_NET(FColor::Red, bIsServer, TEXT("[ASC] DamageTaken Changed: %.2f -> %.2f"), Data.OldValue, Data.NewValue);
 }

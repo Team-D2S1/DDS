@@ -131,6 +131,7 @@ void AMonsterBase::BeginPlay()
 	}
 	MonsterUIComponent->BroadcastInitialValues(AttributeSet);
 	MonsterUIComponent->OnPawnInitializingFinished.Broadcast();
+	AbilitySystemComponent->BindAttributeValueChangeDelegates(AttributeSet);
 	MY_LOG(LogTemp, Type::Log, TEXT("MonsterBase BeginPlay Finished"));
 }
 
