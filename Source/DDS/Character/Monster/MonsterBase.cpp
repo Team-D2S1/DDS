@@ -196,8 +196,20 @@ void AMonsterBase::PossessedBy(AController* NewController)
 
 	InitMonsterStartUpData();
 }
+
+void AMonsterBase::OnGameplayEffectApplied(UAbilitySystemComponent* ASC, const FGameplayEffectSpec& Spec,
+	FActiveGameplayEffectHandle handle)
+{
+}
+
 void AMonsterBase::InitMonsterStartUpData()
 {
+	UAbilitySystemComponent* ASC = GetAbilitySystemComponent();
+	if(ASC)
+	{
+		ASC->OnGameplayEffectAppliedDelegateToSelf.AddUObject(this, &ThisClass::OnGameplayEffectApplied);
+	}
+	
 	if (EntityStartUpDataBase.IsNull())
 	{
 		return;

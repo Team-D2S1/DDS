@@ -7,6 +7,8 @@
 #include "Interfaces//Focusable.h"
 #include "MonsterBase.generated.h"
 
+struct FActiveGameplayEffectHandle;
+struct FGameplayEffectSpec;
 class UPatrolComponent;
 class APatrolRoute;
 class UWidgetComponent;
@@ -63,6 +65,9 @@ protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "UI")
 	TObjectPtr<UWidgetComponent> MonsterHealthWidgetComponent;
 
+	/** 어빌리티 변화 시 콜백 */
+	UFUNCTION()
+	void OnGameplayEffectApplied(UAbilitySystemComponent* ASC, const FGameplayEffectSpec& Spec, FActiveGameplayEffectHandle handle);
 	/** 몬스터 초기 스탯 초기화 */
 	void InitMonsterStartUpData();
 	

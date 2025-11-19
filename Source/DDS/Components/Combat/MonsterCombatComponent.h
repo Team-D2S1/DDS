@@ -72,6 +72,9 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Montage")
 	TObjectPtr<UAnimMontage> DeathMontage;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Montage")
+	TObjectPtr<UAnimMontage> HitReactionMontage;
 
 protected:
 	virtual void BeginPlay() override;
