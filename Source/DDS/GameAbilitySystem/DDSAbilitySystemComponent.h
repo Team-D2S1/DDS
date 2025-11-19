@@ -6,8 +6,17 @@
 #include "AbilitySystemComponent.h"
 #include "DDSAbilitySystemComponent.generated.h"
 
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnDDSHealthChangedSignature, float, NewHealth);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnDDSMaxHealthChangedSignature, float, NewMaxHealth);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnDDSStaminaChangedSignature, float, NewStamina);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnDDSMaxStaminaChangedSignature, float, NewMaxStamina);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnDDSManaChangedSignature, float, NewMana);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnDDSMaxManaChangedSignature, float, NewMaxMana);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnDDSDamageTakenChangedSignature, float, NewDamageTaken);
+
 struct FDDSPlayerAbilitySet;
 class UDDSGameplayAbility;
+class UDDSAttributeSet;
 /**
  * 
  */
@@ -39,6 +48,37 @@ public:
 	// UFUNCTION(Client, Reliable)
 	// void ClientEffectApplied(UAbilitySystemComponent* AbilitySystemComponent, const FGameplayEffectSpec& EffectSpec, FActiveGameplayEffectHandle ActiveEffectHandle);
 	
+	/** AttributeSet 값 변경 델리게이트 바인딩 */
+	void BindAttributeValueChangeDelegates(UDDSAttributeSet* InAttributeSet);
+
+	// 게임 전역에서 사용 가능한 Attribute 변경 델리게이트 (UI, 이펙트, 사운드 등 모두 구독 가능)
+	UPROPERTY(BlueprintAssignable, Category="DDS|Attributes")
+	FOnDDSHealthChangedSignature OnHealthChanged;
+
+	UPROPERTY(BlueprintAssignable, Category="DDS|Attributes")
+	FOnDDSMaxHealthChangedSignature OnMaxHealthChanged;
+
+	UPROPERTY(BlueprintAssignable, Category="DDS|Attributes")
+	FOnDDSStaminaChangedSignature OnStaminaChanged;
+
+	UPROPERTY(BlueprintAssignable, Category="DDS|Attributes")
+	FOnDDSMaxStaminaChangedSignature OnMaxStaminaChanged;
+
+	UPROPERTY(BlueprintAssignable, Category="DDS|Attributes")
+	FOnDDSManaChangedSignature OnManaChanged;
+
+	UPROPERTY(BlueprintAssignable, Category="DDS|Attributes")
+	FOnDDSMaxManaChangedSignature OnMaxManaChanged;
+
+	UPROPERTY(BlueprintAssignable, Category="DDS|Attributes")
+	FOnDDSDamageTakenChangedSignature OnDamageTakenChanged;
+
+protected:
+	void HandleHealthChanged(const FOnAttributeChangeData& Data);
+	void HandleStaminaChanged(const FOnAttributeChangeData& Data);
+	void HandleManaChanged(const FOnAttributeChangeData& Data);
+	void HandleHealthMaxChanged(const FOnAttributeChangeData& Data);
+	void HandleStaminaMaxChanged(const FOnAttributeChangeData& Data);
+	void HandleManaMaxChanged(const FOnAttributeChangeData& Data);
+	void HandleDamageTakenChanged(const FOnAttributeChangeData& Data);
 };
-
-

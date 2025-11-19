@@ -194,6 +194,7 @@ void APlayerBase::InitAbilityActorInfo()
 	AttributeSet = DDSPlayerState->GetDDSAttribueSet();
 	CachedInventoryComponent = TWeakObjectPtr<UInventoryComponent>(DDSPlayerState->GetInventoryComponent());
 	PlayerUIComponent->BroadcastInitialValues(AttributeSet);
+	AbilitySystemComponent->BindAttributeValueChangeDelegates(AttributeSet);
 
 }
 
