@@ -17,6 +17,13 @@ UBTTaskNode_ActivateSkill::UBTTaskNode_ActivateSkill()
 {
 	NodeName = "Activate Skill";
 	bNotifyTick = true;
+	
+	/* UBTTaskNode는 기본적으로 클래스 단위로 하나의 인스턴스만 생성된다
+	 * 즉, 동일한 Task를 여러 AI가 공유하면 모든 AI가 동일한 Task 인스턴스를 공유하게 됨
+	 * AI마다 다른 값을 가지는 Task를 만들고 싶다면 bCreateNodeInstance를 true로 해야 한다
+	 * 내부 설명 : if set, node will be instanced instead of using memory block and template shared with all other BT components
+	 */
+	bCreateNodeInstance = true; 
 }
 
 EBTNodeResult::Type UBTTaskNode_ActivateSkill::ExecuteTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory)
@@ -47,6 +54,7 @@ EBTNodeResult::Type UBTTaskNode_ActivateSkill::ExecuteTask(UBehaviorTreeComponen
 		MY_LOG(LogTemp, Warning, TEXT("Skill Activated Successfully!"));
 		Blackboard->SetValueAsBool("bIsUsingSkill", true);
 		// 스킬 종료시 불릴 콜백함수 바인딩
+		
 		OnAbilityEndDelegateHandle = ASC->OnAbilityEnded.AddUObject(this, &ThisClass::OnAbilityEnded);
 
 		return EBTNodeResult::InProgress;
@@ -78,6 +86,7 @@ void UBTTaskNode_ActivateSkill::TickTask(UBehaviorTreeComponent& OwnerComp, uint
 
 void UBTTaskNode_ActivateSkill::OnAbilityEnded(const FAbilityEndedData& EndedData)
 {
+	MY_LOG(LogTemp, Error, "0")
 	if(EndedData.AbilitySpecHandle == CachedHandle)
 	{
 		if(CachedOwnerComp)

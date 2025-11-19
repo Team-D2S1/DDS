@@ -24,9 +24,7 @@ public:
 	ADDSWeaponBase();
 
 	FOnTargetInteractedDelegate OnWeaponHitTarget;
-	FOnTargetInteractedDelegate OnWeaponPulledFromTarget;
-
-	
+	FOnTargetInteractedDelegate OnWeaponPulledFromTarget;	
 
 protected:
 

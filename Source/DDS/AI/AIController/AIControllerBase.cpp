@@ -57,7 +57,6 @@ void AAIControllerBase::OnTargetPerceptionUpdated(AActor* Actor, FAIStimulus Sti
 		if(Stimulus.WasSuccessfullySensed() && Actor && GetTeamAttitudeTowards(*Actor) == ETeamAttitude::Hostile)
 		{
 			BlackboardComponent->SetValueAsObject("TargetActor", Actor);
-			
 		}
 		else
 		{
