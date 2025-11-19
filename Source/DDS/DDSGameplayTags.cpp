@@ -86,12 +86,16 @@ namespace DDSGameplayTags
     UE_DEFINE_GAMEPLAY_TAG_COMMENT(Player_Ability_Equip_Sword, "Player.Ability.Equip.Sword", "Player : player equips a sword ability.");
 	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Player_Ability_Unequip_Sword, "Player.Ability.Unequip.Sword", "Player : player unequips a sword ability.");
 
+
+	
 	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Player_Ability_Equip_Crafted, "Player.Ability.Equip.Crafted", "Player : player equips a crafted weapon ability.");
 	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Player_Ability_Unequip_Crafted, "Player.Ability.Unequip.Crafted", "Player : player unequips a crafted weapon ability.");
 
+
+	
 	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Player_Ability_Attack_LightAttack_Sword, "Player.Ability.Attack.LightAttack.Sword", "Player : player performs a light attack ability with a sword.");
 	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Player_Ability_Attack_HeavyAttack_Sword, "Player.Ability.Attack.HeavyAttack.Sword", "Player : player performs a heavy attack ability with a sword.");
-	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Player_Ability_Attack_Dodge, "Player.Ability.Attack.Dodge", "Player : player performs a dodge ability.");
+	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Player_Ability_Dodge, "Player.Ability.Dodge", "Player : player performs a dodge ability.");
 	
 	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Player_Weapon_Sword, "Player.Weapon.Sword", "Player : player's sword weapon.");
 	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Player_Weapon_Crafted, "Player.Weapon.Crafted", "Player : player's crafted weapon.");

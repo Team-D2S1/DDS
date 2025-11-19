@@ -175,16 +175,17 @@ void UPlayerCombatComponent::TriggerDodge(const FVector2D& MoveInput)
 	FVector WorldDir = Forward * MoveInput.Y + Right * MoveInput.X;
 	WorldDir = WorldDir.GetSafeNormal();
 
-	if (!WorldDir.IsNearlyZero())
-	{
-		ASC->SetLastDodgeInputDirection(WorldDir);
-	}
+	FVector LocalDir = PlayerBase->GetActorTransform().InverseTransformVectorNoScale(WorldDir);
+	ASC->SetLastDodgeInputDirection(LocalDir);
 
-	MY_LOG(LogTemp, Log, TEXT("TriggerDodge: MoveInput=%s, WorldDir=%s"), *MoveInput.ToString(), *WorldDir.ToString());
 
-	// 실제 구르기 GA는 블루프린트로 구현: 여기서는 방향 캐시만 하고 GA 활성화는
-	// 입력 태그 기반 또는 블루프린트에서 처리하도록 남겨둔다.
+	// Tag로 GA 트리거
+	FGameplayTagContainer DodgeTags;
+	DodgeTags.AddTag(DDSGameplayTags::Player_Ability_Dodge);
+
+	ASC->TryActivateAbilitiesByTag(DodgeTags);
 }
+
 
 void UPlayerCombatComponent::TriggerBackstep()
 {
@@ -200,9 +201,11 @@ void UPlayerCombatComponent::TriggerBackstep()
 
 	ASC->SetLastDodgeInputDirection(Backward.GetSafeNormal());
 
-	MY_LOG(LogTemp, Log, TEXT("TriggerBackstep: WorldDir=%s"), *Backward.ToString());
 
-	// 실제 백스텝 GA는 블루프린트로 구현 예정
+	FGameplayTagContainer DodgeTags;
+	DodgeTags.AddTag(DDSGameplayTags::Player_Ability_Dodge);
+
+	ASC->TryActivateAbilitiesByTag(DodgeTags);
 }
 
 // void UPlayerCombatComponent::TickComponent(float DeltaTime, ELevelTick TickType,
