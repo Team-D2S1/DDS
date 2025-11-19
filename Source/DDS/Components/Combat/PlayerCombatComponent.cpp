@@ -77,12 +77,38 @@ void UPlayerCombatComponent::NotifyRightWeaponChanged(UItemInstance* NewWeapon)
 		if (bIsServer)
 		{
 			FGameplayAbilitySpec spec(DespawnCraftedWeaponAbilityClass);
-			spec.SourceObject = ASC->GetAvatarActor();
+			spec.SourceObject = rightWeaponItem; // 무기 아이템을 소스로 설정
 			spec.Level  = 1;
 			ASC->GiveAbility(spec);
-			rightWeaponItem = nullptr; // 무기 아이템을 nullptr로 설정(미리 null로 하면 Ability에서 접근 불가)
+			rightWeaponItem = nullptr;
 			}
 		return;
+	}
+	if (rightWeaponItem == NewWeapon)
+	{
+		MY_LOG(LogTemp, Log, TEXT("NewWeapon is the same as rightWeaponItem in NotifyRightWeaponChanged"));
+		return; // 이미 같은 무기가 장착된 상태
+	}
+
+	if (rightWeaponItem != nullptr)
+	{
+		// 기존 무기 제거 과정
+		MY_LOG(LogTemp, Log, TEXT("Replacing existing weapon in NotifyRightWeaponChanged"));
+		APlayerBase* PlayerBase = GetOwningPawn<APlayerBase>();
+		if (!PlayerBase) return;
+		UAbilitySystemComponent* ASC = PlayerBase->GetAbilitySystemComponent();
+		if (!ASC) return;
+
+		// 해당능력에서 해야하는것들
+		// 1. (장착중이었던 경우) 무기 능력 제거
+		// 2. 무기 액터 제거
+		if (bIsServer)
+		{
+			FGameplayAbilitySpec spec(DespawnCraftedWeaponAbilityClass);
+			spec.SourceObject = rightWeaponItem; // 무기 아이템을 소스로 설정
+			spec.Level  = 1;
+			ASC->GiveAbility(spec);
+		}
 	}
 	
 	rightWeaponItem = NewWeapon; // 현재 장착된 무기 아이템을 업데이트(생성할때는 미리 설정)

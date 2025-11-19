@@ -54,6 +54,20 @@ void UPawnCombatComponent::RegisterSpawnedWeapon(FGameplayTag InWeaponTag, ADDSW
 
 void UPawnCombatComponent::UnregisterSpawnedWeaponById(int32 ItemId)
 {
+	if (GetOwningPawn()->HasAuthority())
+	{
+		MY_LOG(LogTemp, Log, TEXT("UnregisterSpawnedWeaponById called with ItemId: %d"), ItemId);
+		Multicast_UnregisterSpawnedWeaponById(ItemId);
+	}
+	else
+	{
+		MY_LOG(LogTemp, Error, TEXT("UnregisterSpawnedWeaponById can only be called on the server."));
+	}
+}
+
+void UPawnCombatComponent::Multicast_UnregisterSpawnedWeaponById_Implementation(int32 ItemId)
+{
+	bool bIsServer = GetOwningPawn()->HasAuthority();
 	for (auto& Pair : CharacterCarriedWeaponMap)
 	{
 		if (Pair.Value->GetItemId() == ItemId)
@@ -61,11 +75,13 @@ void UPawnCombatComponent::UnregisterSpawnedWeaponById(int32 ItemId)
 			Pair.Value->OnWeaponHitTarget.Unbind();
 			Pair.Value->OnWeaponPulledFromTarget.Unbind();
 			CharacterCarriedWeaponMap.Remove(Pair.Key);
-			MY_LOG(LogTemp, Log, TEXT("A Weapon %s is unregistered."), *Pair.Value->GetName());
+			MY_LOG(LogTemp, Log, TEXT("[%s] Weapon with ItemId %d (Tag: %s) is unregistered."), 
+			       bIsServer ? TEXT("Server") : TEXT("Client"), ItemId, *Pair.Key.ToString());
 			return;
 		}
 	}
-	MY_LOG(LogTemp, Error, TEXT("Weapon with ItemId %d is not registered."), ItemId);
+	MY_LOG(LogTemp, Error, TEXT("[%s] Weapon with ItemId %d not found for unregistration."), 
+	       bIsServer ? TEXT("Server") : TEXT("Client"), ItemId);
 }
 
 

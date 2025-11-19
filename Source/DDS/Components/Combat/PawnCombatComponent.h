@@ -45,6 +45,10 @@ public:
 	
 	UFUNCTION(BlueprintCallable,Category="DDS|Combat")
 	void UnregisterSpawnedWeaponById(int32 ItemId);
+
+
+	UFUNCTION(NetMulticast,Reliable,Category="DDS|Combat")
+	void Multicast_UnregisterSpawnedWeaponById(int32 ItemId);
 	
 	/**
 	 * 
