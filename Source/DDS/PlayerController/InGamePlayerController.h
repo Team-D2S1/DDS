@@ -105,8 +105,12 @@ private:
 
 	// 짧은/긴 입력을 나누는 임계값 (초)
 	UPROPERTY(EditDefaultsOnly, Category="Input|Move")
-	float BLongPressThreshold = 0.2f;
+	float BShortPressThreshold = 0.05f;
 
+	// 짧은/긴 입력을 나누는 임계값 (초)
+	UPROPERTY(EditDefaultsOnly, Category="Input|Move")
+	float BLongPressThreshold = 0.4f;
+	
 	// 이동 속도 계수
 	UPROPERTY(EditDefaultsOnly, Category="Move")
 	float BaseMoveSpeed = 400.f;

@@ -440,15 +440,16 @@ void AInGamePlayerController::TryExecuteDodgeOrBackstep()
 	const bool bHasMoveInput = !CachedMoveVector.IsNearlyZero(0.1f);
 
 	// B 버튼이 짧게 눌렸다가 떼어졌다면 (press~release 사이 시간이 짧음)
-	const bool bShortPress = (BPressedTime < BLongPressThreshold);
-
+	const bool bShortPress = (BPressedTime < BShortPressThreshold);
+	const bool bLongPress = (BPressedTime >= BLongPressThreshold);
+	
 	UPlayerCombatComponent* CombatComp = PlayerBase->GetCombatComponent() ? Cast<UPlayerCombatComponent>(PlayerBase->GetCombatComponent()) : nullptr;
 	if (!CombatComp)
 	{
 		return;
 	}
 
-	if (bHasMoveInput)
+	if (bHasMoveInput && !bLongPress)
 	{
 		// L스틱 + B 입력 -> 해당 방향 구르기
 		CombatComp->TriggerDodge(CachedMoveVector);
