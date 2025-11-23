@@ -48,12 +48,12 @@ protected:
 	UPROPERTY(EditDefaultsOnly,BlueprintReadOnly,Category="WeaponData", ReplicatedUsing=OnRep_PlayerWeaponData)
 	FDDSBaseWeaponData PlayerWeaponData;
 
-	// OnRep 용으로 존재함. 해당문제 해결되면 삭제해도됨
-	UPROPERTY(VisibleAnywhere,BlueprintReadOnly,Category="DDS|Weapon",ReplicatedUsing= OnRep_OwnerPawn)
-	TObjectPtr<APawn> OwnerPawn;
+	// // OnRep 용으로 존재함. 해당문제 해결되면 삭제해도됨
+	// UPROPERTY(VisibleAnywhere,BlueprintReadOnly,Category="DDS|Weapon",ReplicatedUsing= OnRep_OwnerPawn)
+	// TObjectPtr<APawn> OwnerPawn;
 
-	UPROPERTY(VisibleAnywhere,BlueprintReadOnly,Category="DDS|Weapon",ReplicatedUsing = OnRep_WeaponTag)
-	FGameplayTag WeaponTag;
+	// UPROPERTY(VisibleAnywhere,BlueprintReadOnly,Category="DDS|Weapon",ReplicatedUsing = OnRep_WeaponTag)
+	// FGameplayTag WeaponTag;
 	
 	UPROPERTY(VisibleAnywhere,BlueprintReadOnly,Category="DDS|Weapon")
 	TObjectPtr<UStaticMeshComponent> WeaponMesh;
@@ -70,24 +70,27 @@ protected:
 	
 public:
 	virtual UBoxComponent* GetWeaponCollsionBox() const {return WeaponCollisionBox;}
+	
+	UFUNCTION(BlueprintPure, Category="DDS|Weapon")
+	UStaticMeshComponent* GetWeaponMesh() const { return WeaponMesh; }
 
 	UFUNCTION(BlueprintCallable,Category="DDS|Weapon")
 	void SetParentItemId(int32 InItemId);
 	
-	UFUNCTION(BlueprintCallable,Category="DDS|Weapon")
-	void SetOwnerPawn(APawn* InOwnerPawn);
+	// UFUNCTION(BlueprintCallable,Category="DDS|Weapon")
+	// void SetOwnerPawn(APawn* InOwnerPawn);
 
-	UFUNCTION(BlueprintCallable,Category="DDS|Weapon")
-	APawn* GetOwnerPawn() const {return OwnerPawn;};
+	// UFUNCTION(BlueprintCallable,Category="DDS|Weapon")
+	// APawn* GetOwnerPawn() const {return OwnerPawn;};
 
-	UFUNCTION(BlueprintCallable,Category="DDS|Weapon")
-	virtual void OnRep_OwnerPawn();
+	// UFUNCTION(BlueprintCallable,Category="DDS|Weapon")
+	// virtual void OnRep_OwnerPawn();
 
-	UFUNCTION(BlueprintCallable,Category="DDS|Weapon")
-	void SetWeaponTag(FGameplayTag InWeaponTag);
+	// UFUNCTION(BlueprintCallable,Category="DDS|Weapon")
+	// void SetWeaponTag(FGameplayTag InWeaponTag);
 
-	UFUNCTION(BlueprintCallable,Category="DDS|Weapon")
-	virtual void OnRep_WeaponTag();
+	// UFUNCTION(BlueprintCallable,Category="DDS|Weapon")
+	// virtual void OnRep_WeaponTag();
 
 
 	UFUNCTION(BlueprintCallable,Category="DDS|Weapon")

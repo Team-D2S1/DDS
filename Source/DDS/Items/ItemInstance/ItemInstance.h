@@ -50,6 +50,9 @@ public:
 	UFUNCTION(BlueprintPure, Category = "DDS|Item")
 	TSubclassOf<UGameplayEffect> GetItemEffectClass() const;
 
+	UFUNCTION(BlueprintPure, Category = "DDS|Item")
+	TSubclassOf<UItemStaticData> GetItemClass() const { return ItemClass; }
+
 	UFUNCTION(BlueprintCallable)
 	void SetBladeItemInstance(UItemInstance* NewBladeItemInstance);
 	UFUNCTION(BlueprintCallable)

@@ -23,6 +23,9 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "WeaponBladePart")
 	UBoxComponent* GetBladePartCollisionBox() const { return BladePartCollisionBox; }
 
+	UFUNCTION(BlueprintPure, Category = "WeaponBladePart")
+	UStaticMeshComponent* GetBladePartMesh() const { return BladePartMesh; }
+
     UPROPERTY(BlueprintAssignable, Category = "WeaponBladePart")
 	FOnWeaponBladePartBeginOverlapDelegate OnWeaponBladePartBeginOverlap;
 	UPROPERTY(BlueprintAssignable, Category = "WeaponBladePart")

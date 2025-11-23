@@ -69,8 +69,8 @@ void ADDSWeaponBase::GetLifetimeReplicatedProps(TArray<class FLifetimeProperty>&
 
 	DOREPLIFETIME(ADDSWeaponBase, ParentItemId);
 	DOREPLIFETIME(ADDSWeaponBase, WeaponItemInstance);
-	DOREPLIFETIME(ADDSWeaponBase, OwnerPawn);
-	DOREPLIFETIME(ADDSWeaponBase, WeaponTag);
+	// DOREPLIFETIME(ADDSWeaponBase, OwnerPawn);
+	// DOREPLIFETIME(ADDSWeaponBase, WeaponTag);
 	DOREPLIFETIME(ADDSWeaponBase, PlayerWeaponData);
 	DOREPLIFETIME(ADDSWeaponBase, GrantedAbilitySpecHandles);
 	
@@ -90,59 +90,37 @@ void ADDSWeaponBase::SetParentItemId(int32 InItemId)
 }
 
 
-void ADDSWeaponBase::SetOwnerPawn(APawn* InOwnerPawn)
-{
-	OwnerPawn = InOwnerPawn;
-}
+// void ADDSWeaponBase::SetOwnerPawn(APawn* InOwnerPawn)
+// {
+// 	OwnerPawn = InOwnerPawn;
+// }
+//
+// void ADDSWeaponBase::OnRep_OwnerPawn()
+// {
+// 	if (OwnerPawn)
+// 	{
+// 		APlayerBase* Player = Cast<APlayerBase>(OwnerPawn);
+// 		if (Player)
+// 		{
+// 			Player->GetCombatComponent()->RegisterSpawnedWeapon(WeaponTag ,this);
+// 		}
+// 	}
+// }
+//
+// void ADDSWeaponBase::SetWeaponTag(FGameplayTag InWeaponTag)
+// {
+// 	WeaponTag = InWeaponTag;
+// }
 
-void ADDSWeaponBase::OnRep_OwnerPawn()
-{
-	if (OwnerPawn)
-	{
-		APlayerBase* Player = Cast<APlayerBase>(OwnerPawn);
-		if (Player)
-		{
-			Player->GetCombatComponent()->RegisterSpawnedWeapon(WeaponTag ,this);
-		}
-	}
-}
-
-void ADDSWeaponBase::SetWeaponTag(FGameplayTag InWeaponTag)
-{
-	WeaponTag = InWeaponTag;
-}
-
-void ADDSWeaponBase::OnRep_WeaponTag()
-{
-}
+// void ADDSWeaponBase::OnRep_WeaponTag()
+// {
+// }
 
 void ADDSWeaponBase::OnRep_PlayerWeaponData()
 {
 	
 }
 
-ADDSWeaponBase* UPawnCombatComponent::GetCharacterCarriedWeapon(FGameplayTag InWeaponTag) const
-{
-	if (CharacterCarriedWeaponMap.Contains(InWeaponTag))
-	{
-		if (ADDSWeaponBase* const* res = CharacterCarriedWeaponMap.Find(InWeaponTag))
-		{
-			return *res;
-		}
-	}
-	MY_LOG(LogTemp, Error, TEXT("Weapon Tag %s is not registered."), *InWeaponTag.ToString());
-	return nullptr;
-}
-
-ADDSWeaponBase* UPawnCombatComponent::GetCurrentEquippedWeapon() const
-{
-	if (!CurrentEquippedWeaponTag.IsValid())
-	{
-		MY_LOG(LogTemp, Error, TEXT("CurrentEquippedWeaponTag is not valid."));
-		return nullptr;
-	}
-	return GetCharacterCarriedWeapon(CurrentEquippedWeaponTag);
-}
 
 void ADDSWeaponBase::AssignGrantedAbilitySpecHandles(
 	const TArray<FGameplayAbilitySpecHandle>& InGrantedAbilitySpecHandles)

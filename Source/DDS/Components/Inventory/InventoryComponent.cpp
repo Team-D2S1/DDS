@@ -33,10 +33,10 @@ void UInventoryComponent::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& 
 	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
 	DOREPLIFETIME(UInventoryComponent, InventoryList);
 	DOREPLIFETIME(UInventoryComponent, RightWeapon);
-	DOREPLIFETIME(UInventoryComponent, Armor01);
-	DOREPLIFETIME(UInventoryComponent, Armor02);
-	DOREPLIFETIME(UInventoryComponent, Armor03);
-	DOREPLIFETIME(UInventoryComponent, Armor04);
+	// DOREPLIFETIME(UInventoryComponent, Armor01);
+	// DOREPLIFETIME(UInventoryComponent, Armor02);
+	// DOREPLIFETIME(UInventoryComponent, Armor03);
+	// DOREPLIFETIME(UInventoryComponent, Armor04);
 }
 
 bool UInventoryComponent::ReplicateSubobjects(UActorChannel* Channel, FOutBunch* Bunch,
@@ -61,10 +61,10 @@ bool UInventoryComponent::ReplicateSubobjects(UActorChannel* Channel, FOutBunch*
 		RepObj(RightWeapon->GetGripItemInstance());
 		// RepObj(RightWeapon->GetPommelItemInstance());
 	}
-	RepObj(Armor01);
-	RepObj(Armor02);
-	RepObj(Armor03);
-	RepObj(Armor04);
+	// RepObj(Armor01);
+	// RepObj(Armor02);
+	// RepObj(Armor03);
+	// RepObj(Armor04);
 	
 	return bWroteSomething;
 }
@@ -152,6 +152,12 @@ void UInventoryComponent::Server_EquipCraftedWeapon_Implementation(int32 ItemID)
 	bool bIsServer = GetOwner()->HasAuthority();
 	MY_LOG(LogTemp, Log, TEXT("[%s] Server_EquipCraftedWeapon called with ItemID: %d"),
 		bIsServer ? TEXT("Server") : TEXT("Client"), ItemID);
+	bool bIsSameWeapon = (RightWeapon && RightWeapon->GetItemId() == ItemID);
+	if (bIsSameWeapon)
+	{
+		MY_LOG(LogTemp, Log, TEXT("The weapon with ItemID %d is already equipped."), ItemID);
+		return;
+	}
 	if (ItemID == 0)
 	{
 		// 해제만 진행
@@ -180,8 +186,36 @@ void UInventoryComponent::Server_EquipCraftedWeapon_Implementation(int32 ItemID)
 			OnRep_RightWeapon();
 		}
 	}
+
+	if (bIsServer)
+	{
+		// InventoryComponent는 PlayerState에 붙어있으므로 GetOwner()는 PlayerState를 반환
+		if (APlayerState* PlayerState = Cast<APlayerState>(GetOwner()))
+		{
+			if (APlayerBase* PlayerOwner = Cast<APlayerBase>(PlayerState->GetPawn()))
+			{
+				if (UPlayerCombatComponent* CombatComponent = PlayerOwner->GetCombatComponent())
+				{
+					CombatComponent->NotifyRightWeaponChanged(RightWeapon);
+				}
+				else
+				{
+					MY_LOG(LogTemp, Error, TEXT("CombatComponent is nullptr"));
+				}
+			}
+			else
+			{
+				MY_LOG(LogTemp, Error, TEXT("Failed to cast Pawn to PlayerBase"));
+			}
+		}
+		else
+		{
+			MY_LOG(LogTemp, Error, TEXT("Failed to cast Owner to PlayerState"));
+		}
+	}
 }
 
+/*
 void UInventoryComponent::Server_EquipArmor_Implementation(int32 ItemID, int32 ArmorIndex)
 {
 	UItemInstance*& TargetArmor = (ArmorIndex == 0) ? Armor01 :
@@ -216,6 +250,7 @@ void UInventoryComponent::Server_EquipArmor_Implementation(int32 ItemID, int32 A
 		}
 	}
 }
+*/
 
 UItemInstance* UInventoryComponent::GetItemByID(const int32 ItemID)
 {
@@ -315,36 +350,37 @@ void UInventoryComponent::OnRep_RightWeapon()
 		OnItemUnequippedEvent.Broadcast(0); // 0은 무기 슬롯
 	}
 
-	if (ADDSPlayerState* PlayerState = Cast<ADDSPlayerState>(GetOwner()))
-	{
-		APlayerBase* PlayerBase = Cast<APlayerBase>(PlayerState->GetPawn());
-			MY_LOG(LogTemp, Log, TEXT("[%s] Owner: %s"), 
-        		bIsServer ? TEXT("Server") : TEXT("Client"), *PlayerBase->GetName());
-		if (UPlayerCombatComponent* CombatComponent = PlayerBase->GetCombatComponent())
-		{
-			if (RightWeapon)
-			{
-				if (CombatComponent->GetRightWeaponItem() != RightWeapon)
-				{
-					CombatComponent->NotifyRightWeaponChanged(RightWeapon);
-					MY_LOG(LogTemp, Log, TEXT("CombatComponent notified of RightWeapon change."));
-				}
-				else
-				{
-					MY_LOG(LogTemp, Log, TEXT("CombatComponent already has the correct RightWeapon."));
-				}
-			}else
-			{
-				CombatComponent->NotifyRightWeaponChanged(nullptr);
-			}
-		}
-	}
-	else
-	{
-		MY_ERROR_DISPLAY_NET(true, TEXT("Owner is not a valid APlayerBase."));
-	}
+	// if (ADDSPlayerState* PlayerState = Cast<ADDSPlayerState>(GetOwner()))
+	// {
+	// 	APlayerBase* PlayerBase = Cast<APlayerBase>(PlayerState->GetPawn());
+	// 		MY_LOG(LogTemp, Log, TEXT("[%s] Owner: %s"),
+ //        		bIsServer ? TEXT("Server") : TEXT("Client"), *PlayerBase->GetName());
+	// 	if (UPlayerCombatComponent* CombatComponent = PlayerBase->GetCombatComponent())
+	// 	{
+	// 		if (RightWeapon)
+	// 		{
+	// 			if (CombatComponent->GetRightWeaponItem() != RightWeapon)
+	// 			{
+	// 				CombatComponent->NotifyRightWeaponChanged(RightWeapon);
+	// 				MY_LOG(LogTemp, Log, TEXT("CombatComponent notified of RightWeapon change."));
+	// 			}
+	// 			else
+	// 			{
+	// 				MY_LOG(LogTemp, Log, TEXT("CombatComponent already has the correct RightWeapon."));
+	// 			}
+	// 		}else
+	// 		{
+	// 			CombatComponent->NotifyRightWeaponChanged(nullptr);
+	// 		}
+	// 	}
+	// }
+	// else
+	// {
+	// 	MY_ERROR_DISPLAY_NET(true, TEXT("Owner is not a valid APlayerBase."));
+	// }
 }
 
+/*
 void UInventoryComponent::OnRep_Armor01()
 {
 	InventoryUpdatedEvent.Broadcast();
@@ -404,6 +440,7 @@ void UInventoryComponent::OnRep_Armor04()
 		OnItemUnequippedEvent.Broadcast(4); // 4는 Armor04 슬롯
 	}
 }
+*/
 
 void UInventoryComponent::ApplyItemEffect(UItemInstance* ItemInstance, int32 SlotIndex)
 {

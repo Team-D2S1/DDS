@@ -52,8 +52,8 @@ public:
 	UFUNCTION(BlueprintCallable, Server, Reliable)
 	void Server_EquipCraftedWeapon(int32 ItemID);
 
-	UFUNCTION(BlueprintCallable, Server, Reliable)
-	void Server_EquipArmor(int32 ItemID, int32 ArmorIndex);
+	// UFUNCTION(BlueprintCallable, Server, Reliable)
+	// void Server_EquipArmor(int32 ItemID, int32 ArmorIndex);
 	
 	UFUNCTION(BlueprintCallable)
 	UItemInstance* GetItemByID(int32 ItemID);
@@ -78,26 +78,26 @@ public:
 
 	UFUNCTION(BlueprintPure)
 	UItemInstance* GetRightWeaponItem() const { return RightWeapon; }
-	UFUNCTION(BlueprintCallable)
-	UItemInstance* GetArmorByIndex(int32 Index) const
-	{
-		switch (Index)
-		{
-		case 0: return Armor01;
-		case 1: return Armor02;
-		case 2: return Armor03;
-		case 3: return Armor04;
-		default: return nullptr;
-		}
-	}
-	UFUNCTION(BlueprintPure)
-	UItemInstance* GetArmor01() const { return Armor01; }
-	UFUNCTION(BlueprintPure)
-	UItemInstance* GetArmor02() const { return Armor02; }
-	UFUNCTION(BlueprintPure)
-	UItemInstance* GetArmor03() const { return Armor03; }
-	UFUNCTION(BlueprintPure)
-	UItemInstance* GetArmor04() const { return Armor04; }
+	// UFUNCTION(BlueprintCallable)
+	// UItemInstance* GetArmorByIndex(int32 Index) const
+	// {
+	// 	switch (Index)
+	// 	{
+	// 	case 0: return Armor01;
+	// 	case 1: return Armor02;
+	// 	case 2: return Armor03;
+	// 	case 3: return Armor04;
+	// 	default: return nullptr;
+	// 	}
+	// }
+	// UFUNCTION(BlueprintPure)
+	// UItemInstance* GetArmor01() const { return Armor01; }
+	// UFUNCTION(BlueprintPure)
+	// UItemInstance* GetArmor02() const { return Armor02; }
+	// UFUNCTION(BlueprintPure)
+	// UItemInstance* GetArmor03() const { return Armor03; }
+	// UFUNCTION(BlueprintPure)
+	// UItemInstance* GetArmor04() const { return Armor04; }
 	
 
 	UPROPERTY(BlueprintAssignable)
@@ -129,14 +129,14 @@ public:
     UFUNCTION()
   	void OnRep_RightWeapon();
 
-    UFUNCTION()
-	void OnRep_Armor01();
-	UFUNCTION()
-	void OnRep_Armor02();
- 	UFUNCTION()
-	void OnRep_Armor03();
- 	UFUNCTION()
-	void OnRep_Armor04();
+ //    UFUNCTION()
+	// void OnRep_Armor01();
+	// UFUNCTION()
+	// void OnRep_Armor02();
+ // 	UFUNCTION()
+	// void OnRep_Armor03();
+ // 	UFUNCTION()
+	// void OnRep_Armor04();
 	
 protected:
 
@@ -151,14 +151,14 @@ protected:
  	 */
  	UPROPERTY(BlueprintReadOnly, ReplicatedUsing=OnRep_RightWeapon)
 	UItemInstance* RightWeapon;
-	UPROPERTY(BlueprintReadOnly, ReplicatedUsing=OnRep_Armor01)
-	UItemInstance* Armor01;
-	UPROPERTY(BlueprintReadOnly, ReplicatedUsing=OnRep_Armor02)
-	UItemInstance* Armor02;
-	UPROPERTY(BlueprintReadOnly, ReplicatedUsing=OnRep_Armor03)
-	UItemInstance* Armor03;
-	UPROPERTY(BlueprintReadOnly, ReplicatedUsing=OnRep_Armor04)
-	UItemInstance* Armor04;
+	// UPROPERTY(BlueprintReadOnly, ReplicatedUsing=OnRep_Armor01)
+	// UItemInstance* Armor01;
+	// UPROPERTY(BlueprintReadOnly, ReplicatedUsing=OnRep_Armor02)
+	// UItemInstance* Armor02;
+	// UPROPERTY(BlueprintReadOnly, ReplicatedUsing=OnRep_Armor03)
+	// UItemInstance* Armor03;
+	// UPROPERTY(BlueprintReadOnly, ReplicatedUsing=OnRep_Armor04)
+	// UItemInstance* Armor04;
 
 	// 활성 아이템 이펙트들을 슬롯별로 저장 (서버에서만 사용)
 	UPROPERTY()

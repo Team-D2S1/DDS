@@ -57,10 +57,40 @@ UDDSPlayerAttributeSet* AEntityBase::GetPlayerAttributeSet() const
 
 void AEntityBase::Multicast_LinkAnimLayer_Implementation(TSubclassOf<UAnimInstance> InAnimLayerClass)
 {
+	// 데디케이티드 서버에서는 애니메이션 처리를 스킵
+	if (GetNetMode() == NM_DedicatedServer)
+	{
+		MY_LOG(LogTemp, Log, TEXT("Skipping LinkAnimLayer on dedicated server"));
+		return;
+	}
+
+	bool bIsServer = HasAuthority();
+	ENetRole localRole = GetLocalRole();
+	ENetRole remoteRole = GetRemoteRole();
+	
+	MY_LOG(LogTemp, Warning, TEXT("[%s] Multicast_LinkAnimLayer called - Role: %d, RemoteRole: %d, AnimLayer: %s"), 
+		bIsServer ? TEXT("Server") : TEXT("Client"),
+		static_cast<int32>(localRole),
+		static_cast<int32>(remoteRole),
+		InAnimLayerClass ? *InAnimLayerClass->GetName() : TEXT("nullptr"));
+	
+	if (!InAnimLayerClass)
+	{
+		MY_LOG(LogTemp, Error, TEXT("InAnimLayerClass is nullptr"));
+		return;
+	}
+	
 	USkeletalMeshComponent* SkeletalMesh = GetMesh();
 	if (SkeletalMesh)
 	{
+		UAnimInstance* CurrentAnimInstance = SkeletalMesh->GetAnimInstance();
+		MY_LOG(LogTemp, Log, TEXT("Current AnimInstance: %s"), CurrentAnimInstance ? *CurrentAnimInstance->GetName() : TEXT("nullptr"));
+		
 		SkeletalMesh->LinkAnimClassLayers(InAnimLayerClass);
+		
+		MY_LOG(LogTemp, Warning, TEXT("[%s] Successfully linked anim layer: %s"), 
+			bIsServer ? TEXT("Server") : TEXT("Client"),
+			*InAnimLayerClass->GetName());
 	}
 	else
 	{
@@ -70,10 +100,37 @@ void AEntityBase::Multicast_LinkAnimLayer_Implementation(TSubclassOf<UAnimInstan
 
 void AEntityBase::Multicast_UnlinkAnimLayer_Implementation(TSubclassOf<UAnimInstance> InAnimLayerClass)
 {
-	USkeletalMeshComponent* SkeletalMesh = GetMesh();
-	if (SkeletalMesh)
+	// 데디케이티드 서버에서는 애니메이션 처리를 스킵
+	if (GetNetMode() == NM_DedicatedServer)
 	{
-		SkeletalMesh->UnlinkAnimClassLayers(InAnimLayerClass);
+		MY_LOG(LogTemp, Log, TEXT("Skipping UnlinkAnimLayer on dedicated server"));
+		return;
+	}
+
+	bool bIsServer = HasAuthority();
+	ENetRole localRole = GetLocalRole();
+	ENetRole remoteRole = GetRemoteRole();
+	
+	MY_LOG(LogTemp, Warning, TEXT("[%s] Multicast_UnlinkAnimLayer called - Role: %d, RemoteRole: %d, AnimLayer: %s"), 
+		bIsServer ? TEXT("Server") : TEXT("Client"),
+		static_cast<int32>(localRole),
+		static_cast<int32>(remoteRole),
+		InAnimLayerClass ? *InAnimLayerClass->GetName() : TEXT("nullptr"));
+	
+	if (!InAnimLayerClass)
+	{
+		MY_LOG(LogTemp, Error, TEXT("InAnimLayerClass is nullptr"));
+		return;
+	}
+	
+	USkeletalMeshComponent* skeltal = GetMesh();
+	if (skeltal)
+	{
+		skeltal->UnlinkAnimClassLayers(InAnimLayerClass);
+		
+		MY_LOG(LogTemp, Warning, TEXT("[%s] Successfully unlinked anim layer: %s"), 
+			bIsServer ? TEXT("Server") : TEXT("Client"),
+			*InAnimLayerClass->GetName());
 	}
 	else
 	{

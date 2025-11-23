@@ -50,6 +50,49 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "DDS|Combat")
 	void TriggerBackstep();
 
+	/**
+	 * @brief 무기를 직접 스폰하고 등록합니다 (GA 없이)
+	 * @param WeaponItemInstance 스폰할 무기의 ItemInstance
+	 * @param WeaponTag 무기 태그
+	 * @return 스폰된 무기 액터
+	 */
+	UFUNCTION(BlueprintCallable, Category = "DDS|Combat")
+	ADDSCraftedPlayerWeapon* SpawnAndRegisterWeapon(UItemInstance* WeaponItemInstance, FGameplayTag WeaponTag);
+
+	/**
+	 * @brief 등록된 무기를 찾아서 제거합니다
+	 * @param WeaponTag 제거할 무기의 태그
+	 */
+	UFUNCTION(BlueprintCallable, Category = "DDS|Combat")
+	void DespawnAndUnregisterWeapon(FGameplayTag WeaponTag);
+	void UnequipWeapon(ADDSCraftedPlayerWeapon* WeaponToUnequip);
+
+	/**
+	 * @brief 무기를 특정 소켓에 부착합니다 (모든 클라이언트에서 실행)
+	 * @param Weapon 부착할 무기
+	 * @param SocketName 부착할 소켓 이름
+	 */
+	UFUNCTION(NetMulticast, Reliable)
+	void Multicast_AttachWeaponToSocket(ADDSCraftedPlayerWeapon* Weapon, FName SocketName);
+
+	/**
+	 * @brief 클라이언트가 안전하게 무기를 가져올 수 있는 함수 (서버에 요청 포함)
+	 * @param InWeaponTag 찾을 무기의 태그
+	 * @param bRequestFromServer 무기를 찾지 못했을 때 서버에 요청할지 여부
+	 * @return 찾은 무기 (없으면 nullptr)
+	 */
+	UFUNCTION(BlueprintCallable, Category = "DDS|Combat")
+	ADDSCraftedPlayerWeapon* GetPlayerCarriedWeaponByTagSafe(FGameplayTag InWeaponTag, bool bRequestFromServer = true);
+
+
+	// 무기 장착 알림 RPC (서버 -> 멀티캐스트)
+	UFUNCTION(Server, Reliable)
+	void Server_NotifyWeaponEquipped(ADDSCraftedPlayerWeapon* EquippedWeapon);
+
+	UFUNCTION(NetMulticast, Reliable)
+	void Multicast_NotifyWeaponEquipped(ADDSCraftedPlayerWeapon* EquippedWeapon, TSubclassOf<UAnimInstance> AnimLayerClass);
+
+
 	// GameplayEffect class to apply when stopping actions to block stamina regen for 3 seconds
 	UPROPERTY(EditDefaultsOnly, Category = "DDS|Combat")
 	TSubclassOf<UGameplayEffect> StopStaminaRegenEffectClass;

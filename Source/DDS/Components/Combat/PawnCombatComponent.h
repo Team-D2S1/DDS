@@ -10,6 +10,18 @@
 // struct FGameplayTag;
 class ADDSWeaponBase;
 
+USTRUCT(BlueprintType)
+struct DDS_API FWeaponMapEntry
+{
+	GENERATED_BODY()
+
+	UPROPERTY()
+	FGameplayTag WeaponTag;
+
+	UPROPERTY()
+	TObjectPtr<ADDSWeaponBase> Weapon = nullptr;
+};
+
 UENUM(BlueprintType)
 enum EToggleCollisionType
 {
@@ -42,6 +54,10 @@ public:
 	void RegisterSpawnedWeapon(FGameplayTag InWeaponTag, ADDSWeaponBase* InWeapon,bool bRegisterAsEquippedWeapon = false);
 
 
+	UFUNCTION(NetMulticast, Reliable)
+	void Multicast_RegisterSpawnedWeapon(FGameplayTag InWeaponTag, ADDSWeaponBase* InWeapon, bool bRegisterAsEquippedWeapon);
+
+
 	
 	UFUNCTION(BlueprintCallable,Category="DDS|Combat")
 	void UnregisterSpawnedWeaponById(int32 ItemId);
@@ -49,6 +65,14 @@ public:
 
 	UFUNCTION(NetMulticast,Reliable,Category="DDS|Combat")
 	void Multicast_UnregisterSpawnedWeaponById(int32 ItemId);
+
+	// 무기 장착 처리 (애니메이션 레이어 링크, 능력 부여)
+	UFUNCTION(BlueprintCallable, Category = "DDS|Combat")
+	void HandleWeaponEquip(ADDSWeaponBase* WeaponToEquip);
+
+	// 무기 해제 처리 (애니메이션 레이어 언링크, 능력 제거)
+	UFUNCTION(BlueprintCallable, Category = "DDS|Combat")
+	void HandleWeaponUnequip(ADDSWeaponBase* WeaponToUnequip);
 	
 	/**
 	 * 
@@ -76,8 +100,15 @@ public:
 	UFUNCTION(BlueprintCallable,Category="DDS|Combat")
 	bool IsParrying() const;
 	
+	// 무기 동기화를 위한 RPC
+	UFUNCTION(Server, Reliable)
+	void Server_RequestWeaponByTag(FGameplayTag InWeaponTag);
+	
 	UFUNCTION()
 	virtual void OnRep_CurrentEquippedWeaponTag();
+
+	UFUNCTION()
+	void OnRep_CharacterCarriedWeaponArray();
 protected:
 	
 	/**
@@ -88,9 +119,7 @@ protected:
 	
 	virtual void OnHitTarget(AActor* InTargetActor);
 	virtual void OnPulledFromTarget(AActor* InTargetActor);
-private:
-	TMap<FGameplayTag, ADDSWeaponBase*> CharacterCarriedWeaponMap;
-
 	
-	
+	UPROPERTY(ReplicatedUsing = OnRep_CharacterCarriedWeaponArray)
+	TArray<FWeaponMapEntry> CharacterCarriedWeaponArray;
 };
