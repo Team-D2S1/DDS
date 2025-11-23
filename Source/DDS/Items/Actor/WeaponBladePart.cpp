@@ -12,9 +12,13 @@ AWeaponBladePart::AWeaponBladePart()
 {
 	PrimaryActorTick.bCanEverTick = false;
 
+	RootComp = CreateDefaultSubobject<USceneComponent>(FName("Root"));
+	SetRootComponent(RootComp);
+
+	
 	BladePartMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("BladePartMesh"));
-	SetRootComponent(BladePartMesh);
 	BladePartMesh->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+	BladePartMesh->SetupAttachment(RootComponent);
 
 	BladePartCollisionBox = CreateDefaultSubobject<UBoxComponent>(TEXT("BladePartCollisionBox"));
 	BladePartCollisionBox->SetupAttachment(RootComponent);

@@ -31,7 +31,8 @@ public:
 	UPROPERTY(BlueprintAssignable, Category = "WeaponBladePart")
 	FOnWeaponBladePartEndOverlapDelegate OnWeaponBladePartEndOverlap;
 protected:
-
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "WeaponBladePart")
+	TObjectPtr<USceneComponent> RootComp;
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "WeaponBladePart")
 	TObjectPtr<UStaticMeshComponent> BladePartMesh;
 
