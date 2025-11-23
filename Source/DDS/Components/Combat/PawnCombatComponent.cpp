@@ -235,8 +235,8 @@ void UPawnCombatComponent::HandleWeaponUnequip(ADDSWeaponBase* WeaponToUnequip)
 		{
 			TArray<FGameplayAbilitySpecHandle> GrantedHandles = WeaponToUnequip->GetGrantedAbilitySpecHandles();
 			ASC->RemoveGrantedPlayerWeaponAbilities(GrantedHandles);
-			
-			MY_LOG(LogTemp, Log, TEXT("[Server] Removed %d abilities from weapon: %s"), 
+
+			MY_LOG(LogTemp, Log, TEXT("[Server] Removed %d abilities from weapon: %s"),
 				GrantedHandles.Num(), *WeaponToUnequip->GetName());
 		}
 	}
@@ -247,7 +247,7 @@ void UPawnCombatComponent::HandleWeaponUnequip(ADDSWeaponBase* WeaponToUnequip)
 		APlayerController* PC = Cast<APlayerController>(OwnerEntity->GetController());
 		if (PC)
 		{
-			if (UEnhancedInputLocalPlayerSubsystem* Subsystem = 
+			if (UEnhancedInputLocalPlayerSubsystem* Subsystem =
 				ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(PC->GetLocalPlayer()))
 			{
 				Subsystem->RemoveMappingContext(WeaponData.WeaponInputMappingContext);
