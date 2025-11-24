@@ -45,10 +45,16 @@ public:
 
 	// 구르기(회피) 및 백스텝 트리거용 헬퍼 함수
 	UFUNCTION(BlueprintCallable, Category = "DDS|Combat")
-	void TriggerDodge(const FVector2D& MoveInput);
+	void TriggerDodge(const FVector& MoveInput);
+
+	UFUNCTION(Server, Reliable)
+	void Server_TriggerDodge(FVector_NetQuantize MoveInput);
 
 	UFUNCTION(BlueprintCallable, Category = "DDS|Combat")
 	void TriggerBackstep();
+
+	UFUNCTION(Server, Reliable)
+	void Server_TriggerBackstep();
 
 	/**
 	 * @brief 무기를 직접 스폰하고 등록합니다 (GA 없이)

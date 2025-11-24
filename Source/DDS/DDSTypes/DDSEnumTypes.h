@@ -66,6 +66,30 @@ enum class EDDSConfirmType : uint8
 };
 
 UENUM(BlueprintType)
+enum class EMoveDirection4 : uint8
+{
+	None,
+	Front,
+	Back,
+	Left,
+	Right
+};
+
+UENUM(BlueprintType)
+enum class EMoveDirection8 : uint8
+{
+	None,
+	Front,
+	Back,
+	Left,
+	Right,
+	FrontLeft,
+	FrontRight,
+	BackLeft,
+	BackRight
+};
+
+UENUM(BlueprintType)
 enum class EWeaponNumberProperty : uint8
 {
 	AttackPower UMETA(DisplayName = "AttackPower"), // 공격력

@@ -84,7 +84,7 @@ void AInGamePlayerController::Input_Move(const FInputActionValue& Value)
 {
 	// MY_LOG_DISPLAY("Move %s", *Value.ToString());
 	FVector2D MoveVector = Value.Get<FVector2D>();
-	CachedMoveVector = MoveVector;
+	
 
 	UpdateMovementSpeedFromInput(MoveVector);
 	ApplyMoveSpeedMode();
@@ -92,9 +92,19 @@ void AInGamePlayerController::Input_Move(const FInputActionValue& Value)
 	FRotator YawRotator(0.f, GetControlRotation().Yaw, 0.f);
 	FVector ForwardVector = FRotationMatrix(YawRotator).GetUnitAxis(EAxis::X);
 	FVector RightVector = FRotationMatrix(YawRotator).GetUnitAxis(EAxis::Y);
+
+	// 실제 이동방향으로 캐시
+	FVector WorldMoveDirection = ForwardVector * MoveVector.Y + RightVector * MoveVector.X;
+	CachedMoveVector = WorldMoveDirection.GetSafeNormal2D();
 	
 	APawn* MyPawn = GetPawn();
 	if(!MyPawn) return;
+	// Dodge태그시 이동 무시
+	UDDSAbilitySystemComponent* ASC = GetDDSAbilitySystemComponent();
+	if (ASC && ASC->HasMatchingGameplayTag(DDSGameplayTags::Player_Ability_Dodge))
+	{
+		return;
+	}
 	if (MoveVector.Y != 0.f)
 	{
 		MyPawn->AddMovementInput(ForwardVector, MoveVector.Y);
@@ -158,7 +168,7 @@ void AInGamePlayerController::Input_LockOn()
 	APlayerBase* PlayerBase = GetPlayerBase();
 	if (!PlayerBase) return;
 
-	MY_CLOG_DISPLAY_NET(FColor::White, HasAuthority(), TEXT("Start Lock On"));
+	// MY_CLOG_DISPLAY_NET(FColor::White, HasAuthority(), TEXT("Start Lock On"));
 	// 대상을 찾는다.
 	// 대상은 현재 플레이어 카메라 기준 가장 가운데에 가까운 적
 	// 대상이 없으면? 그냥 취소
@@ -187,17 +197,10 @@ void AInGamePlayerController::Input_LockOn()
 		}
 	}
 	IFocusable* targetFocusable = Cast<IFocusable>(target);
-	// 카메라 고정 
-	// 스프링암 고정 Ok
-	// 플레이어는 적만을 바라보도록
-	// 이동키를 눌러도 방향은 적만을 바라봄
-	//GetActorsInSelectionRectangle
+	
 	if (target)
 	{
 		MY_CLOG_DISPLAY_NET(FColor::White, HasAuthority(), TEXT("Lock On Target : %s"), *target->GetName());
-		// USpringArmComponent* SpringArm = PlayerBase->GetSpringArmComponent();
-		// SpringArm->bUsePawnControlRotation = false;
-		
   
 		if (focusedObject && focusedObject != target)
 		{
@@ -206,23 +209,16 @@ void AInGamePlayerController::Input_LockOn()
 		PlayerBase->Server_SetFocusedObject(target);
 		targetFocusable->OnFocus();
 		focusedObject = target;
-		
 	}
 	else
 	{
-		// USpringArmComponent* SpringArm = PlayerBase->GetSpringArmComponent();
-		// SpringArm->bUsePawnControlRotation = true;
-		
-		
 		if (focusedObject)
 		{
-	
 			Cast<IFocusable>(focusedObject)->OnFocusLost();
 			focusedObject = nullptr;
 			PlayerBase->Server_ClearFocusedObject();
 		}
 	}
-	
 }
 
 void AInGamePlayerController::Input_UIInputPressed(FGameplayTag InputTag)
@@ -448,15 +444,19 @@ void AInGamePlayerController::TryExecuteDodgeOrBackstep()
 	{
 		return;
 	}
-
-	if (bHasMoveInput && !bLongPress)
+	if (!bHasMoveInput)
 	{
-		// L스틱 + B 입력 -> 해당 방향 구르기
-		CombatComp->TriggerDodge(CachedMoveVector);
+		return;
 	}
-	else if (bShortPress)
-	{
-		// B 단독 짧은 입력 -> 백스텝
-		CombatComp->TriggerBackstep();
-	}
+	CombatComp->TriggerDodge(CachedMoveVector);
+	// if (bHasMoveInput && !bLongPress)
+	// {
+	// 	// L스틱 + B 입력 -> 해당 방향 구르기
+	// 	CombatComp->TriggerDodge(CachedMoveVector);
+	// }
+	// else if (bShortPress)
+	// {
+	// 	// B 단독 짧은 입력 -> 백스텝
+	// 	CombatComp->TriggerBackstep();
+	// }
 }

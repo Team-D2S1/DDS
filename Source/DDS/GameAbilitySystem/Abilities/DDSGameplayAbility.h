@@ -35,11 +35,22 @@ protected:
 	virtual void EndAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilityActivationInfo ActivationInfo, bool bReplicateEndAbility, bool bWasCancelled) override;
 	// ~ End UGameplayAbility
 
-	UFUNCTION(BlueprintPure, Category = "DDS|Ability")
+	UFUNCTION(BlueprintCallable, Category = "DDS|Ability")
 	UPawnCombatComponent* GetPawnCombatComponentFromActorInfo() const;
 
-	UFUNCTION(BlueprintPure, Category = "DDS|Ability")
+	UFUNCTION(BlueprintCallable, Category = "DDS|Ability")
 	UDDSAbilitySystemComponent* GetDDSAbilitySystemComponentFromActorInfo() const;
+
+	// Get cached dodge input direction from ASC
+	UFUNCTION(BlueprintPure, Category = "DDS|Ability")
+	FVector GetCachedDodgeInputDirection() const;
+
+	// Get move direction enum from world direction
+	UFUNCTION(BlueprintPure, Category = "DDS|Ability")
+	EMoveDirection4 GetMoveDirection4FromWorld(const FVector& WorldDirection) const;
+
+	UFUNCTION(BlueprintPure, Category = "DDS|Ability")
+	EMoveDirection8 GetMoveDirection8FromWorld(const FVector& WorldDirection) const;
 	
 	UFUNCTION(BlueprintCallable, Category = "DDS|Ability")
 	FActiveGameplayEffectHandle NativeApplyEffectSpecHandleToTarget(AActor* TargetActor, const FGameplayEffectSpecHandle& InEffectSpecHandle);
