@@ -153,6 +153,6 @@ void ALobbyPlayerController::Server_GameStart_Implementation()
 	MY_LOG(LogTemp, Error, TEXT("Server Travel to Test Level"));
 	if(UWorld* World = GetWorld())
 	{
-		World->ServerTravel("/Game/Maps/DasanMultiTestMap");
+		World->ServerTravel("/Game/Env_DDSProject/Maps/DDS_Project_WP");
 	}
 }
