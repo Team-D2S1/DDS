@@ -136,29 +136,24 @@ void APlayerBase::Tick(float DeltaSeconds)
 	{
 		AActor* Focused = FocusedObject;
 		if(Focused)
-		   {
-		   	FVector ToTarget = Focused->GetActorLocation() - GetActorLocation();
-		   	FRotator LookRotation = ToTarget.Rotation();
-
+		{
+			// 캐릭터를 타겟 방향으로 회전 (Yaw만)
+			FVector ToTarget = Focused->GetActorLocation() - GetActorLocation();
+			FRotator LookRotation = ToTarget.Rotation();
+			LookRotation.Pitch = 0.f;
+			LookRotation.Roll = 0.f;
+			
 			SetActorRotation(LookRotation);
 			
-		   	// 카메라 회전 (SpringArm이 따라감)
-		   	if (Controller)
-		   	{
-		   		LookRotation.Pitch = -30.f;
-		   		Controller->SetControlRotation(LookRotation);
-		   	}
-			if (Camera){
-			 	FRotator CamLookRotation = (Focused->GetActorLocation() - Camera->GetComponentLocation()).Rotation();
-				Camera -> SetWorldRotation(CamLookRotation);
+			// 컨트롤러도 타겟을 향하도록 (SpringArm이 따라감)
+			if (Controller)
+			{
+				FRotator ControlRotation = LookRotation;
+				ControlRotation.Pitch = -30.f; // 약간 위에서 내려다보는 각도
+				Controller->SetControlRotation(ControlRotation);
 			}
 		}
 	}
-	// if (GetDDSAbilitySystemComponent()->HasMatchingGameplayTag(DDSGameplayTags::Shared_State_LockedOn))
-	// {
-	// 	//이름출력
-	// 	DEBUG_CLOG_DISPLAY_NET(FColor::Yellow, HasAuthority(),TEXT("%s is locked on"), *GetName());
-	// }
 }
 
 void APlayerBase::BeginPlay()
@@ -177,6 +172,48 @@ void APlayerBase::Server_ClearFocusedObject()
 {
 	Super::Server_ClearFocusedObject();
 	GetCharacterMovement()->bOrientRotationToMovement = true;
+	
+	// 로컬에서도 즉시 복구 (서버에서 실행)
+	if (HasAuthority())
+	{
+		OnRep_FocusedObject();
+	}
+}
+
+void APlayerBase::OnRep_FocusedObject()
+{
+	Super::OnRep_FocusedObject();
+	
+	// 포커스 해제 시 SpringArm과 카메라를 정상 상태로 복구
+	if (!FocusedObject)
+	{
+		if (SpringArm)
+		{
+			SpringArm->bUsePawnControlRotation = true;
+		}
+		
+		if (Camera)
+		{
+			Camera->bUsePawnControlRotation = false;
+		}
+		
+		// Controller rotation도 초기화
+		if (Controller)
+		{
+			// 현재 캐릭터가 바라보는 방향으로 컨트롤러 회전 복구
+			FRotator CurrentRotation = GetActorRotation();
+			CurrentRotation.Pitch = -30.f; // 기본 카메라 피치
+			Controller->SetControlRotation(CurrentRotation);
+		}
+	}
+	else
+	{
+		// 포커스 시작 시
+		if (SpringArm)
+		{
+			SpringArm->bUsePawnControlRotation = true;
+		}
+	}
 }
 
 void APlayerBase::InitAbilityActorInfo()

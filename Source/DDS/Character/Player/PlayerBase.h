@@ -71,6 +71,7 @@ public:
 	
 	virtual void Server_SetFocusedObject(AActor* InFocusedObject) override;
 	virtual void Server_ClearFocusedObject() override;
+	virtual void OnRep_FocusedObject() override;
 private:
 	void InitAbilityActorInfo();
 	

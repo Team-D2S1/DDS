@@ -54,6 +54,12 @@ public:
 
 	UFUNCTION(BlueprintCallable, NetMulticast, Reliable)
 	void Multicast_UnlinkAnimLayer(TSubclassOf<UAnimInstance> InAnimLayerClass);
+
+	UFUNCTION(BlueprintCallable, Category="DDS|Data")
+	EMoveDirection4 GetMoveDirection4(FVector WorldDirection) const;
+
+	UFUNCTION(BlueprintCallable, Category="DDS|Data")
+	EMoveDirection8 GetMoveDirection8(FVector WorldDirection) const;
 	
 protected:
 	virtual void BeginPlay() override;
@@ -82,10 +88,11 @@ protected:
 	// Death End Callback - Destroy Actor
 	UFUNCTION()
 	virtual void OnDeathEndTagChanged(const FGameplayTag ChangedTag, int32 NumberOfTag);
-	
-private:
+
 	UFUNCTION()
 	virtual void OnRep_FocusedObject();
+	
+private:
 	
 public:	
 	virtual void Tick(float DeltaTime) override;

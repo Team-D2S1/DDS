@@ -4,6 +4,7 @@
 #include "EntityBase.h"
 
 #include "DDSGameplayTags.h"
+#include "DDSTypes/DDSEnumTypes.h"
 #include "ETC/CustomLog.h"
 #include "GameAbilitySystem/DDSAbilitySystemComponent.h"
 #include "GameAbilitySystem/DDSAttributeSet.h"
@@ -138,6 +139,74 @@ void AEntityBase::Multicast_UnlinkAnimLayer_Implementation(TSubclassOf<UAnimInst
 	}
 }
 
+EMoveDirection4 AEntityBase::GetMoveDirection4(FVector WorldDirection) const
+{
+	if (WorldDirection.IsNearlyZero())
+	{
+		return EMoveDirection4::None;
+	}
+
+	// 캐릭터의 forward, right 벡터
+	const FVector CharacterForward = GetActorForwardVector();
+	const FVector CharacterRight = GetActorRightVector();
+
+	// 입력 방향 정규화
+	const FVector NormalizedDirection = WorldDirection.GetSafeNormal();
+
+	// 내적을 이용해 각 방향 성분 계산
+	const float ForwardDot = FVector::DotProduct(NormalizedDirection, CharacterForward);
+	const float RightDot = FVector::DotProduct(NormalizedDirection, CharacterRight);
+
+	// 더 큰 성분을 기준으로 방향 결정
+	if (FMath::Abs(ForwardDot) > FMath::Abs(RightDot))
+	{
+		return ForwardDot > 0 ? EMoveDirection4::Front : EMoveDirection4::Back;
+	}
+	else
+	{
+		return RightDot > 0 ? EMoveDirection4::Right : EMoveDirection4::Left;
+	}
+}
+
+EMoveDirection8 AEntityBase::GetMoveDirection8(FVector WorldDirection) const
+{
+	if (WorldDirection.IsNearlyZero())
+	{
+		return EMoveDirection8::None;
+	}
+
+	// 캐릭터의 forward, right 벡터
+	const FVector CharacterForward = GetActorForwardVector();
+	const FVector CharacterRight = GetActorRightVector();
+
+	// 입력 방향 정규화
+	const FVector NormalizedDirection = WorldDirection.GetSafeNormal();
+
+	// 캐릭터 기준 각도 계산 (-180 ~ 180도)
+	const float Angle = FMath::Atan2(
+		FVector::DotProduct(NormalizedDirection, CharacterRight),
+		FVector::DotProduct(NormalizedDirection, CharacterForward)
+	) * 180.0f / PI;
+
+	// 8방향으로 분할 (각 방향당 45도)
+	if (Angle >= -22.5f && Angle < 22.5f)
+		return EMoveDirection8::Front;
+	else if (Angle >= 22.5f && Angle < 67.5f)
+		return EMoveDirection8::FrontRight;
+	else if (Angle >= 67.5f && Angle < 112.5f)
+		return EMoveDirection8::Right;
+	else if (Angle >= 112.5f && Angle < 157.5f)
+		return EMoveDirection8::BackRight;
+	else if (Angle >= 157.5f || Angle < -157.5f)
+		return EMoveDirection8::Back;
+	else if (Angle >= -157.5f && Angle < -112.5f)
+		return EMoveDirection8::BackLeft;
+	else if (Angle >= -112.5f && Angle < -67.5f)
+		return EMoveDirection8::Left;
+	else // -67.5f ~ -22.5f
+		return EMoveDirection8::FrontLeft;
+}
+
 void AEntityBase::BeginPlay()
 {
 	Super::BeginPlay();
@@ -182,11 +251,22 @@ void AEntityBase::Server_ClearFocusedObject_Implementation()
 	FocusedObject = nullptr;
 
 	GetDDSAbilitySystemComponent()->Multicast_RemoveLooseGameplayTag(DDSGameplayTags::Shared_State_LockedOn);
+	
+	// 카메라를 정상 상태로 복구
+	OnRep_FocusedObject();
 }
 
 void AEntityBase::OnRep_FocusedObject()
 {
-	
+	// FocusedObject가 클리어되었을 때 카메라 복구
+	if (!FocusedObject)
+	{
+		GetCharacterMovement()->bOrientRotationToMovement = true;
+	}
+	else
+	{
+		GetCharacterMovement()->bOrientRotationToMovement = false;
+	}
 }
 
 void AEntityBase::OnDeathStartTagChanged(const FGameplayTag ChangedTag, int32 NumberOfTag)

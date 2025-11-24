@@ -133,7 +133,31 @@ void UPlayerCombatComponent::TriggerStopStaminaRegen()
     }
 }
 
-void UPlayerCombatComponent::TriggerDodge(const FVector2D& MoveInput)
+void UPlayerCombatComponent::TriggerDodge(const FVector& MoveInput)
+{
+	// 클라이언트에서 호출되면 서버로 전달
+	APlayerBase* PlayerBase = GetOwningPawn<APlayerBase>();
+	if (!PlayerBase) return;
+
+	UDDSAbilitySystemComponent* ASC = PlayerBase->GetDDSAbilitySystemComponent();
+	if (!ASC) return;
+
+	// 클라이언트에서도 즉시 설정 (Replication 지연 방지)
+	ASC->SetLastDodgeInputDirection(MoveInput.GetSafeNormal());
+
+	// 로컬 플레이어 또는 서버에서 직접 실행
+	if (PlayerBase->HasAuthority())
+	{
+		Server_TriggerDodge(MoveInput);
+	}
+	else
+	{
+		// 클라이언트는 서버 RPC 호출
+		Server_TriggerDodge(MoveInput);
+	}
+}
+
+void UPlayerCombatComponent::Server_TriggerDodge_Implementation(FVector_NetQuantize MoveInput)
 {
 	APlayerBase* PlayerBase = GetOwningPawn<APlayerBase>();
 	if (!PlayerBase) return;
@@ -141,17 +165,8 @@ void UPlayerCombatComponent::TriggerDodge(const FVector2D& MoveInput)
 	UDDSAbilitySystemComponent* ASC = PlayerBase->GetDDSAbilitySystemComponent();
 	if (!ASC) return;
 
-	// 2D 입력을 월드 기준 방향 벡터로 변환 (컨트롤러 Yaw 기준)
-	const FRotator ControlRot(0.f, PlayerBase->GetControlRotation().Yaw, 0.f);
-	const FVector Forward = FRotationMatrix(ControlRot).GetUnitAxis(EAxis::X);
-	const FVector Right   = FRotationMatrix(ControlRot).GetUnitAxis(EAxis::Y);
-
-	FVector WorldDir = Forward * MoveInput.Y + Right * MoveInput.X;
-	WorldDir = WorldDir.GetSafeNormal();
-
-	FVector LocalDir = PlayerBase->GetActorTransform().InverseTransformVectorNoScale(WorldDir);
-	ASC->SetLastDodgeInputDirection(LocalDir);
-
+	// 월드 방향을 그대로 저장 (정규화)
+	ASC->SetLastDodgeInputDirection(MoveInput.GetSafeNormal());
 
 	// Tag로 GA 트리거
 	FGameplayTagContainer DodgeTags;
@@ -163,15 +178,41 @@ void UPlayerCombatComponent::TriggerDodge(const FVector2D& MoveInput)
 
 void UPlayerCombatComponent::TriggerBackstep()
 {
+	// 클라이언트에서 호출되면 서버로 전달
 	APlayerBase* PlayerBase = GetOwningPawn<APlayerBase>();
 	if (!PlayerBase) return;
 
 	UDDSAbilitySystemComponent* ASC = PlayerBase->GetDDSAbilitySystemComponent();
 	if (!ASC) return;
 
-	// 컨트롤러가 보고 있는 방향의 반대 방향(뒤로)
-	const FRotator ControlRot(0.f, PlayerBase->GetControlRotation().Yaw, 0.f);
-	const FVector Backward = -FRotationMatrix(ControlRot).GetUnitAxis(EAxis::X);
+	// 캐릭터가 현재 바라보는 반대 방향 (월드 좌표)
+	FVector Backward = -PlayerBase->GetActorForwardVector();
+	
+	// 클라이언트에서도 즉시 설정 (Replication 지연 방지)
+	ASC->SetLastDodgeInputDirection(Backward.GetSafeNormal());
+
+	// 로컬 플레이어 또는 서버에서 직접 실행
+	if (PlayerBase->HasAuthority())
+	{
+		Server_TriggerBackstep();
+	}
+	else
+	{
+		// 클라이언트는 서버 RPC 호출
+		Server_TriggerBackstep();
+	}
+}
+
+void UPlayerCombatComponent::Server_TriggerBackstep_Implementation()
+{
+	APlayerBase* PlayerBase = GetOwningPawn<APlayerBase>();
+	if (!PlayerBase) return;
+
+	UDDSAbilitySystemComponent* ASC = PlayerBase->GetDDSAbilitySystemComponent();
+	if (!ASC) return;
+
+	// 캐릭터가 현재 바라보는 반대 방향 (월드 좌표)
+	FVector Backward = -PlayerBase->GetActorForwardVector();
 
 	ASC->SetLastDodgeInputDirection(Backward.GetSafeNormal());
 

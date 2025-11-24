@@ -4,6 +4,7 @@
 #include "GameAbilitySystem/Abilities/DDSGameplayAbility.h"
 #include "AbilitySystemComponent.h"
 #include "DDSGameplayTags.h"
+#include "Character/EntityBase.h"
 #include "Components/Combat/PawnCombatComponent.h"
 #include "ETC/CustomLog.h"
 #include "GameAbilitySystem/DDSAbilitySystemComponent.h"
@@ -116,6 +117,55 @@ FGameplayEffectSpecHandle UDDSGameplayAbility::MakeGameplayEffectSpecHandle(TSub
 		EffectSpecHandle.Data->SetSetByCallerMagnitude(InCurrentAttackTypeTag,InCurrentAttackComboCount);
 	}
 	return EffectSpecHandle;
+}
+
+FVector UDDSGameplayAbility::GetCachedDodgeInputDirection() const
+{
+	UDDSAbilitySystemComponent* ASC = GetDDSAbilitySystemComponentFromActorInfo();
+	if (!ASC)
+	{
+		return FVector::ForwardVector;
+	}
+	
+	// ASC에 저장된 것은 이미 월드 좌표
+	FVector WorldDirection = ASC->GetLastDodgeInputDirection();
+	
+	// #if WITH_EDITOR
+	// AEntityBase* Entity = Cast<AEntityBase>(GetAvatarActorFromActorInfo());
+	// bool bIsServer = Entity && Entity->HasAuthority();
+	// MY_CLOG_DISPLAY_NET(FColor::Yellow, bIsServer, TEXT("[GA] GetCachedDodgeInputDirection: World=%s"), *WorldDirection.ToString());
+	// #endif
+	
+	return WorldDirection.GetSafeNormal();
+}
+
+EMoveDirection4 UDDSGameplayAbility::GetMoveDirection4FromWorld(const FVector& WorldDirection) const
+{
+	AEntityBase* Entity = Cast<AEntityBase>(GetAvatarActorFromActorInfo());
+	if (!Entity)
+	{
+		return EMoveDirection4::None;
+	}
+	
+	EMoveDirection4 Direction = Entity->GetMoveDirection4(WorldDirection);
+	
+	// #if WITH_EDITOR
+	// bool bIsServer = Entity->HasAuthority();
+	// MY_CLOG_DISPLAY_NET(FColor::Green, bIsServer, TEXT("[GA] GetMoveDirection4: World=%s, Result=%d"), *WorldDirection.ToString(), (int32)Direction);
+	// #endif
+	
+	return Direction;
+}
+
+EMoveDirection8 UDDSGameplayAbility::GetMoveDirection8FromWorld(const FVector& WorldDirection) const
+{
+	AEntityBase* Entity = Cast<AEntityBase>(GetAvatarActorFromActorInfo());
+	if (!Entity)
+	{
+		return EMoveDirection8::None;
+	}
+	
+	return Entity->GetMoveDirection8(WorldDirection);
 }
 
 // void UDDSGameplayAbility::PlayMontageAndWaitForEvent(UAnimMontage* Montage, FName SectionName, FGameplayTag EventTag,

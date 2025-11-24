@@ -97,7 +97,7 @@ private:
 
 	// --- 이동/대시/구르기 입력 상태 ---
 	// 이동 입력 벡터 (L 스틱)
-	FVector2D CachedMoveVector = FVector2D::ZeroVector;
+	FVector CachedMoveVector = FVector::ZeroVector;
 
 	// B 버튼 상태
 	bool bBPressed = false;

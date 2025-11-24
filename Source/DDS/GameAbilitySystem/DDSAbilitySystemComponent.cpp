@@ -9,6 +9,14 @@
 #include "GameAbilitySystem/DDSAttributeSet.h"
 #include "GameplayEffect.h"
 #include "GameplayEffectTypes.h"
+#include "Net/UnrealNetwork.h"
+
+void UDDSAbilitySystemComponent::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
+{
+	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
+	
+	DOREPLIFETIME(UDDSAbilitySystemComponent, LastDodgeInputDirection);
+}
 
 void UDDSAbilitySystemComponent::AbilityActorInfoSet()
 {
@@ -106,14 +114,14 @@ void UDDSAbilitySystemComponent::RemoveGrantedPlayerWeaponAbilities(TArray<FGame
 void UDDSAbilitySystemComponent::Multicast_AddLooseGameplayTag_Implementation(const FGameplayTag& InTag)
 {
 	bool isServer = GetOwner()->HasAuthority();
-	MY_CLOG_DISPLAY_NET(FColor::White,isServer,TEXT("AddLooseGameplayTag : %s"),*InTag.ToString());
+	// MY_CLOG_DISPLAY_NET(FColor::White,isServer,TEXT("AddLooseGameplayTag : %s"),*InTag.ToString());
 	AddLooseGameplayTag(InTag);
 }
 
 void UDDSAbilitySystemComponent::Multicast_RemoveLooseGameplayTag_Implementation(const FGameplayTag& InTag)
 {
 	bool isServer = GetOwner()->HasAuthority();
-	MY_CLOG_DISPLAY_NET(FColor::White,isServer,TEXT("RemoveLooseGameplayTag : %s"),*InTag.ToString());
+	// MY_CLOG_DISPLAY_NET(FColor::White,isServer,TEXT("RemoveLooseGameplayTag : %s"),*InTag.ToString());
 	RemoveLooseGameplayTag(InTag);
 }
 
@@ -251,3 +259,14 @@ FActiveGameplayEffectHandle UDDSAbilitySystemComponent::ApplyOrRefreshGameplayEf
 
     return ApplyGameplayEffectSpecToSelf(*SpecHandle.Data.Get());
 }
+
+void UDDSAbilitySystemComponent::SetLastDodgeInputDirection(const FVector& InDirection)
+{
+	LastDodgeInputDirection = InDirection;
+	
+	#if WITH_EDITOR
+	bool bIsServer = GetOwner() && GetOwner()->HasAuthority();
+	MY_CLOG_DISPLAY_NET(FColor::Cyan, bIsServer, TEXT("SetLastDodgeInputDirection: %s"), *InDirection.ToString());
+	#endif
+}
+
