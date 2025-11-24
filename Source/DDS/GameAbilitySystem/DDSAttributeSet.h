@@ -306,6 +306,9 @@ public:
 	// 디버깅용
 	UFUNCTION(BlueprintCallable, Category = "DDS|Attributes")
 	void PrintAllAttributes() const;
+
+	UFUNCTION(BlueprintCallable, Category = "DDS|Attributes")
+	FGameplayAttribute GetAttributeByTag(const FGameplayTag& InTag) const;
 	
 protected:
 	// UPawnUIComponent* GetPawnUIComponent() const;

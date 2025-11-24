@@ -426,3 +426,16 @@ void UDDSAttributeSet::PrintAllAttributes() const
 	
 	MY_LOG(LogTemp, Log, TEXT("DamageTaken: %f"), GetDamageTaken());
 }
+
+FGameplayAttribute UDDSAttributeSet::GetAttributeByTag(const FGameplayTag& InTag) const
+{
+	if (FGameplayAttribute (*const*AttributeFunc)() = TagToAttributeMap.Find(InTag))
+	{
+		return (*AttributeFunc)();
+	}
+	else
+	{
+		MY_LOG(LogTemp, Warning, TEXT("GetAttributeByTag: No attribute found for tag %s"), *InTag.ToString());
+		return FGameplayAttribute();
+	}
+}
