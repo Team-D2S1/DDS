@@ -27,10 +27,11 @@ public class DDS : ModuleRules
 			"Steamworks",
 			"Sockets",
 			"Networking",
-			"Paper2D"
+			"Paper2D",
+			"Niagara"
 		});
 
-		PrivateDependencyModuleNames.AddRange(new string[] {  });
+		PrivateDependencyModuleNames.AddRange(new string[] { });
 
 		PublicIncludePaths.AddRange(new string[] { ModuleDirectory});
 		// Uncomment if you are using Slate UI
