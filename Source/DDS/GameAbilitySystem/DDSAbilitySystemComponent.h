@@ -7,6 +7,8 @@
 #include "DDSAbilitySystemComponent.generated.h"
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnDDSLevelChangedSignature, int32, NewLevel);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnDDSEnergyChangedSignature, float, NewEnergy);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnDDSRequireEnergyChangedSignature, float, NewRequireEnergy);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnDDSHealthChangedSignature, float, NewHealth);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnDDSMaxHealthChangedSignature, float, NewMaxHealth);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnDDSStaminaChangedSignature, float, NewStamina);
@@ -60,9 +62,35 @@ public:
 	UFUNCTION(BlueprintCallable, Category="DDS|Level", BlueprintAuthorityOnly)
 	void LevelUp(int32 LevelsToAdd = 1);
 
+	/** 경험치 추가 함수 - 서버에서만 호출 가능 */
+	UFUNCTION(BlueprintCallable, Category="DDS|Experience", BlueprintAuthorityOnly)
+	void AddExperience(float ExperienceToAdd);
+
+	/** 경험치를 추가하고 자동으로 레벨업 체크 - 서버에서만 호출 가능 */
+	UFUNCTION(BlueprintCallable, Category="DDS|Experience", BlueprintAuthorityOnly)
+	void AddExperienceAndCheckLevelUp(float ExperienceToAdd);
+
+	/** 현재 경험치 가져오기 */
+	UFUNCTION(BlueprintPure, Category="DDS|Experience")
+	float GetCurrentExperience() const;
+
+	/** 레벨업에 필요한 경험치 가져오기 */
+	UFUNCTION(BlueprintPure, Category="DDS|Experience")
+	float GetRequiredExperience() const;
+
+	/** 경험치 진행률 가져오기 (0.0 ~ 1.0) */
+	UFUNCTION(BlueprintPure, Category="DDS|Experience")
+	float GetExperienceProgress() const;
+
 	// 게임 전역에서 사용 가능한 Attribute 변경 델리게이트 (UI, 이펙트, 사운드 등 모두 구독 가능)
 	UPROPERTY(BlueprintAssignable, Category="DDS|Attributes")
 	FOnDDSLevelChangedSignature OnLevelChanged;
+
+	UPROPERTY(BlueprintAssignable, Category="DDS|Attributes")
+	FOnDDSEnergyChangedSignature OnEnergyChanged;
+
+	UPROPERTY(BlueprintAssignable, Category="DDS|Attributes")
+	FOnDDSRequireEnergyChangedSignature OnRequireEnergyChanged;
 	
 	UPROPERTY(BlueprintAssignable, Category="DDS|Attributes")
 	FOnDDSHealthChangedSignature OnHealthChanged;
@@ -95,6 +123,8 @@ public:
 
 protected:
 	void HandleLevelChanged(const FOnAttributeChangeData& Data);
+	void HandleEnergyChanged(const FOnAttributeChangeData& Data);
+	void HandleRequireEnergyChanged(const FOnAttributeChangeData& Data);
 	void HandleHealthChanged(const FOnAttributeChangeData& Data);
 	void HandleStaminaChanged(const FOnAttributeChangeData& Data);
 	void HandleManaChanged(const FOnAttributeChangeData& Data);

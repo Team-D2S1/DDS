@@ -38,7 +38,7 @@ void ADDSWeaponBase::OnBeginOverlap(UPrimitiveComponent* OverlappedComponent, AA
 	{
 		if (UDDSFunctionLibrary::IsTargetHostile(OwingPawn,OtherPawn))
 		{
-			MY_CLOG_DISPLAY_NET( FColor::Silver, HasAuthority(), TEXT("Weapon %s Begin Overlap with %s"), *GetName(), *OtherActor->GetName());
+			// MY_CLOG_DISPLAY_NET( FColor::Silver, HasAuthority(), TEXT("Weapon %s Begin Overlap with %s"), *GetName(), *OtherActor->GetName());
 			OnWeaponHitTarget.ExecuteIfBound(OtherActor);
 			if (!OnWeaponHitTarget.IsBound())
 			{

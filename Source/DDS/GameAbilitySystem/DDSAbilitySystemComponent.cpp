@@ -133,9 +133,15 @@ void UDDSAbilitySystemComponent::BindAttributeValueChangeDelegates(UDDSAttribute
 		return;
 	}
 
-	// Level / Health / HealthMax / DamageTaken 등 Attribute 값 변경을 Listen
+	// Level / Energy / RequireEnergy / Health / HealthMax / DamageTaken 등 Attribute 값 변경을 Listen
 	GetGameplayAttributeValueChangeDelegate(InAttributeSet->GetLevelAttribute())
 		.AddUObject(this, &UDDSAbilitySystemComponent::HandleLevelChanged);
+
+	GetGameplayAttributeValueChangeDelegate(InAttributeSet->GetEnergyAttribute())
+		.AddUObject(this, &UDDSAbilitySystemComponent::HandleEnergyChanged);
+
+	GetGameplayAttributeValueChangeDelegate(InAttributeSet->GetRequireEnergyAttribute())
+		.AddUObject(this, &UDDSAbilitySystemComponent::HandleRequireEnergyChanged);
 	
 	GetGameplayAttributeValueChangeDelegate(InAttributeSet->GetHealthAttribute())
 		.AddUObject(this, &UDDSAbilitySystemComponent::HandleHealthChanged);
@@ -200,13 +206,13 @@ void UDDSAbilitySystemComponent::Server_UseAttributePointToAttribute_Implementat
 	ApplyGameplayEffectSpecToSelf(*SpecHandle.Data.Get());
 
 	bool bIsServer = GetOwner() && GetOwner()->HasAuthority();
-	MY_CLOG_DISPLAY_NET(FColor::Cyan, bIsServer, TEXT("Used AttributePoint for: %s"), *InAttributeTag.ToString());
+	// MY_CLOG_DISPLAY_NET(FColor::Cyan, bIsServer, TEXT("Used AttributePoint for: %s"), *InAttributeTag.ToString());
 
 	// 기본 속성이 변경되었으므로 PlayerStats Effect를 Refresh하여 파생 속성 재계산
 	if (PlayerStatsEffectClass)
 	{
 		ApplyOrRefreshGameplayEffectToSelf(PlayerStatsEffectClass, 1.f, DDSGameplayTags::GameplayEffect_PlayerStats);
-		MY_CLOG_DISPLAY_NET(FColor::Green, bIsServer, TEXT("Refreshed PlayerStats Effect to recalculate derived attributes"));
+		// MY_CLOG_DISPLAY_NET(FColor::Green, bIsServer, TEXT("Refreshed PlayerStats Effect to recalculate derived attributes"));
 	}
 }
 
@@ -239,10 +245,140 @@ void UDDSAbilitySystemComponent::LevelUp(int32 LevelsToAdd)
 	// Level을 직접 설정
 	AS->SetLevel(NewLevel);
 
+	// 레벨업시 Energy 초기화 (선택사항)
+	AS->SetEnergy(0.f);
+
+	// AttributePoints 지급 (레벨당 5포인트)
+	const float CurrentAttributePoints = AS->GetAttributePoints();
+	AS->SetAttributePoints(CurrentAttributePoints + (LevelsToAdd * 5.f));
+
 	bool bIsServer = GetOwner()->HasAuthority();
 	MY_CLOG_DISPLAY_NET(FColor::Yellow, bIsServer, 
-		TEXT("Level Up! %d -> %d (+%d levels)"), 
-		CurrentLevel, NewLevel, LevelsToAdd);
+		TEXT("Level Up! %d -> %d (+%d levels, +%d AttributePoints)"), 
+		CurrentLevel, NewLevel, LevelsToAdd, LevelsToAdd * 5);
+}
+
+void UDDSAbilitySystemComponent::AddExperience(float ExperienceToAdd)
+{
+	// 서버에서만 실행
+	if (!GetOwner() || !GetOwner()->HasAuthority())
+	{
+		MY_LOG_DISPLAY("AddExperience can only be called on the server");
+		return;
+	}
+
+	if (ExperienceToAdd <= 0.f)
+	{
+		return;
+	}
+
+	const UAttributeSet* AttributeSetConst = GetAttributeSet(UDDSAttributeSet::StaticClass());
+	UDDSAttributeSet* AS = const_cast<UDDSAttributeSet*>(Cast<UDDSAttributeSet>(AttributeSetConst));
+	if (!AS)
+	{
+		MY_LOG_DISPLAY("AttributeSet not found");
+		return;
+	}
+
+	const float CurrentEnergy = AS->GetEnergy();
+	AS->SetEnergy(CurrentEnergy + ExperienceToAdd);
+
+	bool bIsServer = GetOwner()->HasAuthority();
+	MY_CLOG_DISPLAY_NET(FColor::Cyan, bIsServer, 
+		TEXT("Added Experience: +%.1f (Total: %.1f)"), 
+		ExperienceToAdd, AS->GetEnergy());
+}
+
+void UDDSAbilitySystemComponent::AddExperienceAndCheckLevelUp(float ExperienceToAdd)
+{
+	// 서버에서만 실행
+	if (!GetOwner() || !GetOwner()->HasAuthority())
+	{
+		MY_LOG_DISPLAY("AddExperienceAndCheckLevelUp can only be called on the server");
+		return;
+	}
+
+	if (ExperienceToAdd <= 0.f)
+	{
+		return;
+	}
+
+	const UAttributeSet* AttributeSetConst = GetAttributeSet(UDDSAttributeSet::StaticClass());
+	UDDSAttributeSet* AS = const_cast<UDDSAttributeSet*>(Cast<UDDSAttributeSet>(AttributeSetConst));
+	if (!AS)
+	{
+		MY_LOG_DISPLAY("AttributeSet not found");
+		return;
+	}
+
+	// 경험치 추가
+	const float CurrentEnergy = AS->GetEnergy();
+	const float NewEnergy = CurrentEnergy + ExperienceToAdd;
+	AS->SetEnergy(NewEnergy);
+
+	// 레벨업 체크
+	int32 LevelsGained = 0;
+	float RemainingEnergy = NewEnergy;
+	float RequiredEnergy = AS->GetRequireEnergy();
+
+	while (RemainingEnergy >= RequiredEnergy && RequiredEnergy > 0.f)
+	{
+		LevelsGained++;
+		RemainingEnergy -= RequiredEnergy;
+		RequiredEnergy = 100.f + ((FMath::RoundToInt(AS->GetLevel()) + LevelsGained) * 100.f);
+	}
+
+	if (LevelsGained > 0)
+	{
+		// 남은 경험치 설정
+		AS->SetEnergy(RemainingEnergy);
+		
+		// 레벨업 실행
+		LevelUp(LevelsGained);
+
+		bool bIsServer = GetOwner()->HasAuthority();
+		MY_CLOG_DISPLAY_NET(FColor::Yellow, bIsServer, 
+			TEXT("Experience added: +%.1f, Level Up! +%d levels, Remaining XP: %.1f"), 
+			ExperienceToAdd, LevelsGained, RemainingEnergy);
+	}
+	else
+	{
+		bool bIsServer = GetOwner()->HasAuthority();
+		MY_CLOG_DISPLAY_NET(FColor::Cyan, bIsServer, 
+			TEXT("Experience added: +%.1f (%.1f / %.1f)"), 
+			ExperienceToAdd, NewEnergy, RequiredEnergy);
+	}
+}
+
+float UDDSAbilitySystemComponent::GetCurrentExperience() const
+{
+	const UDDSAttributeSet* AS = GetSet<UDDSAttributeSet>();
+	return AS ? AS->GetEnergy() : 0.f;
+}
+
+float UDDSAbilitySystemComponent::GetRequiredExperience() const
+{
+	const UDDSAttributeSet* AS = GetSet<UDDSAttributeSet>();
+	return AS ? AS->GetRequireEnergy() : 0.f;
+}
+
+float UDDSAbilitySystemComponent::GetExperienceProgress() const
+{
+	const UDDSAttributeSet* AS = GetSet<UDDSAttributeSet>();
+	if (!AS)
+	{
+		return 0.f;
+	}
+
+	const float CurrentEnergy = AS->GetEnergy();
+	const float RequiredEnergy = AS->GetRequireEnergy();
+
+	if (RequiredEnergy <= 0.f)
+	{
+		return 0.f;
+	}
+
+	return FMath::Clamp(CurrentEnergy / RequiredEnergy, 0.f, 1.f);
 }
 
 void UDDSAbilitySystemComponent::HandleLevelChanged(const FOnAttributeChangeData& Data)
@@ -250,11 +386,37 @@ void UDDSAbilitySystemComponent::HandleLevelChanged(const FOnAttributeChangeData
 	const int32 NewLevel = FMath::RoundToInt(Data.NewValue);
 	const int32 OldLevel = FMath::RoundToInt(Data.OldValue);
 	
+	const UAttributeSet* AttributeSetConst = GetAttributeSet(UDDSAttributeSet::StaticClass());
+	UDDSAttributeSet* AS = const_cast<UDDSAttributeSet*>(Cast<UDDSAttributeSet>(AttributeSetConst));
+	if (!AS)
+	{
+		MY_LOG_DISPLAY("AttributeSet not found");
+		return;
+	}
+	AS->SetRequireEnergy(100.f + (NewLevel * 100.f));
+	
+	
 	OnLevelChanged.Broadcast(NewLevel);
 
 	bool bIsServer = GetOwner() && GetOwner()->HasAuthority();
 	MY_CLOG_DISPLAY_NET(FColor::Yellow, bIsServer, 
 		TEXT("[ASC] Level Changed: %d -> %d"), OldLevel, NewLevel);
+}
+
+void UDDSAbilitySystemComponent::HandleEnergyChanged(const FOnAttributeChangeData& Data)
+{
+	OnEnergyChanged.Broadcast(Data.NewValue);
+
+	bool bIsServer = GetOwner() && GetOwner()->HasAuthority();
+	// MY_CLOG_DISPLAY_NET(FColor::Cyan, bIsServer, TEXT("[ASC] Energy Changed: %.2f -> %.2f"), Data.OldValue, Data.NewValue);
+}
+
+void UDDSAbilitySystemComponent::HandleRequireEnergyChanged(const FOnAttributeChangeData& Data)
+{
+	OnRequireEnergyChanged.Broadcast(Data.NewValue);
+
+	bool bIsServer = GetOwner() && GetOwner()->HasAuthority();
+	// MY_CLOG_DISPLAY_NET(FColor::Orange, bIsServer, TEXT("[ASC] RequireEnergy Changed: %.2f -> %.2f"), Data.OldValue, Data.NewValue);
 }
 
 void UDDSAbilitySystemComponent::HandleHealthChanged(const FOnAttributeChangeData& Data)
@@ -366,9 +528,9 @@ void UDDSAbilitySystemComponent::SetLastDodgeInputDirection(const FVector& InDir
 {
 	LastDodgeInputDirection = InDirection;
 	
-	#if WITH_EDITOR
-	bool bIsServer = GetOwner() && GetOwner()->HasAuthority();
-	MY_CLOG_DISPLAY_NET(FColor::Cyan, bIsServer, TEXT("SetLastDodgeInputDirection: %s"), *InDirection.ToString());
-	#endif
+	// #if WITH_EDITOR
+	// bool bIsServer = GetOwner() && GetOwner()->HasAuthority();
+	// MY_CLOG_DISPLAY_NET(FColor::Cyan, bIsServer, TEXT("SetLastDodgeInputDirection: %s"), *InDirection.ToString());
+	// #endif
 }
 
