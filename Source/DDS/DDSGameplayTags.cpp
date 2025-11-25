@@ -56,6 +56,8 @@ namespace DDSGameplayTags
 	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Attribute_Primary_Dexterity, "Attribute.Primary.Dexterity", "Attribute : primary dexterity.");
 	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Attribute_Primary_Magic, "Attribute.Primary.Magic", "Attribute : primary magic.");
 
+	UE_DEFINE_GAMEPLAY_TAG_COMMENT(GameplayEffect_PlayerStats, "GameplayEffect.PlayerStats", "GameplayEffect : player stats effect tag for refreshing MMC calculations.");
+
 	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Attribute_Status_Health, "Attribute.Status.Health", "Attribute : status health.");
 	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Attribute_Status_Stamina, "Attribute.Status.Stamina", "Attribute : status stamina.");
 	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Attribute_Status_Mana, "Attribute.Status.Mana", "Attribute : status mana.");
@@ -63,8 +65,8 @@ namespace DDSGameplayTags
 	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Attribute_Status_StaminaMax, "Attribute.Status.StaminaMax", "Attribute : status stamina max.");
 	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Attribute_Status_ManaMax, "Attribute.Status.ManaMax", "Attribute : status mana max.");
 
-	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Attribute_Weapon_BaseAttack, "Attribute.Weapon.BaseAttack", "Attribute : weapon base attack.");
-	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Attribute_Weapon_BaseAttackPlus, "Attribute.Weapon.BaseAttackPlus", "Attribute : weapon base attack plus.");
+	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Attribute_Offense_BaseAttack, "Attribute.Offense.BaseAttack", "Attribute : offense base attack.");
+	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Attribute_Offense_BaseAttackPlus, "Attribute.Offense.BaseAttackPlus", "Attribute : offense base attack plus.");
 
 	UE_DEFINE_GAMEPLAY_TAG(Attribute_Offense_StrengthAR, "Attribute.Offense.StrengthAR");
 	UE_DEFINE_GAMEPLAY_TAG(Attribute_Offense_StrengthARPlus, "Attribute.Offense.StrengthARPlus");

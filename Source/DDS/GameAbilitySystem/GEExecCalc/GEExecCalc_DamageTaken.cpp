@@ -176,12 +176,12 @@ void UGEExecCalc_DamageTaken::Execute_Implementation(const FGameplayEffectCustom
 	// 계산식 적용
 	const float CalculatedDamage = GetDamage(SourceAttackPower, TargetDefensePower);
 
-	MY_LOG(LogTemp, Log, TEXT("DamageTaken Calculation: AttackPower: %f, DefensePower: %f, ResistPower: %f, CalculatedDamage: %f"),
-		SourceAttackPower, TargetDefensePower, TargetResistPower, CalculatedDamage);
+	// MY_LOG(LogTemp, Log, TEXT("DamageTaken Calculation: AttackPower: %f, DefensePower: %f, ResistPower: %f, CalculatedDamage: %f"),
+		// SourceAttackPower, TargetDefensePower, TargetResistPower, CalculatedDamage);
 	// 경감률 적용
-	// const float FinalDamage = CalculatedDamage * (1.f - TargetResistPower / 100.f);
+	const float FinalDamage = CalculatedDamage * (1.f - TargetResistPower / 100.f);
 
-	const float FinalDamage = 90.f;
+	// const float FinalDamage = 90.f;
 	OutExecutionOutput.AddOutputModifier(FGameplayModifierEvaluatedData(
 		GetDDSDamageCapture().DamageTakenDef.AttributeToCapture,
 		EGameplayModOp::Override,

@@ -1,36 +1,20 @@
 #include "GameAbilitySystem/Effects/GE_PlayerStats_Naive.h"
 #include "GameAbilitySystem/DDSAttributeSet.h"
 #include "GameAbilitySystem/MMC/DerivedMMC.h"
+#include "DDSGameplayTags.h"
 
 UGE_PlayerStats_Naive::UGE_PlayerStats_Naive()
 {
     DurationPolicy = EGameplayEffectDurationType::Infinite;
+    
+    // MMC를 주기적으로 재계산하여 실시간 반영
+    Period = 0.1f; // 0.1초마다 재계산
+    bExecutePeriodicEffectOnApplication = true; // 적용 즉시 실행
 
-    // Status Attributes - MMC 사용
-    FGameplayModifierInfo HealthMaxModifier;
-    FCustomCalculationBasedFloat HealthMaxMagnitude;
-    HealthMaxMagnitude.CalculationClassMagnitude = UMMC_MaxHealth::StaticClass();
-    HealthMaxModifier.ModifierMagnitude = HealthMaxMagnitude;
-    HealthMaxModifier.ModifierOp = EGameplayModOp::Override;
-    HealthMaxModifier.Attribute = UDDSAttributeSet::GetHealthMaxAttribute();
-    Modifiers.Add(HealthMaxModifier);
+    // Effect를 식별할 수 있는 태그 추가
+    InheritableGameplayEffectTags.Added.AddTag(DDSGameplayTags::GameplayEffect_PlayerStats);
 
-    FGameplayModifierInfo StaminaMaxModifier;
-    FCustomCalculationBasedFloat StaminaMaxMagnitude;
-    StaminaMaxMagnitude.CalculationClassMagnitude = UMMC_MaxStamina::StaticClass();
-    StaminaMaxModifier.ModifierMagnitude = StaminaMaxMagnitude;
-    StaminaMaxModifier.ModifierOp = EGameplayModOp::Override;
-    StaminaMaxModifier.Attribute = UDDSAttributeSet::GetStaminaMaxAttribute();
-    Modifiers.Add(StaminaMaxModifier);
-
-    FGameplayModifierInfo ManaMaxModifier;
-    FCustomCalculationBasedFloat ManaMaxMagnitude;
-    ManaMaxMagnitude.CalculationClassMagnitude = UMMC_MaxMana::StaticClass();
-    ManaMaxModifier.ModifierMagnitude = ManaMaxMagnitude;
-    ManaMaxModifier.ModifierOp = EGameplayModOp::Override;
-    ManaMaxModifier.Attribute = UDDSAttributeSet::GetManaMaxAttribute();
-    Modifiers.Add(ManaMaxModifier);
-
+    // Offense Attributes - MMC 사용
     // Offense Attributes - MMC 사용
     FGameplayModifierInfo AttackPowerModifier;
     FCustomCalculationBasedFloat AttackPowerMagnitude;
@@ -47,37 +31,5 @@ UGE_PlayerStats_Naive::UGE_PlayerStats_Naive()
     MagicPowerModifier.ModifierOp = EGameplayModOp::Override;
     MagicPowerModifier.Attribute = UDDSAttributeSet::GetMagicPowerAttribute();
     Modifiers.Add(MagicPowerModifier);
-
-    // Defense Attributes - MMC 사용
-    FGameplayModifierInfo PhysicalDefenseModifier;
-    FCustomCalculationBasedFloat PhysicalDefenseMagnitude;
-    PhysicalDefenseMagnitude.CalculationClassMagnitude = UMMC_PhysicalDefense::StaticClass();
-    PhysicalDefenseModifier.ModifierMagnitude = PhysicalDefenseMagnitude;
-    PhysicalDefenseModifier.ModifierOp = EGameplayModOp::Override;
-    PhysicalDefenseModifier.Attribute = UDDSAttributeSet::GetPhysicalDefenseAttribute();
-    Modifiers.Add(PhysicalDefenseModifier);
-
-    FGameplayModifierInfo MagicDefenseModifier;
-    FCustomCalculationBasedFloat MagicDefenseMagnitude;
-    MagicDefenseMagnitude.CalculationClassMagnitude = UMMC_MagicDefense::StaticClass();
-    MagicDefenseModifier.ModifierMagnitude = MagicDefenseMagnitude;
-    MagicDefenseModifier.ModifierOp = EGameplayModOp::Override;
-    MagicDefenseModifier.Attribute = UDDSAttributeSet::GetMagicDefenseAttribute();
-    Modifiers.Add(MagicDefenseModifier);
-
-    FGameplayModifierInfo PhysicalResistModifier;
-    FCustomCalculationBasedFloat PhysicalResistMagnitude;
-    PhysicalResistMagnitude.CalculationClassMagnitude = UMMC_PhysicalResist::StaticClass();
-    PhysicalResistModifier.ModifierMagnitude = PhysicalResistMagnitude;
-    PhysicalResistModifier.ModifierOp = EGameplayModOp::Override;
-    PhysicalResistModifier.Attribute = UDDSAttributeSet::GetPhysicalResistAttribute();
-    Modifiers.Add(PhysicalResistModifier);
-
-    FGameplayModifierInfo MagicResistModifier;
-    FCustomCalculationBasedFloat MagicResistMagnitude;
-    MagicResistMagnitude.CalculationClassMagnitude = UMMC_MagicResist::StaticClass();
-    MagicResistModifier.ModifierMagnitude = MagicResistMagnitude;
-    MagicResistModifier.ModifierOp = EGameplayModOp::Override;
-    MagicResistModifier.Attribute = UDDSAttributeSet::GetMagicResistAttribute();
-    Modifiers.Add(MagicResistModifier);
+    
 }

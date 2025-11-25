@@ -206,7 +206,7 @@ void AInGamePlayerController::Input_LockOn()
 	
 	if (target)
 	{
-		MY_CLOG_DISPLAY_NET(FColor::White, HasAuthority(), TEXT("Lock On Target : %s"), *target->GetName());
+		// MY_CLOG_DISPLAY_NET(FColor::White, HasAuthority(), TEXT("Lock On Target : %s"), *target->GetName());
   
 		if (focusedObject && focusedObject != target)
 		{
@@ -324,16 +324,22 @@ void AInGamePlayerController::Cheat_AddExp()
 	}
 
 	const UAttributeSet* AttributeSetConst = ASC->GetAttributeSet(UDDSAttributeSet::StaticClass());
+
+	float Amount = 500.f;
+
 	UDDSAttributeSet* AS = const_cast<UDDSAttributeSet*>(Cast<UDDSAttributeSet>(AttributeSetConst));
 	if (!AS)
 	{
 		MY_LOG_DISPLAY("AttributeSet not found");
 		return;
 	}
-
-	const float Amount = 500.f;
 	const float OldEnergy = AS->GetEnergy();
-	AS->SetEnergy(OldEnergy + Amount);
+	
+
+	ASC->AddExperienceAndCheckLevelUp(Amount);
+	
+
+	
 
 	MY_CLOG_DISPLAY_NET(FColor::Cyan, true, 
 		TEXT("💎 Cheat: Added %.0f Energy (%.0f -> %.0f)"), 

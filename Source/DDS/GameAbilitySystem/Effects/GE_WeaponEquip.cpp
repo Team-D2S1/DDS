@@ -17,8 +17,51 @@ UGE_WeaponEquip::UGE_WeaponEquip()
 
 	// ===== Blade Stats Modifiers =====
 
+	// 1. BaseATK -> BaseAttack
+	{
+		FGameplayModifierInfo Modifier;
+		FSetByCallerFloat Magnitude;
+		Magnitude.DataTag = DDSGameplayTags::Weapon_SetByCaller_BaseATK;
+		Modifier.ModifierMagnitude = FGameplayEffectModifierMagnitude(Magnitude);
+		Modifier.ModifierOp = EGameplayModOp::Additive;
+		Modifier.Attribute = UDDSAttributeSet::GetBaseAttackAttribute();
+		Modifiers.Add(Modifier);
+	}
 
-	// 9. UseSTA -> AttackRequireStamina
+	// 2. PowASR -> PhysicalASR (근력 보정)
+	{
+		FGameplayModifierInfo Modifier;
+		FSetByCallerFloat Magnitude;
+		Magnitude.DataTag = DDSGameplayTags::Weapon_SetByCaller_PowASR;
+		Modifier.ModifierMagnitude = FGameplayEffectModifierMagnitude(Magnitude);
+		Modifier.ModifierOp = EGameplayModOp::Additive;
+		Modifier.Attribute = UDDSAttributeSet::GetPhysicalASRAttribute();
+		Modifiers.Add(Modifier);
+	}
+
+	// 3. DexASR -> DexterityASR (기량 보정)
+	{
+		FGameplayModifierInfo Modifier;
+		FSetByCallerFloat Magnitude;
+		Magnitude.DataTag = DDSGameplayTags::Weapon_SetByCaller_DexASR;
+		Modifier.ModifierMagnitude = FGameplayEffectModifierMagnitude(Magnitude);
+		Modifier.ModifierOp = EGameplayModOp::Additive;
+		Modifier.Attribute = UDDSAttributeSet::GetDexterityASRAttribute();
+		Modifiers.Add(Modifier);
+	}
+
+	// 4. MgcASR -> MagicASR (마법 보정)
+	{
+		FGameplayModifierInfo Modifier;
+		FSetByCallerFloat Magnitude;
+		Magnitude.DataTag = DDSGameplayTags::Weapon_SetByCaller_MgcASR;
+		Modifier.ModifierMagnitude = FGameplayEffectModifierMagnitude(Magnitude);
+		Modifier.ModifierOp = EGameplayModOp::Additive;
+		Modifier.Attribute = UDDSAttributeSet::GetMagicASRAttribute();
+		Modifiers.Add(Modifier);
+	}
+
+	// 5. UseSTA -> AttackRequireStamina
 	{
 		FGameplayModifierInfo Modifier;
 		FSetByCallerFloat Magnitude;
@@ -29,12 +72,7 @@ UGE_WeaponEquip::UGE_WeaponEquip()
 		Modifiers.Add(Modifier);
 	}
 
-	// 10. AttackSpeed, StanceATK, GripAttackSpeed, GripStanceATKTime은
-	// AttributeSet에 해당 Attribute가 있을 때 추가
-	// 현재는 StrengthAR, DexterityAR, MagicAR 계열 + AttackRequireStamina 매핑 완료
-	
-	// 나중에 필요하면 추가:
-	// - Attribute.Weapon.AttackSpeed
-	// - Attribute.Weapon.StanceATK
-	// 등의 Attribute를 DDSAttributeSet에 추가하고 여기에 Modifier 추가
+	// Note: AttackSpeed, StanceATK, GripAttackSpeed, GripStanceATKTime are handled separately
+	// in the combat system and don't need attribute modifiers
+	// Plus 값들은 무시 (BaseATKPlus, PowASRPlus, DexASRPlus, MgcASRPlus)
 }
