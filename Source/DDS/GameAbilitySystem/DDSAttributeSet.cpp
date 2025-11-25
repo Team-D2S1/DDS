@@ -328,8 +328,11 @@ void UDDSAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCallbac
 		const float NewHealth = FMath::Clamp(OldHealth - TakenDamage, 0.f, GetHealthMax());
 		SetHealth(NewHealth);
 
-		// MY_CLOG_DISPLAY_NET(FColor::Red, bHasAuthority, TEXT("OldHealth: %f, TakenDamage: %f, NewHealth: %f"), OldHealth, TakenDamage, NewHealth);
-
+#if WITH_EDITOR
+		MY_CLOG_DISPLAY_NET(FColor::Red, bHasAuthority, TEXT("OldHealth: %f, TakenDamage: %f, NewHealth: %f"), OldHealth, TakenDamage, NewHealth);
+#endif
+		// 데미지 적용 후 DamageTaken 초기화
+		SetDamageTaken(0.f);
 		if (GetHealth() <= 0.f)
 		{
 			if (UAbilitySystemComponent* ASC = GetOwningAbilitySystemComponent())

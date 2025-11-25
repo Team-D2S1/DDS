@@ -21,6 +21,19 @@ public:
 private:
 	UPROPERTY(EditDefaultsOnly,Category="StartUpData")
 	TArray<TSubclassOf<UDDSMonsterGameplayAbility>> MonsterCombatAbilities;
-	
-	
+
+
+	UPROPERTY(EditDefaultsOnly,Category="StartUpData|DefaultStats")
+	float DefaultHealth = 100.f;
+	UPROPERTY(EditDefaultsOnly,Category="StartUpData|DefaultStats")
+	float DefaultAttackPower = 10.f;
+	UPROPERTY(EditDefaultsOnly,Category="StartUpData|DefaultStats")
+	float DefaultDefense = 5.f;
+	UPROPERTY(EditDefaultsOnly,Category="StartUpData|DefaultStats")
+	float DefaultResistance = 3.f;
+
+	UPROPERTY(EditDefaultsOnly,Category="StartUpData|DefaultStats")
+	float DefaultSoulDrop = 50.f;
+	UPROPERTY(EditDefaultsOnly,Category="StartUpData|DefaultStats")
+	float DefaultExperienceDrop = 100.f;
 };
