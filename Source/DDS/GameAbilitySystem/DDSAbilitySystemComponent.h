@@ -89,6 +89,10 @@ public:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category="GAS|Attributes")
 	TSubclassOf<UGameplayEffect> UseAttributePointEffectClass;
 
+	/** Player Stats를 계산하는 MMC GameplayEffect (GE_PlayerStats_Naive) */
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category="GAS|Attributes")
+	TSubclassOf<UGameplayEffect> PlayerStatsEffectClass;
+
 protected:
 	void HandleLevelChanged(const FOnAttributeChangeData& Data);
 	void HandleHealthChanged(const FOnAttributeChangeData& Data);

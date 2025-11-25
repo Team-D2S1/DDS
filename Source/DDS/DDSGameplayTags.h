@@ -59,6 +59,8 @@ namespace DDSGameplayTags
 	DDS_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Attribute_Primary_Dexterity)
 	DDS_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Attribute_Primary_Magic)
 
+	DDS_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(GameplayEffect_PlayerStats)
+
 	DDS_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Attribute_Status_Health)
 	DDS_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Attribute_Status_Stamina)
 	DDS_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Attribute_Status_Mana)

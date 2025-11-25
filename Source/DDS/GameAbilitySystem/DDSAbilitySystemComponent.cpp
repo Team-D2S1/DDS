@@ -3,6 +3,7 @@
 
 #include "DDSAbilitySystemComponent.h"
 
+#include "DDSGameplayTags.h"
 #include "Abilities/DDSGameplayAbility.h"
 #include "DDSTypes/DDSStructTypes.h"
 #include "ETC/CustomLog.h"
@@ -200,6 +201,13 @@ void UDDSAbilitySystemComponent::Server_UseAttributePointToAttribute_Implementat
 
 	bool bIsServer = GetOwner() && GetOwner()->HasAuthority();
 	MY_CLOG_DISPLAY_NET(FColor::Cyan, bIsServer, TEXT("Used AttributePoint for: %s"), *InAttributeTag.ToString());
+
+	// 기본 속성이 변경되었으므로 PlayerStats Effect를 Refresh하여 파생 속성 재계산
+	if (PlayerStatsEffectClass)
+	{
+		ApplyOrRefreshGameplayEffectToSelf(PlayerStatsEffectClass, 1.f, DDSGameplayTags::GameplayEffect_PlayerStats);
+		MY_CLOG_DISPLAY_NET(FColor::Green, bIsServer, TEXT("Refreshed PlayerStats Effect to recalculate derived attributes"));
+	}
 }
 
 void UDDSAbilitySystemComponent::LevelUp(int32 LevelsToAdd)
@@ -255,7 +263,7 @@ void UDDSAbilitySystemComponent::HandleHealthChanged(const FOnAttributeChangeDat
 
 	// 디버그 메시지
 	bool bIsServer = GetOwner() && GetOwner()->HasAuthority();
-	MY_CLOG_DISPLAY_NET(FColor::Green, bIsServer, TEXT("[ASC] Health Changed: %.2f -> %.2f"), Data.OldValue, Data.NewValue);
+	// MY_CLOG_DISPLAY_NET(FColor::Green, bIsServer, TEXT("[ASC] Health Changed: %.2f -> %.2f"), Data.OldValue, Data.NewValue);
 }
 
 void UDDSAbilitySystemComponent::HandleStaminaChanged(const FOnAttributeChangeData& Data)
@@ -274,16 +282,16 @@ void UDDSAbilitySystemComponent::HandleManaChanged(const FOnAttributeChangeData&
 {
 	OnManaChanged.Broadcast(Data.NewValue);
 
-	bool bIsServer = GetOwner() && GetOwner()->HasAuthority();
-	MY_CLOG_DISPLAY_NET(FColor::Cyan, bIsServer, TEXT("[ASC] Mana Changed: %.2f -> %.2f"), Data.OldValue, Data.NewValue);
+	// bool bIsServer = GetOwner() && GetOwner()->HasAuthority();
+	// MY_CLOG_DISPLAY_NET(FColor::Cyan, bIsServer, TEXT("[ASC] Mana Changed: %.2f -> %.2f"), Data.OldValue, Data.NewValue);
 }
 
 void UDDSAbilitySystemComponent::HandleHealthMaxChanged(const FOnAttributeChangeData& Data)
 {
 	OnMaxHealthChanged.Broadcast(Data.NewValue);
 
-	bool bIsServer = GetOwner() && GetOwner()->HasAuthority();
-	MY_CLOG_DISPLAY_NET(FColor::Emerald, bIsServer, TEXT("[ASC] HealthMax Changed: %.2f -> %.2f"), Data.OldValue, Data.NewValue);
+	// bool bIsServer = GetOwner() && GetOwner()->HasAuthority();
+	// MY_CLOG_DISPLAY_NET(FColor::Emerald, bIsServer, TEXT("[ASC] HealthMax Changed: %.2f -> %.2f"), Data.OldValue, Data.NewValue);
 }
 
 void UDDSAbilitySystemComponent::HandleStaminaMaxChanged(const FOnAttributeChangeData& Data)
@@ -291,7 +299,7 @@ void UDDSAbilitySystemComponent::HandleStaminaMaxChanged(const FOnAttributeChang
 	OnMaxStaminaChanged.Broadcast(Data.NewValue);
 
 	bool bIsServer = GetOwner() && GetOwner()->HasAuthority();
-	MY_CLOG_DISPLAY_NET(FColor::Silver, bIsServer, TEXT("[ASC] StaminaMax Changed: %.2f -> %.2f"), Data.OldValue, Data.NewValue);
+	// MY_CLOG_DISPLAY_NET(FColor::Silver, bIsServer, TEXT("[ASC] StaminaMax Changed: %.2f -> %.2f"), Data.OldValue, Data.NewValue);
 }
 
 void UDDSAbilitySystemComponent::HandleManaMaxChanged(const FOnAttributeChangeData& Data)
@@ -299,7 +307,7 @@ void UDDSAbilitySystemComponent::HandleManaMaxChanged(const FOnAttributeChangeDa
 	OnMaxManaChanged.Broadcast(Data.NewValue);
 
 	bool bIsServer = GetOwner() && GetOwner()->HasAuthority();
-	MY_CLOG_DISPLAY_NET(FColor::Blue, bIsServer, TEXT("[ASC] ManaMax Changed: %.2f -> %.2f"), Data.OldValue, Data.NewValue);
+	// MY_CLOG_DISPLAY_NET(FColor::Blue, bIsServer, TEXT("[ASC] ManaMax Changed: %.2f -> %.2f"), Data.OldValue, Data.NewValue);
 }
 
 void UDDSAbilitySystemComponent::HandleDamageTakenChanged(const FOnAttributeChangeData& Data)
@@ -307,7 +315,7 @@ void UDDSAbilitySystemComponent::HandleDamageTakenChanged(const FOnAttributeChan
 	OnDamageTakenChanged.Broadcast(Data.NewValue);
 
 	bool bIsServer = GetOwner() && GetOwner()->HasAuthority();
-	MY_CLOG_DISPLAY_NET(FColor::Red, bIsServer, TEXT("[ASC] DamageTaken Changed: %.2f -> %.2f"), Data.OldValue, Data.NewValue);
+	// MY_CLOG_DISPLAY_NET(FColor::Red, bIsServer, TEXT("[ASC] DamageTaken Changed: %.2f -> %.2f"), Data.OldValue, Data.NewValue);
 }
 
 FActiveGameplayEffectHandle UDDSAbilitySystemComponent::ApplyOrRefreshGameplayEffectToSelf(TSubclassOf<UGameplayEffect> EffectClass, float Level, const FGameplayTag& TagToMatch)

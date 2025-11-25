@@ -484,22 +484,25 @@ void UInventoryComponent::ApplyItemEffect(UItemInstance* ItemInstance, int32 Slo
 	FBladeData* BladeData = ItemInstance->GetBladeData();
 	if (BladeData)
 	{
-		EffectSpecHandle.Data->SetSetByCallerMagnitude(DDSGameplayTags::Weapon_SetByCaller_Level, ItemInstance->GetBladeItemInstance()->GetItemLevel());
+		int32 WeaponLevel = ItemInstance->GetBladeItemInstance()->GetItemLevel();
+		
+		// ASR 계산: 무기 ASR + (무기 레벨 × 무기 ASRPlus)
+		// 무기 레벨 × 무기 ASRPlus는 항상 0 이상
+		float FinalPowASR = BladeData->PowASR + (WeaponLevel * FMath::Max(0.0f, BladeData->PowASRplus));
+		float FinalDexASR = BladeData->AglASR + (WeaponLevel * FMath::Max(0.0f, BladeData->AglASRplus));
+		float FinalMgcASR = BladeData->MgcASR + (WeaponLevel * FMath::Max(0.0f, BladeData->MgcASRplus));
+		
+		EffectSpecHandle.Data->SetSetByCallerMagnitude(DDSGameplayTags::Weapon_SetByCaller_Level, WeaponLevel);
 		EffectSpecHandle.Data->SetSetByCallerMagnitude(DDSGameplayTags::Weapon_SetByCaller_BaseATK, BladeData->BaseATK);
-		EffectSpecHandle.Data->SetSetByCallerMagnitude(DDSGameplayTags::Weapon_SetByCaller_BaseATKPlus, BladeData->BaseATKplus);
-		EffectSpecHandle.Data->SetSetByCallerMagnitude(DDSGameplayTags::Weapon_SetByCaller_PowASR, BladeData->PowASR);
-		EffectSpecHandle.Data->SetSetByCallerMagnitude(DDSGameplayTags::Weapon_SetByCaller_PowASRPlus, BladeData->PowASRplus);
-		EffectSpecHandle.Data->SetSetByCallerMagnitude(DDSGameplayTags::Weapon_SetByCaller_DexASR, BladeData->AglASR);
-		EffectSpecHandle.Data->SetSetByCallerMagnitude(DDSGameplayTags::Weapon_SetByCaller_DexASRPlus, BladeData->AglASRplus);
-		EffectSpecHandle.Data->SetSetByCallerMagnitude(DDSGameplayTags::Weapon_SetByCaller_MgcASR, BladeData->MgcASR);
-		EffectSpecHandle.Data->SetSetByCallerMagnitude(DDSGameplayTags::Weapon_SetByCaller_MgcASRPlus, BladeData->MgcASRplus);
+		EffectSpecHandle.Data->SetSetByCallerMagnitude(DDSGameplayTags::Weapon_SetByCaller_PowASR, FinalPowASR);
+		EffectSpecHandle.Data->SetSetByCallerMagnitude(DDSGameplayTags::Weapon_SetByCaller_DexASR, FinalDexASR);
+		EffectSpecHandle.Data->SetSetByCallerMagnitude(DDSGameplayTags::Weapon_SetByCaller_MgcASR, FinalMgcASR);
 		EffectSpecHandle.Data->SetSetByCallerMagnitude(DDSGameplayTags::Weapon_SetByCaller_UseSTA, BladeData->UseSTA);
 		EffectSpecHandle.Data->SetSetByCallerMagnitude(DDSGameplayTags::Weapon_SetByCaller_AttackSpeed, BladeData->AsTime);
 		EffectSpecHandle.Data->SetSetByCallerMagnitude(DDSGameplayTags::Weapon_SetByCaller_StanceATK, BladeData->StanceATK);
-		EffectSpecHandle.Data->SetSetByCallerMagnitude(DDSGameplayTags::Weapon_SetByCaller_UseSTA, BladeData->UseSTA);
 		
-		MY_LOG(LogTemp, Log, TEXT("Blade stats applied - BaseATK: %d, PowASR: %.2f, UseSTA: %d"), 
-			BladeData->BaseATK, BladeData->PowASR, BladeData->UseSTA);
+		MY_LOG(LogTemp, Log, TEXT("Blade stats applied - BaseATK: %d, PowASR: %.2f (%.2f + %d*%.2f), DexASR: %.2f, MgcASR: %.2f, UseSTA: %d"), 
+			BladeData->BaseATK, FinalPowASR, BladeData->PowASR, WeaponLevel, BladeData->PowASRplus, FinalDexASR, FinalMgcASR, BladeData->UseSTA);
 	}
 
 	// Grip 데이터 처리 (무기인 경우)

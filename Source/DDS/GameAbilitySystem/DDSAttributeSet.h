@@ -128,6 +128,11 @@ public:
 	FGameplayAttributeData BaseAttack;
 	ATTRIBUTE_ACCESSORS(UDDSAttributeSet, BaseAttack);
 
+	// (공격력, 무기) BaseAttack Plus (증가량)
+	UPROPERTY(ReplicatedUsing= OnRep_BaseAttackPlus, BlueprintReadOnly, Category = "Offense Attributes")
+	FGameplayAttributeData BaseAttackPlus;
+	ATTRIBUTE_ACCESSORS(UDDSAttributeSet, BaseAttackPlus);
+
 	// (공격력, 2차) StrAR
 	UPROPERTY(ReplicatedUsing= OnRep_StrengthAR, BlueprintReadOnly, Category = "Offense Attributes")
 	FGameplayAttributeData StrengthAR;
@@ -275,6 +280,8 @@ public:
 	void OnRep_ManaMax(const FGameplayAttributeData& OldManaMax) const;
 	UFUNCTION()
 	void OnRep_BaseAttack(const FGameplayAttributeData& OldBaseAttack) const;
+	UFUNCTION()
+	void OnRep_BaseAttackPlus(const FGameplayAttributeData& OldBaseAttackPlus) const;
 	UFUNCTION()
 	void OnRep_AttackPower(const FGameplayAttributeData& OldAttackPower) const;
 	UFUNCTION()
