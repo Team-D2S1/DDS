@@ -92,12 +92,13 @@ public:
 	FORCEINLINE UMonsterCombatComponent* GetMonsterCombatComponent() const { return MonsterCombatComponent; }
 	virtual UPawnCombatComponent* GetCombatComponent() const override;
 
+	const USkeletalMeshComponent* GetWeaponMesh() const { return WeaponMesh; }
+
 	/* IPawnUIInterface Begin~ */
 	virtual UPawnUIComponent* GetPawnUIComponent() const override;
 	virtual UMonsterUIComponent* GetMonsterUIComponent() const override;
 	/* ~ IPawnUIInterface End */
 
 	FORCEINLINE float GetAttackRange() const { return AttackRange; }
-
 };
 

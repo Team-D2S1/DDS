@@ -3,7 +3,9 @@
 
 #include "Components/Combat/MonsterCombatComponent.h"
 
+#include "AbilitySystemBlueprintLibrary.h"
 #include "AbilitySystemComponent.h"
+#include "DDSGameplayTags.h"
 #include "AI/Skills/MonsterSkillBase.h"
 #include "Character/Monster/MonsterBase.h"
 
@@ -12,6 +14,25 @@
 UMonsterCombatComponent::UMonsterCombatComponent()
 {
 	
+}
+
+void UMonsterCombatComponent::ApplyDamageToTarget(APlayerBase* Player)
+{
+	if(!GetOwner()->HasAuthority()) return;
+
+	UAbilitySystemComponent* ASC = UAbilitySystemBlueprintLibrary::GetAbilitySystemComponent(GetOwner());
+	
+	FGameplayEffectContextHandle EffectContext = ASC->MakeEffectContext();
+	EffectContext.AddSourceObject(GetOwner());
+
+	bool bPlayerDodge = false;
+	bPlayerDodge = Player->GetAbilitySystemComponent()->HasMatchingGameplayTag(DDSGameplayTags::Player_State_Dodging);
+
+	if(bPlayerDodge) return;
+	
+	FGameplayEffectSpecHandle EffectSpecHandle = ASC->MakeOutgoingSpec(HitEffect, 1.0f, EffectContext);
+
+	ASC->ApplyGameplayEffectSpecToTarget(*EffectSpecHandle.Data.Get(), Player->GetAbilitySystemComponent());
 }
 
 void UMonsterCombatComponent::BeginPlay()

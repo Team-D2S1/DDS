@@ -3,10 +3,12 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "Character/Player/PlayerBase.h"
 #include "Components/Combat/PlayerCombatComponent.h"
 #include "ETC/CustomLog.h"
 #include "MonsterCombatComponent.generated.h"
 
+class AMonsterBase;
 class UMonsterSkillBase;
 
 USTRUCT(BlueprintType)
@@ -63,12 +65,14 @@ public:
 };
 
 UCLASS()
-class DDS_API UMonsterCombatComponent : public UPlayerCombatComponent
+class DDS_API UMonsterCombatComponent : public UPawnCombatComponent
 {
 	GENERATED_BODY()
 	
 public:
 	UMonsterCombatComponent();
+
+	void ApplyDamageToTarget(APlayerBase* Player);
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Montage")
 	TObjectPtr<UAnimMontage> DeathMontage;
@@ -76,6 +80,9 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Montage")
 	TObjectPtr<UAnimMontage> HitReactionMontage;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Effect")
+	TSubclassOf<UGameplayEffect> HitEffect;
+	
 protected:
 	virtual void BeginPlay() override;
 
