@@ -19,7 +19,7 @@
  
 
 bool UDDSFunctionLibrary::MakeWidgetControllerParams(const UObject* WorldContextObject,
-                                                     FWidgetControllerParams& OutParams, const ADDSHUD* OutHUD)
+                                                     FWidgetControllerParams& OutParams, ADDSHUD*& OutHUD)
 {
 	APlayerController* PlayerController = UGameplayStatics::GetPlayerController(WorldContextObject, 0);
 	if (!PlayerController)

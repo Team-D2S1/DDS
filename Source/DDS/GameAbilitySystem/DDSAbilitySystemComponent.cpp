@@ -132,7 +132,10 @@ void UDDSAbilitySystemComponent::BindAttributeValueChangeDelegates(UDDSAttribute
 		return;
 	}
 
-	// Health / HealthMax / DamageTaken 등 Attribute 값 변경을 Listen
+	// Level / Health / HealthMax / DamageTaken 등 Attribute 값 변경을 Listen
+	GetGameplayAttributeValueChangeDelegate(InAttributeSet->GetLevelAttribute())
+		.AddUObject(this, &UDDSAbilitySystemComponent::HandleLevelChanged);
+	
 	GetGameplayAttributeValueChangeDelegate(InAttributeSet->GetHealthAttribute())
 		.AddUObject(this, &UDDSAbilitySystemComponent::HandleHealthChanged);
 
@@ -153,6 +156,97 @@ void UDDSAbilitySystemComponent::BindAttributeValueChangeDelegates(UDDSAttribute
 
 	GetGameplayAttributeValueChangeDelegate(InAttributeSet->GetDamageTakenAttribute())
 		.AddUObject(this, &UDDSAbilitySystemComponent::HandleDamageTakenChanged);
+}
+
+void UDDSAbilitySystemComponent::Server_UseAttributePointToAttribute_Implementation(const FGameplayTag& InAttributeTag)
+{
+	if (!InAttributeTag.IsValid())
+	{
+		MY_LOG_DISPLAY("InAttributeTag is not valid");
+		return;
+	}
+
+	if (!UseAttributePointEffectClass)
+	{
+		MY_LOG_DISPLAY("UseAttributePointEffectClass is not set");
+		return;
+	}
+
+	// 만약 포인트가 0 이하라면 반환
+	const UDDSAttributeSet* AttributeSet = GetSet<UDDSAttributeSet>();
+	if (!AttributeSet)
+	{
+		MY_LOG_DISPLAY("AttributeSet is not valid");
+		return;
+	}
+	if (AttributeSet->GetAttributePoints() <= 0.f)
+	{
+		MY_LOG_DISPLAY("Not enough AttributePoint to use");
+		return;
+	}
+
+	FGameplayEffectContextHandle EffectContext = MakeEffectContext();
+	FGameplayEffectSpecHandle SpecHandle = MakeOutgoingSpec(UseAttributePointEffectClass, 1.f, EffectContext);
+	if (!SpecHandle.IsValid())
+	{
+		MY_LOG_DISPLAY("SpecHandle is not valid");
+		return;
+	}
+
+	// 태그 매개변수를 설정 (SetByCaller 사용)
+	SpecHandle.Data->SetSetByCallerMagnitude(InAttributeTag, 1.f);
+
+	ApplyGameplayEffectSpecToSelf(*SpecHandle.Data.Get());
+
+	bool bIsServer = GetOwner() && GetOwner()->HasAuthority();
+	MY_CLOG_DISPLAY_NET(FColor::Cyan, bIsServer, TEXT("Used AttributePoint for: %s"), *InAttributeTag.ToString());
+}
+
+void UDDSAbilitySystemComponent::LevelUp(int32 LevelsToAdd)
+{
+	// 서버에서만 실행
+	if (!GetOwner() || !GetOwner()->HasAuthority())
+	{
+		MY_LOG_DISPLAY("LevelUp can only be called on the server");
+		return;
+	}
+
+	if (LevelsToAdd <= 0)
+	{
+		MY_LOG_DISPLAY("LevelsToAdd must be greater than 0");
+		return;
+	}
+
+	const UAttributeSet* AttributeSetConst = GetAttributeSet(UDDSAttributeSet::StaticClass());
+	UDDSAttributeSet* AS = const_cast<UDDSAttributeSet*>(Cast<UDDSAttributeSet>(AttributeSetConst));
+	if (!AS)
+	{
+		MY_LOG_DISPLAY("AttributeSet not found");
+		return;
+	}
+
+	const int32 CurrentLevel = FMath::RoundToInt(AS->GetLevel());
+	const int32 NewLevel = CurrentLevel + LevelsToAdd;
+
+	// Level을 직접 설정
+	AS->SetLevel(NewLevel);
+
+	bool bIsServer = GetOwner()->HasAuthority();
+	MY_CLOG_DISPLAY_NET(FColor::Yellow, bIsServer, 
+		TEXT("Level Up! %d -> %d (+%d levels)"), 
+		CurrentLevel, NewLevel, LevelsToAdd);
+}
+
+void UDDSAbilitySystemComponent::HandleLevelChanged(const FOnAttributeChangeData& Data)
+{
+	const int32 NewLevel = FMath::RoundToInt(Data.NewValue);
+	const int32 OldLevel = FMath::RoundToInt(Data.OldValue);
+	
+	OnLevelChanged.Broadcast(NewLevel);
+
+	bool bIsServer = GetOwner() && GetOwner()->HasAuthority();
+	MY_CLOG_DISPLAY_NET(FColor::Yellow, bIsServer, 
+		TEXT("[ASC] Level Changed: %d -> %d"), OldLevel, NewLevel);
 }
 
 void UDDSAbilitySystemComponent::HandleHealthChanged(const FOnAttributeChangeData& Data)

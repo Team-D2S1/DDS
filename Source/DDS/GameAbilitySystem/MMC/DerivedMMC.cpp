@@ -244,17 +244,20 @@ float UMMC_MagicPower::CalculateBaseMagnitude_Implementation(const FGameplayEffe
 	
 	float Magic = 0.f;
 	float MagicAR = 0.f;
+	float MagicASR = 0.f;
 	float EquipMagicPower = 0.f;
 	float MagicPower = 0.f;
+	float BaseMAG = 1.f;
 
 	GetCapturedAttributeMagnitude(GetDDSAttributeCapture().MagicDef, Spec, EvaluationParameters, Magic);
 	GetCapturedAttributeMagnitude(GetDDSAttributeCapture().MagicARDef, Spec, EvaluationParameters, MagicAR);
+	GetCapturedAttributeMagnitude(GetDDSAttributeCapture().MagicASRDef, Spec, EvaluationParameters, MagicASR);
 	GetCapturedAttributeMagnitude(GetDDSAttributeCapture().Equip_MagicPowerDef, Spec, EvaluationParameters, EquipMagicPower);
 	GetCapturedAttributeMagnitude(GetDDSAttributeCapture().MagicPowerDef, Spec, EvaluationParameters, MagicPower);
-	
-	// 공식: 마법 공격력 = (Magic * MagicAR) + EquipMagicPower
-	// 지성: 마법 공격력, 마법 방어력
-	float CalculatedMagicPower = (Magic * MagicAR) + EquipMagicPower;
+
+	// 공식: 마법 공격력 = BaseMAG * [1 + (MagicASR * MagicAR)] + EquipMagicPower
+	// 마력: 마법 공격력, 마법 방어력
+	float CalculatedMagicPower = BaseMAG * (1.f + (MagicASR * MagicAR)) + EquipMagicPower;
 
 	return CalculatedMagicPower;
 }

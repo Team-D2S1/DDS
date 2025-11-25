@@ -63,6 +63,20 @@ protected:
 	
 	UFUNCTION(BlueprintCallable)
 	void Input_Debug_PrintAttributes();
+
+	// --- Cheat Functions for Testing ---
+	UFUNCTION(BlueprintCallable, Category="DDS|Cheat")
+	void Cheat_AddExp();
+
+	UFUNCTION(BlueprintCallable, Category="DDS|Cheat")
+	void Cheat_AddAttributePoints();
+
+	UFUNCTION(BlueprintCallable, Category="DDS|Cheat")
+	void Cheat_LevelUp();
+
+	UFUNCTION(BlueprintCallable, Category="DDS|Cheat")
+	void Cheat_FullHeal();
+
 public:
 	// UPROPERTY()
 	// TObjectPtr<UCombatComponent> CombatComponent;

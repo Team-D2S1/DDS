@@ -29,6 +29,12 @@ namespace DDSGameplayTags
 
 
 	DDS_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(InputTag_Debug_PrintAttributes)
+
+	// Cheat Input Tags (N, M, ., ,)
+	DDS_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(InputTag_Cheat_AddExp)
+	DDS_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(InputTag_Cheat_AddAttributePoints)
+	DDS_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(InputTag_Cheat_LevelUp)
+	DDS_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(InputTag_Cheat_FullHeal)
 	/** UI Widget Tags */
 	DDS_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(UI_Widget_MainMenu)
 	DDS_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(UI_Widget_Equip)
@@ -45,6 +51,7 @@ namespace DDSGameplayTags
 	DDS_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Attribute_Default_Energy)
 	DDS_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Attribute_Default_RequireEnergy)
 	DDS_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Attribute_Default_Soul)
+	DDS_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Attribute_Default_AttributePoints)
 	
 	DDS_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Attribute_Primary_Vitality)
 	DDS_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Attribute_Primary_Endurance)
@@ -113,6 +120,7 @@ namespace DDSGameplayTags
 
 	DDS_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_SetByCaller_AttackType_Light)
 	DDS_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_SetByCaller_AttackType_Heavy)
+	DDS_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_SetByCaller_AddEnergy)
 
 	// Weapon SetByCaller Tags (Blade / Grip stats)
 	DDS_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Weapon_SetByCaller_Level)

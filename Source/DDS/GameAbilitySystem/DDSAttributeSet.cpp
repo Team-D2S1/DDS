@@ -10,8 +10,6 @@
 #include "NativeGameplayTags.h"
 #include "Components/UI/PawnUIComponent.h"
 #include "ETC/CustomLog.h"
-#include "Interfaces/PawnUIInterface.h"
-#include "Components/UI/PlayerUIComponent.h"
 
 
 
@@ -22,6 +20,7 @@ UDDSAttributeSet::UDDSAttributeSet()
     InitEnergy(0.0f);
     InitRequireEnergy(0.0f);
     InitSoul(0.0f);
+    InitAttributePoints(10.f);
     
     InitVitality(10.0f);
     InitEndurance(10.0f);
@@ -50,8 +49,8 @@ UDDSAttributeSet::UDDSAttributeSet()
     InitAttackPower(10.0f);
     InitMagicPower(10.0f);
     
-    InitPhysicalDefense(5.0f);
-    InitMagicDefense(5.0f);
+    InitPhysicalDefense(0.0f);
+    InitMagicDefense(0.0f);
     InitPhysicalResist(0.0f);
 	InitMagicResist(0.0f);
     
@@ -64,6 +63,7 @@ UDDSAttributeSet::UDDSAttributeSet()
     TagToAttributeMap.Add(Attribute_Default_Energy, GetEnergyAttribute);
     TagToAttributeMap.Add(Attribute_Default_RequireEnergy, GetRequireEnergyAttribute);
     TagToAttributeMap.Add(Attribute_Default_Soul, GetSoulAttribute);
+    TagToAttributeMap.Add(Attribute_Default_AttributePoints, GetAttributePointsAttribute);
     
     TagToAttributeMap.Add(Attribute_Primary_Vitality, GetVitalityAttribute);
     TagToAttributeMap.Add(Attribute_Primary_Endurance, GetEnduranceAttribute);
@@ -104,6 +104,7 @@ void UDDSAttributeSet::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& Out
     DOREPLIFETIME_CONDITION_NOTIFY(UDDSAttributeSet, Energy, COND_None, REPNOTIFY_Always);
     DOREPLIFETIME_CONDITION_NOTIFY(UDDSAttributeSet, RequireEnergy, COND_None, REPNOTIFY_Always);
     DOREPLIFETIME_CONDITION_NOTIFY(UDDSAttributeSet, Soul, COND_None, REPNOTIFY_Always);
+    DOREPLIFETIME_CONDITION_NOTIFY(UDDSAttributeSet, AttributePoints, COND_None, REPNOTIFY_Always);
     
     DOREPLIFETIME_CONDITION_NOTIFY(UDDSAttributeSet, Vitality, COND_None, REPNOTIFY_Always);
     DOREPLIFETIME_CONDITION_NOTIFY(UDDSAttributeSet, Endurance, COND_None, REPNOTIFY_Always);
@@ -145,7 +146,6 @@ void UDDSAttributeSet::PreAttributeChange(const FGameplayAttribute& Attribute, f
 	Super::PreAttributeChange(Attribute, NewValue);
 
 	// 1차 능력치 최소/최대는 1,99
-	// 어차피 base만 바뀌는 거라 PostGameplayEffectExecute에서 실행해도 무방
 	if (Attribute == GetVitalityAttribute() ||
 		Attribute == GetEnduranceAttribute() ||
 		Attribute == GetStrengthAttribute() ||
@@ -153,6 +153,69 @@ void UDDSAttributeSet::PreAttributeChange(const FGameplayAttribute& Attribute, f
 		Attribute == GetMagicAttribute())
 	{
 		NewValue = FMath::Clamp(NewValue, 0.f, 99.f);
+	}
+
+	// HealthMax가 증가하면 현재 Health도 증가량만큼 회복
+	if (Attribute == GetHealthMaxAttribute())
+	{
+		const float OldMaxHealth = GetHealthMax();
+		const float HealthMaxDelta = NewValue - OldMaxHealth;
+		
+		if (HealthMaxDelta > 0.f)
+		{
+			const float OldHealth = GetHealth();
+			const float NewHealth = FMath::Min(OldHealth + HealthMaxDelta, NewValue);
+			SetHealth(NewHealth);
+			
+			bool bHasAuthority = GetOwningAbilitySystemComponent() && 
+								 GetOwningAbilitySystemComponent()->GetOwner() && 
+								 GetOwningAbilitySystemComponent()->GetOwner()->HasAuthority();
+			MY_CLOG_DISPLAY_NET(FColor::Green, bHasAuthority, 
+				TEXT("[AttributeSet] HealthMax: %.1f -> %.1f (+%.1f), Health: %.1f -> %.1f"), 
+				OldMaxHealth, NewValue, HealthMaxDelta, OldHealth, NewHealth);
+		}
+	}
+
+	// StaminaMax가 증가하면 현재 Stamina도 회복
+	if (Attribute == GetStaminaMaxAttribute())
+	{
+		const float OldMaxStamina = GetStaminaMax();
+		const float StaminaMaxDelta = NewValue - OldMaxStamina;
+		
+		if (StaminaMaxDelta > 0.f)
+		{
+			const float OldStamina = GetStamina();
+			const float NewStamina = FMath::Min(OldStamina + StaminaMaxDelta, NewValue);
+			SetStamina(NewStamina);
+			
+			bool bHasAuthority = GetOwningAbilitySystemComponent() && 
+								 GetOwningAbilitySystemComponent()->GetOwner() && 
+								 GetOwningAbilitySystemComponent()->GetOwner()->HasAuthority();
+			MY_CLOG_DISPLAY_NET(FColor::Yellow, bHasAuthority, 
+				TEXT("[AttributeSet] StaminaMax: %.1f -> %.1f (+%.1f), Stamina: %.1f -> %.1f"), 
+				OldMaxStamina, NewValue, StaminaMaxDelta, OldStamina, NewStamina);
+		}
+	}
+
+	// ManaMax가 증가하면 현재 Mana도 회복
+	if (Attribute == GetManaMaxAttribute())
+	{
+		const float OldMaxMana = GetManaMax();
+		const float ManaMaxDelta = NewValue - OldMaxMana;
+		
+		if (ManaMaxDelta > 0.f)
+		{
+			const float OldMana = GetMana();
+			const float NewMana = FMath::Min(OldMana + ManaMaxDelta, NewValue);
+			SetMana(NewMana);
+			
+			bool bHasAuthority = GetOwningAbilitySystemComponent() && 
+								 GetOwningAbilitySystemComponent()->GetOwner() && 
+								 GetOwningAbilitySystemComponent()->GetOwner()->HasAuthority();
+			MY_CLOG_DISPLAY_NET(FColor::Blue, bHasAuthority, 
+				TEXT("[AttributeSet] ManaMax: %.1f -> %.1f (+%.1f), Mana: %.1f -> %.1f"), 
+				OldMaxMana, NewValue, ManaMaxDelta, OldMana, NewMana);
+		}
 	}
 }
 
@@ -177,6 +240,22 @@ void UDDSAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCallbac
 		MY_CLOG_DISPLAY_NET(FColor::Green, bHasAuthority, TEXT("%s Health clamped to %f"), *GetName(), NewHealth);
 	}
 
+	// Level: 레벨업 시 AttributePoints 지급
+	if (Data.EvaluatedData.Attribute == GetLevelAttribute())
+	{
+		const int32 NewLevel = FMath::RoundToInt(GetLevel());
+		const int32 OldLevel = FMath::RoundToInt(Data.EvaluatedData.Attribute.GetNumericValue(this) - Data.EvaluatedData.Magnitude);
+		const int32 LevelDelta = NewLevel - OldLevel;
+
+		// 레벨업 시 AttributePoints 지급 (레벨당 5포인트)
+		if (LevelDelta > 0)
+		{
+			const float PointsToGrant = LevelDelta * 5.0f;
+			SetAttributePoints(GetAttributePoints() + PointsToGrant);
+			
+		}
+	}
+
 	// Stamina: 값 클램프만 수행
 	if (Data.EvaluatedData.Attribute == GetStaminaAttribute())
 	{
@@ -184,11 +263,51 @@ void UDDSAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCallbac
 		SetStamina(NewStamina);
 	}
 
-	// StaminaMax: 값 클램프만 수행
-	if (Data.EvaluatedData.Attribute == GetStaminaMaxAttribute())
+	// Mana: 값 클램프만 수행
+	if (Data.EvaluatedData.Attribute == GetManaAttribute())
 	{
-		const float NewMaxStamina = FMath::Clamp(GetStaminaMax(), 0.f, GetStaminaMax());
-		SetStaminaMax(NewMaxStamina);
+		const float NewMana = FMath::Clamp(GetMana(), 0.f, GetManaMax());
+		SetMana(NewMana);
+	}
+
+	// Energy: 경험치가 필요 경험치를 넘으면 자동 레벨업
+	if (Data.EvaluatedData.Attribute == GetEnergyAttribute())
+	{
+		const float CurrentEnergy = GetEnergy();
+		const float RequiredEnergy = GetRequireEnergy();
+
+		// 레벨업 조건 충족 확인
+		if (CurrentEnergy >= RequiredEnergy && RequiredEnergy > 0.f)
+		{
+			const int32 CurrentLevel = FMath::RoundToInt(GetLevel());
+			const int32 NewLevel = CurrentLevel + 1;
+
+			// 레벨업 처리
+			SetLevel(NewLevel);
+			
+			// 남은 경험치 계산 (오버플로우 경험치)
+			const float OverflowEnergy = CurrentEnergy - RequiredEnergy;
+			SetEnergy(OverflowEnergy);
+
+			// 다음 레벨 필요 경험치 계산 (레벨당 100씩 증가)
+			const float NextRequireEnergy = 100.f + (NewLevel * 100.f);
+			SetRequireEnergy(NextRequireEnergy);
+
+			MY_CLOG_DISPLAY_NET(FColor::Yellow, bHasAuthority, 
+				TEXT("🎉 Level Up! %d -> %d | Energy: %.0f / %.0f (Overflow: %.0f)"), 
+				CurrentLevel, NewLevel, OverflowEnergy, NextRequireEnergy, OverflowEnergy);
+
+			// 연속 레벨업 체크 (오버플로우 경험치가 또 다음 레벨 요구치를 넘는 경우)
+			if (OverflowEnergy >= NextRequireEnergy)
+			{
+				
+			}
+		}
+		else
+		{
+			// 일반적인 경험치 획득
+			SetEnergy(FMath::Clamp(CurrentEnergy, 0.f, RequiredEnergy));
+		}
 	}
 
 	// DamageTaken: 데미지 계산 + 죽음 태그 처리 (UI는 델리게이트에 맡김)
@@ -208,13 +327,6 @@ void UDDSAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCallbac
 				ASC->AddLooseGameplayTag(FGameplayTag::RequestGameplayTag("State.Dead.Start"));
 			}
 		}
-	}
-
-	// HealthMax: 값 클램프만 수행 (UI 갱신은 ASC 델리게이트가 처리)
-	if (Data.EvaluatedData.Attribute == GetHealthMaxAttribute())
-	{
-		const float NewMaxHealth = FMath::Clamp(GetHealthMax(), 0.f, GetHealthMax());
-		SetHealthMax(NewMaxHealth);
 	}
 }
 
@@ -237,6 +349,11 @@ void UDDSAttributeSet::OnRep_RequireEnergy(const FGameplayAttributeData& OldRequ
 void UDDSAttributeSet::OnRep_Soul(const FGameplayAttributeData& OldSoul) const
 {
     GAMEPLAYATTRIBUTE_REPNOTIFY(UDDSAttributeSet, Soul, OldSoul);
+}
+
+void UDDSAttributeSet::OnRep_AttributePoints(const FGameplayAttributeData& OldAttributePoints) const
+{
+	GAMEPLAYATTRIBUTE_REPNOTIFY(UDDSAttributeSet, AttributePoints, OldAttributePoints);
 }
 
 void UDDSAttributeSet::OnRep_Vitality(const FGameplayAttributeData& OldVitality) const
@@ -391,6 +508,7 @@ void UDDSAttributeSet::PrintAllAttributes() const
 	MY_LOG(LogTemp, Log, TEXT("Energy: %f"), GetEnergy());
 	MY_LOG(LogTemp, Log, TEXT("RequireEnergy: %f"), GetRequireEnergy());
 	MY_LOG(LogTemp, Log, TEXT("Soul: %f"), GetSoul());
+	MY_LOG(LogTemp, Log, TEXT("AttributePoints: %f"), GetAttributePoints());
 	
 	MY_LOG(LogTemp, Log, TEXT("Vitality: %f"), GetVitality());
 	MY_LOG(LogTemp, Log, TEXT("Endurance: %f"), GetEndurance());

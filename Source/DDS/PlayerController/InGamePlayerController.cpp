@@ -76,6 +76,12 @@ void AInGamePlayerController::SetupInputComponent()
 
 
 	DDSInputComponent->BindNativeAction(InputConfigDataAsset, DDSGameplayTags::InputTag_Debug_PrintAttributes, ETriggerEvent::Started, this, &ThisClass::Input_Debug_PrintAttributes);
+
+	// Cheat Key Bindings (N, M, ., ,)
+	DDSInputComponent->BindNativeAction(InputConfigDataAsset, DDSGameplayTags::InputTag_Cheat_AddExp, ETriggerEvent::Started, this, &ThisClass::Cheat_AddExp);
+	DDSInputComponent->BindNativeAction(InputConfigDataAsset, DDSGameplayTags::InputTag_Cheat_AddAttributePoints, ETriggerEvent::Started, this, &ThisClass::Cheat_AddAttributePoints);
+	DDSInputComponent->BindNativeAction(InputConfigDataAsset, DDSGameplayTags::InputTag_Cheat_LevelUp, ETriggerEvent::Started, this, &ThisClass::Cheat_LevelUp);
+	DDSInputComponent->BindNativeAction(InputConfigDataAsset, DDSGameplayTags::InputTag_Cheat_FullHeal, ETriggerEvent::Started, this, &ThisClass::Cheat_FullHeal);
 	
 	MY_LOG(LogTemp, Log, TEXT("Setup Input Complete"));
 }
@@ -300,6 +306,118 @@ void AInGamePlayerController::Input_Debug_PrintAttributes()
 	{
 		MY_LOG(LogTemp, Warning, TEXT("DDSAbilitySystemComponent is nullptr"));
 	}
+}
+
+void AInGamePlayerController::Cheat_AddExp()
+{
+	if (!HasAuthority())
+	{
+		MY_LOG_DISPLAY("Cheat functions can only be called on the server");
+		return;
+	}
+
+	UDDSAbilitySystemComponent* ASC = GetDDSAbilitySystemComponent();
+	if (!ASC)
+	{
+		MY_LOG_DISPLAY("ASC not found");
+		return;
+	}
+
+	const UAttributeSet* AttributeSetConst = ASC->GetAttributeSet(UDDSAttributeSet::StaticClass());
+	UDDSAttributeSet* AS = const_cast<UDDSAttributeSet*>(Cast<UDDSAttributeSet>(AttributeSetConst));
+	if (!AS)
+	{
+		MY_LOG_DISPLAY("AttributeSet not found");
+		return;
+	}
+
+	const float Amount = 500.f;
+	const float OldEnergy = AS->GetEnergy();
+	AS->SetEnergy(OldEnergy + Amount);
+
+	MY_CLOG_DISPLAY_NET(FColor::Cyan, true, 
+		TEXT("💎 Cheat: Added %.0f Energy (%.0f -> %.0f)"), 
+		Amount, OldEnergy, AS->GetEnergy());
+}
+
+void AInGamePlayerController::Cheat_AddAttributePoints()
+{
+	if (!HasAuthority())
+	{
+		MY_LOG_DISPLAY("Cheat functions can only be called on the server");
+		return;
+	}
+
+	UDDSAbilitySystemComponent* ASC = GetDDSAbilitySystemComponent();
+	if (!ASC)
+	{
+		MY_LOG_DISPLAY("ASC not found");
+		return;
+	}
+
+	const UAttributeSet* AttributeSetConst = ASC->GetAttributeSet(UDDSAttributeSet::StaticClass());
+	UDDSAttributeSet* AS = const_cast<UDDSAttributeSet*>(Cast<UDDSAttributeSet>(AttributeSetConst));
+	if (!AS)
+	{
+		MY_LOG_DISPLAY("AttributeSet not found");
+		return;
+	}
+
+	const float Amount = 10.f;
+	const float OldPoints = AS->GetAttributePoints();
+	AS->SetAttributePoints(OldPoints + Amount);
+
+	MY_CLOG_DISPLAY_NET(FColor::Green, true, 
+		TEXT("⭐ Cheat: Added %.0f AttributePoints (%.0f -> %.0f)"), 
+		Amount, OldPoints, AS->GetAttributePoints());
+}
+
+void AInGamePlayerController::Cheat_LevelUp()
+{
+	if (!HasAuthority())
+	{
+		MY_LOG_DISPLAY("Cheat functions can only be called on the server");
+		return;
+	}
+
+	UDDSAbilitySystemComponent* ASC = GetDDSAbilitySystemComponent();
+	if (!ASC)
+	{
+		MY_LOG_DISPLAY("ASC not found");
+		return;
+	}
+
+	ASC->LevelUp(1);
+}
+
+void AInGamePlayerController::Cheat_FullHeal()
+{
+	if (!HasAuthority())
+	{
+		MY_LOG_DISPLAY("Cheat functions can only be called on the server");
+		return;
+	}
+
+	UDDSAbilitySystemComponent* ASC = GetDDSAbilitySystemComponent();
+	if (!ASC)
+	{
+		MY_LOG_DISPLAY("ASC not found");
+		return;
+	}
+
+	const UAttributeSet* AttributeSetConst = ASC->GetAttributeSet(UDDSAttributeSet::StaticClass());
+	UDDSAttributeSet* AS = const_cast<UDDSAttributeSet*>(Cast<UDDSAttributeSet>(AttributeSetConst));
+	if (!AS)
+	{
+		MY_LOG_DISPLAY("AttributeSet not found");
+		return;
+	}
+
+	AS->SetHealth(AS->GetHealthMax());
+	AS->SetStamina(AS->GetStaminaMax());
+	AS->SetMana(AS->GetManaMax());
+
+	MY_CLOG_DISPLAY_NET(FColor::Green, true, TEXT("💚 Cheat: Full Heal!"));
 }
 
 

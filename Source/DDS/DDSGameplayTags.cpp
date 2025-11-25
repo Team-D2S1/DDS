@@ -25,6 +25,12 @@ namespace DDSGameplayTags
 	UE_DEFINE_GAMEPLAY_TAG_COMMENT(InputTag_DodgeB, "Input.DodgeB", "Input : B button for dodge/backstep/sprint modifier.");
 
 	UE_DEFINE_GAMEPLAY_TAG(InputTag_Debug_PrintAttributes, "Input.Debug.PrintAttributes");
+
+	// Cheat Input Tags
+	UE_DEFINE_GAMEPLAY_TAG(InputTag_Cheat_AddExp, "Input.Cheat.AddExp");
+	UE_DEFINE_GAMEPLAY_TAG(InputTag_Cheat_AddAttributePoints, "Input.Cheat.AddAttributePoints");
+	UE_DEFINE_GAMEPLAY_TAG(InputTag_Cheat_LevelUp, "Input.Cheat.LevelUp");
+	UE_DEFINE_GAMEPLAY_TAG(InputTag_Cheat_FullHeal, "Input.Cheat.FullHeal");
 	/** UI Widget Tags */
 	UE_DEFINE_GAMEPLAY_TAG_COMMENT(WidgetTag_Crafting, "Widget.Crafting", "Widget : crafting widget.");
 	UE_DEFINE_GAMEPLAY_TAG_COMMENT(UI_Widget_MainMenu, "UI.Widget.MainMenu", "UI Widget : main menu widget.");
@@ -42,6 +48,7 @@ namespace DDSGameplayTags
 	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Attribute_Default_Energy, "Attribute.Default.Energy", "Attribute : default energy.");
 	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Attribute_Default_RequireEnergy, "Attribute.Default.RequireEnergy", "Attribute : default require energy.");
 	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Attribute_Default_Soul, "Attribute.Default.Soul", "Attribute : default souls.");
+	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Attribute_Default_AttributePoints, "Attribute.Default.AttributePoints", "Attribute : default attribute points.");
 
 	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Attribute_Primary_Vitality, "Attribute.Primary.Vitality", "Attribute : primary vitality.");
 	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Attribute_Primary_Endurance, "Attribute.Primary.Endurance", "Attribute : primary endurance.");
@@ -112,7 +119,8 @@ namespace DDSGameplayTags
 
 	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Player_SetByCaller_AttackType_Light, "Player.SetByCaller.AttackType.Light", "Player : light attack type set by caller.");
 	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Player_SetByCaller_AttackType_Heavy, "Player.SetByCaller.AttackType.Heavy", "Player : heavy attack type set by caller.");
-
+	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Player_SetByCaller_AddEnergy, "Player.SetByCaller.AddEnergy", "Player : add energy set by caller.");
+	
 	// Weapon SetByCaller Tags (Blade / Grip stats)
 	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Weapon_SetByCaller_Level, "Weapon.SetByCaller.Level", "Weapon : level (level).");
 	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Weapon_SetByCaller_BaseATK, "Weapon.SetByCaller.BaseATK", "Weapon : blade base attack (BaseATK).");

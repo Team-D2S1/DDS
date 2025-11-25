@@ -55,6 +55,11 @@ public:
 	UPROPERTY(ReplicatedUsing= OnRep_Soul, BlueprintReadOnly, Category = "Default Attributes")
 	FGameplayAttributeData Soul;
 	ATTRIBUTE_ACCESSORS(UDDSAttributeSet, Soul);
+
+	// 특성 포인트
+	UPROPERTY(ReplicatedUsing= OnRep_AttributePoints, BlueprintReadOnly, Category = "Default Attributes")
+	FGameplayAttributeData AttributePoints;
+	ATTRIBUTE_ACCESSORS(UDDSAttributeSet, AttributePoints);
 	
 	// Primary Attributes
 	// 1차 능력치는 레벨업시 부여하여 증가 가능
@@ -244,6 +249,8 @@ public:
 	void OnRep_RequireEnergy(const FGameplayAttributeData& OldRequireEnergy) const;
 	UFUNCTION()
 	void OnRep_Soul(const FGameplayAttributeData& OldSoul) const;
+	UFUNCTION()
+	void OnRep_AttributePoints(const FGameplayAttributeData& OldAttributePoints) const;
 	UFUNCTION()
 	void OnRep_Vitality(const FGameplayAttributeData& OldVitality) const;
 	UFUNCTION()

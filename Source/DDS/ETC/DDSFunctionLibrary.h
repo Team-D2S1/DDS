@@ -31,7 +31,7 @@ public:
 	 * 위젯 컨트롤러 관련
 	 */
 	UFUNCTION(BlueprintPure, Category = "DDS|FunctionLibrary|WidgetController", meta = (DefaultToSelf = "WorldContextObject"))
-	static bool MakeWidgetControllerParams(const UObject* WorldContextObject, FWidgetControllerParams& OutParams, const ADDSHUD* OutHUD);
+	static bool MakeWidgetControllerParams(const UObject* WorldContextObject, FWidgetControllerParams& OutParams, ADDSHUD*& OutHUD);
 	
 	UFUNCTION(BlueprintPure, Category = "DDS|FunctionLibrary|WidgetController", meta = (DefaultToSelf = "WorldContextObject"))
 	static UDDSWidgetController* GetDefualtWidgetController(const UObject* WorldContextObject);

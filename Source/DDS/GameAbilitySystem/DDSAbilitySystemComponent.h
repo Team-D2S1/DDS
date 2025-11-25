@@ -6,6 +6,7 @@
 #include "AbilitySystemComponent.h"
 #include "DDSAbilitySystemComponent.generated.h"
 
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnDDSLevelChangedSignature, int32, NewLevel);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnDDSHealthChangedSignature, float, NewHealth);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnDDSMaxHealthChangedSignature, float, NewMaxHealth);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnDDSStaminaChangedSignature, float, NewStamina);
@@ -51,7 +52,18 @@ public:
 	/** AttributeSet 값 변경 델리게이트 바인딩 */
 	void BindAttributeValueChangeDelegates(UDDSAttributeSet* InAttributeSet);
 
+
+	UFUNCTION(Server, Reliable)
+	void Server_UseAttributePointToAttribute(const FGameplayTag& InAttributeTag);
+
+	/** 레벨업 함수 - 서버에서만 호출 가능 */
+	UFUNCTION(BlueprintCallable, Category="DDS|Level", BlueprintAuthorityOnly)
+	void LevelUp(int32 LevelsToAdd = 1);
+
 	// 게임 전역에서 사용 가능한 Attribute 변경 델리게이트 (UI, 이펙트, 사운드 등 모두 구독 가능)
+	UPROPERTY(BlueprintAssignable, Category="DDS|Attributes")
+	FOnDDSLevelChangedSignature OnLevelChanged;
+	
 	UPROPERTY(BlueprintAssignable, Category="DDS|Attributes")
 	FOnDDSHealthChangedSignature OnHealthChanged;
 
@@ -73,7 +85,12 @@ public:
 	UPROPERTY(BlueprintAssignable, Category="DDS|Attributes")
 	FOnDDSDamageTakenChangedSignature OnDamageTakenChanged;
 
+	/** AttributePoint를 사용하여 Attribute를 증가시키는 GameplayEffect */
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category="GAS|Attributes")
+	TSubclassOf<UGameplayEffect> UseAttributePointEffectClass;
+
 protected:
+	void HandleLevelChanged(const FOnAttributeChangeData& Data);
 	void HandleHealthChanged(const FOnAttributeChangeData& Data);
 	void HandleStaminaChanged(const FOnAttributeChangeData& Data);
 	void HandleManaChanged(const FOnAttributeChangeData& Data);
