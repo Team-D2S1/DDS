@@ -6,6 +6,7 @@
 #include "GameplayAbilitySpec.h"
 #include "ETC/CustomLog.h"
 #include "GameAbilitySystem/DDSAbilitySystemComponent.h"
+#include "GameAbilitySystem/DDSAttributeSet.h"
 #include "GameAbilitySystem/Abilities/DDSMonsterGameplayAbility.h"
 
 
@@ -27,4 +28,19 @@ void UDataAsset_MonsterStartUpDataBase::GiveToAbilitySystemComponent(UDDSAbility
 			MY_CLOG_DISPLAY(FColor::Green, "Monster StartUpData Loaded : %s", *AbilityClass->GetName());
 		}
 	}
+
+	const UDDSAttributeSet* CAttributeSet = InASCToGive->GetSet<UDDSAttributeSet>();
+	UDDSAttributeSet* AttributeSet = const_cast<UDDSAttributeSet*>(CAttributeSet);
+	if(AttributeSet)
+	{
+		AttributeSet->SetHealthMax(DefaultHealth);
+		AttributeSet->SetHealth(DefaultHealth);
+		AttributeSet->SetAttackPower(DefaultAttackPower);
+		AttributeSet->SetPhysicalDefense(DefaultDefense);
+		AttributeSet->SetPhysicalResist(DefaultResistance);
+		AttributeSet->SetSoul(DefaultSoulDrop);
+		AttributeSet->SetEnergy(DefaultExperienceDrop);
+		AttributeSet->SetRequireEnergy(DefaultExperienceDrop * 2.f);
+	}
+	
 }
