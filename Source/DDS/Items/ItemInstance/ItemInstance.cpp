@@ -137,14 +137,14 @@ FBladeData* UItemInstance::GetBladeData() const
 	
 	if (!BladeDataTable)
 	{
-		MY_ERROR_DISPLAY(TEXT("Failed to find Blade DataTable"));
+		// MY_ERROR_DISPLAY(TEXT("Failed to find Blade DataTable"));
 		return nullptr;
 	}
 
 	FBladeData* BladeData = BladeDataTable->FindRow<FBladeData>(GetItemTypeID(), TEXT("UItemInstance::GetBladeData"));
 	if (!BladeData)
 	{
-		MY_ERROR_DISPLAY(TEXT("Blade data not found in DataTable"));
+		// MY_ERROR_DISPLAY(TEXT("Blade data not found in DataTable"));
 		return nullptr;
 	}
 
