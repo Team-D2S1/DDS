@@ -31,6 +31,9 @@ public:
 	
 	UFUNCTION(BlueprintCallable, Category = "DDS|Combat")
 	float GetPlayerCurrentEquippedWeaponDamageAtLevel(float InLevel = 0) const;
+
+	UFUNCTION(NetMulticast, Reliable)
+	void Multicast_HandleWeaponUnequip(ADDSCraftedPlayerWeapon* PreviousWeaponActor);
 	
 	UFUNCTION(BlueprintCallable, Category = "DDS|Combat")
 	void NotifyRightWeaponChanged(UItemInstance* NewWeapon);

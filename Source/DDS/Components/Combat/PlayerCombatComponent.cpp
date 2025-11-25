@@ -54,6 +54,17 @@ float UPlayerCombatComponent::GetPlayerCurrentEquippedWeaponDamageAtLevel(float 
 	return GetPlayerCurrentEquippedWeapon()->GetBaseWeaponData().WeaponBaseDamage.GetValueAtLevel(InLevel);
 }
 
+void UPlayerCombatComponent::Multicast_HandleWeaponUnequip_Implementation(ADDSCraftedPlayerWeapon* PreviousWeaponActor)
+{
+	if (!PreviousWeaponActor)
+	{
+		MY_LOG(LogTemp, Error, TEXT("Multicast_HandleWeaponUnequip called with nullptr PreviousWeaponActor."));
+		return;
+	}
+
+	UnequipWeapon(PreviousWeaponActor);
+}
+
 void UPlayerCombatComponent::NotifyRightWeaponChanged(UItemInstance* NewWeapon)
 {
 	bool bIsServer = GetOwner()->HasAuthority();
@@ -79,7 +90,7 @@ void UPlayerCombatComponent::NotifyRightWeaponChanged(UItemInstance* NewWeapon)
 		ADDSCraftedPlayerWeapon* PreviousWeaponActor = GetPlayerCarriedWeaponByTag(WeaponTag);
 		if (PreviousWeaponActor && GetCurrentEquippedWeapon() == PreviousWeaponActor)
 		{
-			HandleWeaponUnequip(PreviousWeaponActor);
+			Multicast_HandleWeaponUnequip(PreviousWeaponActor);
 			MY_LOG(LogTemp, Log, TEXT("Unequipped previous weapon: %s"), *PreviousWeapon->GetItemName());
 		}
 		
