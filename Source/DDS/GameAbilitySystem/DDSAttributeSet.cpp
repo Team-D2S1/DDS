@@ -328,6 +328,21 @@ void UDDSAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCallbac
 		const float NewHealth = FMath::Clamp(OldHealth - TakenDamage, 0.f, GetHealthMax());
 		SetHealth(NewHealth);
 
+		// UI컴포넌트에 데미지 알림
+		if (UAbilitySystemComponent* ASC = GetOwningAbilitySystemComponent())
+		{
+			if (AActor* OwnerActor = ASC->GetOwner())
+			{
+				if (APawn* OwnerPawn = Cast<APawn>(OwnerActor))
+				{
+					if (UPawnUIComponent* PawnUIComp = OwnerPawn->FindComponentByClass<UPawnUIComponent>())
+					{
+						PawnUIComp->OnHealthChanged.Broadcast(NewHealth);
+					}
+				}
+			}
+		}
+
 #if WITH_EDITOR
 		MY_CLOG_DISPLAY_NET(FColor::Red, bHasAuthority, TEXT("OldHealth: %f, TakenDamage: %f, NewHealth: %f"), OldHealth, TakenDamage, NewHealth);
 #endif
