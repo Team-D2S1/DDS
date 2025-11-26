@@ -81,7 +81,7 @@ void UPlayerCombatComponent::NotifyRightWeaponChanged(UItemInstance* NewWeapon)
 		return;
 	}
 
-	FGameplayTag WeaponTag = FGameplayTag::RequestGameplayTag(FName("Player.Weapon.Crafted"));
+	FGameplayTag WeaponTag = DDSGameplayTags::Player_Weapon_Crafted;
 
 	// 1. 기존 무기 제거 (있는 경우)
 	if (PreviousWeapon != nullptr && PreviousWeapon != NewWeapon)
@@ -189,7 +189,9 @@ void UPlayerCombatComponent::Server_TriggerDodge_Implementation(FVector_NetQuant
 
 void UPlayerCombatComponent::TriggerBackstep()
 {
+	return;// 테스트용 임시 비활성화
 	// 클라이언트에서 호출되면 서버로 전달
+#if 0
 	APlayerBase* PlayerBase = GetOwningPawn<APlayerBase>();
 	if (!PlayerBase) return;
 
@@ -212,6 +214,7 @@ void UPlayerCombatComponent::TriggerBackstep()
 		// 클라이언트는 서버 RPC 호출
 		Server_TriggerBackstep();
 	}
+#endif
 }
 
 void UPlayerCombatComponent::Server_TriggerBackstep_Implementation()
@@ -229,7 +232,7 @@ void UPlayerCombatComponent::Server_TriggerBackstep_Implementation()
 
 
 	FGameplayTagContainer DodgeTags;
-	DodgeTags.AddTag(DDSGameplayTags::Player_Ability_Dodge);
+	DodgeTags.AddTag(DDSGameplayTags::Player_Ability_Backstep);
 
 	ASC->TryActivateAbilitiesByTag(DodgeTags);
 }

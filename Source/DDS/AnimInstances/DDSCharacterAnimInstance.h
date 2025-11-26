@@ -33,6 +33,14 @@ protected:
 	UPROPERTY(BlueprintReadWrite, Category = "Movement")
 	float Speed;
 
+	// 좌우 속도
+	UPROPERTY(BlueprintReadWrite, Category = "Movement")
+	float LateralSpeed;
+
+	// 앞뒤 속도
+	UPROPERTY(BlueprintReadWrite, Category = "Movement")
+	float ForwardSpeed;
+
 	UPROPERTY(BlueprintReadWrite, Category = "Movement")
 	bool bIsInAir;
 

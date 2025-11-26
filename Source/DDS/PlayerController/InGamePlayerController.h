@@ -43,6 +43,20 @@ protected:
 	UFUNCTION(BlueprintCallable)
 	void Input_B_Released(const FInputActionValue& Value);
 
+	// 키보드 Sprint 입력 (Shift 키)
+	UFUNCTION(BlueprintCallable)
+	void Input_Sprint_Pressed(const FInputActionValue& Value);
+
+	UFUNCTION(BlueprintCallable)
+	void Input_Sprint_Released(const FInputActionValue& Value);
+
+	// 키보드 Walk 입력 (Ctrl 키)
+	UFUNCTION(BlueprintCallable)
+	void Input_Walk_Pressed(const FInputActionValue& Value);
+
+	UFUNCTION(BlueprintCallable)
+	void Input_Walk_Released(const FInputActionValue& Value);
+
 	// UFUNCTION(BlueprintCallable)
 	// void Input_Jump();
 
@@ -109,7 +123,7 @@ private:
 
 	bool bIsIgnoringGameInput = false;
 
-	// --- 이동/대시/구르기 입력 상태 ---
+	// --- 이동/대시/구르기/달리기 입력 상태 ---
 	// 이동 입력 벡터 (L 스틱)
 	FVector CachedMoveVector = FVector::ZeroVector;
 
@@ -117,17 +131,25 @@ private:
 	bool bBPressed = false;
 	float BPressedTime = 0.f;
 
-	// 짧은/긴 입력을 나누는 임계값 (초)
-	UPROPERTY(EditDefaultsOnly, Category="Input|Move")
-	float BShortPressThreshold = 0.05f;
+	// 키보드 Sprint/Walk 상태 (Shift / Ctrl 키)
+	bool bSprintKeyPressed = false;
+	bool bWalkKeyPressed = false;
 
-	// 짧은/긴 입력을 나누는 임계값 (초)
+	// 짧게 누르면 -> Backstep (0.08초 이하)
+	UPROPERTY(EditDefaultsOnly, Category="Input|Move")
+	float BShortPressThreshold = 0.08f;
+
+	// 중간 길이로 누르면 -> Dodge (0.08~0.4초)
+	// 길게 누르면 -> Sprint (0.4초 이상)
 	UPROPERTY(EditDefaultsOnly, Category="Input|Move")
 	float BLongPressThreshold = 0.4f;
 	
 	// 이동 속도 계수
 	UPROPERTY(EditDefaultsOnly, Category="Move")
 	float BaseMoveSpeed = 400.f;
+
+	UPROPERTY(EditDefaultsOnly, Category="Move")
+	float SprintMoveSpeed = 600.f;
 
 	UPROPERTY(EditDefaultsOnly, Category="Move")
 	float SlowMoveSpeed = 150.f;
