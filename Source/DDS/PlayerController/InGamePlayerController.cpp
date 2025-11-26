@@ -323,23 +323,52 @@ void AInGamePlayerController::Input_LockOn()
 	// UCameraComponent* Cam = PlayerBase->GetCameraComponent();
 	// UPlayerCombatComponent* CombatComponent = PlayerBase->GetCombatComponent();
 	AActor* target = nullptr;
+
+	int32 SizeX, SizeY;
+	GetViewportSize(SizeX, SizeY);
+	FVector2D ScreenCenter(SizeX * 0.5f, SizeY * 0.5f); // 실제 화면의 중앙 픽셀 좌표
+	float MinDistanceFromCenter = std::numeric_limits<float>::max();
+	
 	if (!focusedObject)
 	{
-		// float inf
-		float minDistance = std::numeric_limits<float>::max();
-		for (auto focusableActor : GetFocusables())
+		for (auto FocusableActor : GetFocusables())
 		{
+			if (!FocusableActor) continue;
+
+			// 월드 좌표를 화면 좌표로 변환
 			FVector2D ScreenLocation;
-			if (focusableActor->WasRecentlyRendered(0.2f) && ProjectWorldLocationToScreen(focusableActor->GetActorLocation(), ScreenLocation))
+			bool bIsOnScreen = ProjectWorldLocationToScreen(FocusableActor->GetActorLocation(), ScreenLocation);
+
+			if (bIsOnScreen)
 			{
-				IFocusable* focusable = Cast<IFocusable>(focusableActor);
-				if (!focusable) continue;
-				FVector2D ScreenCenter = FVector2D(0.5f, 0.5f);
-				float distance = FVector2D::Distance(ScreenLocation, ScreenCenter);
-				if (distance < minDistance)
+				// 화면 중앙과의 거리 계산 (Squared를 쓰면 Sqrt 연산을 줄여 최적화 가능)
+				float DistSquared = FVector2D::DistSquared(ScreenLocation, ScreenCenter);
+				
+				if (DistSquared < MinDistanceFromCenter)
 				{
-					minDistance = distance;
-					target =  focusableActor;
+					// 레이캐스트
+					FHitResult HitResult;
+					FVector StartLocation = PlayerBase->GetCameraComponent()->GetComponentLocation();
+					FVector EndLocation = FocusableActor->GetActorLocation();
+                
+					FCollisionQueryParams QueryParams;
+					QueryParams.AddIgnoredActor(PlayerBase);
+
+					// 벽 등에 막히는지 확인
+					bool bHit = GetWorld()->LineTraceSingleByChannel(
+						HitResult,
+						StartLocation,
+						EndLocation,
+						ECC_Visibility,
+						QueryParams
+					);
+
+					// 레이가 무언가에 맞았고, 그 맞은 대상이 우리가 보고 있는 적이라면 (즉, 벽이 없다면)
+					if (bHit && HitResult.GetActor() == FocusableActor)
+					{
+						MinDistanceFromCenter = DistSquared;
+						target = FocusableActor;
+					}
 				}
 			}
 		}
