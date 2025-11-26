@@ -29,10 +29,12 @@ APlayerBase::APlayerBase()
 	SpringArm = CreateDefaultSubobject<USpringArmComponent>(TEXT("Spring Arm"));
 	SpringArm->SetupAttachment(GetMesh());
 	SpringArm->bUsePawnControlRotation = true;
+	SpringArm->SetIsReplicated(false);
 	
 	Camera = CreateDefaultSubobject<UCameraComponent>(TEXT("Camera"));
 	Camera->SetupAttachment(SpringArm, USpringArmComponent::SocketName);
 	Camera->bUsePawnControlRotation = false;
+	Camera->SetIsReplicated(false);
 
 	GetCharacterMovement()->bOrientRotationToMovement = true;
 	// GetCharacterMovement()->bUseControllerDesiredRotation = false; // 강의엔 없는데 넣어봄
@@ -183,26 +185,74 @@ void APlayerBase::OnPlayerRebirth()
 void APlayerBase::Tick(float DeltaSeconds)
 {
 	Super::Tick(DeltaSeconds);
-	
+    
 	if (CombatComponent)
 	{
 		AActor* Focused = FocusedObject;
 		if(Focused)
 		{
-			// 캐릭터를 타겟 방향으로 회전 (Yaw만)
+			// 캐릭터 회전 (Yaw): 타겟을 향해 부드럽게 회전
 			FVector ToTarget = Focused->GetActorLocation() - GetActorLocation();
 			FRotator LookRotation = ToTarget.Rotation();
 			LookRotation.Pitch = 0.f;
 			LookRotation.Roll = 0.f;
-			
-			SetActorRotation(LookRotation);
-			
-			// 컨트롤러도 타겟을 향하도록 (SpringArm이 따라감)
+          
+			// FMath::RInterpTo를 사용하여 현재 회전에서 목표 회전까지 부드럽게 이동 (속도 15.0f)
+			FRotator SmoothActorRot = FMath::RInterpTo(GetActorRotation(), LookRotation, DeltaSeconds, 15.0f);
+			SetActorRotation(SmoothActorRot);
+          
+			// 컨트롤러(SpringArm) 회전 약간 위에서 내려다보는 각도로 부드럽게 이동
 			if (Controller)
 			{
-				FRotator ControlRotation = LookRotation;
-				ControlRotation.Pitch = -60.f; // 약간 위에서 내려다보는 각도
-				Controller->SetControlRotation(ControlRotation);
+				FRotator TargetControlRotation = LookRotation;
+				TargetControlRotation.Pitch = -30.f; // 목표 피치 각도
+             
+				FRotator SmoothControlRot = FMath::RInterpTo(Controller->GetControlRotation(), TargetControlRotation, DeltaSeconds, 10.0f);
+				Controller->SetControlRotation(SmoothControlRot);
+			}
+
+			// 카메라 자체 보정 타겟을 정중앙에 두기 위한 미세 조정
+			if (Camera)
+			{
+				Camera->bUsePawnControlRotation = false;
+
+				FVector CameraToTarget = Focused->GetActorLocation() - Camera->GetComponentLocation();
+				FRotator CameraLookRotation = CameraToTarget.Rotation();
+				CameraLookRotation.Pitch = FMath::Clamp(CameraLookRotation.Pitch, -45.f, 45.f);
+				CameraLookRotation.Roll = 0.f;
+
+				// 카메라도 RInterpTo로 부드럽게 목표 지점을 바라보게 함 (속도 15.0f)
+				FRotator SmoothCameraRot = FMath::RInterpTo(Camera->GetComponentRotation(), CameraLookRotation, DeltaSeconds, 15.0f);
+				Camera->SetWorldRotation(SmoothCameraRot);  
+			}
+		}else if (bIsResettingCamera && Camera)
+		{
+			// 카메라 컴포넌트 자체 정렬 (SpringArm과 나란하게)
+			FRotator CurrentRelRot = Camera->GetRelativeRotation();
+			if (!CurrentRelRot.IsNearlyZero(0.1f))
+			{
+				FRotator SmoothRelRot = FMath::RInterpTo(CurrentRelRot, FRotator::ZeroRotator, DeltaSeconds, 5.0f);
+				Camera->SetRelativeRotation(SmoothRelRot);
+			}
+
+			// 스프링암(컨트롤러) 각도 복구 (Pitch만 -30도로, Yaw는 유지)
+			FRotator CurrentControlRot = Controller->GetControlRotation();
+        
+			// 목표 각도 설정
+			// Pitch: -30도 (기본 쿼터뷰 각도)
+			// Yaw: 현재 보고 있는 방향 유지
+			FRotator TargetControlRot = CurrentControlRot; 
+			TargetControlRot.Pitch = -30.0f; 
+			TargetControlRot.Roll = 0.0f;
+			if (FMath::IsNearlyEqual(CurrentControlRot.Pitch, -30.0f, 0.5f) && CurrentRelRot.IsNearlyZero(0.1f))
+			{
+				bIsResettingCamera = false;
+			}
+			else
+			{
+				// Pitch만 부드럽게 변경 (Yaw는 현재 값 그대로 유지되므로 화면이 안 돌아감)
+				FRotator SmoothControlRot = FMath::RInterpTo(CurrentControlRot, TargetControlRot, DeltaSeconds, 5.0f);
+				Controller->SetControlRotation(SmoothControlRot);
 			}
 		}
 	}
@@ -256,32 +306,32 @@ void APlayerBase::Server_ClearFocusedObject()
 void APlayerBase::OnRep_FocusedObject()
 {
 	Super::OnRep_FocusedObject();
-	
-	// 포커스 해제 시 SpringArm과 카메라를 정상 상태로 복구
+    
 	if (!FocusedObject)
 	{
+		// 현재 카메라가 보고 있는 방향을 컨트롤러에게 전달 (화면 튐 방지)
+		if (Controller && Camera)
+		{
+			FRotator CurrentCameraRot = Camera->GetComponentRotation();
+			Controller->SetControlRotation(CurrentCameraRot);
+		}
+
 		if (SpringArm)
 		{
 			SpringArm->bUsePawnControlRotation = true;
 		}
-		
+       
 		if (Camera)
 		{
-			Camera->bUsePawnControlRotation = false;
-		}
-		
-		// Controller rotation도 초기화
-		if (Controller)
-		{
-			// 현재 캐릭터가 바라보는 방향으로 컨트롤러 회전 복구
-			FRotator CurrentRotation = GetActorRotation();
-			CurrentRotation.Pitch = -30.f; // 기본 카메라 피치
-			Controller->SetControlRotation(CurrentRotation);
+			Camera->bUsePawnControlRotation = false;  
+			bIsResettingCamera = true; 
 		}
 	}
 	else
 	{
-		// 포커스 시작 시
+		// 락온 시작 시 복구 모드 즉시 중단
+		bIsResettingCamera = false;
+
 		if (SpringArm)
 		{
 			SpringArm->bUsePawnControlRotation = true;

@@ -67,6 +67,7 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Camera", meta = (AllowPrivateAccess = "true"))
 	TObjectPtr<UCameraComponent> Camera;	
 
+
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Combat", meta = (AllowPrivateAccess = "true"))
 	TObjectPtr<UPlayerCombatComponent> CombatComponent;
 
@@ -85,5 +86,7 @@ public:
 	virtual void OnRep_FocusedObject() override;
 private:
 	void InitAbilityActorInfo();
-	
+private:
+	// 카메라 복구 중인지 체크하는 플래그
+	bool bIsResettingCamera = false;
 };
