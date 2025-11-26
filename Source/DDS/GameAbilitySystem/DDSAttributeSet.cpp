@@ -30,8 +30,8 @@ UDDSAttributeSet::UDDSAttributeSet()
     
     InitHealth(100.0f);
     InitHealthMax(100.0f);
-    InitStamina(100.0f);
-    InitStaminaMax(100.0f);
+    InitStamina(0.f);
+    InitStaminaMax(0.f);
     InitMana(100.0f);
     InitManaMax(100.0f);
     
