@@ -96,8 +96,8 @@ void UDDSAbilitySystemComponent::GrantPlayerWeaponAbilities(const TArray<FDDSPla
 		AbilitySpec.Level = ApplyLevel;
 		OutHandles.AddUnique( GiveAbility(AbilitySpec));
 		// MY_LOG(LogTemp, Log, TEXT("Granting %s, tag: %s"), *AbilitySet.AbilityToGrant->GetName(), *AbilitySet.InputTag.ToString());
-		bool isServer = GetOwner()->HasAuthority();
-		MY_LOG_DISPLAY_NET(isServer, TEXT("Granting %s, tag: %s"), *AbilitySet.AbilityToGrant->GetName(), *AbilitySet.InputTag.ToString());
+		// bool isServer = GetOwner()->HasAuthority();
+		// MY_LOG_DISPLAY_NET(isServer, TEXT("Granting %s, tag: %s"), *AbilitySet.AbilityToGrant->GetName(), *AbilitySet.InputTag.ToString());
 	}
 }
 
@@ -252,6 +252,9 @@ void UDDSAbilitySystemComponent::LevelUp(int32 LevelsToAdd)
 	const float CurrentAttributePoints = AS->GetAttributePoints();
 	AS->SetAttributePoints(CurrentAttributePoints + (LevelsToAdd * 5.f));
 
+	// UI 알림 델리게이트 브로드캐스트 (레벨업!)
+	OnLevelUpNotification.Broadcast(NewLevel);
+
 	bool bIsServer = GetOwner()->HasAuthority();
 	MY_CLOG_DISPLAY_NET(FColor::Yellow, bIsServer, 
 		TEXT("Level Up! %d -> %d (+%d levels, +%d AttributePoints)"), 
@@ -315,6 +318,9 @@ void UDDSAbilitySystemComponent::AddExperienceAndCheckLevelUp(float ExperienceTo
 	const float CurrentEnergy = AS->GetEnergy();
 	const float NewEnergy = CurrentEnergy + ExperienceToAdd;
 	AS->SetEnergy(NewEnergy);
+
+	// UI 알림 델리게이트 브로드캐스트 (경험치 획득!)
+	OnExperienceGainedNotification.Broadcast(ExperienceToAdd);
 
 	// 레벨업 체크
 	int32 LevelsGained = 0;

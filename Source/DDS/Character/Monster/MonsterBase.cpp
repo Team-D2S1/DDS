@@ -151,6 +151,10 @@ void AMonsterBase::OnDeathStartTagChanged(const FGameplayTag ChangedTag, int32 N
 		{
 			AIController->BrainComponent->StopLogic(FString("Monster Death"));
 		}
+
+		// 모든 플레이어에게 경험치와 소울 지급
+		GiveRewardToAllPlayers();
+
 		NM_MonsterDie();
 	}
 }
@@ -240,3 +244,97 @@ void AMonsterBase::OnFocusLost()
 {
 	bIsFocused = false;
 }
+
+void AMonsterBase::GiveRewardToAllPlayers()
+{
+	if (!HasAuthority())
+	{
+		return;
+	}
+
+	// 몬스터의 AttributeSet에서 보상 정보 가져오기
+	if (!AttributeSet)
+	{
+		MY_LOG(LogTemp, Warning, TEXT("[GiveRewardToAllPlayers] Monster has no AttributeSet"));
+		return;
+	}
+
+	const float ExperienceDrop = AttributeSet->GetEnergy();
+	const float SoulDrop = AttributeSet->GetSoul();
+
+	if (ExperienceDrop <= 0.f && SoulDrop <= 0.f)
+	{
+		return;
+	}
+
+	// 월드의 모든 PlayerController 찾기
+	UWorld* World = GetWorld();
+	if (!World)
+	{
+		return;
+	}
+
+	int32 RewardedPlayerCount = 0;
+	for (FConstPlayerControllerIterator Iterator = World->GetPlayerControllerIterator(); Iterator; ++Iterator)
+	{
+		APlayerController* PC = Iterator->Get();
+		if (!PC)
+		{
+			continue;
+		}
+
+		APawn* PlayerPawn = PC->GetPawn();
+		if (!PlayerPawn)
+		{
+			continue;
+		}
+
+		// 플레이어의 AbilitySystemComponent 가져오기
+		UAbilitySystemComponent* PlayerASC = nullptr;
+		if (IAbilitySystemInterface* ASI = Cast<IAbilitySystemInterface>(PlayerPawn))
+		{
+			PlayerASC = ASI->GetAbilitySystemComponent();
+		}
+
+		if (!PlayerASC)
+		{
+			continue;
+		}
+
+		// 플레이어 AttributeSet 가져오기
+		const UAttributeSet* PlayerAttributeSetConst = PlayerASC->GetAttributeSet(UDDSAttributeSet::StaticClass());
+		UDDSAttributeSet* PlayerAttributeSet = const_cast<UDDSAttributeSet*>(Cast<UDDSAttributeSet>(PlayerAttributeSetConst));
+
+		if (!PlayerAttributeSet)
+		{
+			continue;
+		}
+
+		// 경험치 지급 (ASC를 통해 레벨업 체크까지 자동 수행)
+		if (UDDSAbilitySystemComponent* DDSPlayerASC = Cast<UDDSAbilitySystemComponent>(PlayerASC))
+		{
+			if (ExperienceDrop > 0.f)
+			{
+				DDSPlayerASC->AddExperienceAndCheckLevelUp(ExperienceDrop);
+			}
+		}
+
+		// 소울 지급
+		if (SoulDrop > 0.f)
+		{
+			const float OldSoul = PlayerAttributeSet->GetSoul();
+			PlayerAttributeSet->SetSoul(OldSoul + SoulDrop);
+		}
+
+		RewardedPlayerCount++;
+	}
+
+	// 로그 출력
+	if (RewardedPlayerCount > 0)
+	{
+		MY_CLOG_DISPLAY_NET(FColor::Green, true, 
+			TEXT("💰 Monster [%s] gave rewards to %d player(s): %.0f EXP, %.0f Soul"), 
+			*GetName(), RewardedPlayerCount, ExperienceDrop, SoulDrop);
+	}
+}
+

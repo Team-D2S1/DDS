@@ -78,6 +78,9 @@ protected:
 	float AttackRange;
 
 public:
+	/** 모든 플레이어에게 경험치와 소울 지급 */
+	void GiveRewardToAllPlayers();
+
 	// IFocusable interface
 	/** 플레이어가 몬스터를 타게팅했을 때 호출되는 함수 */
 	UFUNCTION(BlueprintCallable, Category = "Focusable")

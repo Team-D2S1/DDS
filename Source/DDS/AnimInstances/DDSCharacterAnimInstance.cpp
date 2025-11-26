@@ -59,4 +59,7 @@ void UDDSCharacterAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 	YawOffset = AimDeltaRotation.Yaw;
 	PitchOffset = AimDeltaRotation.Pitch;
 	RollOffset = AimDeltaRotation.Roll;
+
+	LateralSpeed = FVector::DotProduct(Character->GetActorRightVector(), Velocity);
+	ForwardSpeed = FVector::DotProduct(Character->GetActorForwardVector(), Velocity);
 }

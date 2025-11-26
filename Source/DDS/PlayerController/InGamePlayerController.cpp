@@ -39,6 +39,31 @@ void AInGamePlayerController::Tick(float DeltaSeconds)
 	{
 		BPressedTime += DeltaSeconds;
 	}
+
+	// Player.State.Moving 태그 관리 (매 프레임 체크)
+	if (UDDSAbilitySystemComponent* ASC = GetDDSAbilitySystemComponent())
+	{
+		APawn* MyPawn = GetPawn();
+		if (MyPawn)
+		{
+			const FVector Velocity = MyPawn->GetVelocity();
+			const float Speed = Velocity.Size2D();
+			const bool bIsActuallyMoving = Speed > 1.0f;
+
+			const bool bHasMovingTag = ASC->HasMatchingGameplayTag(DDSGameplayTags::Player_State_Moving);
+
+			// 실제로 이동 중인데 태그가 없으면 추가
+			if (bIsActuallyMoving && !bHasMovingTag)
+			{
+				ASC->Multicast_AddLooseGameplayTag(DDSGameplayTags::Player_State_Moving);
+			}
+			// 멈췄는데 태그가 있으면 제거
+			else if (!bIsActuallyMoving && bHasMovingTag)
+			{
+				ASC->Multicast_RemoveLooseGameplayTag(DDSGameplayTags::Player_State_Moving);
+			}
+		}
+	}
 }
 
 void AInGamePlayerController::BeginPlay()
@@ -72,13 +97,21 @@ void AInGamePlayerController::SetupInputComponent()
 	DDSInputComponent->BindNativeAction(InputConfigDataAsset, DDSGameplayTags::InputTag_DodgeB, ETriggerEvent::Started, this, &ThisClass::Input_B_Pressed);
 	DDSInputComponent->BindNativeAction(InputConfigDataAsset, DDSGameplayTags::InputTag_DodgeB, ETriggerEvent::Completed, this, &ThisClass::Input_B_Released);
 	
+	// 키보드 Sprint (Shift) 입력 바인딩
+	DDSInputComponent->BindNativeAction(InputConfigDataAsset, DDSGameplayTags::InputTag_Sprint, ETriggerEvent::Started, this, &ThisClass::Input_Sprint_Pressed);
+	DDSInputComponent->BindNativeAction(InputConfigDataAsset, DDSGameplayTags::InputTag_Sprint, ETriggerEvent::Completed, this, &ThisClass::Input_Sprint_Released);
+	
+	// 키보드 Walk (Ctrl) 입력 바인딩
+	DDSInputComponent->BindNativeAction(InputConfigDataAsset, DDSGameplayTags::InputTag_Walk, ETriggerEvent::Started, this, &ThisClass::Input_Walk_Pressed);
+	DDSInputComponent->BindNativeAction(InputConfigDataAsset, DDSGameplayTags::InputTag_Walk, ETriggerEvent::Completed, this, &ThisClass::Input_Walk_Released);
+	
  	DDSInputComponent->BindUIActions(InputConfigDataAsset, this, &ThisClass::Input_UIInputPressed, &ThisClass::Input_UIInputReleased);
 	DDSInputComponent->BindAbilityInputActions(InputConfigDataAsset,this, &ThisClass::Input_AbilityInputPressed, &ThisClass::Input_AbilityInputReleased);
 
 
 	DDSInputComponent->BindNativeAction(InputConfigDataAsset, DDSGameplayTags::InputTag_Debug_PrintAttributes, ETriggerEvent::Started, this, &ThisClass::Input_Debug_PrintAttributes);
 
-	// Cheat Key Bindings (N, M, ., ,)
+	// Cheat Key Bindings (
 	DDSInputComponent->BindNativeAction(InputConfigDataAsset, DDSGameplayTags::InputTag_Cheat_AddExp, ETriggerEvent::Started, this, &ThisClass::Cheat_AddExp);
 	DDSInputComponent->BindNativeAction(InputConfigDataAsset, DDSGameplayTags::InputTag_Cheat_AddAttributePoints, ETriggerEvent::Started, this, &ThisClass::Cheat_AddAttributePoints);
 	DDSInputComponent->BindNativeAction(InputConfigDataAsset, DDSGameplayTags::InputTag_Cheat_LevelUp, ETriggerEvent::Started, this, &ThisClass::Cheat_LevelUp);
@@ -111,7 +144,12 @@ void AInGamePlayerController::Input_Move(const FInputActionValue& Value)
 {
 	// MY_LOG_DISPLAY("Move %s", *Value.ToString());
 	FVector2D MoveVector = Value.Get<FVector2D>();
-	
+	//Move 태그가 차단되어있으면 이동 무시
+	UDDSAbilitySystemComponent* ASC = GetDDSAbilitySystemComponent();
+	if (ASC && ASC->HasMatchingGameplayTag(DDSGameplayTags::Player_State_BlockMove))
+	{
+		return;
+	}
 
 	UpdateMovementSpeedFromInput(MoveVector);
 	ApplyMoveSpeedMode();
@@ -127,11 +165,12 @@ void AInGamePlayerController::Input_Move(const FInputActionValue& Value)
 	APawn* MyPawn = GetPawn();
 	if(!MyPawn) return;
 	// Dodge태그시 이동 무시
-	UDDSAbilitySystemComponent* ASC = GetDDSAbilitySystemComponent();
 	if (ASC && ASC->HasMatchingGameplayTag(DDSGameplayTags::Player_Ability_Dodge))
 	{
 		return;
 	}
+
+
 	if (MoveVector.Y != 0.f)
 	{
 		MyPawn->AddMovementInput(ForwardVector, MoveVector.Y);
@@ -157,11 +196,82 @@ void AInGamePlayerController::Input_B_Released(const FInputActionValue& Value)
 		return;
 	}
 
-	// 눌렀다가 뗀 시점에서 구르기/백스텝 시도
-	TryExecuteDodgeOrBackstep();
+	// Sprint 모드였다면 Dodge/Backstep 실행하지 않고 단순히 속도만 복귀
+	const bool bWasSprinting = (CurrentMoveSpeedMode == EMoveSpeedMode::Sprint);
+	
+	if (!bWasSprinting)
+	{
+		// 눌렀다가 뗀 시점에서 구르기/백스텝 시도 (Sprint 상태가 아니었을 때만)
+		TryExecuteDodgeOrBackstep();
+	}
 
 	bBPressed = false;
 	BPressedTime = 0.f;
+	
+	// Sprint 모드 해제 - 다음 Input_Move에서 속도가 갱신됨
+	if (bWasSprinting)
+	{
+		CurrentMoveSpeedMode = EMoveSpeedMode::Normal;
+		ApplyMoveSpeedMode();
+	}
+}
+
+void AInGamePlayerController::Input_Sprint_Pressed(const FInputActionValue& Value)
+{
+	bSprintKeyPressed = true;
+
+	// Sprint 태그 추가 (Multicast로 모든 클라이언트에 복제)
+	if (UDDSAbilitySystemComponent* ASC = GetDDSAbilitySystemComponent())
+	{
+		ASC->Multicast_AddLooseGameplayTag(DDSGameplayTags::Player_State_Sprinting);
+	}
+}
+
+void AInGamePlayerController::Input_Sprint_Released(const FInputActionValue& Value)
+{
+	bSprintKeyPressed = false;
+	
+	// Sprint 모드였다면 Normal로 복귀
+	if (CurrentMoveSpeedMode == EMoveSpeedMode::Sprint)
+	{
+		CurrentMoveSpeedMode = EMoveSpeedMode::Normal;
+		ApplyMoveSpeedMode();
+	}
+
+	// Sprint 태그 제거 (Multicast로 모든 클라이언트에 복제)
+	if (UDDSAbilitySystemComponent* ASC = GetDDSAbilitySystemComponent())
+	{
+		ASC->Multicast_RemoveLooseGameplayTag(DDSGameplayTags::Player_State_Sprinting);
+	}
+}
+
+void AInGamePlayerController::Input_Walk_Pressed(const FInputActionValue& Value)
+{
+	bWalkKeyPressed = true;
+
+	// Walk 태그 추가 (Multicast로 모든 클라이언트에 복제)
+	if (UDDSAbilitySystemComponent* ASC = GetDDSAbilitySystemComponent())
+	{
+		ASC->Multicast_AddLooseGameplayTag(DDSGameplayTags::Player_State_Walking);
+	}
+}
+
+void AInGamePlayerController::Input_Walk_Released(const FInputActionValue& Value)
+{
+	bWalkKeyPressed = false;
+	
+	// Slow 모드였다면 Normal로 복귀
+	if (CurrentMoveSpeedMode == EMoveSpeedMode::Slow)
+	{
+		CurrentMoveSpeedMode = EMoveSpeedMode::Normal;
+		ApplyMoveSpeedMode();
+	}
+
+	// Walk 태그 제거 (Multicast로 모든 클라이언트에 복제)
+	if (UDDSAbilitySystemComponent* ASC = GetDDSAbilitySystemComponent())
+	{
+		ASC->Multicast_RemoveLooseGameplayTag(DDSGameplayTags::Player_State_Walking);
+	}
 }
 
 void AInGamePlayerController::Input_Look(const FInputActionValue& Value)
@@ -510,33 +620,52 @@ void AInGamePlayerController::UpdateMovementSpeedFromInput(const FVector2D& Move
 	// L 스틱 입력의 크기(길이)에 따라 Normal / Slow 결정
 	const float Magnitude = MoveVector.Size();
 
-	// 임계값 예시: 0.7 이상은 "길게" (정확히는 강하게 기울인 상태), 그 이하는 "짧게"로 간주
-	const float LongStickThreshold = 0.7f;
+	// 임계값: 0.7 이상은 "빠른 이동", 그 이하는 "천천히 걷기"
+	const float FastWalkThreshold = 0.7f;
 	const float DeadZone = 0.1f;
+	
+	// 전방 입력 판정: Y값이 0.5 이상이면 전방으로 이동 중
+	const float ForwardInputThreshold = 0.5f;
+	const bool bIsMovingForward = MoveVector.Y >= ForwardInputThreshold;
 
 	if (Magnitude < DeadZone)
 	{
-		// 입력이 거의 없으면 기본 속도 유지
-		CurrentMoveSpeedMode = AInGamePlayerController::EMoveSpeedMode::Normal;
+		// 입력이 거의 없으면 기본 속도 유지 (Sprint는 해제)
+		if (CurrentMoveSpeedMode == EMoveSpeedMode::Sprint)
+		{
+			CurrentMoveSpeedMode = EMoveSpeedMode::Normal;
+		}
 		return;
 	}
 
-	if (Magnitude >= LongStickThreshold)
+	// 우선순위 1: 키보드 Walk 키가 눌려 있으면 무조건 Slow (천천히 걷기)
+	if (bWalkKeyPressed)
 	{
-		// L 스틱을 크게(길게) 기울임 -> 기본 속도 혹은 B와 함께면 스프린트
-		if (bBPressed && BPressedTime >= BLongPressThreshold)
-		{
-			CurrentMoveSpeedMode = AInGamePlayerController::EMoveSpeedMode::Sprint;
-		}
-		else
-		{
-			CurrentMoveSpeedMode = AInGamePlayerController::EMoveSpeedMode::Normal;
-		}
+		CurrentMoveSpeedMode = EMoveSpeedMode::Slow;
+		return;
+	}
+
+	// 우선순위 2: 키보드 Sprint 키가 눌려 있고 전방으로 이동 중이면 Sprint
+	if (bSprintKeyPressed && bIsMovingForward)
+	{
+		CurrentMoveSpeedMode = EMoveSpeedMode::Sprint;
+		return;
+	}
+
+	// 우선순위 3: 패드 B 버튼을 길게 누르고 있고, 전방으로 이동 중이고, 입력이 충분히 강할 때 Sprint
+	if (bBPressed && BPressedTime >= BLongPressThreshold && bIsMovingForward && Magnitude >= FastWalkThreshold)
+	{
+		CurrentMoveSpeedMode = EMoveSpeedMode::Sprint;
+	}
+	else if (Magnitude >= FastWalkThreshold)
+	{
+		// L 스틱을 크게 기울임 -> 기본(보통) 속도
+		CurrentMoveSpeedMode = EMoveSpeedMode::Normal;
 	}
 	else
 	{
-		// L 스틱을 살짝(짧게) 기울임 -> 느린 속도
-		CurrentMoveSpeedMode = AInGamePlayerController::EMoveSpeedMode::Slow;
+		// L 스틱을 살짝 기울임 -> 느린 속도
+		CurrentMoveSpeedMode = EMoveSpeedMode::Slow;
 	}
 }
 
@@ -562,7 +691,7 @@ void AInGamePlayerController::ApplyMoveSpeedMode()
 		MoveComp->MaxWalkSpeed = SlowMoveSpeed;
 		break;
 	case AInGamePlayerController::EMoveSpeedMode::Sprint:
-		MoveComp->MaxWalkSpeed = BaseMoveSpeed * SprintMultiplier;
+		MoveComp->MaxWalkSpeed = SprintMoveSpeed;
 		break;
 	default:
 		break;
@@ -581,8 +710,8 @@ void AInGamePlayerController::TryExecuteDodgeOrBackstep()
 	const bool bHasMoveInput = !CachedMoveVector.IsNearlyZero(0.1f);
 
 	// B 버튼이 짧게 눌렸다가 떼어졌다면 (press~release 사이 시간이 짧음)
-	const bool bShortPress = (BPressedTime < BShortPressThreshold);
-	const bool bLongPress = (BPressedTime >= BLongPressThreshold);
+	const bool bShortPress = (BPressedTime <= BShortPressThreshold);
+	const bool bLongPress = (BPressedTime > BShortPressThreshold && BPressedTime <= BLongPressThreshold);
 	
 	UPlayerCombatComponent* CombatComp = PlayerBase->GetCombatComponent() ? Cast<UPlayerCombatComponent>(PlayerBase->GetCombatComponent()) : nullptr;
 	if (!CombatComp)
@@ -593,15 +722,17 @@ void AInGamePlayerController::TryExecuteDodgeOrBackstep()
 	{
 		return;
 	}
-	CombatComp->TriggerDodge(CachedMoveVector);
-	// if (bHasMoveInput && !bLongPress)
-	// {
-	// 	// L스틱 + B 입력 -> 해당 방향 구르기
-	// 	CombatComp->TriggerDodge(CachedMoveVector);
-	// }
-	// else if (bShortPress)
-	// {
-	// 	// B 단독 짧은 입력 -> 백스텝
-	// 	CombatComp->TriggerBackstep();
-	// }
+	
+
+	if (bShortPress)
+	{
+		// 짧게 누름 -> Backstep
+		CombatComp->Server_TriggerBackstep();
+	}
+	else if (bLongPress)
+	{
+		// 중간 길이로 누름 -> Dodge (Sprint 시간보다는 짧게)
+		CombatComp->Server_TriggerDodge(CachedMoveVector);
+	}
+	// Sprint 시간 이상 누른 경우는 여기서 처리하지 않음 (Input_B_Released에서 이미 필터링됨)
 }

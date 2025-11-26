@@ -17,6 +17,10 @@ DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnDDSManaChangedSignature, float, N
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnDDSMaxManaChangedSignature, float, NewMaxMana);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnDDSDamageTakenChangedSignature, float, NewDamageTaken);
 
+// UI 알림용 델리게이트
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnExperienceGainedNotificationSignature, float, ExperienceAmount);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnLevelUpNotificationSignature, int32, NewLevel);
+
 struct FDDSPlayerAbilitySet;
 class UDDSGameplayAbility;
 class UDDSAttributeSet;
@@ -112,6 +116,13 @@ public:
 
 	UPROPERTY(BlueprintAssignable, Category="DDS|Attributes")
 	FOnDDSDamageTakenChangedSignature OnDamageTakenChanged;
+
+	// UI 알림용 델리게이트 (경험치 획득, 레벨업 팝업 표시용)
+	UPROPERTY(BlueprintAssignable, Category="DDS|Notifications")
+	FOnExperienceGainedNotificationSignature OnExperienceGainedNotification;
+
+	UPROPERTY(BlueprintAssignable, Category="DDS|Notifications")
+	FOnLevelUpNotificationSignature OnLevelUpNotification;
 
 	/** AttributePoint를 사용하여 Attribute를 증가시키는 GameplayEffect */
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category="GAS|Attributes")

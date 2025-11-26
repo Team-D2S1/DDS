@@ -11,6 +11,10 @@ namespace DDSGameplayTags
 	UE_DEFINE_GAMEPLAY_TAG_COMMENT(InputTag_Jump, "Input.Jump", "Input : making the player character jump.");
 	UE_DEFINE_GAMEPLAY_TAG_COMMENT(InputTag_LockOn, "Input.LockOn", "Input : locking onto a target.");
 
+	UE_DEFINE_GAMEPLAY_TAG_COMMENT(InputTag_Sprint, "Input.Sprint", "Input : sprinting.");
+	UE_DEFINE_GAMEPLAY_TAG_COMMENT(InputTag_Walk, "Input.Walk", "Input : walking.");
+	UE_DEFINE_GAMEPLAY_TAG_COMMENT(InputTag_Crouch, "Input.Crouch", "Input : crouching.");
+
 	UE_DEFINE_GAMEPLAY_TAG_COMMENT(InputTag_UI_Escape, "Input.UI.Escape", "Input : pressing the escape key in the UI.");
 	UE_DEFINE_GAMEPLAY_TAG_COMMENT(InputTag_UI_Crafting_ToggleUI, "Input.UI.Crafting.ToggleUI", "Input : toggling the crafting UI.");
 	UE_DEFINE_GAMEPLAY_TAG_COMMENT(InputTag_UI_Crafting_RemoveItem, "Input.UI.Crafting.RemoveItem","Input : remove current item");
@@ -90,6 +94,7 @@ namespace DDSGameplayTags
 	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Attribute_Defense_PhysicalResist, "Attribute.Defense.PhysicalResist", "Attribute : defense physical resist.");
 	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Attribute_Defense_MagicResist, "Attribute.Defense.MagicResist", "Attribute : defense magic resist.");
 	/** Player Tags */
+	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Player_Ability_Move, "Player.Ability.Move", "Player : player moves.");
 	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Player_Ability_Jump, "Player.Ability.Jump", "Player : player jumps.");
 	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Player_Ability_LockOn, "Player.Ability.LockOn", "Player : player locks onto a target.");
     UE_DEFINE_GAMEPLAY_TAG_COMMENT(Player_Ability_Equip_Sword, "Player.Ability.Equip.Sword", "Player : player equips a sword ability.");
@@ -105,12 +110,17 @@ namespace DDSGameplayTags
 	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Player_Ability_Attack_LightAttack_Sword, "Player.Ability.Attack.LightAttack.Sword", "Player : player performs a light attack ability with a sword.");
 	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Player_Ability_Attack_HeavyAttack_Sword, "Player.Ability.Attack.HeavyAttack.Sword", "Player : player performs a heavy attack ability with a sword.");
 	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Player_Ability_Dodge, "Player.Ability.Dodge", "Player : player performs a dodge ability.");
+	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Player_Ability_Backstep, "Player.Ability.Backstep", "Player : player performs a backstep ability.");
 	
 	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Player_Weapon_Sword, "Player.Weapon.Sword", "Player : player's sword weapon.");
 	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Player_Weapon_Crafted, "Player.Weapon.Crafted", "Player : player's crafted weapon.");
 
 	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Player_State_StopStaminaRegen, "Player.State.StopStaminaRegen", "Player : player's stamina regeneration is stopped.");
 	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Player_State_Dodging, "Player.State.Dodging", "Player : player is dodging.");
+	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Player_State_BlockMove, "Player.State.BlockMove", "Player : player's movement is blocked.");
+	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Player_State_Moving, "Player.State.Moving", "Player : player is moving.");
+	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Player_State_Sprinting, "Player.State.Sprinting", "Player : player is sprinting.");
+	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Player_State_Walking, "Player.State.Walking", "Player : player is walking slowly.");
 
 	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Player_Event_Equip_Sword, "Player.Event.Equip.Sword", "Player : player equips a sword.");
 	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Player_Event_Unequip_Sword, "Player.Event.Unequip.Sword", "Player : player unequips a sword.");
