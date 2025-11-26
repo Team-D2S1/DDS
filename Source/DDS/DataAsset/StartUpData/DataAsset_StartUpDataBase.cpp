@@ -28,7 +28,7 @@ void UDataAsset_StartUpDataBase::GiveToAbilitySystemComponent(UDDSAbilitySystemC
 				continue;
 			UGameplayEffect* effect = EffectClass.GetDefaultObject();
 			InASCToGive->ApplyGameplayEffectToSelf(effect,ApplyLevel, InASCToGive->MakeEffectContext());
-			MY_CLOG_DISPLAY(FColor::Silver, TEXT("Apply %s to %s"), *effect->GetName(), *InASCToGive->GetName());
+			// MY_CLOG_DISPLAY(FColor::Silver, TEXT("Apply %s to %s"), *effect->GetName(), *InASCToGive->GetName());
 		}
 	}
 }
