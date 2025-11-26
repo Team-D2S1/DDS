@@ -7,6 +7,7 @@
 #include "OnlineSubsystem.h"
 #include "Components/Button.h"
 #include "ETC/CustomLog.h"
+#include "Kismet/GameplayStatics.h"
 #include "Kismet/KismetSystemLibrary.h"
 #include "Session/SessionSubsystem.h"
 #include "Socket/ClientSocket.h"
@@ -87,6 +88,8 @@ void UMainMenuWidget::SingleplayButtonClicked()
 {
 	// TODO
 	// 싱글플레이 모드로 들어간다 그러면 방 안만들고 어쩌고 저쩌고 안하고 바로 시작하기
+	///Script/Engine.World'/Game/Env_DDSProject/Maps/DDS_Project_WP.DDS_Project_WP'
+	UGameplayStatics::OpenLevel(this, FName("/Game/Env_DDSProject/Maps/DDS_Project_WP"));
 }
 
 void UMainMenuWidget::MultiplayButtonClicked()

@@ -281,9 +281,18 @@ void APlayerBase::OnDeathStartTagChanged(const FGameplayTag ChangedTag, int32 Nu
 	
 	if(HasAuthority())
 	{
+		
 		AInGamePlayerController* PC = Cast<AInGamePlayerController>(GetController());
 		if(PC)
 		{
+			if(UAbilitySystemComponent* ASC = PC->GetPlayerBase()->GetAbilitySystemComponent())
+			{
+				FGameplayTag DeathTag = FGameplayTag::RequestGameplayTag("State.Dead.Start");
+				if(!ASC->HasMatchingGameplayTag(DeathTag)) // 부활일 경우 무시
+				{
+					return;
+				}
+			}
 			PC->OnPlayerDeath();
 		}
 	}
