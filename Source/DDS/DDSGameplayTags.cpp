@@ -132,6 +132,7 @@ namespace DDSGameplayTags
 	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Player_SetByCaller_AttackType_Light, "Player.SetByCaller.AttackType.Light", "Player : light attack type set by caller.");
 	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Player_SetByCaller_AttackType_Heavy, "Player.SetByCaller.AttackType.Heavy", "Player : heavy attack type set by caller.");
 	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Player_SetByCaller_AddEnergy, "Player.SetByCaller.AddEnergy", "Player : add energy set by caller.");
+	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Player_SetByCaller_ConsumeStamina, "Player.SetByCaller.ConsumeStamina", "Player : consume stamina set by caller.");
 	
 	// Weapon SetByCaller Tags (Blade / Grip stats)
 	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Weapon_SetByCaller_Level, "Weapon.SetByCaller.Level", "Weapon : level (level).");

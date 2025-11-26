@@ -356,6 +356,59 @@ void UDDSAbilitySystemComponent::AddExperienceAndCheckLevelUp(float ExperienceTo
 	}
 }
 
+void UDDSAbilitySystemComponent::Server_ReduceStamina_Implementation(float StaminaToReduce)
+{
+	if (!GetOwner() || !GetOwner()->HasAuthority())
+	{
+		MY_LOG_DISPLAY("Server_ReduceStamina can only be called on the server");
+		return;
+	}
+
+	// Effect를 통해 스태미나 감소
+	if (!ReduceStaminaEffectClass)
+	{
+		MY_LOG_DISPLAY("ReduceStaminaEffectClass is not set");
+		return;
+	}
+	FGameplayEffectContextHandle EffectContext = MakeEffectContext();
+	FGameplayEffectSpecHandle SpecHandle = MakeOutgoingSpec(ReduceStaminaEffectClass, 1.f, EffectContext);
+	if (!SpecHandle.IsValid())
+	{
+		MY_LOG_DISPLAY("SpecHandle is not valid");
+		return;
+	}
+
+	SpecHandle.Data->SetSetByCallerMagnitude(DDSGameplayTags::Player_SetByCaller_ConsumeStamina, StaminaToReduce);
+	ApplyGameplayEffectSpecToSelf(*SpecHandle.Data.Get());
+
+	
+}
+
+void UDDSAbilitySystemComponent::Server_StopStaminaRegen_Implementation()
+{
+	if (!GetOwner() || !GetOwner()->HasAuthority())
+	{
+		MY_LOG_DISPLAY("Server_StopStaminaRegen can only be called on the server");
+		return;
+	}
+
+	// Effect를 통해 스태미나 재생 중지
+	if (!StopStaminaRegenEffectClass)
+	{
+		MY_LOG_DISPLAY("StopStaminaRegenEffectClass is not set");
+		return;
+	}
+	FGameplayEffectContextHandle EffectContext = MakeEffectContext();
+	FGameplayEffectSpecHandle SpecHandle = MakeOutgoingSpec(StopStaminaRegenEffectClass, 1.f, EffectContext);
+	if (!SpecHandle.IsValid())
+	{
+		MY_LOG_DISPLAY("SpecHandle is not valid");
+		return;
+	}
+
+	ApplyGameplayEffectSpecToSelf(*SpecHandle.Data.Get());
+}
+
 float UDDSAbilitySystemComponent::GetCurrentExperience() const
 {
 	const UDDSAttributeSet* AS = GetSet<UDDSAttributeSet>();
