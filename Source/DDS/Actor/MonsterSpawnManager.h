@@ -5,6 +5,8 @@
 #include "GameFramework/Actor.h"
 #include "MonsterSpawnManager.generated.h"
 
+class UGameplayEffect;
+
 USTRUCT(BlueprintType)
 struct FMonsterSpawnInfo
 {
@@ -31,6 +33,9 @@ public:
 protected:
 	virtual void BeginPlay() override;
 
+	UPROPERTY(EditAnywhere, Category = "Effect")
+	TSubclassOf<UGameplayEffect> HealEffect;
+	
 	// 에디터에서 배치한 몬스터들 자동으로 등록
 	UPROPERTY(EditAnywhere, Category = "Spawn")
 	TArray<FMonsterSpawnInfo> MonsterSpawnList;

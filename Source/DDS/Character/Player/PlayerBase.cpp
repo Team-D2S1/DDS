@@ -176,6 +176,8 @@ void APlayerBase::OnPlayerRebirth()
 
 	// 플레이어 체력 초기화
 	
+
+	GetAbilitySystemComponent()->RemoveLooseGameplayTag(FGameplayTag::RequestGameplayTag("State.Dead.Start"));
 }
 
 void APlayerBase::Tick(float DeltaSeconds)

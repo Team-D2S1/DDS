@@ -1,6 +1,9 @@
 // MonsterSpawnManager.cpp
 #include "MonsterSpawnManager.h"
+
+#include "AbilitySystemComponent.h"
 #include "EngineUtils.h"
+#include "Character/Monster/MonsterBase.h"
 
 AMonsterSpawnManager::AMonsterSpawnManager()
 {
@@ -48,8 +51,22 @@ void AMonsterSpawnManager::ResetAllMonsters()
     {
         if(SpawnInfo.SpawnedMonster && IsValid(SpawnInfo.SpawnedMonster))
         {
-            // 승우
-            // 몬스터 체력 초기화 필요
+            // 몬스터 체력 초기화
+            AMonsterBase* Monster = Cast<AMonsterBase>(SpawnInfo.SpawnedMonster);
+            if(Monster)
+            {
+                UAbilitySystemComponent* ASC = Monster->GetAbilitySystemComponent();
+
+                FGameplayEffectContextHandle EffectContext = ASC->MakeEffectContext();
+                EffectContext.AddSourceObject(Monster);
+
+                FGameplayEffectSpecHandle SpecHandle = ASC->MakeOutgoingSpec(HealEffect, 1.f, EffectContext);
+
+                if(SpecHandle.IsValid())
+                {
+                    ASC->ApplyGameplayEffectSpecToSelf(*SpecHandle.Data.Get());
+                }
+            }
         }
     }
 }
