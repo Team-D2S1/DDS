@@ -199,7 +199,7 @@ void APlayerBase::Tick(float DeltaSeconds)
 			if (Controller)
 			{
 				FRotator ControlRotation = LookRotation;
-				ControlRotation.Pitch = -30.f; // 약간 위에서 내려다보는 각도
+				ControlRotation.Pitch = -60.f; // 약간 위에서 내려다보는 각도
 				Controller->SetControlRotation(ControlRotation);
 			}
 		}

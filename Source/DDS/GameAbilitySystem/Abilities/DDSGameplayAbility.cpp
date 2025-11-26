@@ -19,10 +19,10 @@ void UDDSGameplayAbility::OnGiveAbility(const FGameplayAbilityActorInfo* ActorIn
 		return;
 	}
 	
-	MY_LOG(LogTemp,Log,TEXT("OnGiveAbility"))
+	// MY_LOG(LogTemp,Log,TEXT("OnGiveAbility"))
 	if (AbilityActivationPolicy == EDDSAbilityActivationPolicy::OnGiven)
 	{
-		MY_LOG(LogTemp,Log,TEXT("OnGiven Policy"))
+		// MY_LOG(LogTemp,Log,TEXT("OnGiven Policy"))
 		if (ActorInfo)// && Spec.IsActive())
 		{
 			MY_LOG(LogTemp,Log,TEXT("TryActivateAbility %s"),*Spec.Ability->GetName())

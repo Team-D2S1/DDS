@@ -46,6 +46,7 @@ void UDDSUserWidget::InitMonsterCreatedWidget(AActor* OwningMonsterActor)
 	{
 		if (UMonsterUIComponent* MonsterUIComponent = PawnUIInterface->GetMonsterUIComponent())
 		{
+			MY_LOG(LogTemp, Log, TEXT("InitMonsterCreatedWidget: Found MonsterUIComponent from %s"), *OwningMonsterActor->GetName());
 			BP_OnOwningMonsterUIComponentInitialized(MonsterUIComponent);
 		}else
 		{
