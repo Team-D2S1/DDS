@@ -16,6 +16,7 @@
 #include "GameAbilitySystem/DDSAttributeSet.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "GameFramework/SpringArmComponent.h"
+#include "GameMode/DDSGameMode.h"
 #include "Interfaces/Focusable.h"
 #include "Kismet/GameplayStatics.h"
 #include "Kismet/KismetMathLibrary.h"
@@ -122,11 +123,9 @@ void AInGamePlayerController::SetupInputComponent()
 
 void AInGamePlayerController::OnPlayerDeath()
 {
-	MY_LOG(LogTemp, Error, TEXT("0"))
-	
 	// 플레이어 조작 불가능하게
 	DisableInput(this);
-
+	
 	// 게임오버 표시
 	ADDSHUD* Ingame_HUD = Cast<ADDSHUD>(GetHUD());
 	if(Ingame_HUD)
@@ -137,7 +136,19 @@ void AInGamePlayerController::OnPlayerDeath()
 
 void AInGamePlayerController::OnPlayerDeathEnd()
 {
+	EnableInput(this);
 	
+	// 플레이어 부활처리
+	GetPlayerBase()->OnPlayerRebirth();
+
+	// 플레이어에 붙어있는 사망 태그 떼어주기
+	
+
+	// 몬스터 리셋
+	if(ADDSGameMode* GameMode = Cast<ADDSGameMode>(GetWorld()->GetAuthGameMode()))
+	{
+		GameMode->ResetAllMonsters();
+	}
 }
 
 void AInGamePlayerController::Input_Move(const FInputActionValue& Value)

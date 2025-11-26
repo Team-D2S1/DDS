@@ -3,15 +3,15 @@
 
 #include "UI/HUD/GameOverUI.h"
 
+#include "Character/Player/PlayerBase.h"
 #include "Components/Image.h"
 #include "Components/TextBlock.h"
 #include "ETC/CustomLog.h"
+#include "PlayerController/InGamePlayerController.h"
 
 
 void UGameOverUI::ShowGameOver()
-{
-	MY_LOG(LogTemp, Error, TEXT("2"))
-	
+{	
 	SetVisibility(ESlateVisibility::Visible);
 
 	if(GameOverAnim)
@@ -60,6 +60,14 @@ void UGameOverUI::NativeConstruct()
 
 void UGameOverUI::OnFadeInFinished()
 {
-	MY_LOG(LogTemp, Error, TEXT("리스폰 ㅋㅋ"))
+	// 리스폰 콜백
+	if(GetOwningPlayer())
+	{
+		if(AInGamePlayerController* PC = Cast<AInGamePlayerController>(GetOwningPlayer()))
+		{
+			PC->OnPlayerDeathEnd();
+		}
+	}
+	
 	HideGameOver();
 }

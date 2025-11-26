@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "Blueprint/UserWidget.h"
+#include "UI/DDSUserWidget.h"
 #include "GameOverUI.generated.h"
 
 class UButton;
@@ -13,7 +14,7 @@ class UImage;
  * 
  */
 UCLASS()
-class DDS_API UGameOverUI : public UUserWidget
+class DDS_API UGameOverUI : public UDDSUserWidget
 {
 	GENERATED_BODY()
 

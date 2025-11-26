@@ -604,8 +604,6 @@ UCraftingWidgetController* ADDSHUD::GetCraftingWidgetController(FWidgetControlle
 
 void ADDSHUD::ShowGameOverWidget()
 {
-	MY_LOG(LogTemp, Error, TEXT("1"))
-
 	AInGamePlayerController* OwningPlayerController = Cast<AInGamePlayerController>(GetOwningPlayerController());
 	if (OwningPlayerController == nullptr) return;
 	

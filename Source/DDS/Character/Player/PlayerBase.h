@@ -49,6 +49,10 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "DDS|InventoryComponentInterface")
     virtual UInventoryComponent* GetInventoryComponent() override;
 	/* IInventoryComponentInterface End~ */
+
+	void OnPlayerDeath();
+
+	void OnPlayerRebirth();
 	
 protected:
 	virtual void Tick(float DeltaSeconds) override;

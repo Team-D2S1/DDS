@@ -16,6 +16,8 @@
 #include "Components/Inventory/InventoryComponent.h"
 #include "GameAbilitySystem/DDSAbilitySystemComponent.h"
 #include "GameAbilitySystem/Abilities/DDSGameplayAbility.h"
+#include "GameFramework/PlayerStart.h"
+#include "Kismet/GameplayStatics.h"
 #include "UI/HUD/DDSHUD.h"
 
 APlayerBase::APlayerBase()
@@ -129,6 +131,53 @@ UInventoryComponent* APlayerBase::GetInventoryComponent()
 	return CachedInventoryComponent.Get();
 }
 
+void APlayerBase::OnPlayerDeath()
+{
+	if (DeathMontage)
+	{
+		if (UAnimInstance* AnimInstance = GetMesh()->GetAnimInstance())
+		{
+			AnimInstance->Montage_Play(DeathMontage, 1.0f);
+            
+			// 몽타주 길이 확인
+			float MontageDuration = DeathMontage->GetPlayLength();
+            
+			// 몽타주 끝나기 직전에 일시정지
+			FTimerHandle PauseHandle;
+			GetWorld()->GetTimerManager().SetTimer(PauseHandle, [this, AnimInstance]()
+			{
+				// 마지막 포즈에서 멈춤
+				AnimInstance->Montage_Pause(DeathMontage);
+				UE_LOG(LogTemp, Warning, TEXT("Montage paused at end"));
+			}, MontageDuration - 0.05f, false); // 끝나기 0.05초 전
+		}
+	}
+}
+
+void APlayerBase::OnPlayerRebirth()
+{
+	// 죽음 애니메이션 정지
+	if (UAnimInstance* AnimInstance = GetMesh()->GetAnimInstance())
+	{
+		AnimInstance->StopAllMontages(0.f);
+		GetMesh()->bPauseAnims = false;
+	}
+
+	// PlayerStart로 이동
+	APlayerStart* PlayerStart = Cast<APlayerStart>(
+		UGameplayStatics::GetActorOfClass(GetWorld(), APlayerStart::StaticClass())
+	);
+
+	if (PlayerStart)
+	{
+		SetActorLocation(PlayerStart->GetActorLocation());
+		SetActorRotation(PlayerStart->GetActorRotation());
+	}
+
+	// 플레이어 체력 초기화
+	
+}
+
 void APlayerBase::Tick(float DeltaSeconds)
 {
 	Super::Tick(DeltaSeconds);
@@ -166,19 +215,17 @@ void APlayerBase::BeginPlay()
 void APlayerBase::OnDeathStartTagChanged(const FGameplayTag ChangedTag, int32 NumberOfTag)
 {
 	Super::OnDeathStartTagChanged(ChangedTag, NumberOfTag);
-
-	MY_LOG(LogTemp, Error, TEXT("크억"))
 	
 	if(HasAuthority())
 	{
-		// 플레이어 사망 애니메이션 출력
-
 		AInGamePlayerController* PC = Cast<AInGamePlayerController>(GetController());
 		if(PC)
 		{
 			PC->OnPlayerDeath();
 		}
 	}
+
+	OnPlayerDeath();
 }
 
 void APlayerBase::OnDeathEndTagChanged(const FGameplayTag ChangedTag, int32 NumberOfTag)
