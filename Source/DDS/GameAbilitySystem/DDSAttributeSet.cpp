@@ -337,7 +337,11 @@ void UDDSAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCallbac
 		{
 			if (UAbilitySystemComponent* ASC = GetOwningAbilitySystemComponent())
 			{
-				ASC->AddLooseGameplayTag(FGameplayTag::RequestGameplayTag("State.Dead.Start"));
+				FGameplayTag DeathTag = FGameplayTag::RequestGameplayTag("State.Dead.Start");
+				if(!ASC->HasMatchingGameplayTag(DeathTag))
+				{
+					ASC->AddLooseGameplayTag(FGameplayTag::RequestGameplayTag("State.Dead.Start"));	
+				}
 			}
 		}
 	}

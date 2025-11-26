@@ -53,7 +53,7 @@ EBTNodeResult::Type UBTTaskNode_ActivateSkill::ExecuteTask(UBehaviorTreeComponen
 	const bool bSuccessful = ASC->TryActivateAbility(FoundSpec->Handle);
 	if(bSuccessful)
 	{
-		MY_LOG(LogTemp, Warning, TEXT("Skill Activated Successfully!"));
+		//MY_LOG(LogTemp, Warning, TEXT("Skill Activated Successfully!"));
 		Blackboard->SetValueAsBool("bIsUsingSkill", true);
 		// 스킬 종료시 불릴 콜백함수 바인딩
 

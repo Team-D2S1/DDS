@@ -58,7 +58,7 @@ void UBTService_SetSkill::TickNode(UBehaviorTreeComponent& OwnerComp, uint8* Nod
 	{
 		UMonsterSkillBase* SelectedSkill = GetRandomMonsterSkillWithWeight(UsableSkill);
 		Blackboard->SetValueAsObject("SelectedSkill", SelectedSkill);
-		MY_LOG(LogTemp, Warning, TEXT("Skill Set : %s"), *SelectedSkill->SkillName);
+		// MY_LOG(LogTemp, Warning, TEXT("Skill Set : %s"), *SelectedSkill->SkillName);
 	}
 }
 
