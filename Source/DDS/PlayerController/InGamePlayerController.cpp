@@ -20,6 +20,7 @@
 #include "Kismet/GameplayStatics.h"
 #include "Kismet/KismetMathLibrary.h"
 #include "UI/HUD/DDSHUD.h"
+#include "UI/HUD/GameOverUI.h"
 
 AInGamePlayerController::AInGamePlayerController()
 {
@@ -84,6 +85,26 @@ void AInGamePlayerController::SetupInputComponent()
 	DDSInputComponent->BindNativeAction(InputConfigDataAsset, DDSGameplayTags::InputTag_Cheat_FullHeal, ETriggerEvent::Started, this, &ThisClass::Cheat_FullHeal);
 	
 	MY_LOG(LogTemp, Log, TEXT("Setup Input Complete"));
+}
+
+void AInGamePlayerController::OnPlayerDeath()
+{
+	MY_LOG(LogTemp, Error, TEXT("0"))
+	
+	// 플레이어 조작 불가능하게
+	DisableInput(this);
+
+	// 게임오버 표시
+	ADDSHUD* Ingame_HUD = Cast<ADDSHUD>(GetHUD());
+	if(Ingame_HUD)
+	{
+		Ingame_HUD->ShowGameOverWidget();
+	}
+}
+
+void AInGamePlayerController::OnPlayerDeathEnd()
+{
+	
 }
 
 void AInGamePlayerController::Input_Move(const FInputActionValue& Value)

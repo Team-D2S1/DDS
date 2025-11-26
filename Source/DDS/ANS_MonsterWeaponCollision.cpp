@@ -35,6 +35,8 @@ void UANS_MonsterWeaponCollision::PerformWeaponTrace(USkeletalMeshComponent* Mes
 {
 	if(!MeshComp) return;
 
+	if(!MeshComp->GetOwner()) return;
+
 	if(!MeshComp->GetOwner()->HasAuthority()) return; 
 
 	AMonsterBase* Monster = Cast<AMonsterBase>(MeshComp->GetOwner());
@@ -46,7 +48,7 @@ void UANS_MonsterWeaponCollision::PerformWeaponTrace(USkeletalMeshComponent* Mes
 	FVector EndLocation = WeaponMesh->GetSocketLocation(WeaponEndSocketName);
 
 	TArray<FHitResult> HitResults;
-	FCollisionShape Sphere = FCollisionShape::MakeSphere(5.f);
+	FCollisionShape Sphere = FCollisionShape::MakeSphere(30.f);
 
 	FCollisionQueryParams Params;
 	Params.AddIgnoredActor(Monster);
@@ -67,7 +69,7 @@ void UANS_MonsterWeaponCollision::PerformWeaponTrace(USkeletalMeshComponent* Mes
 			Monster->GetWorld(),
 			(StartLocation + EndLocation) / 2.f,
 			FVector::Dist(StartLocation, EndLocation) / 2.f,
-			5.f,
+			30.f,
 			FRotationMatrix::MakeFromZ(EndLocation - StartLocation).ToQuat(),
 			bHit ? FColor::Red : FColor::Green,
 			false,

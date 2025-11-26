@@ -16,6 +16,7 @@
 #include "Components/Inventory/InventoryComponent.h"
 #include "GameAbilitySystem/DDSAbilitySystemComponent.h"
 #include "GameAbilitySystem/Abilities/DDSGameplayAbility.h"
+#include "UI/HUD/DDSHUD.h"
 
 APlayerBase::APlayerBase()
 {
@@ -160,6 +161,29 @@ void APlayerBase::BeginPlay()
 {
 	Super::BeginPlay();
 	
+}
+
+void APlayerBase::OnDeathStartTagChanged(const FGameplayTag ChangedTag, int32 NumberOfTag)
+{
+	Super::OnDeathStartTagChanged(ChangedTag, NumberOfTag);
+
+	MY_LOG(LogTemp, Error, TEXT("크억"))
+	
+	if(HasAuthority())
+	{
+		// 플레이어 사망 애니메이션 출력
+
+		AInGamePlayerController* PC = Cast<AInGamePlayerController>(GetController());
+		if(PC)
+		{
+			PC->OnPlayerDeath();
+		}
+	}
+}
+
+void APlayerBase::OnDeathEndTagChanged(const FGameplayTag ChangedTag, int32 NumberOfTag)
+{
+	Super::OnDeathEndTagChanged(ChangedTag, NumberOfTag);
 }
 
 void APlayerBase::Server_SetFocusedObject(AActor* InFocusedObject)

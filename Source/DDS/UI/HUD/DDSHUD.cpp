@@ -4,6 +4,7 @@
 #include "UI/HUD/DDSHUD.h"
 
 #include "DDSGameplayTags.h"
+#include "GameOverUI.h"
 #include "Blueprint/UserWidget.h"
 #include "ETC/CustomLog.h"
 #include "ETC/DDSFunctionLibrary.h"
@@ -598,6 +599,39 @@ UCraftingWidgetController* ADDSHUD::GetCraftingWidgetController(FWidgetControlle
 		}
 	}
 	return CraftingWidgetController;
+}
+
+
+void ADDSHUD::ShowGameOverWidget()
+{
+	MY_LOG(LogTemp, Error, TEXT("1"))
+
+	AInGamePlayerController* OwningPlayerController = Cast<AInGamePlayerController>(GetOwningPlayerController());
+	if (OwningPlayerController == nullptr) return;
+	
+	if (IsValid(CurrentGameOverWidget))
+	{
+		Cast<UGameOverUI>(CurrentGameOverWidget)->ShowGameOver();
+		return;
+	}
+	
+	if (!GameOverWidgetSpec.WidgetClass) return;
+	
+	UUserWidget* GameOverWidget = CreateWidget<UUserWidget>(GetOwningPlayerController(), GameOverWidgetSpec.WidgetClass);
+	if (!GameOverWidget) return;
+	
+	GameOverWidget->AddToViewport();
+	CurrentGameOverWidget = GameOverWidget;
+
+	Cast<UGameOverUI>(CurrentGameOverWidget)->ShowGameOver();
+}
+
+void ADDSHUD::HideGameOverWidget()
+{
+	if(IsValid(CurrentGameOverWidget))
+	{
+		Cast<UGameOverUI>(CurrentGameOverWidget)->HideGameOver();
+	}
 }
 
 UUserWidget* ADDSHUD::ToggleSatatusWidget()

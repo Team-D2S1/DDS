@@ -54,6 +54,9 @@ protected:
 	virtual void Tick(float DeltaSeconds) override;
 	virtual void BeginPlay() override;
 
+	virtual void OnDeathStartTagChanged(const FGameplayTag ChangedTag, int32 NumberOfTag) override;
+	virtual void OnDeathEndTagChanged(const FGameplayTag ChangedTag, int32 NumberOfTag) override;
+
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Camera", meta = (AllowPrivateAccess = "true"))
 	TObjectPtr<USpringArmComponent> SpringArm;
 
@@ -67,6 +70,10 @@ protected:
 	TObjectPtr<UPlayerUIComponent> PlayerUIComponent;
 
 	TWeakObjectPtr<UInventoryComponent> CachedInventoryComponent;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	UAnimMontage* DeathMontage;
+	
 public:
 	
 	virtual void Server_SetFocusedObject(AActor* InFocusedObject) override;

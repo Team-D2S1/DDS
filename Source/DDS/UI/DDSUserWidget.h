@@ -46,8 +46,6 @@ protected:
 	UFUNCTION(BlueprintImplementableEvent)
 	void BP_OnOwningMonsterUIComponentInitialized(UMonsterUIComponent* OwningMonsterUIComponent);
 
-
-
 private:
 	// bool bIsOpening = false;
 public:

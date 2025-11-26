@@ -7,6 +7,7 @@
 #include "GameFramework/HUD.h"
 #include "DDSHUD.generated.h"
 
+class UGameOverUI;
 class UEquipWidgetController;
 class UDataAsset_InputConfig;
 struct FWidgetControllerParams;
@@ -109,8 +110,12 @@ public:
 	void CloseCraftingWidget();
 	UFUNCTION(BlueprintCallable)
 	UCraftingWidgetController* GetCraftingWidgetController(FWidgetControllerParams& params);
-	
 
+	UFUNCTION(BlueprintCallable)
+	void ShowGameOverWidget();
+	UFUNCTION(BlueprintCallable)
+	void HideGameOverWidget();
+	
 	/** 
 	 * @brief 인풋 태그를 핸들링
 	 * @param InputTag The input tag to handle.
@@ -166,7 +171,7 @@ private:
 	TObjectPtr<UUserWidget> CurrentCraftingWidget;
 	UPROPERTY(BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
 	TObjectPtr<UCraftingWidgetController> CraftingWidgetController;
-
+	
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
 	FWidgetSpecification StatusWidgetSpec;
 	UPROPERTY(BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
@@ -175,7 +180,7 @@ private:
 	TObjectPtr<UDDSWidgetController> StatusWidgetController;
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
 	FWidgetSpecification SystemWidgetSpec;
-
+	
 	UPROPERTY(BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
 	TObjectPtr<UUserWidget> CurrentSystemWidget;
 	UPROPERTY(BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
@@ -183,5 +188,11 @@ private:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
 	TObjectPtr<UDataAsset_InputConfig> InputConfig;
 
+	UPROPERTY(BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
+	FWidgetSpecification GameOverWidgetSpec;
+	UPROPERTY(BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
+	TObjectPtr<UUserWidget> CurrentGameOverWidget;
+	UPROPERTY(BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
+	TObjectPtr<UDDSWidgetController> GameOverWidgetController;
 };
 

@@ -35,10 +35,13 @@ void UMonsterSkillBase::ActivateAbility(const FGameplayAbilitySpecHandle Handle,
 	if(UBlackboardComponent* Blackboard = Cast<AAIController>(Monster->GetController())->GetBlackboardComponent())
 	{
 		const AActor* Target = Cast<AActor>(Blackboard->GetValueAsObject("TargetActor"));
-		
-		FRotator MonsterRotation = (Target->GetActorLocation() - Monster->GetActorLocation()).Rotation();
-		MonsterRotation.Pitch = 0.f; MonsterRotation.Roll = 0.f;
-		Monster->SetActorRotation(MonsterRotation);
+
+		if(Target)
+		{
+			FRotator MonsterRotation = (Target->GetActorLocation() - Monster->GetActorLocation()).Rotation();
+			MonsterRotation.Pitch = 0.f; MonsterRotation.Roll = 0.f;
+			Monster->SetActorRotation(MonsterRotation);	
+		}
 	}
 	
 	// 몽타주 실행

@@ -25,13 +25,18 @@ class DDS_API AInGamePlayerController : public APlayerController
 
 public:
 	AInGamePlayerController();
+	
+	UFUNCTION(BlueprintCallable)
+	void OnPlayerDeath();
 
-
+	UFUNCTION(BlueprintCallable)
+	void OnPlayerDeathEnd();
+	
 protected:
 	virtual void Tick(float DeltaSeconds) override;
 	virtual void BeginPlay() override;
 	virtual void SetupInputComponent() override;
-
+	
 	// --- Input Action Delegate Function ---
 	UFUNCTION(BlueprintCallable)
 	void Input_Move(const FInputActionValue& Value);
