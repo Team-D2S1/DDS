@@ -37,11 +37,18 @@ void ALobbyPlayerController::BeginPlay()
 		if(CleanName == "MainMenu")
 		{
 			ShowMainMenuWidget();
+		}else if (CleanName.Contains("MainMenu"))
+		{
+			ShowMainMenuWidget();
 		}
 		if(CleanName == "LobbyMenu")
 		{
 			ShowLobbyWidget();
+		}else if (CleanName.Contains("LobbyMenu"))
+		{
+			ShowLobbyWidget();
 		}
+		
 	}
 }
 

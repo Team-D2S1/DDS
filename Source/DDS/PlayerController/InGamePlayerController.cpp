@@ -84,7 +84,29 @@ void AInGamePlayerController::Tick(float DeltaSeconds)
 void AInGamePlayerController::BeginPlay()
 {
 	Super::BeginPlay();
+	Super::BeginPlay();
 
+
+	if (ULocalPlayer* LocalPlayer = GetLocalPlayer())
+	{
+
+		if (UEnhancedInputLocalPlayerSubsystem* Subsystem = LocalPlayer->GetSubsystem<UEnhancedInputLocalPlayerSubsystem>())
+		{
+			if (InputConfigDataAsset)
+			{
+				Subsystem->ClearAllMappings(); 
+				Subsystem->AddMappingContext(InputConfigDataAsset->DefaultMappingContext, 0);
+				Subsystem->AddMappingContext(InputConfigDataAsset->UIInputMappingContext, 1);
+			}
+		}
+	}
+	
+	FInputModeGameOnly GameInputMode;
+	SetInputMode(GameInputMode);
+	
+
+	
+	
 	// 강의에선 Setup에서만 했는데 여기서 해야할 이유가 있음?
 	// UEnhancedInputLocalPlayerSubsystem* Subsystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(GetLocalPlayer());
 	// if(!Subsystem) return;
@@ -98,7 +120,11 @@ void AInGamePlayerController::SetupInputComponent()
 	Super::SetupInputComponent();
 
 	UEnhancedInputLocalPlayerSubsystem* Subsystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(GetLocalPlayer());
-	if(!Subsystem) return;
+	if(!Subsystem)
+	{
+		MY_LOG(LogTemp, Error, TEXT("Enhanced Input Subsystem is null, cannot setup input"));
+		return;
+	}
 
 	Subsystem->AddMappingContext(InputConfigDataAsset->DefaultMappingContext, 0);
 	Subsystem->AddMappingContext(InputConfigDataAsset->UIInputMappingContext, 1);
@@ -657,77 +683,93 @@ TArray<AActor*> AInGamePlayerController::GetFocusables() const
 
 void AInGamePlayerController::UpdateMovementSpeedFromInput(const FVector2D& MoveVector)
 {
-	const float Magnitude = MoveVector.Size();
+    const float Magnitude = MoveVector.Size();
 
-	// 임계값
-	const float FastWalkThreshold = 0.7f;
-	const float DeadZone = 0.1f;
-	const float DirectionThreshold = 0.8f; // 대략 36도 이내
+    const float FastWalkThreshold = 0.7f;
+    const float DeadZone = 0.1f;
+    const float DirectionThreshold = 0.8f; // 대략 36도 이내
 
-	APawn* CurrentPawn = GetPawn();
-	if (!CurrentPawn) return;
+    APawn* CurrentPawn = GetPawn();
+    if (!CurrentPawn) return;
 
-	// 입력 방향을 '월드 기준 방향'으로 변환
-	FRotator ControlRot = GetControlRotation();
-	FRotator YawRotation(0, ControlRot.Yaw, 0);
-	
-	FVector CameraForward = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::X);
-	FVector CameraRight = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::Y);
+    FRotator ControlRot = GetControlRotation();
+    FRotator YawRotation(0, ControlRot.Yaw, 0);
+    
+    FVector CameraForward = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::X);
+    FVector CameraRight   = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::Y);
 
-	// 입력 벡터(MoveVector)를 월드 방향(DesiredDirection)으로 변환
-	// MoveVector.Y가 전방 X가 우측
-	FVector DesiredDir = (CameraForward * MoveVector.Y + CameraRight * MoveVector.X);
-	DesiredDir.Normalize();
+    FVector DesiredDir = (CameraForward * MoveVector.Y + CameraRight * MoveVector.X);
+    DesiredDir.Normalize();
 
-	// 캐릭터가 바라보는 방향과 입력 방향 비교 
-	FVector ActorForward = CurrentPawn->GetActorForwardVector();
-	
+    FVector ActorForward = CurrentPawn->GetActorForwardVector();
+    float DirectionDot   = FVector::DotProduct(DesiredDir, ActorForward);
 
-	float DirectionDot = FVector::DotProduct(DesiredDir, ActorForward);
+    const bool bIsMovingForward = (Magnitude > DeadZone) && (DirectionDot >= DirectionThreshold);
 
-	
-	const bool bIsMovingForward = (Magnitude > DeadZone) && (DirectionDot >= DirectionThreshold);
-	
+    // --- 스태미나 체크 추가 부분 ---
+    bool bHasAnyStamina = false;
+    bool bStaminaEnoughForSprint = false;
 
-	if (Magnitude < DeadZone)
-	{
-		// 입력이 거의 없으면 기본 속도 유지 (Sprint는 해제)
-		if (CurrentMoveSpeedMode == EMoveSpeedMode::Sprint)
-		{
-			CurrentMoveSpeedMode = EMoveSpeedMode::Normal;
-		}
-		return;
-	}
+    if (UDDSAbilitySystemComponent* ASC = GetDDSAbilitySystemComponent())
+    {
+        const UAttributeSet* AttributeSetConst = ASC->GetAttributeSet(UDDSAttributeSet::StaticClass());
+        const UDDSAttributeSet* AS = Cast<UDDSAttributeSet>(AttributeSetConst);
+        if (AS)
+        {
+            const float CurrentStamina = AS->GetStamina();
 
-	// 우선순위 1: 키보드 Walk 키가 눌려 있으면 무조건 Slow (천천히 걷기)
-	if (bWalkKeyPressed)
-	{
-		CurrentMoveSpeedMode = EMoveSpeedMode::Slow;
-		return;
-	}
+            // 0 이하면 스태미나 없음
+            bHasAnyStamina = CurrentStamina > 0.f;
 
-	// 우선순위 2: 키보드 Sprint 키가 눌려 있고 전방으로 이동 중이면 Sprint
-	if (bSprintKeyPressed && bIsMovingForward)
-	{
-		CurrentMoveSpeedMode = EMoveSpeedMode::Sprint;
-		return;
-	}
+            // 10 이상이어야 Sprint 가능
+            bStaminaEnoughForSprint = CurrentStamina >= 10.f;
 
-	// 우선순위 3: 패드 B 버튼을 길게 누르고 있고, 전방으로 이동 중이고, 입력이 충분히 강할 때 Sprint
-	if (bBPressed && BPressedTime >= BLongPressThreshold && bIsMovingForward && Magnitude >= FastWalkThreshold)
-	{
-		CurrentMoveSpeedMode = EMoveSpeedMode::Sprint;
-	}
-	else if (Magnitude >= FastWalkThreshold)
-	{
-		// L 스틱을 크게 기울임 -> 기본(보통) 속도
-		CurrentMoveSpeedMode = EMoveSpeedMode::Normal;
-	}
-	else
-	{
-		// L 스틱을 살짝 기울임 -> 느린 속도
-		CurrentMoveSpeedMode = EMoveSpeedMode::Slow;
-	}
+            // 스태미나가 0 이 되었으면 스프린트 강제 해제
+            if (!bHasAnyStamina && CurrentMoveSpeedMode == EMoveSpeedMode::Sprint)
+            {
+                CurrentMoveSpeedMode = EMoveSpeedMode::Normal;
+                ApplyMoveSpeedMode();
+            }
+        }
+    }
+
+
+    if (Magnitude < DeadZone)
+    {
+        if (CurrentMoveSpeedMode == EMoveSpeedMode::Sprint)
+        {
+            CurrentMoveSpeedMode = EMoveSpeedMode::Normal;
+        }
+        return;
+    }
+
+    // 1순위: Walk 키
+    if (bWalkKeyPressed)
+    {
+        CurrentMoveSpeedMode = EMoveSpeedMode::Slow;
+        return;
+    }
+
+    // 2순위: Shift 스프린트 (전방 + 스태미나 충분)
+    if (bSprintKeyPressed && bIsMovingForward && bStaminaEnoughForSprint)
+    {
+        CurrentMoveSpeedMode = EMoveSpeedMode::Sprint;
+        return;
+    }
+
+    // 3순위: B 길게 누르기 스프린트 (패드)
+    if (bBPressed && BPressedTime >= BLongPressThreshold && bStaminaEnoughForSprint && bIsMovingForward && Magnitude >= FastWalkThreshold)
+    {
+        CurrentMoveSpeedMode = EMoveSpeedMode::Sprint;
+    }
+    else if (Magnitude >= FastWalkThreshold)
+    {
+        CurrentMoveSpeedMode = EMoveSpeedMode::Normal;
+    }
+    else
+    {
+        CurrentMoveSpeedMode = EMoveSpeedMode::Slow;
+    }
 }
 
 void AInGamePlayerController::ApplyMoveSpeedMode()
