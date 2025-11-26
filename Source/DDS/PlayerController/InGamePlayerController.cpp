@@ -206,25 +206,11 @@ void AInGamePlayerController::Input_B_Released(const FInputActionValue& Value)
 	{
 		return;
 	}
-
-	// Sprint 모드였다면 Dodge/Backstep 실행하지 않고 단순히 속도만 복귀
-	const bool bWasSprinting = (CurrentMoveSpeedMode == EMoveSpeedMode::Sprint);
 	
-	if (!bWasSprinting)
-	{
-		// 눌렀다가 뗀 시점에서 구르기/백스텝 시도 (Sprint 상태가 아니었을 때만)
-		TryExecuteDodgeOrBackstep();
-	}
-
+	TryExecuteDodgeOrBackstep();
 	bBPressed = false;
 	BPressedTime = 0.f;
 	
-	// Sprint 모드 해제 - 다음 Input_Move에서 속도가 갱신됨
-	if (bWasSprinting)
-	{
-		CurrentMoveSpeedMode = EMoveSpeedMode::Normal;
-		ApplyMoveSpeedMode();
-	}
 }
 
 void AInGamePlayerController::Input_Sprint_Pressed(const FInputActionValue& Value)
@@ -657,16 +643,37 @@ TArray<AActor*> AInGamePlayerController::GetFocusables() const
 
 void AInGamePlayerController::UpdateMovementSpeedFromInput(const FVector2D& MoveVector)
 {
-	// L 스틱 입력의 크기(길이)에 따라 Normal / Slow 결정
 	const float Magnitude = MoveVector.Size();
 
-	// 임계값: 0.7 이상은 "빠른 이동", 그 이하는 "천천히 걷기"
+	// 임계값
 	const float FastWalkThreshold = 0.7f;
 	const float DeadZone = 0.1f;
+	const float DirectionThreshold = 0.8f; // 대략 36도 이내
+
+	APawn* CurrentPawn = GetPawn();
+	if (!CurrentPawn) return;
+
+	// 입력 방향을 '월드 기준 방향'으로 변환
+	FRotator ControlRot = GetControlRotation();
+	FRotator YawRotation(0, ControlRot.Yaw, 0);
 	
-	// 전방 입력 판정: Y값이 0.5 이상이면 전방으로 이동 중
-	const float ForwardInputThreshold = 0.5f;
-	const bool bIsMovingForward = MoveVector.Y >= ForwardInputThreshold;
+	FVector CameraForward = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::X);
+	FVector CameraRight = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::Y);
+
+	// 입력 벡터(MoveVector)를 월드 방향(DesiredDirection)으로 변환
+	// MoveVector.Y가 전방 X가 우측
+	FVector DesiredDir = (CameraForward * MoveVector.Y + CameraRight * MoveVector.X);
+	DesiredDir.Normalize();
+
+	// 캐릭터가 바라보는 방향과 입력 방향 비교 
+	FVector ActorForward = CurrentPawn->GetActorForwardVector();
+	
+
+	float DirectionDot = FVector::DotProduct(DesiredDir, ActorForward);
+
+	
+	const bool bIsMovingForward = (Magnitude > DeadZone) && (DirectionDot >= DirectionThreshold);
+	
 
 	if (Magnitude < DeadZone)
 	{
@@ -721,7 +728,7 @@ void AInGamePlayerController::ApplyMoveSpeedMode()
 	{
 		return;
 	}
-
+	UDDSAbilitySystemComponent * ASC = GetDDSAbilitySystemComponent();
 	switch (CurrentMoveSpeedMode)
 	{
 	case AInGamePlayerController::EMoveSpeedMode::Normal:
@@ -732,6 +739,8 @@ void AInGamePlayerController::ApplyMoveSpeedMode()
 		break;
 	case AInGamePlayerController::EMoveSpeedMode::Sprint:
 		MoveComp->MaxWalkSpeed = SprintMoveSpeed;
+		
+		ASC->Server_StopStaminaRegen();
 		break;
 	default:
 		break;
