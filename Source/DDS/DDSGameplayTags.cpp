@@ -118,6 +118,9 @@ namespace DDSGameplayTags
 	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Player_State_StopStaminaRegen, "Player.State.StopStaminaRegen", "Player : player's stamina regeneration is stopped.");
 	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Player_State_Dodging, "Player.State.Dodging", "Player : player is dodging.");
 	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Player_State_BlockMove, "Player.State.BlockMove", "Player : player's movement is blocked.");
+	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Player_State_Moving, "Player.State.Moving", "Player : player is moving.");
+	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Player_State_Sprinting, "Player.State.Sprinting", "Player : player is sprinting.");
+	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Player_State_Walking, "Player.State.Walking", "Player : player is walking slowly.");
 
 	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Player_Event_Equip_Sword, "Player.Event.Equip.Sword", "Player : player equips a sword.");
 	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Player_Event_Unequip_Sword, "Player.Event.Unequip.Sword", "Player : player unequips a sword.");

@@ -38,6 +38,31 @@ void AInGamePlayerController::Tick(float DeltaSeconds)
 	{
 		BPressedTime += DeltaSeconds;
 	}
+
+	// Player.State.Moving 태그 관리 (매 프레임 체크)
+	if (UDDSAbilitySystemComponent* ASC = GetDDSAbilitySystemComponent())
+	{
+		APawn* MyPawn = GetPawn();
+		if (MyPawn)
+		{
+			const FVector Velocity = MyPawn->GetVelocity();
+			const float Speed = Velocity.Size2D();
+			const bool bIsActuallyMoving = Speed > 1.0f;
+
+			const bool bHasMovingTag = ASC->HasMatchingGameplayTag(DDSGameplayTags::Player_State_Moving);
+
+			// 실제로 이동 중인데 태그가 없으면 추가
+			if (bIsActuallyMoving && !bHasMovingTag)
+			{
+				ASC->Multicast_AddLooseGameplayTag(DDSGameplayTags::Player_State_Moving);
+			}
+			// 멈췄는데 태그가 있으면 제거
+			else if (!bIsActuallyMoving && bHasMovingTag)
+			{
+				ASC->Multicast_RemoveLooseGameplayTag(DDSGameplayTags::Player_State_Moving);
+			}
+		}
+	}
 }
 
 void AInGamePlayerController::BeginPlay()
@@ -85,7 +110,7 @@ void AInGamePlayerController::SetupInputComponent()
 
 	DDSInputComponent->BindNativeAction(InputConfigDataAsset, DDSGameplayTags::InputTag_Debug_PrintAttributes, ETriggerEvent::Started, this, &ThisClass::Input_Debug_PrintAttributes);
 
-	// Cheat Key Bindings (N, M, ., ,)
+	// Cheat Key Bindings (
 	DDSInputComponent->BindNativeAction(InputConfigDataAsset, DDSGameplayTags::InputTag_Cheat_AddExp, ETriggerEvent::Started, this, &ThisClass::Cheat_AddExp);
 	DDSInputComponent->BindNativeAction(InputConfigDataAsset, DDSGameplayTags::InputTag_Cheat_AddAttributePoints, ETriggerEvent::Started, this, &ThisClass::Cheat_AddAttributePoints);
 	DDSInputComponent->BindNativeAction(InputConfigDataAsset, DDSGameplayTags::InputTag_Cheat_LevelUp, ETriggerEvent::Started, this, &ThisClass::Cheat_LevelUp);
@@ -123,6 +148,8 @@ void AInGamePlayerController::Input_Move(const FInputActionValue& Value)
 	{
 		return;
 	}
+
+
 	if (MoveVector.Y != 0.f)
 	{
 		MyPawn->AddMovementInput(ForwardVector, MoveVector.Y);
@@ -171,6 +198,12 @@ void AInGamePlayerController::Input_B_Released(const FInputActionValue& Value)
 void AInGamePlayerController::Input_Sprint_Pressed(const FInputActionValue& Value)
 {
 	bSprintKeyPressed = true;
+
+	// Sprint 태그 추가 (Multicast로 모든 클라이언트에 복제)
+	if (UDDSAbilitySystemComponent* ASC = GetDDSAbilitySystemComponent())
+	{
+		ASC->Multicast_AddLooseGameplayTag(DDSGameplayTags::Player_State_Sprinting);
+	}
 }
 
 void AInGamePlayerController::Input_Sprint_Released(const FInputActionValue& Value)
@@ -183,11 +216,23 @@ void AInGamePlayerController::Input_Sprint_Released(const FInputActionValue& Val
 		CurrentMoveSpeedMode = EMoveSpeedMode::Normal;
 		ApplyMoveSpeedMode();
 	}
+
+	// Sprint 태그 제거 (Multicast로 모든 클라이언트에 복제)
+	if (UDDSAbilitySystemComponent* ASC = GetDDSAbilitySystemComponent())
+	{
+		ASC->Multicast_RemoveLooseGameplayTag(DDSGameplayTags::Player_State_Sprinting);
+	}
 }
 
 void AInGamePlayerController::Input_Walk_Pressed(const FInputActionValue& Value)
 {
 	bWalkKeyPressed = true;
+
+	// Walk 태그 추가 (Multicast로 모든 클라이언트에 복제)
+	if (UDDSAbilitySystemComponent* ASC = GetDDSAbilitySystemComponent())
+	{
+		ASC->Multicast_AddLooseGameplayTag(DDSGameplayTags::Player_State_Walking);
+	}
 }
 
 void AInGamePlayerController::Input_Walk_Released(const FInputActionValue& Value)
@@ -199,6 +244,12 @@ void AInGamePlayerController::Input_Walk_Released(const FInputActionValue& Value
 	{
 		CurrentMoveSpeedMode = EMoveSpeedMode::Normal;
 		ApplyMoveSpeedMode();
+	}
+
+	// Walk 태그 제거 (Multicast로 모든 클라이언트에 복제)
+	if (UDDSAbilitySystemComponent* ASC = GetDDSAbilitySystemComponent())
+	{
+		ASC->Multicast_RemoveLooseGameplayTag(DDSGameplayTags::Player_State_Walking);
 	}
 }
 

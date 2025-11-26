@@ -233,5 +233,7 @@ void APlayerBase::InitAbilityActorInfo()
 	PlayerUIComponent->BroadcastInitialValues(AttributeSet);
 	AbilitySystemComponent->BindAttributeValueChangeDelegates(AttributeSet);
 
+	// PlayerUIComponent가 ASC의 경험치/레벨업 알림을 구독하도록 설정
+	PlayerUIComponent->BindExperienceNotifications(AbilitySystemComponent);
 }
 
