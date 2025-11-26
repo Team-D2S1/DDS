@@ -35,13 +35,12 @@ void AInGamePlayerController::Tick(float DeltaSeconds)
 {
 	Super::Tick(DeltaSeconds);
 
-	// B 버튼이 눌려있는 동안 누른 시간 누적
 	if (bBPressed)
 	{
 		BPressedTime += DeltaSeconds;
 	}
 
-	// Player.State.Moving 태그 관리 (매 프레임 체크)
+	// 태그 관리 로직
 	if (UDDSAbilitySystemComponent* ASC = GetDDSAbilitySystemComponent())
 	{
 		APawn* MyPawn = GetPawn();
@@ -49,19 +48,34 @@ void AInGamePlayerController::Tick(float DeltaSeconds)
 		{
 			const FVector Velocity = MyPawn->GetVelocity();
 			const float Speed = Velocity.Size2D();
-			const bool bIsActuallyMoving = Speed > 1.0f;
+          
+			// 움직임 여부 판단 
+			const bool bIsActuallyMoving = Speed > 3.0f; 
+			
+			const bool bIsSprinting = bIsActuallyMoving && (CurrentMoveSpeedMode == EMoveSpeedMode::Sprint);
 
+
+			// Moving 태그 처리
 			const bool bHasMovingTag = ASC->HasMatchingGameplayTag(DDSGameplayTags::Player_State_Moving);
-
-			// 실제로 이동 중인데 태그가 없으면 추가
 			if (bIsActuallyMoving && !bHasMovingTag)
 			{
 				ASC->Multicast_AddLooseGameplayTag(DDSGameplayTags::Player_State_Moving);
 			}
-			// 멈췄는데 태그가 있으면 제거
 			else if (!bIsActuallyMoving && bHasMovingTag)
 			{
 				ASC->Multicast_RemoveLooseGameplayTag(DDSGameplayTags::Player_State_Moving);
+			}
+
+			// Sprinting 태그 처리
+			const bool bHasSprintTag = ASC->HasMatchingGameplayTag(DDSGameplayTags::Player_State_Sprinting);
+          
+			if (bIsSprinting && !bHasSprintTag)
+			{
+				ASC->Multicast_AddLooseGameplayTag(DDSGameplayTags::Player_State_Sprinting);
+			}
+			else if (!bIsSprinting && bHasSprintTag)
+			{
+				ASC->Multicast_RemoveLooseGameplayTag(DDSGameplayTags::Player_State_Sprinting);
 			}
 		}
 	}
