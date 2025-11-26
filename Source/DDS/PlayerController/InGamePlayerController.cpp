@@ -35,13 +35,12 @@ void AInGamePlayerController::Tick(float DeltaSeconds)
 {
 	Super::Tick(DeltaSeconds);
 
-	// B 버튼이 눌려있는 동안 누른 시간 누적
 	if (bBPressed)
 	{
 		BPressedTime += DeltaSeconds;
 	}
 
-	// Player.State.Moving 태그 관리 (매 프레임 체크)
+	// 태그 관리 로직
 	if (UDDSAbilitySystemComponent* ASC = GetDDSAbilitySystemComponent())
 	{
 		APawn* MyPawn = GetPawn();
@@ -49,19 +48,34 @@ void AInGamePlayerController::Tick(float DeltaSeconds)
 		{
 			const FVector Velocity = MyPawn->GetVelocity();
 			const float Speed = Velocity.Size2D();
-			const bool bIsActuallyMoving = Speed > 1.0f;
+          
+			// 움직임 여부 판단 
+			const bool bIsActuallyMoving = Speed > 3.0f; 
+			
+			const bool bIsSprinting = bIsActuallyMoving && (CurrentMoveSpeedMode == EMoveSpeedMode::Sprint);
 
+
+			// Moving 태그 처리
 			const bool bHasMovingTag = ASC->HasMatchingGameplayTag(DDSGameplayTags::Player_State_Moving);
-
-			// 실제로 이동 중인데 태그가 없으면 추가
 			if (bIsActuallyMoving && !bHasMovingTag)
 			{
 				ASC->Multicast_AddLooseGameplayTag(DDSGameplayTags::Player_State_Moving);
 			}
-			// 멈췄는데 태그가 있으면 제거
 			else if (!bIsActuallyMoving && bHasMovingTag)
 			{
 				ASC->Multicast_RemoveLooseGameplayTag(DDSGameplayTags::Player_State_Moving);
+			}
+
+			// Sprinting 태그 처리
+			const bool bHasSprintTag = ASC->HasMatchingGameplayTag(DDSGameplayTags::Player_State_Sprinting);
+          
+			if (bIsSprinting && !bHasSprintTag)
+			{
+				ASC->Multicast_AddLooseGameplayTag(DDSGameplayTags::Player_State_Sprinting);
+			}
+			else if (!bIsSprinting && bHasSprintTag)
+			{
+				ASC->Multicast_RemoveLooseGameplayTag(DDSGameplayTags::Player_State_Sprinting);
 			}
 		}
 	}
@@ -206,25 +220,11 @@ void AInGamePlayerController::Input_B_Released(const FInputActionValue& Value)
 	{
 		return;
 	}
-
-	// Sprint 모드였다면 Dodge/Backstep 실행하지 않고 단순히 속도만 복귀
-	const bool bWasSprinting = (CurrentMoveSpeedMode == EMoveSpeedMode::Sprint);
 	
-	if (!bWasSprinting)
-	{
-		// 눌렀다가 뗀 시점에서 구르기/백스텝 시도 (Sprint 상태가 아니었을 때만)
-		TryExecuteDodgeOrBackstep();
-	}
-
+	TryExecuteDodgeOrBackstep();
 	bBPressed = false;
 	BPressedTime = 0.f;
 	
-	// Sprint 모드 해제 - 다음 Input_Move에서 속도가 갱신됨
-	if (bWasSprinting)
-	{
-		CurrentMoveSpeedMode = EMoveSpeedMode::Normal;
-		ApplyMoveSpeedMode();
-	}
 }
 
 void AInGamePlayerController::Input_Sprint_Pressed(const FInputActionValue& Value)
@@ -323,23 +323,52 @@ void AInGamePlayerController::Input_LockOn()
 	// UCameraComponent* Cam = PlayerBase->GetCameraComponent();
 	// UPlayerCombatComponent* CombatComponent = PlayerBase->GetCombatComponent();
 	AActor* target = nullptr;
+
+	int32 SizeX, SizeY;
+	GetViewportSize(SizeX, SizeY);
+	FVector2D ScreenCenter(SizeX * 0.5f, SizeY * 0.5f); // 실제 화면의 중앙 픽셀 좌표
+	float MinDistanceFromCenter = std::numeric_limits<float>::max();
+	
 	if (!focusedObject)
 	{
-		// float inf
-		float minDistance = std::numeric_limits<float>::max();
-		for (auto focusableActor : GetFocusables())
+		for (auto FocusableActor : GetFocusables())
 		{
+			if (!FocusableActor) continue;
+
+			// 월드 좌표를 화면 좌표로 변환
 			FVector2D ScreenLocation;
-			if (focusableActor->WasRecentlyRendered(0.2f) && ProjectWorldLocationToScreen(focusableActor->GetActorLocation(), ScreenLocation))
+			bool bIsOnScreen = ProjectWorldLocationToScreen(FocusableActor->GetActorLocation(), ScreenLocation);
+
+			if (bIsOnScreen)
 			{
-				IFocusable* focusable = Cast<IFocusable>(focusableActor);
-				if (!focusable) continue;
-				FVector2D ScreenCenter = FVector2D(0.5f, 0.5f);
-				float distance = FVector2D::Distance(ScreenLocation, ScreenCenter);
-				if (distance < minDistance)
+				// 화면 중앙과의 거리 계산 (Squared를 쓰면 Sqrt 연산을 줄여 최적화 가능)
+				float DistSquared = FVector2D::DistSquared(ScreenLocation, ScreenCenter);
+				
+				if (DistSquared < MinDistanceFromCenter)
 				{
-					minDistance = distance;
-					target =  focusableActor;
+					// 레이캐스트
+					FHitResult HitResult;
+					FVector StartLocation = PlayerBase->GetCameraComponent()->GetComponentLocation();
+					FVector EndLocation = FocusableActor->GetActorLocation();
+                
+					FCollisionQueryParams QueryParams;
+					QueryParams.AddIgnoredActor(PlayerBase);
+
+					// 벽 등에 막히는지 확인
+					bool bHit = GetWorld()->LineTraceSingleByChannel(
+						HitResult,
+						StartLocation,
+						EndLocation,
+						ECC_Visibility,
+						QueryParams
+					);
+
+					// 레이가 무언가에 맞았고, 그 맞은 대상이 우리가 보고 있는 적이라면 (즉, 벽이 없다면)
+					if (bHit && HitResult.GetActor() == FocusableActor)
+					{
+						MinDistanceFromCenter = DistSquared;
+						target = FocusableActor;
+					}
 				}
 			}
 		}
@@ -628,16 +657,37 @@ TArray<AActor*> AInGamePlayerController::GetFocusables() const
 
 void AInGamePlayerController::UpdateMovementSpeedFromInput(const FVector2D& MoveVector)
 {
-	// L 스틱 입력의 크기(길이)에 따라 Normal / Slow 결정
 	const float Magnitude = MoveVector.Size();
 
-	// 임계값: 0.7 이상은 "빠른 이동", 그 이하는 "천천히 걷기"
+	// 임계값
 	const float FastWalkThreshold = 0.7f;
 	const float DeadZone = 0.1f;
+	const float DirectionThreshold = 0.8f; // 대략 36도 이내
+
+	APawn* CurrentPawn = GetPawn();
+	if (!CurrentPawn) return;
+
+	// 입력 방향을 '월드 기준 방향'으로 변환
+	FRotator ControlRot = GetControlRotation();
+	FRotator YawRotation(0, ControlRot.Yaw, 0);
 	
-	// 전방 입력 판정: Y값이 0.5 이상이면 전방으로 이동 중
-	const float ForwardInputThreshold = 0.5f;
-	const bool bIsMovingForward = MoveVector.Y >= ForwardInputThreshold;
+	FVector CameraForward = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::X);
+	FVector CameraRight = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::Y);
+
+	// 입력 벡터(MoveVector)를 월드 방향(DesiredDirection)으로 변환
+	// MoveVector.Y가 전방 X가 우측
+	FVector DesiredDir = (CameraForward * MoveVector.Y + CameraRight * MoveVector.X);
+	DesiredDir.Normalize();
+
+	// 캐릭터가 바라보는 방향과 입력 방향 비교 
+	FVector ActorForward = CurrentPawn->GetActorForwardVector();
+	
+
+	float DirectionDot = FVector::DotProduct(DesiredDir, ActorForward);
+
+	
+	const bool bIsMovingForward = (Magnitude > DeadZone) && (DirectionDot >= DirectionThreshold);
+	
 
 	if (Magnitude < DeadZone)
 	{
@@ -692,7 +742,7 @@ void AInGamePlayerController::ApplyMoveSpeedMode()
 	{
 		return;
 	}
-
+	UDDSAbilitySystemComponent * ASC = GetDDSAbilitySystemComponent();
 	switch (CurrentMoveSpeedMode)
 	{
 	case AInGamePlayerController::EMoveSpeedMode::Normal:
@@ -703,6 +753,8 @@ void AInGamePlayerController::ApplyMoveSpeedMode()
 		break;
 	case AInGamePlayerController::EMoveSpeedMode::Sprint:
 		MoveComp->MaxWalkSpeed = SprintMoveSpeed;
+		
+		ASC->Server_StopStaminaRegen();
 		break;
 	default:
 		break;

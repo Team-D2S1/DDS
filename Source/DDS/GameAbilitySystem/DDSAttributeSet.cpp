@@ -20,7 +20,7 @@ UDDSAttributeSet::UDDSAttributeSet()
     InitEnergy(0.0f);
     InitRequireEnergy(100.0f);
     InitSoul(0.0f);
-    InitAttributePoints(10.f);
+    InitAttributePoints(0.f);
     
     InitVitality(10.0f);
     InitEndurance(10.0f);

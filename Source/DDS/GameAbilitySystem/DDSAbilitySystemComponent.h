@@ -74,6 +74,14 @@ public:
 	UFUNCTION(BlueprintCallable, Category="DDS|Experience", BlueprintAuthorityOnly)
 	void AddExperienceAndCheckLevelUp(float ExperienceToAdd);
 
+	/** 스태미나 감소 함수*/
+	UFUNCTION(Server, Reliable, BlueprintCallable, Category="DDS|Stamina", BlueprintAuthorityOnly)
+	void Server_ReduceStamina(float StaminaToReduce);
+
+    /** 스태미나 재생 중지 함수 */
+	UFUNCTION(Server, Reliable, BlueprintCallable, Category="DDS|Stamina", BlueprintAuthorityOnly)
+	void Server_StopStaminaRegen();
+	
 	/** 현재 경험치 가져오기 */
 	UFUNCTION(BlueprintPure, Category="DDS|Experience")
 	float GetCurrentExperience() const;
@@ -131,6 +139,13 @@ public:
 	/** Player Stats를 계산하는 MMC GameplayEffect (GE_PlayerStats_Naive) */
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category="GAS|Attributes")
 	TSubclassOf<UGameplayEffect> PlayerStatsEffectClass;
+
+	/** Player의 Stamina를 줄이는 GameplayEffect */
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category="GAS|Attributes")
+	TSubclassOf<UGameplayEffect> ReduceStaminaEffectClass;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category="GAS|Attributes")
+	TSubclassOf<UGameplayEffect> StopStaminaRegenEffectClass;
 
 protected:
 	void HandleLevelChanged(const FOnAttributeChangeData& Data);

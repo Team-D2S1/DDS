@@ -133,6 +133,7 @@ namespace DDSGameplayTags
 	DDS_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_SetByCaller_AttackType_Light)
 	DDS_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_SetByCaller_AttackType_Heavy)
 	DDS_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_SetByCaller_AddEnergy)
+	DDS_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_SetByCaller_ConsumeStamina)
 
 	// Weapon SetByCaller Tags (Blade / Grip stats)
 	DDS_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Weapon_SetByCaller_Level)
