@@ -177,8 +177,19 @@ void APlayerBase::OnPlayerRebirth()
 	}
 
 	// 플레이어 체력 초기화
-	
+	UAbilitySystemComponent* ASC = GetAbilitySystemComponent();
 
+	FGameplayEffectContextHandle EffectContext = ASC->MakeEffectContext();
+	EffectContext.AddSourceObject(this);
+
+	FGameplayEffectSpecHandle SpecHandle = ASC->MakeOutgoingSpec(HealEffect, 1.f, EffectContext);
+
+	if(SpecHandle.IsValid())
+	{
+		ASC->ApplyGameplayEffectSpecToSelf(*SpecHandle.Data.Get());
+	}
+
+	// 죽음 태그 제거
 	GetAbilitySystemComponent()->RemoveLooseGameplayTag(FGameplayTag::RequestGameplayTag("State.Dead.Start"));
 }
 

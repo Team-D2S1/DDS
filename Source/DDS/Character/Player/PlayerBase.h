@@ -9,6 +9,7 @@
 #include "Perception/AISightTargetInterface.h"
 #include "PlayerBase.generated.h"
 
+class UGameplayEffect;
 class IFocusable;
 class UPlayerCombatComponent;
 class UCameraComponent;
@@ -78,6 +79,9 @@ protected:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	UAnimMontage* DeathMontage;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	TSubclassOf<UGameplayEffect> HealEffect;
 	
 public:
 	

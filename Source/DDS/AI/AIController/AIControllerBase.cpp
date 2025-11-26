@@ -64,7 +64,7 @@ void AAIControllerBase::OnTargetPerceptionUpdated(AActor* Actor, FAIStimulus Sti
 			BlackboardComponent->SetValueAsBool("bIsInvestigating", true);
 			BlackboardComponent->SetValueAsObject("TargetActor", nullptr);
 
-			MY_LOG(LogTemp, Error, TEXT("Lost Target"));
+			// MY_LOG(LogTemp, Error, TEXT("Lost Target"));
 		}
 	}
 }
