@@ -70,6 +70,9 @@ protected:
 	void OnGameplayEffectApplied(UAbilitySystemComponent* ASC, const FGameplayEffectSpec& Spec, FActiveGameplayEffectHandle handle);
 	/** 몬스터 초기 스탯 초기화 */
 	void InitMonsterStartUpData();
+
+	/** 어빌리티 액터 정보 초기화 */
+	void InitAbilityActorInfo();
 	
 	/** 현재 해당 몬스터가 Lock On 중인지를 표시하는 로컬 변수. 복제되면 안됨 */
 	bool bIsFocused = false;

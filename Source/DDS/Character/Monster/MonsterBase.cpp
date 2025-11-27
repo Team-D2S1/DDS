@@ -112,88 +112,58 @@ void AMonsterBase::BeginPlay()
 	Super::BeginPlay();
 
 	WeaponMesh->AttachToComponent(GetMesh(), FAttachmentTransformRules::KeepRelativeTransform, FName("WeaponSocket"));
+	InitAbilityActorInfo();
 	
-	if (!AbilitySystemComponent)
+	if (HasAuthority())
 	{
-		MY_ERROR_DISPLAY(TEXT("AbilitySystemComponent is null"));
-		return;
+		InitMonsterStartUpData(); 
 	}
 	
-	// AttributeSet이 null이면 동적으로 생성 (블루프린트에서 덮어씌워진 경우 대응)
-	if (!AttributeSet)
+	if (UDDSUserWidget* HealthWidget = Cast<UDDSUserWidget>(MonsterHealthWidgetComponent->GetUserWidgetObject()))
 	{
-		bool hasAuthority = HasAuthority();
-		UE_LOG(LogTemp, Warning, TEXT("[%s] [%s::BeginPlay] AttributeSet is null! Creating new one. This might be caused by BP overriding."), 
-			hasAuthority ? TEXT("Server") : TEXT("Client"),
-			*GetName());
-		
-		UDDSAttributeSet* NewAttributeSet = NewObject<UDDSAttributeSet>(this, UDDSAttributeSet::StaticClass());
-		if (NewAttributeSet)
-		{
-			// ASC에 AttributeSet 추가 후 반환값을 AttributeSet에 할당
-			const UAttributeSet* AddedSet = AbilitySystemComponent->AddAttributeSetSubobject(NewAttributeSet);
-			AttributeSet = const_cast<UDDSAttributeSet*>(Cast<UDDSAttributeSet>(AddedSet));
-			UE_LOG(LogTemp, Log, TEXT("[%s] [%s::BeginPlay] Successfully created and added AttributeSet"), 
-				hasAuthority ? TEXT("Server") : TEXT("Client"),
-				*GetName());
-		}
+		HealthWidget->InitMonsterCreatedWidget(this);
 	}
+
 	
-	bool hasAuthority = HasAuthority();
-	UE_LOG(LogTemp, Log, TEXT("[%s] [%s::BeginPlay] AttributeSet=%s, ASC=%s"), 
-		hasAuthority ? TEXT("Server") : TEXT("Client"),
-		*GetName(),
-		AttributeSet ? TEXT("Valid") : TEXT("NULL"),
-		AbilitySystemComponent ? TEXT("Valid") : TEXT("NULL"));
-	
-	AbilitySystemComponent->InitAbilityActorInfo(this, this);
-	
-	// InitAbilityActorInfo 이후에도 AttributeSet이 여전히 null이면 다시 시도
-	if (!AttributeSet)
-	{
-		UE_LOG(LogTemp, Error, TEXT("[%s] [%s::BeginPlay] AttributeSet is still NULL after InitAbilityActorInfo! Attempting recovery..."), 
-			hasAuthority ? TEXT("Server") : TEXT("Client"),
-			*GetName());
-			
-		// ASC에서 AttributeSet을 가져와 보기
-		const UAttributeSet* FoundAttributeSet = AbilitySystemComponent->GetAttributeSet(UDDSAttributeSet::StaticClass());
-		if (FoundAttributeSet)
-		{
-			AttributeSet = const_cast<UDDSAttributeSet*>(Cast<UDDSAttributeSet>(FoundAttributeSet));
-			UE_LOG(LogTemp, Warning, TEXT("[%s] [%s::BeginPlay] Found AttributeSet from ASC"), 
-				hasAuthority ? TEXT("Server") : TEXT("Client"),
-				*GetName());
-		}
-		else
-		{
-			// 여전히 없으면 새로 생성
-			UDDSAttributeSet* NewAttributeSet = NewObject<UDDSAttributeSet>(this, UDDSAttributeSet::StaticClass());
-			if (NewAttributeSet)
-			{
-				const UAttributeSet* AddedSet = AbilitySystemComponent->AddAttributeSetSubobject(NewAttributeSet);
-				AttributeSet = const_cast<UDDSAttributeSet*>(Cast<UDDSAttributeSet>(AddedSet));
-				UE_LOG(LogTemp, Warning, TEXT("[%s] [%s::BeginPlay] Created new AttributeSet as last resort"), 
-					hasAuthority ? TEXT("Server") : TEXT("Client"),
-					*GetName());
-			}
-		}
-	}
-	if (GetNetMode() != NM_DedicatedServer) 
-	{
-		if (UDDSUserWidget* HealthWidget = Cast<UDDSUserWidget>(MonsterHealthWidgetComponent->GetUserWidgetObject()))
-		{
-			HealthWidget->InitMonsterCreatedWidget(this);
-		}else
-		{
-			MY_LOG(LogTemp, Type::Warning, TEXT("MonsterHealthWidgetComponent is not a UDDSUserWidget"));
-		}
-	}
+
 	MonsterUIComponent->BroadcastInitialValues(AttributeSet);
 	MonsterUIComponent->OnPawnInitializingFinished.Broadcast();
 	AbilitySystemComponent->BindAttributeValueChangeDelegates(AttributeSet);
 	MY_LOG(LogTemp, Type::Log, TEXT("MonsterBase BeginPlay Finished"));
 }
+void AMonsterBase::InitMonsterStartUpData()
+{
+	UAbilitySystemComponent* ASC = GetAbilitySystemComponent();
+	if(ASC)
+	{
+		ASC->OnGameplayEffectAppliedDelegateToSelf.AddUObject(this, &ThisClass::OnGameplayEffectApplied);
+	}
+	
+	if (EntityStartUpDataBase.IsNull())
+	{
+		return;
+	}
+	
+	// 몬스터는 그 수가 많아 게임을 멈출 수 있음. => 비동기 로딩 사용
+	UAssetManager::GetStreamableManager().RequestAsyncLoad(
+		EntityStartUpDataBase.ToSoftObjectPath(),
+		FStreamableDelegate::CreateLambda([this]()
+		{
+			UDataAsset_StartUpDataBase* loadedData = EntityStartUpDataBase.Get();
+			if (!loadedData)
+			{
+				return;
+			}
+			loadedData->GiveToAbilitySystemComponent(AbilitySystemComponent);
+		})
+	);
+}
 
+void AMonsterBase::InitAbilityActorInfo()
+{
+	AbilitySystemComponent->InitAbilityActorInfo(this, this);
+	
+}
 void AMonsterBase::Tick(float DeltaSeconds)
 {
 	Super::Tick(DeltaSeconds);
@@ -257,7 +227,7 @@ void AMonsterBase::PossessedBy(AController* NewController)
 {
 	Super::PossessedBy(NewController);
 
-	InitMonsterStartUpData();
+	
 }
 
 void AMonsterBase::OnGameplayEffectApplied(UAbilitySystemComponent* ASC, const FGameplayEffectSpec& Spec,
@@ -265,33 +235,7 @@ void AMonsterBase::OnGameplayEffectApplied(UAbilitySystemComponent* ASC, const F
 {
 }
 
-void AMonsterBase::InitMonsterStartUpData()
-{
-	UAbilitySystemComponent* ASC = GetAbilitySystemComponent();
-	if(ASC)
-	{
-		ASC->OnGameplayEffectAppliedDelegateToSelf.AddUObject(this, &ThisClass::OnGameplayEffectApplied);
-	}
-	
-	if (EntityStartUpDataBase.IsNull())
-	{
-		return;
-	}
-	
-	// 몬스터는 그 수가 많아 게임을 멈출 수 있음. => 비동기 로딩 사용
-	UAssetManager::GetStreamableManager().RequestAsyncLoad(
-		EntityStartUpDataBase.ToSoftObjectPath(),
-		FStreamableDelegate::CreateLambda([this]()
-		{
-			UDataAsset_StartUpDataBase* loadedData = EntityStartUpDataBase.Get();
-			if (!loadedData)
-			{
-				return;
-			}
-			loadedData->GiveToAbilitySystemComponent(AbilitySystemComponent);
-		})
-	);
-}
+
 
 void AMonsterBase::OnFocus()
 {
