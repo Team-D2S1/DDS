@@ -16,6 +16,7 @@ DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnDDSMaxStaminaChangedSignature, fl
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnDDSManaChangedSignature, float, NewMana);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnDDSMaxManaChangedSignature, float, NewMaxMana);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnDDSDamageTakenChangedSignature, float, NewDamageTaken);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnDDSHealthPotionChangedSignature, float, NewHealthPotion);
 
 // UI 알림용 델리게이트
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnExperienceGainedNotificationSignature, float, ExperienceAmount);
@@ -125,6 +126,9 @@ public:
 	UPROPERTY(BlueprintAssignable, Category="DDS|Attributes")
 	FOnDDSDamageTakenChangedSignature OnDamageTakenChanged;
 
+	UPROPERTY(BlueprintAssignable, Category="DDS|Attributes")
+	FOnDDSHealthPotionChangedSignature OnHealthPotionChanged;
+
 	// UI 알림용 델리게이트 (경험치 획득, 레벨업 팝업 표시용)
 	UPROPERTY(BlueprintAssignable, Category="DDS|Notifications")
 	FOnExperienceGainedNotificationSignature OnExperienceGainedNotification;
@@ -158,6 +162,7 @@ protected:
 	void HandleStaminaMaxChanged(const FOnAttributeChangeData& Data);
 	void HandleManaMaxChanged(const FOnAttributeChangeData& Data);
 	void HandleDamageTakenChanged(const FOnAttributeChangeData& Data);
+	void HandleHealthPotionChanged(const FOnAttributeChangeData& Data);
 
 	// 마지막 구르기 입력 방향 (월드 좌표, 정규화 벡터) - Replicated
 	UPROPERTY(Replicated, BlueprintReadOnly, Category="DDS|Ability", meta=(AllowPrivateAccess="true"))

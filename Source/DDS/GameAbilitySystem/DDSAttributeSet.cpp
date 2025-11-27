@@ -57,7 +57,10 @@ UDDSAttributeSet::UDDSAttributeSet()
 	InitMagicResist(0.0f);
     
     InitDamageTaken(0.0f);
+    InitDamageTaken(0.0f);
     InitAttackRequireStamina(0.0f);
+
+	InitHealthPotion(0.0f);
  
 	using namespace DDSGameplayTags;
     
@@ -99,6 +102,8 @@ UDDSAttributeSet::UDDSAttributeSet()
     TagToAttributeMap.Add(Attribute_Defense_MagicDefense, GetMagicDefenseAttribute);
     TagToAttributeMap.Add(Attribute_Defense_PhysicalResist, GetPhysicalResistAttribute);
 	TagToAttributeMap.Add(Attribute_Defense_MagicResist, GetMagicResistAttribute);
+
+	TagToAttributeMap.Add(Attribute_Item_HealthPotion, GetHealthPotionAttribute);
 
 
 	
@@ -150,6 +155,7 @@ void UDDSAttributeSet::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& Out
     DOREPLIFETIME_CONDITION_NOTIFY(UDDSAttributeSet, MagicResist, COND_None, REPNOTIFY_Always);
     
     DOREPLIFETIME_CONDITION_NOTIFY(UDDSAttributeSet, AttackRequireStamina, COND_None, REPNOTIFY_Always);
+    DOREPLIFETIME_CONDITION_NOTIFY(UDDSAttributeSet, HealthPotion, COND_None, REPNOTIFY_Always);
 }
 
 void UDDSAttributeSet::PreAttributeChange(const FGameplayAttribute& Attribute, float& NewValue)
@@ -533,6 +539,11 @@ void UDDSAttributeSet::OnRep_AttackRequireStamina(const FGameplayAttributeData& 
 	GAMEPLAYATTRIBUTE_REPNOTIFY(UDDSAttributeSet, AttackRequireStamina, OldAttackRequireStamina);
 }
 
+void UDDSAttributeSet::OnRep_HealthPotion(const FGameplayAttributeData& OldHealthPotion) const
+{
+	GAMEPLAYATTRIBUTE_REPNOTIFY(UDDSAttributeSet, HealthPotion, OldHealthPotion);
+}
+
 void UDDSAttributeSet::OnRep_DamageTaken(const FGameplayAttributeData& OldDamageTaken) const
 {
     GAMEPLAYATTRIBUTE_REPNOTIFY(UDDSAttributeSet, DamageTaken, OldDamageTaken);
@@ -581,6 +592,8 @@ void UDDSAttributeSet::PrintAllAttributes() const
 	MY_LOG(LogTemp, Log, TEXT("PhysicalResist: %f"), GetPhysicalResist());
 	MY_LOG(LogTemp, Log, TEXT("MagicResist: %f"), GetMagicResist());
 	
+	MY_LOG(LogTemp, Log, TEXT("HealthPotion: %f"), GetHealthPotion());
+
 	MY_LOG(LogTemp, Log, TEXT("DamageTaken: %f"), GetDamageTaken());
 }
 

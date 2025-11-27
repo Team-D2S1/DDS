@@ -46,7 +46,7 @@ AMonsterBase::AMonsterBase()
 	AbilitySystemComponent->SetIsReplicated(true);
 	AbilitySystemComponent->SetReplicationMode(EGameplayEffectReplicationMode::Minimal);
 	
-	AttributeSet = CreateDefaultSubobject<UDDSAttributeSet>(TEXT("AttributeSet"));
+	AttributeSetSSS = CreateDefaultSubobject<UDDSAttributeSet>(TEXT("AttributeSet"));
 	
 	MonsterCombatComponent = CreateDefaultSubobject<UMonsterCombatComponent>(TEXT("MonsterCombatComponent"));
 	MonsterCombatComponent->SetIsReplicated(true);
@@ -126,9 +126,9 @@ void AMonsterBase::BeginPlay()
 
 	
 
-	MonsterUIComponent->BroadcastInitialValues(AttributeSet);
+	MonsterUIComponent->BroadcastInitialValues(AttributeSetSSS);
 	MonsterUIComponent->OnPawnInitializingFinished.Broadcast();
-	AbilitySystemComponent->BindAttributeValueChangeDelegates(AttributeSet);
+	AbilitySystemComponent->BindAttributeValueChangeDelegates(AttributeSetSSS);
 	MY_LOG(LogTemp, Type::Log, TEXT("MonsterBase BeginPlay Finished"));
 }
 void AMonsterBase::InitMonsterStartUpData()
@@ -256,14 +256,14 @@ void AMonsterBase::GiveRewardToAllPlayers()
 	}
 
 	// 몬스터의 AttributeSet에서 보상 정보 가져오기
-	if (!AttributeSet)
+	if (!AttributeSetSSS)
 	{
 		MY_LOG(LogTemp, Warning, TEXT("[GiveRewardToAllPlayers] Monster has no AttributeSet"));
 		return;
 	}
 
-	const float ExperienceDrop = AttributeSet->GetEnergy();
-	const float SoulDrop = AttributeSet->GetSoul();
+	const float ExperienceDrop = AttributeSetSSS->GetEnergy();
+	const float SoulDrop = AttributeSetSSS->GetSoul();
 
 	if (ExperienceDrop <= 0.f && SoulDrop <= 0.f)
 	{

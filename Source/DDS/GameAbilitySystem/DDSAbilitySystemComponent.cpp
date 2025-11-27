@@ -163,6 +163,9 @@ void UDDSAbilitySystemComponent::BindAttributeValueChangeDelegates(UDDSAttribute
 
 	GetGameplayAttributeValueChangeDelegate(InAttributeSet->GetDamageTakenAttribute())
 		.AddUObject(this, &UDDSAbilitySystemComponent::HandleDamageTakenChanged);
+
+	GetGameplayAttributeValueChangeDelegate(InAttributeSet->GetHealthPotionAttribute())
+		.AddUObject(this, &UDDSAbilitySystemComponent::HandleHealthPotionChanged);
 }
 
 void UDDSAbilitySystemComponent::Server_UseAttributePointToAttribute_Implementation(const FGameplayTag& InAttributeTag)
@@ -537,6 +540,11 @@ void UDDSAbilitySystemComponent::HandleDamageTakenChanged(const FOnAttributeChan
 
 	bool bIsServer = GetOwner() && GetOwner()->HasAuthority();
 	// MY_CLOG_DISPLAY_NET(FColor::Red, bIsServer, TEXT("[ASC] DamageTaken Changed: %.2f -> %.2f"), Data.OldValue, Data.NewValue);
+}
+
+void UDDSAbilitySystemComponent::HandleHealthPotionChanged(const FOnAttributeChangeData& Data)
+{
+	OnHealthPotionChanged.Broadcast(Data.NewValue);
 }
 
 FActiveGameplayEffectHandle UDDSAbilitySystemComponent::ApplyOrRefreshGameplayEffectToSelf(TSubclassOf<UGameplayEffect> EffectClass, float Level, const FGameplayTag& TagToMatch)

@@ -29,6 +29,7 @@ namespace DDSGameplayTags
 	UE_DEFINE_GAMEPLAY_TAG_COMMENT(InputTag_DodgeB, "Input.DodgeB", "Input : B button for dodge/backstep/sprint modifier.");
 
 	UE_DEFINE_GAMEPLAY_TAG(InputTag_Debug_PrintAttributes, "Input.Debug.PrintAttributes");
+	UE_DEFINE_GAMEPLAY_TAG_COMMENT(InputTag_UseHealthPotion, "Input.UseHealthPotion", "Input : using a health potion.");
 
 	// Cheat Input Tags
 	UE_DEFINE_GAMEPLAY_TAG(InputTag_Cheat_AddExp, "Input.Cheat.AddExp");
@@ -93,6 +94,8 @@ namespace DDSGameplayTags
 
 	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Attribute_Defense_PhysicalResist, "Attribute.Defense.PhysicalResist", "Attribute : defense physical resist.");
 	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Attribute_Defense_MagicResist, "Attribute.Defense.MagicResist", "Attribute : defense magic resist.");
+	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Attribute_Item_HealthPotion, "Attribute.Item.HealthPotion", "Attribute : Health Potion Count");
+
 	/** Player Tags */
 	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Player_Ability_Move, "Player.Ability.Move", "Player : player moves.");
 	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Player_Ability_Jump, "Player.Ability.Jump", "Player : player jumps.");
@@ -111,6 +114,7 @@ namespace DDSGameplayTags
 	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Player_Ability_Attack_HeavyAttack_Sword, "Player.Ability.Attack.HeavyAttack.Sword", "Player : player performs a heavy attack ability with a sword.");
 	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Player_Ability_Dodge, "Player.Ability.Dodge", "Player : player performs a dodge ability.");
 	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Player_Ability_Backstep, "Player.Ability.Backstep", "Player : player performs a backstep ability.");
+   	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Player_Ability_UseHealthPotion, "Player.Ability.UseHealthPotion", "Player : player uses a health potion ability.");
 	
 	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Player_Weapon_Sword, "Player.Weapon.Sword", "Player : player's sword weapon.");
 	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Player_Weapon_Crafted, "Player.Weapon.Crafted", "Player : player's crafted weapon.");

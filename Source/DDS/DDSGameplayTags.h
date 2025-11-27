@@ -28,8 +28,9 @@ namespace DDSGameplayTags
 
 	DDS_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(InputTag_LightAttack)
 	DDS_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(InputTag_HeavyAttack)
-	// B 버튼 (패드 B / Space) - 달리기/구르기/백스텝 입력
+
 	DDS_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(InputTag_DodgeB);
+	DDS_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(InputTag_UseHealthPotion);
 
 
 	DDS_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(InputTag_Debug_PrintAttributes)
@@ -95,6 +96,8 @@ namespace DDSGameplayTags
 
 	DDS_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Attribute_Defense_PhysicalResist)
 	DDS_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Attribute_Defense_MagicResist)
+
+	DDS_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Attribute_Item_HealthPotion)
 	
 	
 	/** Player Tags */
@@ -111,6 +114,7 @@ namespace DDSGameplayTags
 	DDS_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Ability_Attack_HeavyAttack_Sword)
 	DDS_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Ability_Dodge)
 	DDS_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Ability_Backstep)
+	DDS_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Ability_UseHealthPotion)
 	
 	
 	DDS_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Weapon_Sword)

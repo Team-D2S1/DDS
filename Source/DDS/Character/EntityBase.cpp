@@ -48,12 +48,12 @@ UPawnUIComponent* AEntityBase::GetPawnUIComponent() const
 
 UAttributeSet* AEntityBase::GetAttributeSet() const
 {
-	return AttributeSet;
+	return AttributeSetSSS;
 }
 
 UDDSPlayerAttributeSet* AEntityBase::GetPlayerAttributeSet() const
 {
-	return Cast<UDDSPlayerAttributeSet>(AttributeSet);
+	return Cast<UDDSPlayerAttributeSet>(AttributeSetSSS);
 }
 
 void AEntityBase::Multicast_LinkAnimLayer_Implementation(TSubclassOf<UAnimInstance> InAnimLayerClass)

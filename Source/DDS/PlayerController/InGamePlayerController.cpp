@@ -832,7 +832,8 @@ void AInGamePlayerController::TryExecuteDodgeOrBackstep()
 	if (bShortPress)
 	{
 		// 짧게 누름 -> Backstep
-		CombatComp->Server_TriggerBackstep();
+		// CombatComp->Server_TriggerBackstep();
+		CombatComp->Server_TriggerDodge(CachedMoveVector); // Backstep 대신 Dodge로 대체
 	}
 	else if (bLongPress)
 	{

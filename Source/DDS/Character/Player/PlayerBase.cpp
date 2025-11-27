@@ -371,10 +371,10 @@ void APlayerBase::InitAbilityActorInfo()
 	}
 	DDSPlayerState->GetAbilitySystemComponent()->InitAbilityActorInfo(DDSPlayerState, this);
 	AbilitySystemComponent = DDSPlayerState->GetDDSAbilitySystemComponent();
-	AttributeSet = DDSPlayerState->GetDDSAttribueSet();
+	AttributeSetSSS = DDSPlayerState->GetDDSAttribueSet();
 	CachedInventoryComponent = TWeakObjectPtr<UInventoryComponent>(DDSPlayerState->GetInventoryComponent());
-	PlayerUIComponent->BroadcastInitialValues(AttributeSet);
-	AbilitySystemComponent->BindAttributeValueChangeDelegates(AttributeSet);
+	PlayerUIComponent->BroadcastInitialValues(AttributeSetSSS);
+	AbilitySystemComponent->BindAttributeValueChangeDelegates(AttributeSetSSS);
 
 	// PlayerUIComponent가 ASC의 경험치/레벨업 알림을 구독하도록 설정
 	PlayerUIComponent->BindExperienceNotifications(AbilitySystemComponent);

@@ -70,7 +70,7 @@ protected:
 	TObjectPtr<UDDSAbilitySystemComponent> AbilitySystemComponent;
 
 	UPROPERTY(VisibleAnywhere,BlueprintReadOnly,Category="AbilitySystem")
-	TObjectPtr<UDDSAttributeSet> AttributeSet;
+	TObjectPtr<UDDSAttributeSet> AttributeSetSSS;
 	
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Character Data", meta = (AllowPrivateAccess = "true"))
 	TSoftObjectPtr<UDataAsset_StartUpDataBase> EntityStartUpDataBase;
@@ -97,6 +97,6 @@ private:
 public:	
 	virtual void Tick(float DeltaTime) override;
 	FORCEINLINE UDDSAbilitySystemComponent* GetDDSAbilitySystemComponent() const {return AbilitySystemComponent;}
-	FORCEINLINE UDDSAttributeSet* GetDDSAttributeSet() const {return AttributeSet;}
+	FORCEINLINE UDDSAttributeSet* GetDDSAttributeSet() const {return AttributeSetSSS;}
 	
 };

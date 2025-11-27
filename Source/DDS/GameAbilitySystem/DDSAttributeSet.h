@@ -17,7 +17,7 @@ class UPawnUIComponent;
 class IPawnUIInterface;
 
 template<class T>
-using TStaticFuncPtr = typename TBaseStaticDelegateInstance<T, FDefaultDelegateUserPolicy>::FFuncPtr;
+using TStaticFuncPtr = TBaseStaticDelegateInstance<T, FDefaultDelegateUserPolicy>::FFuncPtr;
 
 UCLASS()
 class DDS_API UDDSAttributeSet : public UAttributeSet
@@ -210,6 +210,11 @@ public:
 	FGameplayAttributeData MagicResist;
 	ATTRIBUTE_ACCESSORS(UDDSAttributeSet, MagicResist);
 
+	// Item Attributes
+	UPROPERTY(ReplicatedUsing= OnRep_HealthPotion, BlueprintReadOnly, Category = "Item Attributes")
+	FGameplayAttributeData HealthPotion;
+	ATTRIBUTE_ACCESSORS(UDDSAttributeSet, HealthPotion);
+
 
 	// Equip Attributes
 	// 장비 보정 전용 (합산 대상)
@@ -316,6 +321,8 @@ public:
 	void OnRep_MagicASR(const FGameplayAttributeData& OldMagicASR) const;
 	UFUNCTION()
 	void OnRep_AttackRequireStamina(const FGameplayAttributeData& OldAttackRequireStamina) const;
+	UFUNCTION()
+	void OnRep_HealthPotion(const FGameplayAttributeData& OldHealthPotion) const;
 
 	// 디버깅용
 	UFUNCTION(BlueprintCallable, Category = "DDS|Attributes")
