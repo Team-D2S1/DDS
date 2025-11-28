@@ -138,6 +138,7 @@ void UGEExecCalc_DamageTaken::Execute_Implementation(const FGameplayEffectCustom
 	float TargetDefensePower = 0.f;
 	float TargetResistPower = 0.f;
 	bool bIsPhysicalDamage = true;
+	bool isHeavyAttack = false;
 
 	
 	for (const TPair<FGameplayTag,float>& TagMagnitude : EffectSpec.SetByCallerTagMagnitudes)
@@ -150,6 +151,15 @@ void UGEExecCalc_DamageTaken::Execute_Implementation(const FGameplayEffectCustom
 		if (TagMagnitude.Key.MatchesTagExact(DDSGameplayTags::Shared_DamageType_Magic))
 		{
 			bIsPhysicalDamage = false;
+			break;
+		}
+	}
+
+	for (const TPair<FGameplayTag,float>& TagMagnitude : EffectSpec.SetByCallerTagMagnitudes)
+	{
+		if (TagMagnitude.Key.MatchesTagExact(DDSGameplayTags::Player_SetByCaller_AttackType_Heavy))
+		{
+			isHeavyAttack = true;
 			break;
 		}
 	}
@@ -174,8 +184,8 @@ void UGEExecCalc_DamageTaken::Execute_Implementation(const FGameplayEffectCustom
 	}
 
 	// 계산식 적용
-	const float CalculatedDamage = GetDamage(SourceAttackPower, TargetDefensePower);
-
+	float CalculatedDamage = GetDamage(SourceAttackPower, TargetDefensePower);
+	CalculatedDamage = isHeavyAttack ? CalculatedDamage * 1.2f : CalculatedDamage;
 	// MY_LOG(LogTemp, Log, TEXT("DamageTaken Calculation: AttackPower: %f, DefensePower: %f, ResistPower: %f, CalculatedDamage: %f"),
 		// SourceAttackPower, TargetDefensePower, TargetResistPower, CalculatedDamage);
 	// 경감률 적용
