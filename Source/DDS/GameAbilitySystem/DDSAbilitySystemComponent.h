@@ -183,4 +183,7 @@ public:
 
 	UFUNCTION(BlueprintCallable, Category="DDS|Ability")
 	FVector GetLastDodgeInputDirection() const { return LastDodgeInputDirection; }
+
+
+	static float GetRequiredEnergyForLevel(int32 Level);
 };

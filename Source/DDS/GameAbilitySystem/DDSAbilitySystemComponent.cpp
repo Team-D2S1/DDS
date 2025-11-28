@@ -334,7 +334,7 @@ void UDDSAbilitySystemComponent::AddExperienceAndCheckLevelUp(float ExperienceTo
 	{
 		LevelsGained++;
 		RemainingEnergy -= RequiredEnergy;
-		RequiredEnergy = 100.f + ((FMath::RoundToInt(AS->GetLevel()) + LevelsGained) * 100.f);
+		RequiredEnergy =  GetRequiredEnergyForLevel(AS->GetLevel() + LevelsGained);
 	}
 
 	if (LevelsGained > 0)
@@ -455,7 +455,7 @@ void UDDSAbilitySystemComponent::HandleLevelChanged(const FOnAttributeChangeData
 		MY_LOG_DISPLAY("AttributeSet not found");
 		return;
 	}
-	AS->SetRequireEnergy(100.f + (NewLevel * 100.f));
+	AS->SetRequireEnergy(GetRequiredEnergyForLevel(NewLevel));
 	
 	
 	OnLevelChanged.Broadcast(NewLevel);
@@ -599,5 +599,44 @@ void UDDSAbilitySystemComponent::SetLastDodgeInputDirection(const FVector& InDir
 	// bool bIsServer = GetOwner() && GetOwner()->HasAuthority();
 	// MY_CLOG_DISPLAY_NET(FColor::Cyan, bIsServer, TEXT("SetLastDodgeInputDirection: %s"), *InDirection.ToString());
 	// #endif
+}
+
+float UDDSAbilitySystemComponent::GetRequiredEnergyForLevel(int32 Level)
+{
+	Level += 9; // 내부적으로 10레벨부터 시작하므로 보정
+	static const float EnergyTable[] = {
+		811.f, 829.f, 847.f, 1039.f, 1238.f, 1445.f, 1660.f, 1883.f, 2114.f, 2353.f, 
+		2601.f, 2857.f, 3122.f, 3396.f, 3678.f, 3970.f, 4271.f, 4581.f, 4900.f, 5229.f, 
+		5567.f, 5915.f, 6273.f, 6641.f, 7019.f, 7407.f, 7805.f, 8214.f, 8634.f, 9064.f, 
+		9505.f, 9957.f, 10420.f, 10894.f, 11379.f, 11876.f, 12384.f, 12904.f, 13436.f, 13979.f, 
+		14535.f, 15103.f, 15683.f, 16275.f, 16880.f, 17497.f, 18127.f, 18770.f, 19426.f, 20095.f, 
+		20777.f, 21472.f, 22181.f, 22904.f, 23640.f, 24390.f, 25154.f, 25932.f, 26724.f, 27530.f, 
+		28351.f, 29189.f, 30036.f, 30901.f, 31780.f, 32675.f, 33585.f, 34510.f, 35450.f, 36406.f, 
+		37377.f, 38364.f, 39367.f, 40386.f, 41421.f, 42472.f, 43539.f, 44623.f, 45724.f, 46841.f, 
+		47975.f, 49126.f, 50294.f, 51479.f, 52681.f, 53901.f, 55138.f, 56393.f, 57666.f, 58956.f, 
+		60265.f, 61592.f, 62937.f, 64300.f, 65682.f, 67082.f, 68501.f, 69939.f, 71396.f, 72872.f, 
+		74367.f, 75881.f, 77415.f, 78969.f, 80542.f, 82135.f, 83748.f, 85381.f, 87034.f, 88707.f, 
+		90401.f
+	};
+    
+	const int32 StartLevel = 10;
+	const int32 EndLevel = 120;
+	const int32 ArraySize = sizeof(EnergyTable) / sizeof(EnergyTable[0]); // 111
+
+	// 범위 체크: 데이터가 10레벨부터 시작하므로, 그 이하는 10레벨 값(811)을, 
+	// 그 이상은 마지막 값(90401)을 반환하거나 별도 로직 적용
+	if (Level < StartLevel)
+	{
+		return EnergyTable[0]; // 혹은 저레벨용 별도 수식 적용
+	}
+    
+	int32 Index = Level - StartLevel;
+    
+	if (Index >= ArraySize)
+	{
+		return EnergyTable[ArraySize - 1]; // Max Level Cap
+	}
+
+	return EnergyTable[Index];
 }
 
